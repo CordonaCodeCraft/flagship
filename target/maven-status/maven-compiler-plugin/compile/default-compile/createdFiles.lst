@@ -4,6 +4,7 @@ flagship\domain\entity\BaseEntity$BaseEntityBuilder.class
 flagship\domain\entity\ProformaDisbursementAccount$ProformaDisbursementAccountBuilderImpl.class
 flagship\domain\AgencyAccount$AgencyAccountBuilder.class
 flagship\FlagshipApplication.class
+flagship\bootstrap\DataLoader.class
 flagship\domain\entity\enums\PortArea.class
 flagship\domain\entity\Ship$ShipBuilder.class
 flagship\domain\StateAccount.class

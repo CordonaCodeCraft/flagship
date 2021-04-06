@@ -1,10 +1,12 @@
 package flagship.domain.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
+
+import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -12,8 +14,22 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @SuperBuilder
 
+@Entity
 public class Country extends BaseEntity {
 
     private String name;
+
+
+    @OneToMany
+    @Singular
+    @ToString.Exclude
+    private Set<Port> ports;
+
+    @ManyToMany
+    @Singular
+    @ToString.Exclude
+    private Set<Agent> agents;
+
+
 
 }
