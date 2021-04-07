@@ -1,6 +1,6 @@
 package flagship.persistence.services.implementations;
 
-import flagship.domain.entity.ProformaDisbursementAccount;
+import flagship.domain.entities.ProformaDisbursementAccount;
 import flagship.persistence.repositories.PDARepository;
 import flagship.persistence.services.PDAService;
 import lombok.RequiredArgsConstructor;

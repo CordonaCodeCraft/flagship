@@ -1,6 +1,6 @@
 package flagship.persistence.services;
 
-import flagship.domain.entity.Country;
+import flagship.domain.entities.Country;
 
 import java.util.UUID;
 

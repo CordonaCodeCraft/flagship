@@ -1,9 +1,8 @@
 package flagship.persistence.services.implementations;
 
-import flagship.domain.entity.Agent;
+import flagship.domain.entities.Agent;
 import flagship.persistence.repositories.AgentRepository;
 import flagship.persistence.services.AgentService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

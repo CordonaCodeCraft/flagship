@@ -1,6 +1,6 @@
 package flagship.persistence.repositories;
 
-import flagship.domain.entity.Agent;
+import flagship.domain.entities.Agent;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

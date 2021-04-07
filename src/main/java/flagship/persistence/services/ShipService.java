@@ -1,6 +1,6 @@
 package flagship.persistence.services;
 
-import flagship.domain.entity.Ship;
+import flagship.domain.entities.Ship;
 
 import java.util.UUID;
 

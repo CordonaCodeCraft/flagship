@@ -1,6 +1,6 @@
 package flagship.persistence.services;
 
-import flagship.domain.entity.Port;
+import flagship.domain.entities.Port;
 
 import java.util.UUID;
 

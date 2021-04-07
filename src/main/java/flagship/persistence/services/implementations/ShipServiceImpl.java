@@ -1,6 +1,6 @@
 package flagship.persistence.services.implementations;
 
-import flagship.domain.entity.Ship;
+import flagship.domain.entities.Ship;
 import flagship.persistence.repositories.ShipRepository;
 import flagship.persistence.services.ShipService;
 import lombok.RequiredArgsConstructor;

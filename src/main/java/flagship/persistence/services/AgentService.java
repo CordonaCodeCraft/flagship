@@ -1,6 +1,6 @@
 package flagship.persistence.services;
 
-import flagship.domain.entity.Agent;
+import flagship.domain.entities.Agent;
 
 import java.util.UUID;
 

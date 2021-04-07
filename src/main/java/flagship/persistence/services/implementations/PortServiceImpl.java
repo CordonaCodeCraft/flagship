@@ -1,6 +1,6 @@
 package flagship.persistence.services.implementations;
 
-import flagship.domain.entity.Port;
+import flagship.domain.entities.Port;
 import flagship.persistence.repositories.PortRepository;
 import flagship.persistence.services.PortService;
 import lombok.RequiredArgsConstructor;

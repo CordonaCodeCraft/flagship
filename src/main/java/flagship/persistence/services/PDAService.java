@@ -1,6 +1,6 @@
 package flagship.persistence.services;
 
-import flagship.domain.entity.ProformaDisbursementAccount;
+import flagship.domain.entities.ProformaDisbursementAccount;
 
 import java.util.UUID;
 

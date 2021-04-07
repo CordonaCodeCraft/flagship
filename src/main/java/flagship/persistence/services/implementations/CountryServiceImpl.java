@@ -1,6 +1,6 @@
 package flagship.persistence.services.implementations;
 
-import flagship.domain.entity.Country;
+import flagship.domain.entities.Country;
 import flagship.persistence.repositories.CountryRepository;
 import flagship.persistence.services.CountryService;
 import lombok.RequiredArgsConstructor;

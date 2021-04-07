@@ -1,6 +1,6 @@
 package flagship.persistence.repositories;
 
-import flagship.domain.entity.Ship;
+import flagship.domain.entities.Ship;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
