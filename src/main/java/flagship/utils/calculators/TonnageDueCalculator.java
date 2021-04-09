@@ -4,9 +4,7 @@ import flagship.domain.entities.Case;
 import flagship.domain.entities.enums.CallPurpose;
 import flagship.domain.entities.enums.PortArea;
 import flagship.domain.entities.enums.ShipType;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import flagship.utils.tariffs.TonnageDueTariff;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -15,13 +13,9 @@ import static flagship.domain.entities.enums.CallPurpose.*;
 import static flagship.domain.entities.enums.PortArea.*;
 import static flagship.domain.entities.enums.ShipType.*;
 
-@Getter
-@Setter
-@NoArgsConstructor
-
 public class TonnageDueCalculator {
 
-    public static BigDecimal calculateTonnageDue(Case activeCase) {
+    public static BigDecimal calculateTonnageDue(Case activeCase, TonnageDueTariff tonnageDueTariff) {
 
         BigDecimal tonnageDue;
 

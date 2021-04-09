@@ -1,4 +1,5 @@
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\StateAccount.java
+D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\Config.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\persistence\repositories\PDARepository.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\persistence\services\implementations\CountryServiceImpl.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\entities\BaseEntity.java
@@ -8,6 +9,7 @@ D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\entities\Ship.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\persistence\repositories\AgentRepository.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\entities\Port.java
+D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\utils\calculators\WharfDueCalculator.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\persistence\services\CountryService.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\persistence\repositories\CountryRepository.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\bootstrap\DataLoader.java
@@ -32,4 +34,5 @@ D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\persistence\repositories\ShipRepository.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\entities\enums\PortArea.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\persistence\services\CrudService.java
+D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\utils\tariffs\TonnageDueTariff.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\entities\Country.java

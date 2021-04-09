@@ -18,8 +18,10 @@ flagship\persistence\repositories\PDARepository.class
 flagship\persistence\services\implementations\PortServiceImpl.class
 flagship\persistence\repositories\AgentRepository.class
 flagship\domain\entities\Port.class
+flagship\utils\tariffs\TonnageDueTariff.class
 flagship\domain\entities\Case$CaseBuilder.class
 flagship\domain\entities\enums\PortArea.class
+flagship\utils\calculators\WharfDueCalculator.class
 flagship\persistence\repositories\ShipRepository.class
 flagship\persistence\services\implementations\PdaServiceImpl.class
 flagship\domain\entities\ProformaDisbursementAccount$ProformaDisbursementAccountBuilder.class
@@ -33,6 +35,7 @@ flagship\persistence\services\AgentService.class
 flagship\persistence\services\ShipService.class
 flagship\domain\entities\Ship.class
 flagship\domain\entities\BaseEntity.class
+flagship\Config.class
 flagship\domain\entities\Case.class
 flagship\persistence\repositories\PortRepository.class
 flagship\domain\entities\enums\CallPurpose.class
