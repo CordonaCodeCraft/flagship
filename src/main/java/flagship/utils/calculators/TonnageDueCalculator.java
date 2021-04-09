@@ -19,9 +19,6 @@ import static flagship.domain.entities.enums.ShipType.*;
 @Setter
 @NoArgsConstructor
 
-//todo: Implement logic for multiplying the tonnageDue by month count if shipType is
-// SPECIAL and the expected alongside days are greater than the remaining days of the month of arriving
-
 public class TonnageDueCalculator {
 
     public static BigDecimal calculateTonnageDue(Case activeCase) {
@@ -43,7 +40,7 @@ public class TonnageDueCalculator {
         double discountCoefficient = evaluateDiscountCoefficient(activeCase);
 
         if (discountCoefficient > 0.0) {
-            BigDecimal discount = new BigDecimal(tonnageDue.doubleValue() * discountCoefficient);
+            BigDecimal discount = BigDecimal.valueOf(tonnageDue.doubleValue() * discountCoefficient);
             tonnageDue = tonnageDue.subtract(discount);
         }
 
@@ -61,7 +58,7 @@ public class TonnageDueCalculator {
 
     private static boolean evaluateDueDependencyOnCallPurpose(Case activeCase) {
 
-        List<CallPurpose> callPurposesAffectingTonnageDue = Arrays.asList(SPECIAL_PURPOSE_PORT_VISIT);
+        List<CallPurpose> callPurposesAffectingTonnageDue = Collections.singletonList(SPECIAL_PURPOSE_PORT_VISIT);
 
         CallPurpose callPurpose = activeCase.getCallPurpose();
 
