@@ -4,6 +4,6 @@ import flagship.domain.entities.ProformaDisbursementAccount;
 
 import java.util.UUID;
 
-public interface PDAService extends CrudService<ProformaDisbursementAccount, UUID> {
+public interface PdaService extends CrudService<ProformaDisbursementAccount, UUID> {
 
 }

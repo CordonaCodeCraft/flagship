@@ -2,45 +2,24 @@ package flagship.domain.entities;
 
 import flagship.domain.AgencyAccount;
 import flagship.domain.StateAccount;
-import flagship.domain.entities.enums.CallPurpose;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.Enumerated;
-import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.math.BigDecimal;
-
-import static javax.persistence.EnumType.STRING;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @ToString
 @SuperBuilder
 
-@Entity
+@Entity(name = "ProformaDisbursementAccount")
+@Table(name = "proforma_disbursement_accounts")
 public class ProformaDisbursementAccount extends BaseEntity {
-
-    @ManyToOne
-    private Agent agent;
-
-    @ManyToOne
-    private Ship ship;
-
-    @ManyToOne
-    private Port port;
-
-    private Integer callCount;
-
-    @Enumerated(value = STRING)
-    private CallPurpose callPurpose;
-
-    private Integer alongsideDaysExpected;
 
     @Embedded
     private AgencyAccount agencyAccount;
@@ -51,6 +30,5 @@ public class ProformaDisbursementAccount extends BaseEntity {
     private BigDecimal discount;
 
     private BigDecimal turnoverExpected;
-
 
 }

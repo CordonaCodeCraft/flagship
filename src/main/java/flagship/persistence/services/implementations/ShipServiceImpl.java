@@ -19,7 +19,7 @@ public class ShipServiceImpl implements ShipService {
 
     @Override
     public Ship create(Ship target) {
-        return null;
+        return shipRepository.save(target);
     }
 
     @Override

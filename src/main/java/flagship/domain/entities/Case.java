@@ -1,31 +1,46 @@
 package flagship.domain.entities;
 
+import flagship.domain.entities.enums.CallPurpose;
 import flagship.domain.entities.enums.CaseState;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import javax.persistence.Entity;
-import javax.persistence.Enumerated;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 import static javax.persistence.EnumType.STRING;
+import static javax.persistence.FetchType.LAZY;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @ToString
 @SuperBuilder
 
-@Entity
+@Entity(name = "Case")
+@Table(name = "cases")
 public class Case extends BaseEntity {
 
-    @OneToOne
-    private ProformaDisbursementAccount proformaDisbursementAccount;
+    @ManyToOne(fetch = LAZY)
+    private Agent agent;
 
-    @Enumerated(STRING)
-    private CaseState caseState;
+    @ManyToOne(fetch = LAZY)
+    private Ship ship;
+
+    @ManyToOne(fetch = LAZY)
+    private Port port;
+
+    @Enumerated(value = STRING)
+    private CallPurpose callPurpose;
+
+    private Integer callCount;
+
+    private Integer alongsideDaysExpected;
+
+    @Enumerated(value = STRING)
+    private CaseState state;
+
+    @OneToOne(fetch = LAZY)
+    private ProformaDisbursementAccount proformaDisbursementAccount;
 
 }

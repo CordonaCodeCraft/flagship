@@ -2,7 +2,7 @@ package flagship.persistence.services.implementations;
 
 import flagship.domain.entities.ProformaDisbursementAccount;
 import flagship.persistence.repositories.PDARepository;
-import flagship.persistence.services.PDAService;
+import flagship.persistence.services.PdaService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class PDAServiceImpl implements PDAService {
+public class PdaServiceImpl implements PdaService {
 
     private final PDARepository pdaRepository;
 

@@ -4,6 +4,10 @@ public enum CallPurpose {
     LOADING,
     UNLOADING,
     LOADING_UNLOADING,
+    RESUPPLY,
+    RECRUITMENT,
+    POSTAL,
     REPAIR,
-    MISCELLANEOUS
+    SPECIAL_PURPOSE_PORT_VISIT,
+
 }
