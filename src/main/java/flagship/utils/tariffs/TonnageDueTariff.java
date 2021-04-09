@@ -9,7 +9,6 @@ import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,12 +23,17 @@ public class TonnageDueTariff implements Serializable {
     private Map<ShipType, Double> tonnageDuesByShipType;
     private Map<CallPurpose, Double> tonnageDuesByCallPurpose;
     private Map<PortArea, Double> tonnageDuesByPortArea;
-    private Map<ShipType, Double> discountCoefficientByShipType = new HashMap<>();
+    private Map<ShipType, Double> discountCoefficientsByShipType;
 
     List<ShipType> shipTypesAffectingTonnageDue;
     List<CallPurpose> callPurposesAffectingTonnageDue;
     List<ShipType> shipTypesNotEligibleForDiscount;
     List<CallPurpose> callPurposesNotEligibleForDiscount;
     List<CallPurpose> callPurposesEligibleForDiscount;
+
+    int callCountThreshold;
+    double callCountDiscountCoefficient;
+    double callPurposeDiscountCoefficient;
+
 
 }

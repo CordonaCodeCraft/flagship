@@ -97,7 +97,7 @@ public class DataLoader implements ApplicationRunner {
         discountCoefficientByShipType.put(REEFER, 0.6);
         discountCoefficientByShipType.put(CONTAINER, 0.6);
         discountCoefficientByShipType.put(PASSENGER, 0.4);
-        tonnageDueTariff.setDiscountCoefficientByShipType(discountCoefficientByShipType);
+        tonnageDueTariff.setDiscountCoefficientsByShipType(discountCoefficientByShipType);
 
         List<ShipType> shipTypesAffectingTonnageDue = Arrays.asList(OIL_TANKER, RECREATIONAL, MILITARY, SPECIAL);
         tonnageDueTariff.setShipTypesAffectingTonnageDue(shipTypesAffectingTonnageDue);
@@ -113,6 +113,10 @@ public class DataLoader implements ApplicationRunner {
 
         List<CallPurpose> callPurposesEligibleForDiscount = Arrays.asList(RESUPPLY, RECRUITMENT, POSTAL, REPAIR);
         tonnageDueTariff.setCallPurposesEligibleForDiscount(callPurposesEligibleForDiscount);
+
+        tonnageDueTariff.setCallCountThreshold(4);
+        tonnageDueTariff.setCallCountDiscountCoefficient(0.7);
+        tonnageDueTariff.setCallPurposeDiscountCoefficient(0.65);
 
     }
 
