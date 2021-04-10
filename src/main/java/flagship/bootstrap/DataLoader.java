@@ -99,25 +99,12 @@ public class DataLoader implements ApplicationRunner {
         discountCoefficientByShipType.put(PASSENGER, 0.4);
         tonnageDueTariff.setDiscountCoefficientsByShipType(discountCoefficientByShipType);
 
-        List<ShipType> shipTypesAffectingTonnageDue = Arrays.asList(OIL_TANKER, RECREATIONAL, MILITARY, SPECIAL);
-        tonnageDueTariff.setShipTypesAffectingTonnageDue(shipTypesAffectingTonnageDue);
-
-        List<CallPurpose> callPurposesAffectingTonnageDue = Collections.singletonList(SPECIAL_PURPOSE_PORT_VISIT);
-        tonnageDueTariff.setCallPurposesAffectingTonnageDue(callPurposesAffectingTonnageDue);
-
-        List<ShipType> shipTypesNotEligibleForDiscount = Arrays.asList(RECREATIONAL, MILITARY, SPECIAL);
-        tonnageDueTariff.setShipTypesNotEligibleForDiscount(shipTypesNotEligibleForDiscount);
-
-        List<CallPurpose> callPurposesNotEligibleForDiscount = Collections.singletonList(SPECIAL_PURPOSE_PORT_VISIT);
-        tonnageDueTariff.setCallPurposesNotEligibleForDiscount(callPurposesNotEligibleForDiscount);
-
         List<CallPurpose> callPurposesEligibleForDiscount = Arrays.asList(RESUPPLY, RECRUITMENT, POSTAL, REPAIR);
         tonnageDueTariff.setCallPurposesEligibleForDiscount(callPurposesEligibleForDiscount);
 
         tonnageDueTariff.setCallCountThreshold(4);
         tonnageDueTariff.setCallCountDiscountCoefficient(0.7);
         tonnageDueTariff.setCallPurposeDiscountCoefficient(0.65);
-
     }
 
     private void produceTonnageDueJsonFile() throws IOException {

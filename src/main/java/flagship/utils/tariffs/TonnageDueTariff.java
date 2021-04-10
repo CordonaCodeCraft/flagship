@@ -25,10 +25,6 @@ public class TonnageDueTariff implements Serializable {
     private Map<PortArea, Double> tonnageDuesByPortArea;
     private Map<ShipType, Double> discountCoefficientsByShipType;
 
-    List<ShipType> shipTypesAffectingTonnageDue;
-    List<CallPurpose> callPurposesAffectingTonnageDue;
-    List<ShipType> shipTypesNotEligibleForDiscount;
-    List<CallPurpose> callPurposesNotEligibleForDiscount;
     List<CallPurpose> callPurposesEligibleForDiscount;
 
     int callCountThreshold;
