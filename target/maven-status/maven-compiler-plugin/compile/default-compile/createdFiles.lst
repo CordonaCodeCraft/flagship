@@ -1,3 +1,4 @@
+flagship\utils\tariffs\WharfDueTariff.class
 flagship\domain\AgencyAccount$AgencyAccountBuilder.class
 flagship\persistence\services\implementations\AgentServiceImpl.class
 flagship\persistence\services\PortService.class
@@ -18,6 +19,7 @@ flagship\persistence\repositories\PDARepository.class
 flagship\persistence\services\implementations\PortServiceImpl.class
 flagship\persistence\repositories\AgentRepository.class
 flagship\domain\entities\Port.class
+flagship\utils\calculators\CanalDueCalculator.class
 flagship\utils\tariffs\TonnageDueTariff.class
 flagship\domain\entities\Case$CaseBuilder.class
 flagship\domain\entities\enums\PortArea.class
@@ -30,10 +32,12 @@ flagship\persistence\repositories\CaseRepository.class
 flagship\persistence\services\implementations\CaseServiceImpl.class
 flagship\domain\entities\enums\CaseState.class
 flagship\domain\entities\Port$PortBuilder.class
+flagship\utils\tariffs\CanalDueTariff.class
 flagship\domain\entities\Ship$ShipBuilderImpl.class
 flagship\persistence\services\AgentService.class
 flagship\persistence\services\ShipService.class
 flagship\domain\entities\Ship.class
+flagship\utils\tariffs\Tariff.class
 flagship\domain\entities\BaseEntity.class
 flagship\Config.class
 flagship\domain\entities\Case.class

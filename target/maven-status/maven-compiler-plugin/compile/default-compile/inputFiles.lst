@@ -11,6 +11,7 @@ D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\entities\Port.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\utils\calculators\WharfDueCalculator.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\persistence\services\CountryService.java
+D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\utils\tariffs\WharfDueTariff.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\persistence\repositories\CountryRepository.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\bootstrap\DataLoader.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\persistence\services\implementations\PdaServiceImpl.java
@@ -22,6 +23,7 @@ D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\persistence\services\implementations\AgentServiceImpl.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\persistence\services\implementations\PortServiceImpl.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\persistence\repositories\CaseRepository.java
+D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\utils\tariffs\Tariff.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\AgencyAccount.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\entities\ProformaDisbursementAccount.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\persistence\services\implementations\ShipServiceImpl.java
@@ -34,5 +36,7 @@ D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\persistence\repositories\ShipRepository.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\entities\enums\PortArea.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\persistence\services\CrudService.java
+D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\utils\calculators\CanalDueCalculator.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\utils\tariffs\TonnageDueTariff.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\entities\Country.java
+D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\utils\tariffs\CanalDueTariff.java

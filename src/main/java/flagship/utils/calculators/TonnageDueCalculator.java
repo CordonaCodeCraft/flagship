@@ -77,12 +77,13 @@ public class TonnageDueCalculator {
 
         ShipType shipType = activeCase.getShip().getType();
         CallPurpose callPurpose = activeCase.getCallPurpose();
-        int callCount = activeCase.getCallCount();
 
         Map<ShipType, Double> discountCoefficientsByShipType = tariff.getDiscountCoefficientsByShipType();
         Map<CallPurpose, Double> discountCoefficientsByCallPurpose = tariff.getDiscountCoefficientsByCallPurpose();
 
-        boolean isEligibleForDiscount = (callCount >= tariff.getCallCountThreshold()
+        boolean satisfiesCallCountThreshold = activeCase.getCallCount() >= tariff.getCallCountThreshold();
+
+        boolean isEligibleForDiscount = (satisfiesCallCountThreshold
                 || discountCoefficientsByCallPurpose.containsKey(callPurpose)
                 || discountCoefficientsByShipType.containsKey(shipType))
                 && callPurpose != SPECIAL_PURPOSE_PORT_VISIT
@@ -91,19 +92,19 @@ public class TonnageDueCalculator {
 
         if (isEligibleForDiscount) {
 
-            if (activeCase.getCallCount() >= tariff.getCallCountThreshold()) {
+            if (satisfiesCallCountThreshold) {
                 double callCountDiscountCoefficient = tariff.getCallCountDiscountCoefficient();
-                discountCoefficient = Double.max(discountCoefficient, callCountDiscountCoefficient);
+                discountCoefficient = Math.max(discountCoefficient, callCountDiscountCoefficient);
             }
 
             if (discountCoefficientsByCallPurpose.containsKey(callPurpose)) {
                 double callPurposeDiscountCoefficient = discountCoefficientsByCallPurpose.get(callPurpose);
-                discountCoefficient = Double.max(discountCoefficient, callPurposeDiscountCoefficient);
+                discountCoefficient = Math.max(discountCoefficient, callPurposeDiscountCoefficient);
             }
 
             if (discountCoefficientsByShipType.containsKey(shipType)) {
                 double shipTypeDiscountCoefficient = discountCoefficientsByShipType.get(shipType);
-                discountCoefficient = Double.max(discountCoefficient, shipTypeDiscountCoefficient);
+                discountCoefficient = Math.max(discountCoefficient, shipTypeDiscountCoefficient);
             }
         }
 
