@@ -7,8 +7,10 @@ import flagship.domain.entities.enums.ShipType;
 import flagship.utils.tariffs.TonnageDueTariff;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Map;
+
+import static flagship.domain.entities.enums.CallPurpose.*;
+import static flagship.domain.entities.enums.ShipType.OIL_TANKER;
 
 public class TonnageDueCalculator {
 
@@ -50,37 +52,42 @@ public class TonnageDueCalculator {
 
     private static BigDecimal calculateTonnageDueByShipType(Case activeCase, TonnageDueTariff tariff) {
         ShipType shipType = activeCase.getShip().getType();
-        double euroPerTon = tariff.getTonnageDuesByShipType().get(shipType);
         int grossTonnage = activeCase.getShip().getGrossTonnage();
+        double euroPerTon = tariff.getTonnageDuesByShipType().get(shipType);
         return new BigDecimal(grossTonnage * euroPerTon);
     }
 
     private static BigDecimal calculateTonnageDueByCallPurpose(Case activeCase, TonnageDueTariff tariff) {
         CallPurpose callPurpose = activeCase.getCallPurpose();
-        double euroPerTon = tariff.getTonnageDuesByCallPurpose().get(callPurpose);
         int grossTonnage = activeCase.getShip().getGrossTonnage();
+        double euroPerTon = tariff.getTonnageDuesByCallPurpose().get(callPurpose);
         return new BigDecimal(grossTonnage * euroPerTon);
     }
 
     private static BigDecimal calculateTonnageDueByPortArea(Case activeCase, TonnageDueTariff tariff) {
         PortArea portArea = activeCase.getPort().getArea();
-        double euroPerTon = tariff.getTonnageDuesByPortArea().get(portArea);
         int grossTonnage = activeCase.getShip().getGrossTonnage();
+        double euroPerTon = tariff.getTonnageDuesByPortArea().get(portArea);
         return new BigDecimal(grossTonnage * euroPerTon);
     }
 
     private static double evaluateDiscountCoefficient(Case activeCase, TonnageDueTariff tariff) {
 
-        List<CallPurpose> callPurposesEligibleForDiscount = tariff.getCallPurposesEligibleForDiscount();
-
-        Map<ShipType, Double> discountCoefficientsByShipType = tariff.getDiscountCoefficientsByShipType();
+        double discountCoefficient = 0;
 
         ShipType shipType = activeCase.getShip().getType();
         CallPurpose callPurpose = activeCase.getCallPurpose();
+        int callCount = activeCase.getCallCount();
 
-        double discountCoefficient = 0;
+        Map<ShipType, Double> discountCoefficientsByShipType = tariff.getDiscountCoefficientsByShipType();
+        Map<CallPurpose, Double> discountCoefficientsByCallPurpose = tariff.getDiscountCoefficientsByCallPurpose();
 
-        boolean isEligibleForDiscount = discountCoefficientsByShipType.containsKey(shipType) && callPurposesEligibleForDiscount.contains(callPurpose);
+        boolean isEligibleForDiscount = (callCount >= tariff.getCallCountThreshold()
+                || discountCoefficientsByCallPurpose.containsKey(callPurpose)
+                || discountCoefficientsByShipType.containsKey(shipType))
+                && callPurpose != SPECIAL_PURPOSE_PORT_VISIT
+                &&
+                (!tariff.getTonnageDuesByShipType().containsKey(shipType) || shipType == OIL_TANKER);
 
         if (isEligibleForDiscount) {
 
@@ -89,8 +96,8 @@ public class TonnageDueCalculator {
                 discountCoefficient = Double.max(discountCoefficient, callCountDiscountCoefficient);
             }
 
-            if (callPurposesEligibleForDiscount.contains(callPurpose)) {
-                double callPurposeDiscountCoefficient = tariff.getCallPurposeDiscountCoefficient();
+            if (discountCoefficientsByCallPurpose.containsKey(callPurpose)) {
+                double callPurposeDiscountCoefficient = discountCoefficientsByCallPurpose.get(callPurpose);
                 discountCoefficient = Double.max(discountCoefficient, callPurposeDiscountCoefficient);
             }
 
