@@ -8,16 +8,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
-import java.io.Serializable;
 import java.util.Map;
 
 @Getter
 @Setter
 @Component
 @NoArgsConstructor
-public class TonnageDueTariff implements Serializable {
-
-    private static final long serialVersionUID = 7488308811075008968L;
+public class TonnageDueTariff extends Tariff {
 
     private Map<ShipType, Double> tonnageDuesByShipType;
     private Map<CallPurpose, Double> tonnageDuesByCallPurpose;

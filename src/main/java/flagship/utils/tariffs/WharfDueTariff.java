@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
-import java.io.Serializable;
 import java.util.Map;
 import java.util.Set;
 
@@ -15,9 +14,7 @@ import java.util.Set;
 @Setter
 @Component
 @NoArgsConstructor
-public class WharfDueTariff implements Serializable {
-
-    private static final long serialVersionUID = 7488308811075008968L;
+public class WharfDueTariff extends Tariff {
 
     private Map<CallPurpose, Double> discountCoefficientsByCallPurpose;
     private Set<ShipType> shipTypesNotEligibleForDiscount;
