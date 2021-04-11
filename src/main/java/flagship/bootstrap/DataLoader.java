@@ -6,6 +6,7 @@ import flagship.domain.entities.Port;
 import flagship.domain.entities.Ship;
 import flagship.persistence.services.ShipService;
 import flagship.utils.calculators.CanalDueCalculator;
+import flagship.utils.calculators.LightDueCalculator;
 import flagship.utils.tariffs.CanalDueTariff;
 import flagship.utils.tariffs.LightDueTariff;
 import flagship.utils.tariffs.TonnageDueTariff;
@@ -23,6 +24,7 @@ import java.nio.file.Paths;
 
 import static flagship.domain.entities.enums.CallPurpose.SPECIAL_PURPOSE_PORT_VISIT;
 import static flagship.domain.entities.enums.PortArea.FIRST;
+import static flagship.domain.entities.enums.ShipType.GENERAL;
 import static flagship.domain.entities.enums.ShipType.PASSENGER;
 
 @Component
@@ -59,8 +61,8 @@ public class DataLoader implements ApplicationRunner {
         Ship ship = Ship
                 .builder()
                 .lengthOverall(99.99)
-                .grossTonnage(12345)
-                .type(PASSENGER)
+                .grossTonnage(10001)
+                .type(GENERAL)
                 .build();
 
         Port port = Port
@@ -73,11 +75,11 @@ public class DataLoader implements ApplicationRunner {
                 .ship(ship)
                 .callPurpose(SPECIAL_PURPOSE_PORT_VISIT)
                 .port(port)
-                .callCount(2)
+                .callCount(1)
                 .alongsideDaysExpected(3)
                 .build();
 
-        BigDecimal canalDue = CanalDueCalculator.calculateCanalDue(activeCase, canalDueTariff);
+        BigDecimal canalDue = LightDueCalculator.calculateLightDue(activeCase, lightDueTariff);
     }
 
 

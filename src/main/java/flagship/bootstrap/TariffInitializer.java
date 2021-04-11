@@ -120,24 +120,24 @@ public class TariffInitializer {
 
     private static void initializeLightDueTariff(LightDueTariff lightDueTariff) {
 
-        Map<Pair<Integer, Integer>, Integer> lightDuesByGrossTonnage = new HashMap<>();
+        Map<Pair<Integer, Integer>, Double> lightDuesByGrossTonnage = new HashMap<>();
         Pair<Integer, Integer> pair1 = Pair.with(41, 500);
         Pair<Integer, Integer> pair2 = Pair.with(501, 1000);
         Pair<Integer, Integer> pair3 = Pair.with(1001, 5000);
         Pair<Integer, Integer> pair4 = Pair.with(5001, 10000);
-        lightDuesByGrossTonnage.put(pair1, 15);
-        lightDuesByGrossTonnage.put(pair2, 40);
-        lightDuesByGrossTonnage.put(pair3, 70);
-        lightDuesByGrossTonnage.put(pair4, 110);
+        lightDuesByGrossTonnage.put(pair1, 15.0);
+        lightDuesByGrossTonnage.put(pair2, 40.0);
+        lightDuesByGrossTonnage.put(pair3, 70.0);
+        lightDuesByGrossTonnage.put(pair4, 110.0);
         lightDueTariff.setLightDuesByGrossTonnage(lightDuesByGrossTonnage);
 
         Map<ShipType, Double> lightDuesByShipType = new HashMap<>();
         lightDuesByShipType.put(MILITARY, 0.15);
         lightDueTariff.setLightDuesByShipType(lightDuesByShipType);
 
-        Map<ShipType, Double> discountCoefficientByShipType = new HashMap<>();
-        discountCoefficientByShipType.put(PASSENGER, 0.5);
-        lightDueTariff.setDiscountCoefficientByShipType(discountCoefficientByShipType);
+        Map<ShipType, Double> discountCoefficientsByShipType = new HashMap<>();
+        discountCoefficientsByShipType.put(PASSENGER, 0.5);
+        lightDueTariff.setDiscountCoefficientsByShipType(discountCoefficientsByShipType);
 
         lightDueTariff.setLightDueMaximumValue(150);
         lightDueTariff.setCallCountThreshold(4);
