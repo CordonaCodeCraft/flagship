@@ -16,9 +16,9 @@ import java.util.Set;
 @NoArgsConstructor
 public class WharfDueTariff extends Tariff {
 
+    private Map<ShipType, Double> WharfDuesByShipType;
     private Map<CallPurpose, Double> discountCoefficientsByCallPurpose;
     private Set<ShipType> shipTypesNotEligibleForDiscount;
-    private Map<ShipType, Double> WharfDuesByShipType;
     private Double defaultWharfDue;
 
 }
