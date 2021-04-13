@@ -1,14 +1,14 @@
 package flagship.bootstrap;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import flagship.domain.entities.Case;
-import flagship.domain.entities.Port;
-import flagship.domain.entities.Ship;
-import flagship.utils.calculators.state_dues_calulators.TonnageDueCalculator;
-import flagship.utils.tariffs.CanalDueTariff;
-import flagship.utils.tariffs.LightDueTariff;
-import flagship.utils.tariffs.TonnageDueTariff;
-import flagship.utils.tariffs.WharfDueTariff;
+import flagship.domain.cases.entities.Case;
+import flagship.domain.cases.entities.Port;
+import flagship.domain.cases.entities.Ship;
+import flagship.domain.utils.calculators.statedues.TonnageDueCalculator;
+import flagship.domain.utils.tariffs.CanalDueTariff;
+import flagship.domain.utils.tariffs.LightDueTariff;
+import flagship.domain.utils.tariffs.TonnageDueTariff;
+import flagship.domain.utils.tariffs.WharfDueTariff;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
@@ -19,9 +19,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 
-import static flagship.domain.entities.enums.CallPurpose.*;
-import static flagship.domain.entities.enums.PortArea.FIRST;
-import static flagship.domain.entities.enums.ShipType.*;
+import static flagship.domain.cases.entities.enums.CallPurpose.RECRUITMENT;
+import static flagship.domain.cases.entities.enums.PortArea.FIRST;
+import static flagship.domain.cases.entities.enums.ShipType.REEFER;
 
 @Component
 @RequiredArgsConstructor
@@ -48,8 +48,7 @@ public class DataLoader implements ApplicationRunner {
                 .builder()
                 .lengthOverall(99.99)
                 .grossTonnage(10001)
-                .type(REEFER)
-                .build();
+                .type(REEFER).build();
 
         Port port = Port
                 .builder()
@@ -67,10 +66,7 @@ public class DataLoader implements ApplicationRunner {
 
         TonnageDueCalculator tonnageDueCalculator = new TonnageDueCalculator();
         tonnageDueCalculator.calculate(activeCase, tonnageDueTariff);
-
-
     }
-
 
     private void produceTonnageDueJsonFile() throws IOException {
 
@@ -78,7 +74,16 @@ public class DataLoader implements ApplicationRunner {
                 .writerWithDefaultPrettyPrinter()
                 .writeValue(Paths.get("src/main/resources/tonnageDueTariff.json").toFile(), tonnageDueTariff);
 
+        objectMapper
+                .writerWithDefaultPrettyPrinter()
+                .writeValue(Paths.get("src/main/resources/wharfDueTariff.json").toFile(), wharfDueTariff);
+
+        objectMapper
+                .writerWithDefaultPrettyPrinter()
+                .writeValue(Paths.get("src/main/resources/lightDueTariff.json").toFile(), lightDueTariff);
+
+        objectMapper
+                .writerWithDefaultPrettyPrinter()
+                .writeValue(Paths.get("src/main/resources/canalDueTariff.json").toFile(), canalDueTariff);
     }
-
-
 }

@@ -1,0 +1,17 @@
+{
+  "lightDuesByGrossTonnage" : {
+    "[501, 1000]" : 40.0,
+    "[5001, 10000]" : 110.0,
+    "[41, 500]" : 15.0,
+    "[1001, 5000]" : 70.0
+  },
+  "lightDuesPerTonByShipType" : {
+    "MILITARY" : 0.15
+  },
+  "discountCoefficientsByShipType" : {
+    "PASSENGER" : 0.5
+  },
+  "lightDueMaximumValue" : 150,
+  "callCountThreshold" : 4,
+  "callCountDiscountCoefficient" : 0.7
+}
