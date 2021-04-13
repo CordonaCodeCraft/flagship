@@ -14,35 +14,35 @@ public class WharfDueCalculator extends StateDueCalculator<Case, WharfDueTariff>
     @Override
     public BigDecimal calculate(final Case source, final WharfDueTariff tariff) {
         final BigDecimal wharfDue = calculateBaseDue(source, tariff);
-        final double discountCoefficient = evaluateDiscountCoefficient(source, tariff);
+        final BigDecimal discountCoefficient = evaluateDiscountCoefficient(source, tariff);
         return calculateDueTotal(wharfDue, discountCoefficient);
     }
 
     @Override
     protected BigDecimal calculateBaseDue(final Case source, final WharfDueTariff tariff) {
 
-        final Map<ShipType, Double> wharfDuesByShipType = tariff.getWharfDuesByShipType();
+        final Map<ShipType, BigDecimal> wharfDuesByShipType = tariff.getWharfDuesByShipType();
 
         final ShipType shipType = source.getShip().getType();
         final double lengthOverall = Math.ceil(source.getShip().getLengthOverall());
-        final double wharfDuePerHour = wharfDuesByShipType.getOrDefault(shipType, tariff.getDefaultWharfDue());
+        final BigDecimal wharfDuePerHour = wharfDuesByShipType.getOrDefault(shipType, tariff.getDefaultWharfDue());
 
-        final double wharfDuePerHourTotal = lengthOverall * wharfDuePerHour;
+        final BigDecimal wharfDuePerHourTotal = BigDecimal.valueOf(lengthOverall).multiply(wharfDuePerHour);
         final int alongsideHoursExpected = source.getAlongsideDaysExpected() * 24;
 
-        return BigDecimal.valueOf(wharfDuePerHourTotal * alongsideHoursExpected);
+        return wharfDuePerHour.multiply(BigDecimal.valueOf(alongsideHoursExpected));
     }
 
     @Override
-    protected double evaluateDiscountCoefficient(final Case source, final WharfDueTariff tariff) {
+    protected BigDecimal evaluateDiscountCoefficient(final Case source, final WharfDueTariff tariff) {
 
         final Set<ShipType> shipTypesNotEligibleForDiscount = tariff.getShipTypesNotEligibleForDiscount();
-        final Map<CallPurpose, Double> discountCoefficientsByCallPurpose = tariff.getDiscountCoefficientsByCallPurpose();
+        final Map<CallPurpose, BigDecimal> discountCoefficientsByCallPurpose = tariff.getDiscountCoefficientsByCallPurpose();
 
-        double discountCoefficient = 0;
+        BigDecimal discountCoefficient = BigDecimal.ZERO;
 
         if (shipTypesNotEligibleForDiscount.contains(source.getShip().getType())) {
-            discountCoefficient = 0;
+            discountCoefficient = BigDecimal.ZERO;
         } else {
             if (discountCoefficientsByCallPurpose.containsKey(source.getCallPurpose())) {
                 discountCoefficient = discountCoefficientsByCallPurpose.get(source.getCallPurpose());

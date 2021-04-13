@@ -21,6 +21,7 @@ import java.nio.file.Paths;
 
 import static flagship.domain.cases.entities.enums.CallPurpose.RECRUITMENT;
 import static flagship.domain.cases.entities.enums.PortArea.FIRST;
+import static flagship.domain.cases.entities.enums.ShipType.MILITARY;
 import static flagship.domain.cases.entities.enums.ShipType.REEFER;
 
 @Component

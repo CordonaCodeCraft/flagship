@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.Map;
 import java.util.Set;
 
@@ -17,13 +18,13 @@ import java.util.Set;
 @NoArgsConstructor
 public class TonnageDueTariff extends Tariff {
 
-    private Map<PortArea, Double> tonnageDuesByPortArea;
-    private Map<ShipType, Double> tonnageDuesByShipType;
-    private Map<CallPurpose, Double> tonnageDuesByCallPurpose;
-    private Map<CallPurpose, Double> discountCoefficientsByCallPurpose;
-    private Map<ShipType, Double> discountCoefficientsByShipType;
+    private Map<PortArea, BigDecimal> tonnageDuesByPortArea;
+    private Map<ShipType, BigDecimal> tonnageDuesByShipType;
+    private Map<CallPurpose, BigDecimal> tonnageDuesByCallPurpose;
+    private Map<CallPurpose, BigDecimal> discountCoefficientsByCallPurpose;
+    private Map<ShipType, BigDecimal> discountCoefficientsByShipType;
     private Set<ShipType> shipTypesNotEligibleForDiscount;
     private Set<CallPurpose> callPurposesNotEligibleForDiscount;
-    int callCountThreshold;
-    double callCountDiscountCoefficient;
+    Integer callCountThreshold;
+    BigDecimal callCountDiscountCoefficient;
 }

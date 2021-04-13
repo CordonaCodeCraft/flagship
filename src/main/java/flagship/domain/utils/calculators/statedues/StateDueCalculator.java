@@ -8,11 +8,11 @@ public abstract class StateDueCalculator<S, P> {
 
     protected abstract BigDecimal calculateBaseDue(S source, P properties);
 
-    protected abstract double evaluateDiscountCoefficient(S source, P properties);
+    protected abstract BigDecimal evaluateDiscountCoefficient(S source, P properties);
 
-    protected BigDecimal calculateDueTotal(BigDecimal baseDue, Double discountCoefficient) {
-        if (discountCoefficient > 0) {
-            BigDecimal discount = BigDecimal.valueOf(baseDue.doubleValue() * discountCoefficient);
+    protected BigDecimal calculateDueTotal(BigDecimal baseDue, BigDecimal discountCoefficient) {
+        if (discountCoefficient.doubleValue() > 0) {
+            BigDecimal discount = baseDue.multiply(discountCoefficient);
             return baseDue.subtract(discount);
         } else {
             return baseDue;

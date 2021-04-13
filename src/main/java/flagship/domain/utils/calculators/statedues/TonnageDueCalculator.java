@@ -17,7 +17,7 @@ public class TonnageDueCalculator extends StateDueCalculator<Case, TonnageDueTar
     @Override
     public BigDecimal calculate(Case source, TonnageDueTariff tariff) {
         final BigDecimal baseDue = calculateBaseDue(source, tariff);
-        final double discountCoefficient = evaluateDiscountCoefficient(source, tariff);
+        final BigDecimal discountCoefficient = evaluateDiscountCoefficient(source, tariff);
         return calculateDueTotal(baseDue, discountCoefficient);
     }
 
@@ -53,29 +53,29 @@ public class TonnageDueCalculator extends StateDueCalculator<Case, TonnageDueTar
     private BigDecimal calculateBaseDueByShipType(final Case source, final TonnageDueTariff tariff) {
         final ShipType shipType = source.getShip().getType();
         final int grossTonnage = source.getShip().getGrossTonnage();
-        final double euroPerTon = tariff.getTonnageDuesByShipType().get(shipType);
-        return BigDecimal.valueOf(grossTonnage * euroPerTon);
+        final BigDecimal euroPerTon = tariff.getTonnageDuesByShipType().get(shipType);
+        return BigDecimal.valueOf(grossTonnage).multiply(euroPerTon);
     }
 
     private BigDecimal calculateBaseDueByCallPurpose(final Case source, final TonnageDueTariff tariff) {
         final CallPurpose callPurpose = source.getCallPurpose();
         final int grossTonnage = source.getShip().getGrossTonnage();
-        final double euroPerTon = tariff.getTonnageDuesByCallPurpose().get(callPurpose);
-        return BigDecimal.valueOf(grossTonnage * euroPerTon);
+        final BigDecimal euroPerTon = tariff.getTonnageDuesByCallPurpose().get(callPurpose);
+        return BigDecimal.valueOf(grossTonnage).multiply(euroPerTon);
     }
 
     private BigDecimal calculateBaseDueByPortArea(final Case source, final TonnageDueTariff tariff) {
         final PortArea portArea = source.getPort().getArea();
         final int grossTonnage = source.getShip().getGrossTonnage();
-        final double euroPerTon = tariff.getTonnageDuesByPortArea().get(portArea);
-        return BigDecimal.valueOf(grossTonnage * euroPerTon);
+        final BigDecimal euroPerTon = tariff.getTonnageDuesByPortArea().get(portArea);
+        return BigDecimal.valueOf(grossTonnage).multiply(euroPerTon);
     }
 
     @Override
-    protected double evaluateDiscountCoefficient(final Case source, final TonnageDueTariff tariff) {
+    protected BigDecimal evaluateDiscountCoefficient(final Case source, final TonnageDueTariff tariff) {
 
-        final Map<ShipType, Double> discountCoefficientsByShipType = tariff.getDiscountCoefficientsByShipType();
-        final Map<CallPurpose, Double> discountCoefficientsByCallPurpose = tariff.getDiscountCoefficientsByCallPurpose();
+        final Map<ShipType, BigDecimal> discountCoefficientsByShipType = tariff.getDiscountCoefficientsByShipType();
+        final Map<CallPurpose, BigDecimal> discountCoefficientsByCallPurpose = tariff.getDiscountCoefficientsByCallPurpose();
         final Set<ShipType> shipTypesNotEligibleForDiscount = tariff.getShipTypesNotEligibleForDiscount();
         final Set<CallPurpose> callPurposesNotEligibleForDiscount = tariff.getCallPurposesNotEligibleForDiscount();
 
@@ -86,22 +86,22 @@ public class TonnageDueCalculator extends StateDueCalculator<Case, TonnageDueTar
         final boolean isNotEligibleForDiscount = shipTypesNotEligibleForDiscount.contains(shipType)
                 || callPurposesNotEligibleForDiscount.contains(callPurpose);
 
-        double discountCoefficient = 0;
+        BigDecimal discountCoefficient = BigDecimal.ZERO;
 
         if (isNotEligibleForDiscount) {
-            discountCoefficient = 0;
+            discountCoefficient = BigDecimal.ZERO;
         } else {
 
             if (callCount >= tariff.getCallCountThreshold()) {
-                discountCoefficient = Math.max(discountCoefficient, tariff.getCallCountDiscountCoefficient());
+                discountCoefficient = discountCoefficient.max(tariff.getCallCountDiscountCoefficient());
             }
 
             if (discountCoefficientsByCallPurpose.containsKey(callPurpose)) {
-                discountCoefficient = Math.max(discountCoefficient, discountCoefficientsByCallPurpose.get(callPurpose));
+                discountCoefficient = discountCoefficient.max(discountCoefficientsByCallPurpose.get(callPurpose));
             }
 
             if (discountCoefficientsByShipType.containsKey(shipType)) {
-                discountCoefficient = Math.max(discountCoefficient, discountCoefficientsByShipType.get(shipType));
+                discountCoefficient = discountCoefficient.max(discountCoefficientsByShipType.get(shipType));
             }
         }
 

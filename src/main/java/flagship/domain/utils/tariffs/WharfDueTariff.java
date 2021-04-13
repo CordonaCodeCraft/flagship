@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.Map;
 import java.util.Set;
 
@@ -16,8 +17,8 @@ import java.util.Set;
 @NoArgsConstructor
 public class WharfDueTariff extends Tariff {
 
-  private Map<ShipType, Double> WharfDuesByShipType;
-  private Map<CallPurpose, Double> discountCoefficientsByCallPurpose;
+  private Map<ShipType, BigDecimal> WharfDuesByShipType;
+  private Map<CallPurpose, BigDecimal> discountCoefficientsByCallPurpose;
   private Set<ShipType> shipTypesNotEligibleForDiscount;
-  private Double defaultWharfDue;
+  private BigDecimal defaultWharfDue;
 }

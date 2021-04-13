@@ -9,9 +9,9 @@ import java.util.Map;
 
 public class LightDueCalculator extends StateDueCalculator<Case, LightDueTariff> {
     @Override
-    public BigDecimal calculate(Case source, LightDueTariff tariff) {
-        BigDecimal baseDue = calculateBaseDue(source, tariff);
-        double discountCoefficient = evaluateDiscountCoefficient(source, tariff);
+    public BigDecimal calculate(final Case source, final LightDueTariff tariff) {
+        final BigDecimal baseDue = calculateBaseDue(source, tariff);
+        final BigDecimal discountCoefficient = evaluateDiscountCoefficient(source, tariff);
         return calculateDueTotal(baseDue, discountCoefficient);
     }
 
@@ -26,15 +26,15 @@ public class LightDueCalculator extends StateDueCalculator<Case, LightDueTariff>
         BigDecimal lightDue;
 
         if (tariff.getLightDuesPerTonByShipType().containsKey(shipType)) {
-            lightDue = BigDecimal.valueOf(grossTonnage * tariff.getLightDuesPerTonByShipType().get(shipType));
+            lightDue = BigDecimal.valueOf(grossTonnage).multiply(tariff.getLightDuesPerTonByShipType().get(shipType));
         } else {
-            lightDue = BigDecimal.valueOf(tariff.getLightDuesByGrossTonnage()
+            lightDue = tariff.getLightDuesByGrossTonnage()
                     .entrySet()
                     .stream()
                     .filter(entry -> grossTonnage >= entry.getKey().getValue0() && grossTonnage <= entry.getKey().getValue1())
-                    .mapToDouble(Map.Entry::getValue)
                     .findFirst()
-                    .orElse(tariff.getLightDueMaximumValue()));
+                    .map(Map.Entry::getValue)
+                    .orElse(tariff.getLightDueMaximumValue());
         }
 
         return lightDue.doubleValue() <= 150.0 ? lightDue : BigDecimal.valueOf(150);
@@ -42,19 +42,19 @@ public class LightDueCalculator extends StateDueCalculator<Case, LightDueTariff>
     }
 
     @Override
-    protected double evaluateDiscountCoefficient(final Case source, final LightDueTariff tariff) {
+    protected BigDecimal evaluateDiscountCoefficient(final Case source, final LightDueTariff tariff) {
 
         final int callCount = source.getCallCount();
         final ShipType shipType = source.getShip().getType();
 
-        double discountCoefficient = 0;
+        BigDecimal discountCoefficient = BigDecimal.ZERO;
 
         if (callCount >= tariff.getCallCountThreshold()) {
-            discountCoefficient = Math.max(discountCoefficient, tariff.getCallCountDiscountCoefficient());
+            discountCoefficient = discountCoefficient.max(tariff.getCallCountDiscountCoefficient());
         }
 
         if (tariff.getDiscountCoefficientsByShipType().containsKey(shipType)) {
-            discountCoefficient = Math.max(discountCoefficient, tariff.getDiscountCoefficientsByShipType().get(shipType));
+            discountCoefficient = discountCoefficient.max(tariff.getDiscountCoefficientsByShipType().get(shipType));
         }
 
         return discountCoefficient;

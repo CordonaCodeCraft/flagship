@@ -14,7 +14,7 @@ public class CanalDueCalculator extends StateDueCalculator<Case, CanalDueTariff>
     @Override
     public BigDecimal calculate(final Case source, final CanalDueTariff tariff) {
         final BigDecimal baseDue = calculateBaseDue(source, tariff);
-        final double discountCoefficient = evaluateDiscountCoefficient(source, tariff);
+        final BigDecimal discountCoefficient = evaluateDiscountCoefficient(source, tariff);
         return calculateDueTotal(baseDue, discountCoefficient);
     }
 
@@ -22,32 +22,30 @@ public class CanalDueCalculator extends StateDueCalculator<Case, CanalDueTariff>
     protected BigDecimal calculateBaseDue(final Case source, final CanalDueTariff tariff) {
         final PortArea portArea = source.getPort().getArea();
         final int grossTonnage = source.getShip().getGrossTonnage();
-        final double euroPerTon = tariff.getCanalDuesByPortArea().get(portArea);
-        return BigDecimal.valueOf(grossTonnage * euroPerTon);
+        final BigDecimal euroPerTon = tariff.getCanalDuesByPortArea().get(portArea);
+        return BigDecimal.valueOf(grossTonnage).multiply(euroPerTon);
     }
 
     @Override
-    protected double evaluateDiscountCoefficient(final Case source, final CanalDueTariff tariff) {
+    protected BigDecimal evaluateDiscountCoefficient(final Case source, final CanalDueTariff tariff) {
 
         final PortArea portArea = source.getPort().getArea();
         final ShipType shipType = source.getShip().getType();
 
         final boolean satisfiesCallCountThreshold = source.getCallCount() >= tariff.getCallCountThreshold();
 
-        double discountCoefficient = 0;
+        BigDecimal discountCoefficient = BigDecimal.ZERO;
 
-        if (tariff.getShipTypesNotEligibleForDiscount().contains(shipType)) {
-            discountCoefficient = 0;
-        } else {
+        if (!tariff.getShipTypesNotEligibleForDiscount().contains(shipType)) {
             if (shipType == CONTAINER) {
-                discountCoefficient = Math.max(discountCoefficient, tariff.getDiscountCoefficientsByPortAreaForContainers().get(portArea));
+                discountCoefficient = discountCoefficient.max(tariff.getDiscountCoefficientsByPortAreaForContainers().get(portArea));
                 if (satisfiesCallCountThreshold) {
-                    discountCoefficient = Math.max(discountCoefficient, tariff.getDiscountCoefficientsByPortAreaPerCallCountForContainers().get(portArea));
+                    discountCoefficient = discountCoefficient.max(tariff.getDiscountCoefficientsByPortAreaPerCallCountForContainers().get(portArea));
                 }
             } else {
-                discountCoefficient = Math.max(discountCoefficient, tariff.getDiscountCoefficientByShipType().get(shipType));
+                discountCoefficient = discountCoefficient.max(tariff.getDiscountCoefficientByShipType().get(shipType));
                 if (satisfiesCallCountThreshold) {
-                    discountCoefficient = Math.max(discountCoefficient, tariff.getDefaultCallCountDiscountCoefficient());
+                    discountCoefficient = discountCoefficient.max(tariff.getDefaultCallCountDiscountCoefficient());
                 }
             }
         }
