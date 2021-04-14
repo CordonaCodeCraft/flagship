@@ -2,7 +2,6 @@ package flagship.domain.utils.calculators.statedues;
 
 import flagship.domain.cases.entities.Case;
 import flagship.domain.cases.entities.enums.CallPurpose;
-import flagship.domain.cases.entities.enums.PortArea;
 import flagship.domain.cases.entities.enums.ShipType;
 import flagship.domain.utils.tariffs.TonnageDueTariff;
 import lombok.NoArgsConstructor;
@@ -16,59 +15,16 @@ public class TonnageDueCalculator extends StateDueCalculator<Case, TonnageDueTar
 
     @Override
     public BigDecimal calculate(Case source, TonnageDueTariff tariff) {
-        final BigDecimal baseDue = calculateBaseDue(source, tariff);
+        final BigDecimal dueTotal = calculateDueTotal(source, tariff);
         final BigDecimal discountCoefficient = evaluateDiscountCoefficient(source, tariff);
-        return calculateDueTotal(baseDue, discountCoefficient);
+        return calculateDueFinal(dueTotal, discountCoefficient);
     }
 
     @Override
-    protected BigDecimal calculateBaseDue(final Case source, final TonnageDueTariff tariff) {
-
-        final boolean dueIsDependentOnShipType = evaluateDueDependencyOnShipType(source, tariff);
-        final boolean dueIsDependantOnCallPurpose = evaluateDueDependencyOnCallPurpose(source, tariff);
-
-        BigDecimal baseDue;
-
-        // todo: consider refactoring to lambda or stream
-
-        if (dueIsDependentOnShipType) {
-            baseDue = calculateBaseDueByShipType(source, tariff);
-        } else if (dueIsDependantOnCallPurpose) {
-            baseDue = calculateBaseDueByCallPurpose(source, tariff);
-        } else {
-            baseDue = calculateBaseDueByPortArea(source, tariff);
-        }
-
-        return baseDue;
-    }
-
-    private boolean evaluateDueDependencyOnShipType(final Case source, final TonnageDueTariff tariff) {
-        return tariff.getTonnageDuesByShipType().containsKey(source.getShip().getType());
-    }
-
-    private boolean evaluateDueDependencyOnCallPurpose(final Case source, final TonnageDueTariff tariff) {
-        return tariff.getTonnageDuesByCallPurpose().containsKey(source.getCallPurpose());
-    }
-
-    private BigDecimal calculateBaseDueByShipType(final Case source, final TonnageDueTariff tariff) {
-        final ShipType shipType = source.getShip().getType();
-        final int grossTonnage = source.getShip().getGrossTonnage();
-        final BigDecimal euroPerTon = tariff.getTonnageDuesByShipType().get(shipType);
-        return BigDecimal.valueOf(grossTonnage).multiply(euroPerTon);
-    }
-
-    private BigDecimal calculateBaseDueByCallPurpose(final Case source, final TonnageDueTariff tariff) {
-        final CallPurpose callPurpose = source.getCallPurpose();
-        final int grossTonnage = source.getShip().getGrossTonnage();
-        final BigDecimal euroPerTon = tariff.getTonnageDuesByCallPurpose().get(callPurpose);
-        return BigDecimal.valueOf(grossTonnage).multiply(euroPerTon);
-    }
-
-    private BigDecimal calculateBaseDueByPortArea(final Case source, final TonnageDueTariff tariff) {
-        final PortArea portArea = source.getPort().getArea();
-        final int grossTonnage = source.getShip().getGrossTonnage();
-        final BigDecimal euroPerTon = tariff.getTonnageDuesByPortArea().get(portArea);
-        return BigDecimal.valueOf(grossTonnage).multiply(euroPerTon);
+    protected BigDecimal calculateDueTotal(final Case source, final TonnageDueTariff tariff) {
+        final BigDecimal grossTonnage = BigDecimal.valueOf(source.getShip().getGrossTonnage());
+        final BigDecimal tonnageDuePerTon = evaluateTonnageDuePerTon(source, tariff);
+        return grossTonnage.multiply(tonnageDuePerTon);
     }
 
     @Override
@@ -107,4 +63,30 @@ public class TonnageDueCalculator extends StateDueCalculator<Case, TonnageDueTar
 
         return discountCoefficient;
     }
+
+
+    private BigDecimal evaluateTonnageDuePerTon(Case source, TonnageDueTariff tariff) {
+
+        final boolean dueIsDependentOnShipType = evaluateDueDependencyOnShipType(source, tariff);
+        final boolean dueIsDependantOnCallPurpose = evaluateDueDependencyOnCallPurpose(source, tariff);
+
+        if (dueIsDependantOnCallPurpose) {
+            return tariff.getTonnageDuesByCallPurpose().get(source.getCallPurpose());
+        } else if (dueIsDependentOnShipType) {
+            return tariff.getTonnageDuesByShipType().get(source.getShip().getType());
+        } else {
+            return tariff.getTonnageDuesByPortArea().get(source.getPort().getArea());
+        }
+
+    }
+
+    private boolean evaluateDueDependencyOnShipType(final Case source, final TonnageDueTariff tariff) {
+        return tariff.getTonnageDuesByShipType().containsKey(source.getShip().getType());
+    }
+
+    private boolean evaluateDueDependencyOnCallPurpose(final Case source, final TonnageDueTariff tariff) {
+        return tariff.getTonnageDuesByCallPurpose().containsKey(source.getCallPurpose());
+    }
+
+
 }

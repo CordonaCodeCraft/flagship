@@ -13,13 +13,13 @@ public class CanalDueCalculator extends StateDueCalculator<Case, CanalDueTariff>
 
     @Override
     public BigDecimal calculate(final Case source, final CanalDueTariff tariff) {
-        final BigDecimal baseDue = calculateBaseDue(source, tariff);
+        final BigDecimal baseDue = calculateDueTotal(source, tariff);
         final BigDecimal discountCoefficient = evaluateDiscountCoefficient(source, tariff);
-        return calculateDueTotal(baseDue, discountCoefficient);
+        return calculateDueFinal(baseDue, discountCoefficient);
     }
 
     @Override
-    protected BigDecimal calculateBaseDue(final Case source, final CanalDueTariff tariff) {
+    protected BigDecimal calculateDueTotal(final Case source, final CanalDueTariff tariff) {
         final PortArea portArea = source.getPort().getArea();
         final int grossTonnage = source.getShip().getGrossTonnage();
         final BigDecimal euroPerTon = tariff.getCanalDuesByPortArea().get(portArea);

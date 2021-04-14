@@ -9,7 +9,7 @@
     "RECREATIONAL" : 0.1,
     "OIL_TANKER" : 0.5,
     "MILITARY" : 0.25,
-    "SPECIAL" : 0.5
+    "SPECIAL" : 0.25
   },
   "tonnageDuesByCallPurpose" : {
     "SPECIAL_PURPOSE_PORT_VISIT" : 0.05

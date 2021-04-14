@@ -13,13 +13,13 @@ public class WharfDueCalculator extends StateDueCalculator<Case, WharfDueTariff>
 
     @Override
     public BigDecimal calculate(final Case source, final WharfDueTariff tariff) {
-        final BigDecimal wharfDue = calculateBaseDue(source, tariff);
+        final BigDecimal wharfDue = calculateDueTotal(source, tariff);
         final BigDecimal discountCoefficient = evaluateDiscountCoefficient(source, tariff);
-        return calculateDueTotal(wharfDue, discountCoefficient);
+        return calculateDueFinal(wharfDue, discountCoefficient);
     }
 
     @Override
-    protected BigDecimal calculateBaseDue(final Case source, final WharfDueTariff tariff) {
+    protected BigDecimal calculateDueTotal(final Case source, final WharfDueTariff tariff) {
 
         final Map<ShipType, BigDecimal> wharfDuesByShipType = tariff.getWharfDuesByShipType();
 
