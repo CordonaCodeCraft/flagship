@@ -15,7 +15,7 @@ public class CanalDueCalculator extends StateDueCalculator<Case, CanalDueTariff>
     public BigDecimal calculate(final Case source, final CanalDueTariff tariff) {
         final BigDecimal baseDue = calculateDueTotal(source, tariff);
         final BigDecimal discountCoefficient = evaluateDiscountCoefficient(source, tariff);
-        return calculateDueFinal(baseDue, discountCoefficient);
+        return calculateDueAfterDiscount(baseDue, discountCoefficient);
     }
 
     @Override

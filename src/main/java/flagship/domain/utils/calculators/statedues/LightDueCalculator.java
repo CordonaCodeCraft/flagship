@@ -12,7 +12,7 @@ public class LightDueCalculator extends StateDueCalculator<Case, LightDueTariff>
     public BigDecimal calculate(final Case source, final LightDueTariff tariff) {
         final BigDecimal baseDue = calculateDueTotal(source, tariff);
         final BigDecimal discountCoefficient = evaluateDiscountCoefficient(source, tariff);
-        return calculateDueFinal(baseDue, discountCoefficient);
+        return calculateDueAfterDiscount(baseDue, discountCoefficient);
     }
 
     // todo: Validate that gross tonnage is no less than 41, otherwise fixed due per year should be

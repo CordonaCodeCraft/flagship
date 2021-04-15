@@ -12,7 +12,7 @@ public abstract class StateDueCalculator<S, P> {
 
     protected abstract BigDecimal evaluateDiscountCoefficient(S source, P properties);
 
-    protected BigDecimal calculateDueFinal(BigDecimal baseDue, BigDecimal discountCoefficient) {
+    protected BigDecimal calculateDueAfterDiscount(BigDecimal baseDue, BigDecimal discountCoefficient) {
         if (discountCoefficient.doubleValue() > 0) {
             BigDecimal discount = baseDue.multiply(discountCoefficient);
             return baseDue.subtract(discount);

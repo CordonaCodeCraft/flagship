@@ -17,7 +17,7 @@ public class TonnageDueCalculator extends StateDueCalculator<Case, TonnageDueTar
     public BigDecimal calculate(Case source, TonnageDueTariff tariff) {
         final BigDecimal dueTotal = calculateDueTotal(source, tariff);
         final BigDecimal discountCoefficient = evaluateDiscountCoefficient(source, tariff);
-        return calculateDueFinal(dueTotal, discountCoefficient);
+        return calculateDueAfterDiscount(dueTotal, discountCoefficient);
     }
 
     @Override
@@ -44,9 +44,7 @@ public class TonnageDueCalculator extends StateDueCalculator<Case, TonnageDueTar
 
         BigDecimal discountCoefficient = BigDecimal.ZERO;
 
-        if (isNotEligibleForDiscount) {
-            discountCoefficient = BigDecimal.ZERO;
-        } else {
+        if (!isNotEligibleForDiscount) {
 
             if (callCount >= tariff.getCallCountThreshold()) {
                 discountCoefficient = discountCoefficient.max(tariff.getCallCountDiscountCoefficient());

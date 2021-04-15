@@ -21,7 +21,6 @@ import java.nio.file.Paths;
 
 import static flagship.domain.cases.entities.enums.CallPurpose.RECRUITMENT;
 import static flagship.domain.cases.entities.enums.PortArea.FIRST;
-import static flagship.domain.cases.entities.enums.ShipType.MILITARY;
 import static flagship.domain.cases.entities.enums.ShipType.REEFER;
 
 @Component
@@ -40,7 +39,7 @@ public class DataLoader implements ApplicationRunner {
 
         TariffInitializer.initializeTariffs(tonnageDueTariff, wharfDueTariff, canalDueTariff, lightDueTariff);
 
-        produceTonnageDueJsonFile();
+        produceTonnageDueJson();
 
         File file = new File("src/main/resources/tonnageDueTariff.json");
         TonnageDueTariff tonnageDueTariff2 = objectMapper.readValue(file, TonnageDueTariff.class);
@@ -69,7 +68,7 @@ public class DataLoader implements ApplicationRunner {
         tonnageDueCalculator.calculate(activeCase, tonnageDueTariff);
     }
 
-    private void produceTonnageDueJsonFile() throws IOException {
+    private void produceTonnageDueJson() throws IOException {
 
         objectMapper
                 .writerWithDefaultPrettyPrinter()

@@ -15,7 +15,7 @@ public class WharfDueCalculator extends StateDueCalculator<Case, WharfDueTariff>
     public BigDecimal calculate(final Case source, final WharfDueTariff tariff) {
         final BigDecimal wharfDue = calculateDueTotal(source, tariff);
         final BigDecimal discountCoefficient = evaluateDiscountCoefficient(source, tariff);
-        return calculateDueFinal(wharfDue, discountCoefficient);
+        return calculateDueAfterDiscount(wharfDue, discountCoefficient);
     }
 
     @Override
