@@ -12,14 +12,7 @@ import static flagship.domain.cases.entities.enums.ShipType.CONTAINER;
 public class CanalDueCalculator extends StateDueCalculator<Case, CanalDueTariff> {
 
     @Override
-    public BigDecimal calculate(final Case source, final CanalDueTariff tariff) {
-        final BigDecimal baseDue = calculateDueTotal(source, tariff);
-        final BigDecimal discountCoefficient = evaluateDiscountCoefficient(source, tariff);
-        return calculateDueAfterDiscount(baseDue, discountCoefficient);
-    }
-
-    @Override
-    protected BigDecimal calculateDueTotal(final Case source, final CanalDueTariff tariff) {
+    protected BigDecimal calculateDue(final Case source, final CanalDueTariff tariff) {
         final PortArea portArea = source.getPort().getArea();
         final int grossTonnage = source.getShip().getGrossTonnage();
         final BigDecimal euroPerTon = tariff.getCanalDuesByPortArea().get(portArea);

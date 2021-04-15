@@ -1,23 +1,27 @@
 package flagship.domain.utils.calculators.statedues;
 
-import flagship.domain.cases.entities.Case;
+import flagship.domain.utils.calculators.DueCalculator;
 
 import java.math.BigDecimal;
 
-public abstract class StateDueCalculator<S, P> {
+public abstract class StateDueCalculator<S, P> implements DueCalculator<S, P> {
 
-    public abstract BigDecimal calculate(S source, P properties);
+    public BigDecimal calculate(S source, P properties) {
+        BigDecimal due = calculateDue(source, properties);
+        BigDecimal discountCoefficient = evaluateDiscountCoefficient(source, properties);
+        return calculateDueAfterDiscount(due, discountCoefficient);
+    }
 
-    protected abstract BigDecimal calculateDueTotal(S source, P properties);
+    protected abstract BigDecimal calculateDue(S source, P properties);
 
     protected abstract BigDecimal evaluateDiscountCoefficient(S source, P properties);
 
-    protected BigDecimal calculateDueAfterDiscount(BigDecimal baseDue, BigDecimal discountCoefficient) {
+    protected BigDecimal calculateDueAfterDiscount(BigDecimal due, BigDecimal discountCoefficient) {
         if (discountCoefficient.doubleValue() > 0) {
-            BigDecimal discount = baseDue.multiply(discountCoefficient);
-            return baseDue.subtract(discount);
+            BigDecimal discount = due.multiply(discountCoefficient);
+            return due.subtract(discount);
         } else {
-            return baseDue;
+            return due;
         }
     }
 }

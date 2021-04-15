@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Paths;
 
 import static flagship.domain.cases.entities.enums.CallPurpose.RECRUITMENT;
@@ -38,7 +39,6 @@ public class DataLoader implements ApplicationRunner {
     public void run(ApplicationArguments args) throws Exception {
 
         TariffInitializer.initializeTariffs(tonnageDueTariff, wharfDueTariff, canalDueTariff, lightDueTariff);
-        System.out.println();
 
         produceTonnageDueJson();
 
@@ -63,7 +63,8 @@ public class DataLoader implements ApplicationRunner {
                 .build();
 
         TonnageDueCalculator tonnageDueCalculator = new TonnageDueCalculator();
-        tonnageDueCalculator.calculate(activeCase, tonnageDueTariff);
+        BigDecimal calculate = tonnageDueCalculator.calculate(activeCase, tonnageDueTariff);
+        System.out.println(calculate);
     }
 
     private void produceTonnageDueJson() throws IOException {

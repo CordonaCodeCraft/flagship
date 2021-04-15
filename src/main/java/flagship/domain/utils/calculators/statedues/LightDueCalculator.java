@@ -8,17 +8,10 @@ import java.math.BigDecimal;
 import java.util.Map;
 
 public class LightDueCalculator extends StateDueCalculator<Case, LightDueTariff> {
-    @Override
-    public BigDecimal calculate(final Case source, final LightDueTariff tariff) {
-        final BigDecimal baseDue = calculateDueTotal(source, tariff);
-        final BigDecimal discountCoefficient = evaluateDiscountCoefficient(source, tariff);
-        return calculateDueAfterDiscount(baseDue, discountCoefficient);
-    }
 
-    // todo: Validate that gross tonnage is no less than 41, otherwise fixed due per year should be
-    // applied.
+    // todo: Validate that gross tonnage is no less than 41, otherwise fixed due per year should be applied.
     @Override
-    protected BigDecimal calculateDueTotal(final Case source, final LightDueTariff tariff) {
+    protected BigDecimal calculateDue(final Case source, final LightDueTariff tariff) {
 
         final ShipType shipType = source.getShip().getType();
         final int grossTonnage = source.getShip().getGrossTonnage();

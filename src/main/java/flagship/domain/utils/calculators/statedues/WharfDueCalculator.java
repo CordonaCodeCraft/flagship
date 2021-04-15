@@ -12,14 +12,7 @@ import java.util.Set;
 public class WharfDueCalculator extends StateDueCalculator<Case, WharfDueTariff> {
 
     @Override
-    public BigDecimal calculate(final Case source, final WharfDueTariff tariff) {
-        final BigDecimal wharfDue = calculateDueTotal(source, tariff);
-        final BigDecimal discountCoefficient = evaluateDiscountCoefficient(source, tariff);
-        return calculateDueAfterDiscount(wharfDue, discountCoefficient);
-    }
-
-    @Override
-    protected BigDecimal calculateDueTotal(final Case source, final WharfDueTariff tariff) {
+    protected BigDecimal calculateDue(final Case source, final WharfDueTariff tariff) {
 
         final Map<ShipType, BigDecimal> wharfDuesByShipType = tariff.getWharfDuesByShipType();
 
@@ -41,10 +34,11 @@ public class WharfDueCalculator extends StateDueCalculator<Case, WharfDueTariff>
 
         BigDecimal discountCoefficient = BigDecimal.ZERO;
 
-        if (!shipTypesNotEligibleForDiscount.contains(source.getShip().getType())) {
-            if (discountCoefficientsByCallPurpose.containsKey(source.getCallPurpose())) {
-                discountCoefficient = discountCoefficientsByCallPurpose.get(source.getCallPurpose());
-            }
+        boolean shipTypeIsEligibleForDiscount = !shipTypesNotEligibleForDiscount.contains(source.getShip().getType());
+        boolean callPurposeIsEligibleForDiscount = discountCoefficientsByCallPurpose.containsKey(source.getCallPurpose());
+
+        if (shipTypeIsEligibleForDiscount && callPurposeIsEligibleForDiscount) {
+            discountCoefficient = discountCoefficientsByCallPurpose.get(source.getCallPurpose());
         }
         return discountCoefficient;
     }

@@ -14,14 +14,7 @@ import java.util.Set;
 public class TonnageDueCalculator extends StateDueCalculator<Case, TonnageDueTariff> {
 
     @Override
-    public BigDecimal calculate(Case source, TonnageDueTariff tariff) {
-        final BigDecimal dueTotal = calculateDueTotal(source, tariff);
-        final BigDecimal discountCoefficient = evaluateDiscountCoefficient(source, tariff);
-        return calculateDueAfterDiscount(dueTotal, discountCoefficient);
-    }
-
-    @Override
-    protected BigDecimal calculateDueTotal(final Case source, final TonnageDueTariff tariff) {
+    protected BigDecimal calculateDue(final Case source, final TonnageDueTariff tariff) {
         final BigDecimal grossTonnage = BigDecimal.valueOf(source.getShip().getGrossTonnage());
         final BigDecimal tonnageDuePerTon = evaluateTonnageDuePerTon(source, tariff);
         return grossTonnage.multiply(tonnageDuePerTon);
@@ -85,6 +78,5 @@ public class TonnageDueCalculator extends StateDueCalculator<Case, TonnageDueTar
     private boolean evaluateDueDependencyOnCallPurpose(final Case source, final TonnageDueTariff tariff) {
         return tariff.getTonnageDuesByCallPurpose().containsKey(source.getCallPurpose());
     }
-
 
 }
