@@ -24,13 +24,13 @@ public class WharfDueCalculator extends StateDueCalculator<Case, WharfDueTariff>
         final Map<ShipType, BigDecimal> wharfDuesByShipType = tariff.getWharfDuesByShipType();
 
         final ShipType shipType = source.getShip().getType();
-        final double lengthOverall = Math.ceil(source.getShip().getLengthOverall());
-        final BigDecimal wharfDuePerHour = wharfDuesByShipType.getOrDefault(shipType, tariff.getDefaultWharfDue());
+        final BigDecimal lengthOverall = BigDecimal.valueOf(Math.ceil(source.getShip().getLengthOverall()));
+        final BigDecimal wharfDuePerMeter = wharfDuesByShipType.getOrDefault(shipType, tariff.getDefaultWharfDue());
 
-        final BigDecimal wharfDuePerHourTotal = BigDecimal.valueOf(lengthOverall).multiply(wharfDuePerHour);
-        final int alongsideHoursExpected = source.getAlongsideDaysExpected() * 24;
+        final BigDecimal wharfDuePerLengthOverall = lengthOverall.multiply(wharfDuePerMeter);
+        final BigDecimal alongsideHoursExpected = BigDecimal.valueOf(source.getAlongsideDaysExpected() * 24);
 
-        return wharfDuePerHour.multiply(BigDecimal.valueOf(alongsideHoursExpected));
+        return alongsideHoursExpected.multiply(wharfDuePerLengthOverall);
     }
 
     @Override
@@ -41,14 +41,11 @@ public class WharfDueCalculator extends StateDueCalculator<Case, WharfDueTariff>
 
         BigDecimal discountCoefficient = BigDecimal.ZERO;
 
-        if (shipTypesNotEligibleForDiscount.contains(source.getShip().getType())) {
-            discountCoefficient = BigDecimal.ZERO;
-        } else {
+        if (!shipTypesNotEligibleForDiscount.contains(source.getShip().getType())) {
             if (discountCoefficientsByCallPurpose.containsKey(source.getCallPurpose())) {
                 discountCoefficient = discountCoefficientsByCallPurpose.get(source.getCallPurpose());
             }
         }
-
         return discountCoefficient;
     }
 }

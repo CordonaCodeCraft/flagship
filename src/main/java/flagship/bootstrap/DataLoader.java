@@ -38,11 +38,9 @@ public class DataLoader implements ApplicationRunner {
     public void run(ApplicationArguments args) throws Exception {
 
         TariffInitializer.initializeTariffs(tonnageDueTariff, wharfDueTariff, canalDueTariff, lightDueTariff);
+        System.out.println();
 
         produceTonnageDueJson();
-
-        File file = new File("src/main/resources/tonnageDueTariff.json");
-        TonnageDueTariff tonnageDueTariff2 = objectMapper.readValue(file, TonnageDueTariff.class);
 
         Ship ship = Ship
                 .builder()
