@@ -45,30 +45,33 @@ class WharfDueCalculatorTest implements DueCalculatorTest {
         alongSideHours = BigDecimal.valueOf(testCase.getAlongsideDaysExpected() * 24);
     }
 
-    @DisplayName("Final wharf due calculation")
-    @Test
-    void testWharfDueCalculation() {
-
-        BigDecimal wharfDue = wharfDueCalculator.calculateDueTotal(testCase, tariff);
-        BigDecimal discountCoefficient = wharfDueCalculator.evaluateDiscountCoefficient(testCase, tariff);
-
-        BigDecimal expected = wharfDue;
-
-        if (discountCoefficient.doubleValue() > 0) {
-            BigDecimal discount = wharfDue.multiply(discountCoefficient);
-            expected = wharfDue.subtract(discount);
-        }
-
-        BigDecimal result = wharfDueCalculator.calculate(testCase, tariff);
-
-        assertThat(expected).isEqualByComparingTo(result);
-    }
-
-    @DisplayName("Total wharf due calculation tests")
+    @DisplayName("Wharf due calculation tests")
     @Nested
     class DueTotalCalculation {
 
-        @DisplayName("Total wharf due by ship type")
+        @DisplayName("Wharf due by default value")
+        @Test
+        void testReturnsDefaultWharfDue() {
+
+            ShipType shipTypeWithDefaultWharfDue = Arrays.stream(ShipType.values())
+                    .filter(type -> {
+                        Set<ShipType> shipTypesAffectingWharfDue = new HashSet<>(tariff.getWharfDuesByShipType().keySet());
+                        return !shipTypesAffectingWharfDue.contains(type);
+                    })
+                    .findAny().get();
+
+            testCase.getShip().setType(shipTypeWithDefaultWharfDue);
+
+            BigDecimal wharfDuePerMeter = tariff.getDefaultWharfDue();
+            BigDecimal wharfDuePerLengthOverall = lengthOverAll.multiply(wharfDuePerMeter);
+
+            BigDecimal expected = alongSideHours.multiply(wharfDuePerLengthOverall);
+            BigDecimal result = wharfDueCalculator.calculateDue(testCase, tariff);
+
+            assertThat(expected).isEqualByComparingTo(result);
+        }
+
+        @DisplayName("Wharf due by ship type")
         @ParameterizedTest(name = "ship type : {arguments}")
         @EnumSource(value = ShipType.class, names = {"MILITARY"})
         void testWharfDueByShipType(ShipType shipType) {
@@ -79,29 +82,7 @@ class WharfDueCalculatorTest implements DueCalculatorTest {
             BigDecimal wharfDuePerMeterTotal = lengthOverAll.multiply(wharfDuePerMeter);
 
             BigDecimal expected = alongSideHours.multiply(wharfDuePerMeterTotal);
-            BigDecimal result = wharfDueCalculator.calculateDueTotal(testCase, tariff);
-
-            assertThat(expected).isEqualByComparingTo(result);
-        }
-
-        @DisplayName("Total wharf due by default value")
-        @Test
-        void testReturnsDefaultWharfDue() {
-
-            ShipType shipTypeUnderDefaultWharfDue = Arrays.stream(ShipType.values())
-                    .filter(type -> {
-                        Set<ShipType> shipTypesAffectingWharfDue = new HashSet<>(tariff.getWharfDuesByShipType().keySet());
-                        return !shipTypesAffectingWharfDue.contains(type);
-                    })
-                    .findAny().get();
-
-            testCase.getShip().setType(shipTypeUnderDefaultWharfDue);
-
-            BigDecimal wharfDuePerMeter = tariff.getDefaultWharfDue();
-            BigDecimal wharfDuePerLengthOverall = lengthOverAll.multiply(wharfDuePerMeter);
-
-            BigDecimal expected = alongSideHours.multiply(wharfDuePerLengthOverall);
-            BigDecimal result = wharfDueCalculator.calculateDueTotal(testCase, tariff);
+            BigDecimal result = wharfDueCalculator.calculateDue(testCase, tariff);
 
             assertThat(expected).isEqualByComparingTo(result);
         }
@@ -124,7 +105,7 @@ class WharfDueCalculatorTest implements DueCalculatorTest {
             assertThat(expected).isEqualByComparingTo(result);
         }
 
-        @DisplayName("Should return zero by ship type not eligible for discount")
+        @DisplayName("Should return zero if ship type not eligible for discount")
         @ParameterizedTest(name = "ship type : {arguments}")
         @EnumSource(value = ShipType.class, names = {"MILITARY"})
         void testDiscountCoefficientShouldReturnZeroByShipType(ShipType shipType) {
