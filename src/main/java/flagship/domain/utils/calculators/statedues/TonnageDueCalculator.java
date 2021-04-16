@@ -32,12 +32,12 @@ public class TonnageDueCalculator extends StateDueCalculator<Case, TonnageDueTar
         final CallPurpose callPurpose = source.getCallPurpose();
         final int callCount = source.getCallCount();
 
-        final boolean isNotEligibleForDiscount = shipTypesNotEligibleForDiscount.contains(shipType)
-                || callPurposesNotEligibleForDiscount.contains(callPurpose);
+        final boolean isEligibleForDiscount = !shipTypesNotEligibleForDiscount.contains(shipType)
+                && !callPurposesNotEligibleForDiscount.contains(callPurpose);
 
         BigDecimal discountCoefficient = BigDecimal.ZERO;
 
-        if (!isNotEligibleForDiscount) {
+        if (isEligibleForDiscount) {
 
             if (callCount >= tariff.getCallCountThreshold()) {
                 discountCoefficient = discountCoefficient.max(tariff.getCallCountDiscountCoefficient());

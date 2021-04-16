@@ -31,7 +31,6 @@ public class LightDueCalculator extends StateDueCalculator<Case, LightDueTariff>
         }
 
         return lightDue.doubleValue() <= 150.0 ? lightDue : BigDecimal.valueOf(150);
-
     }
 
     @Override

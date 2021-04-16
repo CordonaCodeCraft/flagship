@@ -18,7 +18,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static flagship.domain.cases.entities.enums.CallPurpose.LOADING;
+import static flagship.domain.cases.entities.enums.CallPurpose.RESUPPLY;
 import static flagship.domain.cases.entities.enums.ShipType.GENERAL;
+import static flagship.domain.cases.entities.enums.ShipType.MILITARY;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DisplayName("Wharf due calculator tests")
@@ -68,7 +70,7 @@ class WharfDueCalculatorTest implements DueCalculatorTest {
             BigDecimal expected = alongSideHours.multiply(wharfDuePerLengthOverall);
             BigDecimal result = wharfDueCalculator.calculateDue(testCase, tariff);
 
-            assertThat(expected).isEqualByComparingTo(result);
+            assertThat(result).isEqualByComparingTo(expected);
         }
 
         @DisplayName("Wharf due by ship type")
@@ -84,7 +86,7 @@ class WharfDueCalculatorTest implements DueCalculatorTest {
             BigDecimal expected = alongSideHours.multiply(wharfDuePerMeterTotal);
             BigDecimal result = wharfDueCalculator.calculateDue(testCase, tariff);
 
-            assertThat(expected).isEqualByComparingTo(result);
+            assertThat(result).isEqualByComparingTo(expected);
         }
     }
 
@@ -102,7 +104,7 @@ class WharfDueCalculatorTest implements DueCalculatorTest {
             BigDecimal expected = tariff.getDiscountCoefficientsByCallPurpose().get(testCase.getCallPurpose());
             BigDecimal result = wharfDueCalculator.evaluateDiscountCoefficient(testCase, tariff);
 
-            assertThat(expected).isEqualByComparingTo(result);
+            assertThat(result).isEqualByComparingTo(expected);
         }
 
         @DisplayName("Should return zero if ship type not eligible for discount")
@@ -115,7 +117,7 @@ class WharfDueCalculatorTest implements DueCalculatorTest {
             BigDecimal expected = BigDecimal.ZERO;
             BigDecimal result = wharfDueCalculator.evaluateDiscountCoefficient(testCase, tariff);
 
-            assertThat(expected).isEqualByComparingTo(result);
+            assertThat(result).isEqualByComparingTo(expected);
         }
     }
 

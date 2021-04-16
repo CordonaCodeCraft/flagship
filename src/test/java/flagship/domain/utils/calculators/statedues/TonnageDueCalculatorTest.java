@@ -18,8 +18,9 @@ import java.math.BigDecimal;
 import java.util.*;
 
 import static flagship.domain.cases.entities.enums.CallPurpose.LOADING;
+import static flagship.domain.cases.entities.enums.CallPurpose.SPECIAL_PURPOSE_PORT_VISIT;
 import static flagship.domain.cases.entities.enums.PortArea.FIRST;
-import static flagship.domain.cases.entities.enums.ShipType.GENERAL;
+import static flagship.domain.cases.entities.enums.ShipType.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DisplayName("Tonnage due calculator tests")
@@ -80,7 +81,7 @@ class TonnageDueCalculatorTest implements DueCalculatorTest {
             BigDecimal expected = grossTonnage.multiply(duePerTon);
             BigDecimal result = tonnageDueCalculator.calculateDue(testCase, tariff);
 
-            assertThat(expected).isEqualByComparingTo(result);
+            assertThat(result).isEqualByComparingTo(expected);
         }
 
         @DisplayName("Tonnage due by ship type")
@@ -95,7 +96,7 @@ class TonnageDueCalculatorTest implements DueCalculatorTest {
             BigDecimal expected = grossTonnage.multiply(duePerTon);
             BigDecimal result = tonnageDueCalculator.calculateDue(testCase, tariff);
 
-            assertThat(expected).isEqualByComparingTo(result);
+            assertThat(result).isEqualByComparingTo(expected);
         }
 
         @DisplayName("Tonnage due by call purpose")
@@ -110,7 +111,7 @@ class TonnageDueCalculatorTest implements DueCalculatorTest {
             BigDecimal expected = grossTonnage.multiply(duePerTon);
             BigDecimal result = tonnageDueCalculator.calculateDue(testCase, tariff);
 
-            assertThat(expected).isEqualByComparingTo(result);
+            assertThat(result).isEqualByComparingTo(expected);
         }
 
     }
@@ -128,7 +129,7 @@ class TonnageDueCalculatorTest implements DueCalculatorTest {
             BigDecimal expected = tariff.getCallCountDiscountCoefficient();
             BigDecimal result = tonnageDueCalculator.evaluateDiscountCoefficient(testCase, tariff);
 
-            assertThat(expected).isEqualByComparingTo(result);
+            assertThat(result).isEqualByComparingTo(expected);
         }
 
         @DisplayName("Discount coefficient by call purpose")
@@ -141,7 +142,7 @@ class TonnageDueCalculatorTest implements DueCalculatorTest {
             BigDecimal expected = tariff.getDiscountCoefficientsByCallPurpose().get(testCase.getCallPurpose());
             BigDecimal result = tonnageDueCalculator.evaluateDiscountCoefficient(testCase, tariff);
 
-            assertThat(expected).isEqualByComparingTo(result);
+            assertThat(result).isEqualByComparingTo(expected);
         }
 
         @DisplayName("Discount coefficient by ship type")
@@ -154,10 +155,10 @@ class TonnageDueCalculatorTest implements DueCalculatorTest {
             BigDecimal expected = tariff.getDiscountCoefficientsByShipType().get(testCase.getShip().getType());
             BigDecimal result = tonnageDueCalculator.evaluateDiscountCoefficient(testCase, tariff);
 
-            assertThat(expected).isEqualByComparingTo(result);
+            assertThat(result).isEqualByComparingTo(expected);
         }
 
-        @DisplayName("Should return zero if ship type not eligible for discount")
+        @DisplayName("Should return zero if ship type is not eligible for discount")
         @ParameterizedTest(name = "ship type : {arguments}")
         @EnumSource(value = ShipType.class, names = {"RECREATIONAL", "MILITARY", "SPECIAL"})
         void testDiscountCoefficientShouldReturnZeroByShipType(ShipType shipType) {
@@ -167,10 +168,10 @@ class TonnageDueCalculatorTest implements DueCalculatorTest {
             BigDecimal expected = BigDecimal.ZERO;
             BigDecimal result = tonnageDueCalculator.evaluateDiscountCoefficient(testCase, tariff);
 
-            assertThat(expected).isEqualByComparingTo(result);
+            assertThat(result).isEqualByComparingTo(expected);
         }
 
-        @DisplayName("Should return zero if call purpose not eligible for discount")
+        @DisplayName("Should return zero if call purpose is not eligible for discount")
         @ParameterizedTest(name = "call purpose : {arguments}")
         @EnumSource(value = CallPurpose.class, names = {"SPECIAL_PURPOSE_PORT_VISIT"})
         void testDiscountCoefficientShouldReturnZeroByCallPurpose(CallPurpose callPurpose) {
@@ -180,7 +181,7 @@ class TonnageDueCalculatorTest implements DueCalculatorTest {
             BigDecimal expected = BigDecimal.ZERO;
             BigDecimal result = tonnageDueCalculator.evaluateDiscountCoefficient(testCase, tariff);
 
-            assertThat(expected).isEqualByComparingTo(result);
+            assertThat(result).isEqualByComparingTo(expected);
         }
 
         @DisplayName("Should return biggest discount coefficient value")
@@ -204,7 +205,7 @@ class TonnageDueCalculatorTest implements DueCalculatorTest {
             BigDecimal expected = discountCoefficients.stream().max(Comparator.naturalOrder()).get();
             BigDecimal result = tonnageDueCalculator.evaluateDiscountCoefficient(testCase, tariff);
 
-            assertThat(expected).isEqualByComparingTo(result);
+            assertThat(result).isEqualByComparingTo(expected);
         }
     }
 }
