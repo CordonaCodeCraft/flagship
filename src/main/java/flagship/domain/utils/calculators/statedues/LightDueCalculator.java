@@ -24,9 +24,9 @@ public class LightDueCalculator extends StateDueCalculator<Case, LightDueTariff>
             lightDue = tariff.getLightDuesByGrossTonnage()
                     .entrySet()
                     .stream()
-                    .filter(entry -> grossTonnage >= entry.getKey().getValue0() && grossTonnage <= entry.getKey().getValue1())
+                    .filter(entry -> grossTonnage >= entry.getValue()[0] && grossTonnage <= entry.getValue()[1])
                     .findFirst()
-                    .map(Map.Entry::getValue)
+                    .map(Map.Entry::getKey)
                     .orElse(tariff.getLightDueMaximumValue());
         }
 
@@ -41,13 +41,19 @@ public class LightDueCalculator extends StateDueCalculator<Case, LightDueTariff>
 
         BigDecimal discountCoefficient = BigDecimal.ZERO;
 
-        if (callCount >= tariff.getCallCountThreshold()) {
-            discountCoefficient = discountCoefficient.max(tariff.getCallCountDiscountCoefficient());
+        boolean isEligibleForDiscount = !tariff.getShipTypesNotEligibleForDiscount().contains(shipType);
+
+        if (isEligibleForDiscount) {
+            if (callCount >= tariff.getCallCountThreshold()) {
+                discountCoefficient = discountCoefficient.max(tariff.getCallCountDiscountCoefficient());
+            }
+
+            if (tariff.getDiscountCoefficientsByShipType().containsKey(shipType)) {
+                discountCoefficient = discountCoefficient.max(tariff.getDiscountCoefficientsByShipType().get(shipType));
+            }
         }
 
-        if (tariff.getDiscountCoefficientsByShipType().containsKey(shipType)) {
-            discountCoefficient = discountCoefficient.max(tariff.getDiscountCoefficientsByShipType().get(shipType));
-        }
+
 
         return discountCoefficient;
     }
