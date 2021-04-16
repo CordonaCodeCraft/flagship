@@ -21,7 +21,7 @@ import static flagship.domain.cases.entities.enums.ShipType.GENERAL;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class LightDueCalculatorTest implements DueCalculatorTest {
-    private static String TEST = "test";
+
     private static LightDueTariff tariff;
     private final LightDueCalculator lightDueCalculator = new LightDueCalculator();
     private Case testCase;
@@ -55,7 +55,7 @@ public class LightDueCalculatorTest implements DueCalculatorTest {
                                 return !shipTypesAffectingLightDue.contains(type);
                             }
                     )
-                    .findAny().get();
+                    .findAny().orElse(GENERAL);
 
             testCase.getShip().setType(shipType);
 
@@ -145,6 +145,7 @@ public class LightDueCalculatorTest implements DueCalculatorTest {
         void testDiscountCoefficientReturnsZeroByShipType(ShipType shipType) {
 
             testCase.getShip().setType(shipType);
+            testCase.setCallCount(tariff.getCallCountThreshold());
 
             BigDecimal expected = BigDecimal.ZERO;
             BigDecimal result = lightDueCalculator.evaluateDiscountCoefficient(testCase, tariff);

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.Map;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -16,10 +17,11 @@ import java.util.Map;
 @NoArgsConstructor
 public class LightDueTariff extends Tariff {
 
-  private Map<Pair<Integer, Integer>, BigDecimal> lightDuesByGrossTonnage;
-  private Map<ShipType, BigDecimal> lightDuesPerTonByShipType;
-  private Map<ShipType, BigDecimal> discountCoefficientsByShipType;
-  private BigDecimal lightDueMaximumValue;
-  private Integer callCountThreshold;
-  private BigDecimal callCountDiscountCoefficient;
+    private Map<BigDecimal, Integer[]> lightDuesByGrossTonnage;
+    private Map<ShipType, BigDecimal> lightDuesPerTonByShipType;
+    private Map<ShipType, BigDecimal> discountCoefficientsByShipType;
+    private Set<ShipType> shipTypesNotEligibleForDiscount;
+    private BigDecimal lightDueMaximumValue;
+    private Integer callCountThreshold;
+    private BigDecimal callCountDiscountCoefficient;
 }
