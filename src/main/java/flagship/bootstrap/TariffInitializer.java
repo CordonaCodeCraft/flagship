@@ -7,7 +7,6 @@ import flagship.domain.utils.tariffs.CanalDueTariff;
 import flagship.domain.utils.tariffs.LightDueTariff;
 import flagship.domain.utils.tariffs.TonnageDueTariff;
 import flagship.domain.utils.tariffs.WharfDueTariff;
-import org.javatuples.Pair;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -42,7 +41,7 @@ public class TariffInitializer {
         tonnageDuesByShipType.put(OIL_TANKER, BigDecimal.valueOf(0.50));
         tonnageDuesByShipType.put(RECREATIONAL, BigDecimal.valueOf(0.10));
         tonnageDuesByShipType.put(MILITARY, BigDecimal.valueOf(0.25));
-        tonnageDuesByShipType.put(SPECIAL, BigDecimal.valueOf(0.25));
+        tonnageDuesByShipType.put(SPECIAL, BigDecimal.valueOf(0.50));
         tonnageDueTariff.setTonnageDuesByShipType(Collections.unmodifiableMap(tonnageDuesByShipType));
 
         final Map<CallPurpose, BigDecimal> tonnageDuesByCallPurpose = new EnumMap<>(CallPurpose.class);
@@ -127,17 +126,17 @@ public class TariffInitializer {
 
     private static void initializeLightDueTariff(final LightDueTariff lightDueTariff) {
 
-        final Map<Pair<Integer, Integer>, BigDecimal> lightDuesByGrossTonnage = new HashMap<>();
+        final Map<BigDecimal, Integer[]> lightDuesByGrossTonnage = new HashMap<>();
 
-        final Pair<Integer, Integer> pair1 = Pair.with(41, 500);
-        final Pair<Integer, Integer> pair2 = Pair.with(501, 1000);
-        final Pair<Integer, Integer> pair3 = Pair.with(1001, 5000);
-        final Pair<Integer, Integer> pair4 = Pair.with(5001, 10000);
+        Integer[] range1 = {41, 500};
+        Integer[] range2 = {501, 1000};
+        Integer[] range3 = {1001, 5000};
+        Integer[] range4 = {5001, 10000};
 
-        lightDuesByGrossTonnage.put(pair1, BigDecimal.valueOf(15.0));
-        lightDuesByGrossTonnage.put(pair2, BigDecimal.valueOf(40.0));
-        lightDuesByGrossTonnage.put(pair3, BigDecimal.valueOf(70.0));
-        lightDuesByGrossTonnage.put(pair4, BigDecimal.valueOf(110.0));
+        lightDuesByGrossTonnage.put(BigDecimal.valueOf(15.0), range1);
+        lightDuesByGrossTonnage.put(BigDecimal.valueOf(40.0), range2);
+        lightDuesByGrossTonnage.put(BigDecimal.valueOf(70.0), range3);
+        lightDuesByGrossTonnage.put(BigDecimal.valueOf(110.0), range4);
         lightDueTariff.setLightDuesByGrossTonnage(Collections.unmodifiableMap(lightDuesByGrossTonnage));
 
         final Map<ShipType, BigDecimal> lightDuesByShipType = new EnumMap<>(ShipType.class);
@@ -147,6 +146,9 @@ public class TariffInitializer {
         final Map<ShipType, BigDecimal> discountCoefficientsByShipType = new EnumMap<>(ShipType.class);
         discountCoefficientsByShipType.put(PASSENGER, BigDecimal.valueOf(0.5));
         lightDueTariff.setDiscountCoefficientsByShipType(Collections.unmodifiableMap(discountCoefficientsByShipType));
+
+        final Set<ShipType> shipTypesNotEligibleForDiscount = EnumSet.of(MILITARY);
+        lightDueTariff.setShipTypesNotEligibleForDiscount(Collections.unmodifiableSet(shipTypesNotEligibleForDiscount));
 
         lightDueTariff.setLightDueMaximumValue(BigDecimal.valueOf(150));
         lightDueTariff.setCallCountThreshold(4);
