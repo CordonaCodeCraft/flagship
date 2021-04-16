@@ -25,20 +25,24 @@ public class CanalDueCalculator extends StateDueCalculator<Case, CanalDueTariff>
         final PortArea portArea = source.getPort().getArea();
         final ShipType shipType = source.getShip().getType();
 
+        final boolean isEligibleForDiscount = !tariff.getShipTypesNotEligibleForDiscount().contains(shipType);
         final boolean satisfiesCallCountThreshold = source.getCallCount() >= tariff.getCallCountThreshold();
 
         BigDecimal discountCoefficient = BigDecimal.ZERO;
 
-        if (!tariff.getShipTypesNotEligibleForDiscount().contains(shipType)) {
+        if (isEligibleForDiscount) {
             if (shipType == CONTAINER) {
-                discountCoefficient = discountCoefficient.max(tariff.getDiscountCoefficientsByPortAreaForContainers().get(portArea));
                 if (satisfiesCallCountThreshold) {
                     discountCoefficient = discountCoefficient.max(tariff.getDiscountCoefficientsByPortAreaPerCallCountForContainers().get(portArea));
                 }
+                discountCoefficient = discountCoefficient.max(tariff.getDiscountCoefficientsByPortAreaForContainers().get(portArea));
             } else {
-                discountCoefficient = discountCoefficient.max(tariff.getDiscountCoefficientByShipType().get(shipType));
                 if (satisfiesCallCountThreshold) {
                     discountCoefficient = discountCoefficient.max(tariff.getDefaultCallCountDiscountCoefficient());
+                }
+
+                if (tariff.getDiscountCoefficientByShipType().containsKey(shipType)) {
+                    discountCoefficient = discountCoefficient.max(tariff.getDiscountCoefficientByShipType().get(shipType));
                 }
             }
         }
