@@ -18,9 +18,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static flagship.domain.cases.entities.enums.CallPurpose.LOADING;
-import static flagship.domain.cases.entities.enums.CallPurpose.RESUPPLY;
 import static flagship.domain.cases.entities.enums.ShipType.GENERAL;
-import static flagship.domain.cases.entities.enums.ShipType.MILITARY;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DisplayName("Wharf due calculator tests")

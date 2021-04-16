@@ -18,9 +18,8 @@ import java.math.BigDecimal;
 import java.util.*;
 
 import static flagship.domain.cases.entities.enums.CallPurpose.LOADING;
-import static flagship.domain.cases.entities.enums.CallPurpose.SPECIAL_PURPOSE_PORT_VISIT;
 import static flagship.domain.cases.entities.enums.PortArea.FIRST;
-import static flagship.domain.cases.entities.enums.ShipType.*;
+import static flagship.domain.cases.entities.enums.ShipType.GENERAL;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DisplayName("Tonnage due calculator tests")
@@ -161,7 +160,7 @@ class TonnageDueCalculatorTest implements DueCalculatorTest {
         @DisplayName("Should return zero if ship type is not eligible for discount")
         @ParameterizedTest(name = "ship type : {arguments}")
         @EnumSource(value = ShipType.class, names = {"RECREATIONAL", "MILITARY", "SPECIAL"})
-        void testDiscountCoefficientShouldReturnZeroByShipType(ShipType shipType) {
+        void testDiscountCoefficientReturnsZeroByShipType(ShipType shipType) {
 
             testCase.getShip().setType(shipType);
 
@@ -174,7 +173,7 @@ class TonnageDueCalculatorTest implements DueCalculatorTest {
         @DisplayName("Should return zero if call purpose is not eligible for discount")
         @ParameterizedTest(name = "call purpose : {arguments}")
         @EnumSource(value = CallPurpose.class, names = {"SPECIAL_PURPOSE_PORT_VISIT"})
-        void testDiscountCoefficientShouldReturnZeroByCallPurpose(CallPurpose callPurpose) {
+        void testDiscountCoefficientReturnsZeroByCallPurpose(CallPurpose callPurpose) {
 
             testCase.setCallPurpose(callPurpose);
 
@@ -186,7 +185,7 @@ class TonnageDueCalculatorTest implements DueCalculatorTest {
 
         @DisplayName("Should return biggest discount coefficient value")
         @Test
-        void testDiscountCoefficientShouldReturnBiggestValue() {
+        void testDiscountCoefficientReturnsBiggestValue() {
 
             ShipType[] shipTypesAffectingDiscountCoefficient =
                     tariff.getDiscountCoefficientsByShipType().keySet().toArray(new ShipType[0]);
