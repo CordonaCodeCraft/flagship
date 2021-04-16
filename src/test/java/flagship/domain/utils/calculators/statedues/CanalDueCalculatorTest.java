@@ -15,7 +15,6 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 
-import static flagship.domain.cases.entities.enums.CallPurpose.LOADING;
 import static flagship.domain.cases.entities.enums.PortArea.FIRST;
 import static flagship.domain.cases.entities.enums.ShipType.CONTAINER;
 import static flagship.domain.cases.entities.enums.ShipType.GENERAL;
@@ -38,13 +37,13 @@ class CanalDueCalculatorTest implements DueCalculatorTest {
     void setUp() {
         Port testPort = Port.builder().area(FIRST).build();
         Ship testShip = Ship.builder().grossTonnage(1650).type(GENERAL).build();
-        testCase = Case.builder().ship(testShip).callPurpose(LOADING).port(testPort).callCount(1).build();
+        testCase = Case.builder().ship(testShip).port(testPort).callCount(1).build();
         grossTonnage = BigDecimal.valueOf(testShip.getGrossTonnage());
     }
 
     @DisplayName("Canal due calculation tests")
     @Nested
-    class DueTotalCalculation {
+    class DueCalculationTest {
 
         @DisplayName("Canal due by port area")
         @ParameterizedTest(name = "port area : {arguments}")
@@ -64,7 +63,7 @@ class CanalDueCalculatorTest implements DueCalculatorTest {
 
     @DisplayName("Discount coefficient evaluation tests")
     @Nested()
-    class DiscountCoefficientTests {
+    class DiscountCoefficientTest {
 
         @DisplayName("Default discount coefficient by call count")
         @Test
@@ -149,6 +148,7 @@ class CanalDueCalculatorTest implements DueCalculatorTest {
         void testDiscountCoefficientReturnsZeroByShipType(ShipType shipType) {
 
             testCase.getShip().setType(shipType);
+            testCase.setCallCount(tariff.getCallCountThreshold());
 
             BigDecimal expected = BigDecimal.ZERO;
             BigDecimal result = canalDueCalculator.evaluateDiscountCoefficient(testCase, tariff);

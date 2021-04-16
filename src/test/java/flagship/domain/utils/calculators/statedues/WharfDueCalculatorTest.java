@@ -19,6 +19,7 @@ import java.util.Set;
 
 import static flagship.domain.cases.entities.enums.CallPurpose.LOADING;
 import static flagship.domain.cases.entities.enums.ShipType.GENERAL;
+import static flagship.domain.cases.entities.enums.ShipType.MILITARY;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DisplayName("Wharf due calculator tests")
@@ -40,14 +41,14 @@ class WharfDueCalculatorTest implements DueCalculatorTest {
     @BeforeEach
     void setUp() {
         Ship testShip = Ship.builder().lengthOverall(195.05).type(GENERAL).build();
-        testCase = Case.builder().ship(testShip).callPurpose(LOADING).callCount(1).alongsideDaysExpected(5).build();
+        testCase = Case.builder().ship(testShip).alongsideDaysExpected(5).build();
         lengthOverAll = BigDecimal.valueOf(Math.ceil(testCase.getShip().getLengthOverall()));
         alongSideHours = BigDecimal.valueOf(testCase.getAlongsideDaysExpected() * 24);
     }
 
     @DisplayName("Wharf due calculation tests")
     @Nested
-    class DueTotalCalculation {
+    class DueCalculationTest {
 
         @DisplayName("Wharf due by default value")
         @Test
@@ -55,17 +56,18 @@ class WharfDueCalculatorTest implements DueCalculatorTest {
 
             ShipType shipTypeWithDefaultWharfDue = Arrays.stream(ShipType.values())
                     .filter(type -> {
-                        Set<ShipType> shipTypesAffectingWharfDue = new HashSet<>(tariff.getWharfDuesByShipType().keySet());
+                        Set<ShipType> shipTypesAffectingWharfDue =
+                                new HashSet<>(tariff.getWharfDuesByShipType().keySet());
                         return !shipTypesAffectingWharfDue.contains(type);
                     })
-                    .findAny().get();
+                    .findAny().orElse(MILITARY);
 
             testCase.getShip().setType(shipTypeWithDefaultWharfDue);
 
             BigDecimal wharfDuePerMeter = tariff.getDefaultWharfDue();
-            BigDecimal wharfDuePerLengthOverall = lengthOverAll.multiply(wharfDuePerMeter);
+            BigDecimal wharfDueForLengthOverall = lengthOverAll.multiply(wharfDuePerMeter);
 
-            BigDecimal expected = alongSideHours.multiply(wharfDuePerLengthOverall);
+            BigDecimal expected = alongSideHours.multiply(wharfDueForLengthOverall);
             BigDecimal result = wharfDueCalculator.calculateDue(testCase, tariff);
 
             assertThat(result).isEqualByComparingTo(expected);
@@ -79,9 +81,9 @@ class WharfDueCalculatorTest implements DueCalculatorTest {
             testCase.getShip().setType(shipType);
 
             BigDecimal wharfDuePerMeter = tariff.getWharfDuesByShipType().get(shipType);
-            BigDecimal wharfDuePerMeterTotal = lengthOverAll.multiply(wharfDuePerMeter);
+            BigDecimal wharfDueForLengthOverall = lengthOverAll.multiply(wharfDuePerMeter);
 
-            BigDecimal expected = alongSideHours.multiply(wharfDuePerMeterTotal);
+            BigDecimal expected = alongSideHours.multiply(wharfDueForLengthOverall);
             BigDecimal result = wharfDueCalculator.calculateDue(testCase, tariff);
 
             assertThat(result).isEqualByComparingTo(expected);
@@ -90,7 +92,7 @@ class WharfDueCalculatorTest implements DueCalculatorTest {
 
     @DisplayName("Discount coefficient evaluation tests")
     @Nested()
-    class DiscountCoefficientTests {
+    class DiscountCoefficientTest {
 
         @DisplayName("Discount coefficient by call purpose")
         @ParameterizedTest(name = "call purpose : {arguments}")

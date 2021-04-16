@@ -47,7 +47,7 @@ class TonnageDueCalculatorTest implements DueCalculatorTest {
 
     @DisplayName("Tonnage due calculation tests")
     @Nested
-    class DueTotalCalculation {
+    class DueCalculationTest {
 
         @DisplayName("Tonnage due by port area")
         @ParameterizedTest(name = "port area : {arguments}")
@@ -62,7 +62,8 @@ class TonnageDueCalculatorTest implements DueCalculatorTest {
                                         new HashSet<>(tariff.getTonnageDuesByShipType().keySet());
                                 return !shipTypesAffectingTonnageDue.contains(type);
                             }
-                    ).findAny().get();
+                    )
+                    .findAny().orElse(GENERAL);
 
             CallPurpose callPurposeDependantOnPortArea = Arrays.stream(CallPurpose.values())
                     .filter(purpose -> {
@@ -70,7 +71,8 @@ class TonnageDueCalculatorTest implements DueCalculatorTest {
                                         new HashSet<>(tariff.getTonnageDuesByCallPurpose().keySet());
                                 return !callPurposesAffectingTonnageDue.contains(purpose);
                             }
-                    ).findAny().get();
+                    )
+                    .findAny().orElse(LOADING);
 
             testCase.getShip().setType(shipTypeDependantOnPortArea);
             testCase.setCallPurpose(callPurposeDependantOnPortArea);
@@ -117,7 +119,7 @@ class TonnageDueCalculatorTest implements DueCalculatorTest {
 
     @DisplayName("Discount coefficient evaluation tests")
     @Nested
-    class DiscountCoefficientEvaluation {
+    class DiscountCoefficientEvaluationTest {
 
         @DisplayName("Discount coefficient by call count")
         @Test
@@ -157,32 +159,6 @@ class TonnageDueCalculatorTest implements DueCalculatorTest {
             assertThat(result).isEqualByComparingTo(expected);
         }
 
-        @DisplayName("Should return zero if ship type is not eligible for discount")
-        @ParameterizedTest(name = "ship type : {arguments}")
-        @EnumSource(value = ShipType.class, names = {"RECREATIONAL", "MILITARY", "SPECIAL"})
-        void testDiscountCoefficientReturnsZeroByShipType(ShipType shipType) {
-
-            testCase.getShip().setType(shipType);
-
-            BigDecimal expected = BigDecimal.ZERO;
-            BigDecimal result = tonnageDueCalculator.evaluateDiscountCoefficient(testCase, tariff);
-
-            assertThat(result).isEqualByComparingTo(expected);
-        }
-
-        @DisplayName("Should return zero if call purpose is not eligible for discount")
-        @ParameterizedTest(name = "call purpose : {arguments}")
-        @EnumSource(value = CallPurpose.class, names = {"SPECIAL_PURPOSE_PORT_VISIT"})
-        void testDiscountCoefficientReturnsZeroByCallPurpose(CallPurpose callPurpose) {
-
-            testCase.setCallPurpose(callPurpose);
-
-            BigDecimal expected = BigDecimal.ZERO;
-            BigDecimal result = tonnageDueCalculator.evaluateDiscountCoefficient(testCase, tariff);
-
-            assertThat(result).isEqualByComparingTo(expected);
-        }
-
         @DisplayName("Should return biggest discount coefficient value")
         @Test
         void testDiscountCoefficientReturnsBiggestValue() {
@@ -206,5 +182,36 @@ class TonnageDueCalculatorTest implements DueCalculatorTest {
 
             assertThat(result).isEqualByComparingTo(expected);
         }
+
+        @DisplayName("Should return zero if ship type is not eligible for discount")
+        @ParameterizedTest(name = "ship type : {arguments}")
+        @EnumSource(value = ShipType.class, names = {"RECREATIONAL", "MILITARY", "SPECIAL"})
+        void testDiscountCoefficientReturnsZeroByShipType(ShipType shipType) {
+
+            testCase.getShip().setType(shipType);
+            testCase.setCallPurpose(tariff.getDiscountCoefficientsByCallPurpose().keySet().stream().findAny().get());
+            testCase.setCallCount(tariff.getCallCountThreshold());
+
+            BigDecimal expected = BigDecimal.ZERO;
+            BigDecimal result = tonnageDueCalculator.evaluateDiscountCoefficient(testCase, tariff);
+
+            assertThat(result).isEqualByComparingTo(expected);
+        }
+
+        @DisplayName("Should return zero if call purpose is not eligible for discount")
+        @ParameterizedTest(name = "call purpose : {arguments}")
+        @EnumSource(value = CallPurpose.class, names = {"SPECIAL_PURPOSE_PORT_VISIT"})
+        void testDiscountCoefficientReturnsZeroByCallPurpose(CallPurpose callPurpose) {
+
+            testCase.setCallPurpose(callPurpose);
+            testCase.getShip().setType(tariff.getDiscountCoefficientsByShipType().keySet().stream().findAny().get());
+            testCase.setCallCount(tariff.getCallCountThreshold());
+
+            BigDecimal expected = BigDecimal.ZERO;
+            BigDecimal result = tonnageDueCalculator.evaluateDiscountCoefficient(testCase, tariff);
+
+            assertThat(result).isEqualByComparingTo(expected);
+        }
+
     }
 }
