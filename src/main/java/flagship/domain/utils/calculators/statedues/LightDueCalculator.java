@@ -53,8 +53,6 @@ public class LightDueCalculator extends StateDueCalculator<Case, LightDueTariff>
             }
         }
 
-
-
         return discountCoefficient;
     }
 }

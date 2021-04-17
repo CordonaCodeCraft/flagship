@@ -3,10 +3,7 @@ package flagship.bootstrap;
 import flagship.domain.cases.entities.enums.CallPurpose;
 import flagship.domain.cases.entities.enums.PortArea;
 import flagship.domain.cases.entities.enums.ShipType;
-import flagship.domain.utils.tariffs.CanalDueTariff;
-import flagship.domain.utils.tariffs.LightDueTariff;
-import flagship.domain.utils.tariffs.TonnageDueTariff;
-import flagship.domain.utils.tariffs.WharfDueTariff;
+import flagship.domain.utils.tariffs.*;
 
 import java.math.BigDecimal;
 import java.util.*;

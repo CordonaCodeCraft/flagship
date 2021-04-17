@@ -19,6 +19,7 @@ import static flagship.domain.cases.entities.enums.PortArea.FIRST;
 import static flagship.domain.cases.entities.enums.ShipType.GENERAL;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+@DisplayName("Global due calculator tests")
 public class GlobalDueCalculationTest implements DueCalculatorTest {
 
     private static TonnageDueTariff tariff;

@@ -5,17 +5,13 @@ import flagship.domain.cases.entities.Case;
 import flagship.domain.cases.entities.Port;
 import flagship.domain.cases.entities.Ship;
 import flagship.domain.utils.calculators.statedues.TonnageDueCalculator;
-import flagship.domain.utils.tariffs.CanalDueTariff;
-import flagship.domain.utils.tariffs.LightDueTariff;
-import flagship.domain.utils.tariffs.TonnageDueTariff;
-import flagship.domain.utils.tariffs.WharfDueTariff;
+import flagship.domain.utils.tariffs.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Paths;

@@ -20,6 +20,7 @@ import static flagship.domain.cases.entities.enums.ShipType.CONTAINER;
 import static flagship.domain.cases.entities.enums.ShipType.GENERAL;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+@DisplayName("Canal due calculator tests")
 class CanalDueCalculatorTest implements DueCalculatorTest {
 
     private static CanalDueTariff tariff;

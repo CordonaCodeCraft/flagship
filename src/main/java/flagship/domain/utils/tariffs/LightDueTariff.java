@@ -4,7 +4,6 @@ import flagship.domain.cases.entities.enums.ShipType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.javatuples.Pair;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;

@@ -20,6 +20,7 @@ import java.util.Set;
 import static flagship.domain.cases.entities.enums.ShipType.GENERAL;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+@DisplayName("Light due calculator tests")
 public class LightDueCalculatorTest implements DueCalculatorTest {
 
     private static LightDueTariff tariff;
