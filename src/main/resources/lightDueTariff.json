@@ -12,7 +12,7 @@
     "PASSENGER" : 0.5
   },
   "shipTypesNotEligibleForDiscount" : [ "MILITARY" ],
-  "lightDueMaximumValue" : 150,
+  "lightDueMaximumValue" : 150.0,
   "callCountThreshold" : 4,
   "callCountDiscountCoefficient" : 0.7
 }

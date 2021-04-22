@@ -16,7 +16,7 @@ public abstract class StateDueCalculator<S, P> implements DueCalculator<S, P> {
 
     protected abstract BigDecimal evaluateDiscountCoefficient(S source, P properties);
 
-    protected BigDecimal calculateDueAfterDiscount(BigDecimal due, BigDecimal discountCoefficient) {
+    protected BigDecimal calculateDueAfterDiscount(final BigDecimal due, final BigDecimal discountCoefficient) {
         if (discountCoefficient.doubleValue() > 0) {
             BigDecimal discount = due.multiply(discountCoefficient);
             return due.subtract(discount);

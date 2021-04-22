@@ -1,4 +1,4 @@
-package flagship.domain.utils.calculators.statedues;
+package flagship.domain.utils.calculators;
 
 import org.junit.jupiter.api.Tag;
 

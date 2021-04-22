@@ -2,7 +2,7 @@ package flagship.domain.utils.calculators.statedues;
 
 import flagship.domain.cases.entities.Case;
 import flagship.domain.cases.entities.enums.ShipType;
-import flagship.domain.utils.tariffs.LightDueTariff;
+import flagship.domain.utils.tariffs.stateduestariffs.LightDueTariff;
 
 import java.math.BigDecimal;
 import java.util.Map;
@@ -29,7 +29,7 @@ public class LightDueCalculator extends StateDueCalculator<Case, LightDueTariff>
                     .map(Map.Entry::getKey)
                     .orElse(tariff.getLightDueMaximumValue());
         }
-
+        // todo: replace the magic number 150 with light due maximum value
         return lightDue.doubleValue() <= 150.0 ? lightDue : BigDecimal.valueOf(150);
     }
 

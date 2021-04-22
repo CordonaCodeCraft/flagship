@@ -3,7 +3,11 @@ package flagship.bootstrap;
 import flagship.domain.cases.entities.enums.CallPurpose;
 import flagship.domain.cases.entities.enums.PortArea;
 import flagship.domain.cases.entities.enums.ShipType;
-import flagship.domain.utils.tariffs.*;
+import flagship.domain.utils.tariffs.stateduestariffs.CanalDueTariff;
+import flagship.domain.utils.tariffs.stateduestariffs.LightDueTariff;
+import flagship.domain.utils.tariffs.stateduestariffs.TonnageDueTariff;
+import flagship.domain.utils.tariffs.stateduestariffs.WharfDueTariff;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -12,7 +16,8 @@ import static flagship.domain.cases.entities.enums.CallPurpose.*;
 import static flagship.domain.cases.entities.enums.PortArea.*;
 import static flagship.domain.cases.entities.enums.ShipType.*;
 
-public class TariffInitializer {
+@Component
+public class StateDueTariffInitializer {
 
     public static void initializeTariffs(
             final TonnageDueTariff tonnageDueTariff,
@@ -130,10 +135,10 @@ public class TariffInitializer {
         Integer[] range3 = {1001, 5000};
         Integer[] range4 = {5001, 10000};
 
-        lightDuesByGrossTonnage.put(BigDecimal.valueOf(15.0), range1);
-        lightDuesByGrossTonnage.put(BigDecimal.valueOf(40.0), range2);
-        lightDuesByGrossTonnage.put(BigDecimal.valueOf(70.0), range3);
-        lightDuesByGrossTonnage.put(BigDecimal.valueOf(110.0), range4);
+        lightDuesByGrossTonnage.put(BigDecimal.valueOf(15.00), range1);
+        lightDuesByGrossTonnage.put(BigDecimal.valueOf(40.00), range2);
+        lightDuesByGrossTonnage.put(BigDecimal.valueOf(70.00), range3);
+        lightDuesByGrossTonnage.put(BigDecimal.valueOf(110.00), range4);
         lightDueTariff.setLightDuesByGrossTonnage(Collections.unmodifiableMap(lightDuesByGrossTonnage));
 
         final Map<ShipType, BigDecimal> lightDuesByShipType = new EnumMap<>(ShipType.class);
@@ -147,7 +152,7 @@ public class TariffInitializer {
         final Set<ShipType> shipTypesNotEligibleForDiscount = EnumSet.of(MILITARY);
         lightDueTariff.setShipTypesNotEligibleForDiscount(Collections.unmodifiableSet(shipTypesNotEligibleForDiscount));
 
-        lightDueTariff.setLightDueMaximumValue(BigDecimal.valueOf(150));
+        lightDueTariff.setLightDueMaximumValue(BigDecimal.valueOf(150.00));
         lightDueTariff.setCallCountThreshold(4);
         lightDueTariff.setCallCountDiscountCoefficient(BigDecimal.valueOf(0.7));
     }

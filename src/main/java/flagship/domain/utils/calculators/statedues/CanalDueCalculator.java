@@ -3,7 +3,7 @@ package flagship.domain.utils.calculators.statedues;
 import flagship.domain.cases.entities.Case;
 import flagship.domain.cases.entities.enums.PortArea;
 import flagship.domain.cases.entities.enums.ShipType;
-import flagship.domain.utils.tariffs.CanalDueTariff;
+import flagship.domain.utils.tariffs.stateduestariffs.CanalDueTariff;
 
 import java.math.BigDecimal;
 
