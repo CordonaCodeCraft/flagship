@@ -1,0 +1,8 @@
+{
+  "portNamesInPilotageAreas" : {
+    "VARNA_FIRST" : [ "Varna East", "Petrol", "Bulyard", "Bulport Logistik", "SRY", "PCHVM" ],
+    "VARNA_SECOND" : [ "TEC (Power station)", "Balchik port", "Lesport", "Terem FA", "SRY Dolphin", "Transstroi Varna", "Odessos PBM", "Buoy 9", "Anchorage" ],
+    "VARNA_THIRD" : [ "Varna West", "Ferry Complex" ],
+    "BOURGAS_FIRST" : [ "Burgas – Center", "Burgas East 2", "BMF Port Burgas", "West Terminal", "Ship repair yard Port Burgas", "Port Bulgaria West", "Burgas Shipyard", "Port Europa", "Transstroi Burgas", "Port Rosenetz", "Nessebar", "Pomorie", "Sozopol", "Tzarevo", "Shifting of the anchorage area", "deviation", "XX A.k.m", "XX B.k.m" ]
+  }
+}
