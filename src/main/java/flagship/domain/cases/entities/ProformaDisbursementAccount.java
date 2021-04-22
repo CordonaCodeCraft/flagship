@@ -5,8 +5,10 @@ import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.math.BigDecimal;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -18,11 +20,19 @@ import java.math.BigDecimal;
 @Table(name = "proforma_disbursement_accounts")
 public class ProformaDisbursementAccount extends BaseEntity {
 
-  @Embedded private AgencyAccount agencyAccount;
+    @Embedded
+    private StateAccount stateAccount;
 
-  @Embedded private StateAccount stateAccount;
+    @Embedded
+    private ServiceAccount serviceAccount;
 
-  private BigDecimal discount;
+    @Embedded
+    private AgencyAccount agencyAccount;
 
-  private BigDecimal turnoverExpected;
+    @OneToMany
+    private Set<Warning> warnings;
+
+    private BigDecimal discount;
+
+    private BigDecimal turnoverExpected;
 }

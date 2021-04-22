@@ -1,11 +1,15 @@
 package flagship.bootstrap;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import flagship.domain.cases.entities.Case;
-import flagship.domain.cases.entities.Port;
-import flagship.domain.cases.entities.Ship;
-import flagship.domain.utils.calculators.statedues.TonnageDueCalculator;
-import flagship.domain.utils.tariffs.*;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import flagship.domain.utils.tariffs.serviceduestariffs.HolidayCalendar;
+import flagship.domain.utils.tariffs.serviceduestariffs.PilotageAreaLookupTable;
+import flagship.domain.utils.tariffs.serviceduestariffs.PilotageDueTariff;
+import flagship.domain.utils.tariffs.stateduestariffs.CanalDueTariff;
+import flagship.domain.utils.tariffs.stateduestariffs.LightDueTariff;
+import flagship.domain.utils.tariffs.stateduestariffs.TonnageDueTariff;
+import flagship.domain.utils.tariffs.stateduestariffs.WharfDueTariff;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
@@ -13,12 +17,7 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.nio.file.Paths;
-
-import static flagship.domain.cases.entities.enums.CallPurpose.RECRUITMENT;
-import static flagship.domain.cases.entities.enums.PortArea.FIRST;
-import static flagship.domain.cases.entities.enums.ShipType.REEFER;
 
 @Component
 @RequiredArgsConstructor
@@ -31,39 +30,23 @@ public class DataLoader implements ApplicationRunner {
     private final CanalDueTariff canalDueTariff;
     private final LightDueTariff lightDueTariff;
 
+    private final PilotageAreaLookupTable pilotageAreaLookupTable;
+    private final PilotageDueTariff pilotageDueTariff;
+    private final HolidayCalendar holidayCalendar;
+
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
-        TariffInitializer.initializeTariffs(tonnageDueTariff, wharfDueTariff, canalDueTariff, lightDueTariff);
+        StateDueTariffInitializer.initializeTariffs(tonnageDueTariff, wharfDueTariff, canalDueTariff, lightDueTariff);
+        ServiceDueTariffInitializer.initializeTariff(pilotageAreaLookupTable, pilotageDueTariff, holidayCalendar);
 
-        produceTonnageDueJson();
+        produceStateDueJsonFiles();
+        produceServiceDueJsonFiles();
 
-        Ship ship = Ship
-                .builder()
-                .lengthOverall(99.99)
-                .grossTonnage(10001)
-                .type(REEFER).build();
-
-        Port port = Port
-                .builder()
-                .area(FIRST)
-                .build();
-
-        Case activeCase = Case
-                .builder()
-                .ship(ship)
-                .callPurpose(RECRUITMENT)
-                .port(port)
-                .callCount(5)
-                .alongsideDaysExpected(3)
-                .build();
-
-        TonnageDueCalculator tonnageDueCalculator = new TonnageDueCalculator();
-        BigDecimal calculate = tonnageDueCalculator.calculate(activeCase, tonnageDueTariff);
-        System.out.println(calculate);
     }
 
-    private void produceTonnageDueJson() throws IOException {
+
+    private void produceStateDueJsonFiles() throws IOException {
 
         objectMapper
                 .writerWithDefaultPrettyPrinter()
@@ -80,5 +63,23 @@ public class DataLoader implements ApplicationRunner {
         objectMapper
                 .writerWithDefaultPrettyPrinter()
                 .writeValue(Paths.get("src/main/resources/canalDueTariff.json").toFile(), canalDueTariff);
+    }
+
+    private void produceServiceDueJsonFiles() throws IOException {
+
+        objectMapper
+                .writerWithDefaultPrettyPrinter()
+                .writeValue(Paths.get("src/main/resources/pilotageAreaLookupTable.json").toFile(), pilotageAreaLookupTable);
+
+        objectMapper
+                .registerModule(new JavaTimeModule())
+                .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
+                .configure(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS, false)
+                .writerWithDefaultPrettyPrinter()
+                .writeValue(Paths.get("src/main/resources/pilotageDueTariff.json").toFile(), pilotageDueTariff);
+
+        objectMapper
+                .writerWithDefaultPrettyPrinter()
+                .writeValue(Paths.get("src/main/resources/holidayCalendar.json").toFile(), holidayCalendar);
     }
 }

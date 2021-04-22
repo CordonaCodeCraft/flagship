@@ -1,5 +1,6 @@
 package flagship.domain.cases.entities;
 
+import flagship.domain.cases.entities.enums.PilotageArea;
 import flagship.domain.cases.entities.enums.PortArea;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -24,4 +25,9 @@ public class Port extends BaseEntity {
 
   @Enumerated(value = STRING)
   private PortArea area;
+
+  @Enumerated(value = STRING)
+  private PilotageArea pilotageArea;
+
+
 }
