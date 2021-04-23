@@ -24,7 +24,7 @@ public class Ship extends BaseEntity {
   private String imoNumber;
   private Double lengthOverall;
   private Integer grossTonnage;
-  private Boolean requiresAdditionalService;
+  private Boolean requiresSpecialService;
 
   @Enumerated(value = STRING)
   private ShipType type;

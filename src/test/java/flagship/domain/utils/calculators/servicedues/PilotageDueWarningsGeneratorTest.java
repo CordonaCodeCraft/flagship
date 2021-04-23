@@ -44,7 +44,7 @@ class PilotageDueWarningsGeneratorTest {
     @BeforeEach
     void setUp() {
         testCase = new Case();
-        Ship testShip = Ship.builder().requiresAdditionalService(false).build();
+        Ship testShip = Ship.builder().requiresSpecialService(false).build();
         testCase.setShip(testShip);
         testCase.setEstimatedDateOfArrival(LocalDate.of(LocalDate.now().getYear(), JANUARY, 4));
         testCase.setEstimatedDateOfDeparture(LocalDate.of(LocalDate.now().getYear(), JANUARY, 5));
@@ -126,7 +126,7 @@ class PilotageDueWarningsGeneratorTest {
     @Test
     void testReturnsPilotWarning() {
 
-        testCase.getShip().setRequiresAdditionalService(true);
+        testCase.getShip().setRequiresSpecialService(true);
 
         Set<Warning> warnings = warningsGenerator.generateWarnings(testCase, calendar, tariff);
 
@@ -150,7 +150,7 @@ class PilotageDueWarningsGeneratorTest {
 
         testCase.setEstimatedDateOfArrival(arrivalDate);
         testCase.setEstimatedDateOfDeparture(departureDate);
-        testCase.getShip().setRequiresAdditionalService(true);
+        testCase.getShip().setRequiresSpecialService(true);
 
         Set<Warning> warnings = warningsGenerator.generateWarnings(testCase, calendar, tariff);
 

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import flagship.domain.utils.tariffs.serviceduestariffs.HolidayCalendar;
-import flagship.domain.utils.tariffs.serviceduestariffs.PilotageAreaLookupTable;
 import flagship.domain.utils.tariffs.serviceduestariffs.PilotageDueTariff;
 import flagship.domain.utils.tariffs.stateduestariffs.CanalDueTariff;
 import flagship.domain.utils.tariffs.stateduestariffs.LightDueTariff;
@@ -30,7 +29,6 @@ public class DataLoader implements ApplicationRunner {
     private final CanalDueTariff canalDueTariff;
     private final LightDueTariff lightDueTariff;
 
-    private final PilotageAreaLookupTable pilotageAreaLookupTable;
     private final PilotageDueTariff pilotageDueTariff;
     private final HolidayCalendar holidayCalendar;
 
@@ -38,7 +36,7 @@ public class DataLoader implements ApplicationRunner {
     public void run(ApplicationArguments args) throws Exception {
 
         StateDueTariffInitializer.initializeTariffs(tonnageDueTariff, wharfDueTariff, canalDueTariff, lightDueTariff);
-        ServiceDueTariffInitializer.initializeTariff(pilotageAreaLookupTable, pilotageDueTariff, holidayCalendar);
+        ServiceDueTariffInitializer.initializeTariff(pilotageDueTariff, holidayCalendar);
 
         produceStateDueJsonFiles();
         produceServiceDueJsonFiles();
@@ -66,10 +64,6 @@ public class DataLoader implements ApplicationRunner {
     }
 
     private void produceServiceDueJsonFiles() throws IOException {
-
-        objectMapper
-                .writerWithDefaultPrettyPrinter()
-                .writeValue(Paths.get("src/main/resources/pilotageAreaLookupTable.json").toFile(), pilotageAreaLookupTable);
 
         objectMapper
                 .registerModule(new JavaTimeModule())

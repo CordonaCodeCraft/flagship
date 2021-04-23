@@ -14,19 +14,20 @@ import static flagship.domain.utils.tariffs.serviceduestariffs.PdaWarning.HOLIDA
 import static flagship.domain.utils.tariffs.serviceduestariffs.PdaWarning.PILOT;
 
 //todo: Confirm, that predefining UUID id is not a problem for Hibernate
+
 public class PilotageDueWarningsGenerator {
 
     private static final String DUE_TYPE = "Pilotage due";
 
-    public Set<Warning> generateWarnings(Case source, HolidayCalendar holidays, PilotageDueTariff tariff) {
+    public Set<Warning> generateWarnings(final Case source, final HolidayCalendar holidays, final PilotageDueTariff tariff) {
 
-        Set<Warning> warnings = new HashSet<>();
+        final Set<Warning> warnings = new HashSet<>();
 
-        LocalDate estimatedDateOfArrival = source.getEstimatedDateOfArrival();
-        LocalDate estimatedDateOfDeparture = source.getEstimatedDateOfDeparture();
+        final LocalDate estimatedDateOfArrival = source.getEstimatedDateOfArrival();
+        final LocalDate estimatedDateOfDeparture = source.getEstimatedDateOfDeparture();
 
         if (holidays.getHolidayCalendar().contains(estimatedDateOfArrival)) {
-            Warning arrivalWarning = Warning
+            final Warning arrivalWarning = Warning
                     .builder()
                     .id(UUID.randomUUID())
                     .dueType(DUE_TYPE)
@@ -37,7 +38,7 @@ public class PilotageDueWarningsGenerator {
         }
 
         if (holidays.getHolidayCalendar().contains(estimatedDateOfDeparture)) {
-            Warning departureWarning = Warning
+            final Warning departureWarning = Warning
                     .builder()
                     .id(UUID.randomUUID())
                     .dueType(DUE_TYPE)
@@ -47,8 +48,8 @@ public class PilotageDueWarningsGenerator {
             warnings.add(departureWarning);
         }
 
-        if (source.getShip().getRequiresAdditionalService()) {
-            Warning pilotWarning = Warning
+        if (source.getShip().getRequiresSpecialService()) {
+            final Warning pilotWarning = Warning
                     .builder()
                     .id(UUID.randomUUID())
                     .dueType(DUE_TYPE)

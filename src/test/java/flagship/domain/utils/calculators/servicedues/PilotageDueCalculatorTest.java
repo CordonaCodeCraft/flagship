@@ -28,8 +28,8 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 public class PilotageDueCalculatorTest implements DueCalculatorTest {
 
     private static PilotageDueTariff tariff;
+    private final PilotageDueCalculator calculator = new PilotageDueCalculator();
     private Case testCase;
-    PilotageDueCalculator calculator = new PilotageDueCalculator();
 
     @BeforeAll
     public static void beforeClass() throws IOException {
@@ -41,8 +41,8 @@ public class PilotageDueCalculatorTest implements DueCalculatorTest {
     void setUp() {
         Port testPort = Port.builder().pilotageArea(VARNA_FIRST).build();
         Ship testShip = Ship.builder().grossTonnage(1650).build();
-        Cargo regular = Cargo.builder().id(UUID.randomUUID()).type(REGULAR).build();
-        Set<Cargo> cargos = new HashSet<>(Collections.singletonList(regular));
+        Cargo testCargo = Cargo.builder().id(UUID.randomUUID()).type(REGULAR).build();
+        Set<Cargo> cargos = new HashSet<>(Collections.singletonList(testCargo));
         testCase = Case.builder().port(testPort).ship(testShip).cargos(cargos).build();
     }
 
@@ -81,8 +81,7 @@ public class PilotageDueCalculatorTest implements DueCalculatorTest {
         assertThat(result).isEqualByComparingTo(expected);
     }
 
-
-    @DisplayName("Should increase total pilotage due by 20 percent if cargo is hazardous")
+    @DisplayName("Should increase total pilotage due by 20 percent if contains hazardous cargo")
     @Test
     void shouldIncreaseTotalPilotageDueBy20Percent() {
 
@@ -99,7 +98,7 @@ public class PilotageDueCalculatorTest implements DueCalculatorTest {
         assertThat(result).isEqualByComparingTo(expected);
     }
 
-    @DisplayName("Should increase total pilotage due by 100 percent if cargo is special")
+    @DisplayName("Should increase total pilotage due by 100 percent if contains special cargo")
     @Test
     void shouldIncreaseTotalPilotageDueBy100Percent() {
 
@@ -146,20 +145,15 @@ public class PilotageDueCalculatorTest implements DueCalculatorTest {
     }
 
     private BigDecimal evaluateMultiplier(int grossTonnage) {
-        int gt = grossTonnage;
-        int stopValue = tariff.getGrossTonnageThreshold().intValue() + 1;
-        int factor = 0;
 
-        if (grossTonnage == stopValue) {
-            return BigDecimal.valueOf(1);
-        } else {
-            while (gt > stopValue) {
-                gt -= 1000;
-                factor++;
-            }
-        }
+        double a = (grossTonnage - tariff.getGrossTonnageThreshold().doubleValue()) / 1000;
+        double b = (int) a;
+        double c = a - Math.floor(a);
+        c = c > 0 ? 1 : 0;
 
-        return BigDecimal.valueOf(factor);
+        double multiplier = b + c == 0 ? 1 : b + c;
+
+        return BigDecimal.valueOf(multiplier);
     }
 
     private int getRandomGrossTonnage(int min, int max) {

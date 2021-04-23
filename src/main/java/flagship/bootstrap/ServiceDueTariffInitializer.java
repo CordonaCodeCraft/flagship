@@ -2,37 +2,32 @@ package flagship.bootstrap;
 
 import flagship.domain.cases.entities.enums.CargoType;
 import flagship.domain.cases.entities.enums.PilotageArea;
-import flagship.domain.utils.resolvers.HolidayCalendarResolver;
+import flagship.domain.utils.calculators.resolvers.HolidayCalendarResolver;
 import flagship.domain.utils.tariffs.serviceduestariffs.HolidayCalendar;
-import flagship.domain.utils.tariffs.serviceduestariffs.PilotageAreaLookupTable;
-import flagship.domain.utils.tariffs.serviceduestariffs.PilotageDueTariff;
 import flagship.domain.utils.tariffs.serviceduestariffs.PdaWarning;
+import flagship.domain.utils.tariffs.serviceduestariffs.PilotageDueTariff;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
 
-import static flagship.domain.cases.entities.enums.CargoType.*;
+import static flagship.domain.cases.entities.enums.CargoType.HAZARDOUS;
+import static flagship.domain.cases.entities.enums.CargoType.SPECIAL;
 import static flagship.domain.cases.entities.enums.PilotageArea.*;
-import static flagship.domain.utils.tariffs.serviceduestariffs.PdaWarning.*;
+import static flagship.domain.utils.tariffs.serviceduestariffs.PdaWarning.HOLIDAY;
+import static flagship.domain.utils.tariffs.serviceduestariffs.PdaWarning.PILOT;
 import static java.time.Month.*;
 
 @Component
 public class ServiceDueTariffInitializer {
 
-    public static void initializeTariff(PilotageAreaLookupTable pilotageAreaLookupTable,
-                                        PilotageDueTariff pilotageDueTariff,
-                                        HolidayCalendar holidayCalendar) {
-        initializepilotageAreaLookupTable(pilotageAreaLookupTable);
+    public static void initializeTariff(PilotageDueTariff pilotageDueTariff, HolidayCalendar holidayCalendar) {
         initializePilotageDueTariff(pilotageDueTariff);
         initializeHolidayCalendar(holidayCalendar);
-
-
-
     }
 
-    private static void initializepilotageAreaLookupTable(PilotageAreaLookupTable pilotageAreaLookupTable) {
+    private static void initializePilotageDueTariff(PilotageDueTariff pilotageDueTariff) {
 
         Map<PilotageArea, List<String>> portNamesInPilotageAreas = new EnumMap<>(PilotageArea.class);
 
@@ -88,10 +83,7 @@ public class ServiceDueTariffInitializer {
         portNamesInPilotageAreas.put(VARNA_THIRD, portNamesInThirdVarnaPilotageArea);
         portNamesInPilotageAreas.put(BOURGAS_FIRST, portNamesInFirstBourgasPilotageArea);
 
-        pilotageAreaLookupTable.setPortNamesInPilotageAreas(Collections.unmodifiableMap(portNamesInPilotageAreas));
-    }
-
-    private static void initializePilotageDueTariff(PilotageDueTariff pilotageDueTariff) {
+        pilotageDueTariff.setPortNamesInPilotageAreas(Collections.unmodifiableMap(portNamesInPilotageAreas));
 
         Map<PilotageArea, Map<BigDecimal, Integer[]>> pilotageDuesByArea = new EnumMap<>(PilotageArea.class);
 
@@ -166,12 +158,31 @@ public class ServiceDueTariffInitializer {
 
         pilotageDueTariff.setIncreaseCoefficientsByWarningType(Collections.unmodifiableMap(increaseCoefficientsByWarningType));
 
-        pilotageDueTariff.setGrossTonnageThreshold(BigDecimal.valueOf(9999.00));
+        pilotageDueTariff.setGrossTonnageThreshold(BigDecimal.valueOf(10000.00));
     }
 
     private static void initializeHolidayCalendar(HolidayCalendar holidayCalendar) {
+
+        int year = LocalDate.now().getYear();
         LocalDate easter = LocalDate.of(LocalDate.now().getYear(), MAY, 2);
-        Set<LocalDate> holidays = HolidayCalendarResolver.resolveWithDateFor(easter);
-        holidayCalendar.setHolidayCalendar(holidays);
+
+        Set<LocalDate> officialHolidays = new TreeSet<>();
+
+        officialHolidays.add(easter);
+
+        officialHolidays.add(LocalDate.of(year, JANUARY, 1));
+        officialHolidays.add(LocalDate.of(year, MARCH, 3));
+        officialHolidays.add(LocalDate.of(year, APRIL, 30));
+        officialHolidays.add(LocalDate.of(year, MAY, 1));
+        officialHolidays.add(LocalDate.of(year, MAY, 6));
+        officialHolidays.add(LocalDate.of(year, MAY, 24));
+        officialHolidays.add(LocalDate.of(year, SEPTEMBER, 6));
+        officialHolidays.add(LocalDate.of(year, SEPTEMBER, 22));
+        officialHolidays.add(LocalDate.of(year, DECEMBER, 24));
+        officialHolidays.add(LocalDate.of(year, DECEMBER, 25));
+        officialHolidays.add(LocalDate.of(year, DECEMBER, 26));
+
+        Set<LocalDate> resolvedHolidays = HolidayCalendarResolver.resolve(officialHolidays);
+        holidayCalendar.setHolidayCalendar(resolvedHolidays);
     }
 }

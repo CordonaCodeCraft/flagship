@@ -9,6 +9,7 @@ import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 
 @Getter
@@ -17,6 +18,7 @@ import java.util.Map;
 @NoArgsConstructor
 public class PilotageDueTariff extends Tariff {
 
+    private Map<PilotageArea, List<String>> portNamesInPilotageAreas;
     private Map<PilotageArea, Map<BigDecimal, Integer[]>> pilotageDuesByArea;
     private Map<CargoType, BigDecimal> increaseCoefficientsByCargoType;
     private Map<PdaWarning, BigDecimal> increaseCoefficientsByWarningType;

@@ -13,21 +13,21 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class PilotageDueCalculator {
 
-    public BigDecimal calculateDue(Case source, PilotageDueTariff tariff) {
+    public BigDecimal calculateDue(final Case source, final PilotageDueTariff tariff) {
 
         BigDecimal pilotageDue = getFixedPilotageDue(source, tariff);
 
-        boolean isAboveGrossTonnageThreshold = evaluateThreshold(source, tariff);
+        final boolean isAboveGrossTonnageThreshold = evaluateThreshold(source, tariff);
 
         if (isAboveGrossTonnageThreshold) {
-            BigDecimal totalIncrease = calculateTotalIncrease(source, tariff);
+            final BigDecimal totalIncrease = calculateTotalIncrease(source, tariff);
             pilotageDue = pilotageDue.add(totalIncrease);
         }
 
         BigDecimal increaseCoefficient = evaluateIncreaseCoefficient(source, tariff);
 
         if (increaseCoefficient.doubleValue() > 0) {
-            BigDecimal increase = pilotageDue.multiply(increaseCoefficient);
+            final BigDecimal increase = pilotageDue.multiply(increaseCoefficient);
             pilotageDue = pilotageDue.add(increase);
         }
 
@@ -35,29 +35,47 @@ public class PilotageDueCalculator {
     }
 
 
-    private BigDecimal getFixedPilotageDue(Case source, PilotageDueTariff tariff) {
+    private BigDecimal getFixedPilotageDue(final Case source, final PilotageDueTariff tariff) {
 
-        PilotageArea pilotageArea = source.getPort().getPilotageArea();
-        Integer grossTonnage = source.getShip().getGrossTonnage();
+        final PilotageArea pilotageArea = source.getPort().getPilotageArea();
+        final Integer grossTonnage = source.getShip().getGrossTonnage();
 
         return tariff.getPilotageDuesByArea().get(pilotageArea)
                 .entrySet()
                 .stream()
                 .filter(entry -> grossTonnage >= entry.getValue()[0] && grossTonnage <= entry.getValue()[1])
                 .map(Map.Entry::getKey)
-                .findFirst().orElse(getBiggestFixedPilotageDue(source, tariff));
+                .findFirst()
+                .orElse(getBiggestFixedPilotageDue(source, tariff));
     }
 
-    private BigDecimal getBiggestFixedPilotageDue(Case source, PilotageDueTariff tariff) {
-        return tariff.getPilotageDuesByArea().get(source.getPort().getPilotageArea())
+    private BigDecimal getBiggestFixedPilotageDue(final Case source, final PilotageDueTariff tariff) {
+
+        final PilotageArea pilotageArea = source.getPort().getPilotageArea();
+
+        return tariff.getPilotageDuesByArea().get(pilotageArea)
                 .keySet()
                 .stream()
                 .max(Comparator.naturalOrder())
                 .get();
     }
 
-    private BigDecimal getDueIncreaseValue(Case source, PilotageDueTariff tariff) {
-        return tariff.getPilotageDuesByArea().get(source.getPort().getPilotageArea())
+    private boolean evaluateThreshold(final Case source, final PilotageDueTariff tariff) {
+        final Integer grossTonnage = source.getShip().getGrossTonnage();
+        return grossTonnage >= tariff.getGrossTonnageThreshold().intValue();
+    }
+
+    private BigDecimal calculateTotalIncrease(final Case source, final PilotageDueTariff tariff) {
+        final BigDecimal dueIncreaseValue = getDueIncreaseValue(source, tariff);
+        final BigDecimal multiplier = evaluateMultiplier(source, tariff);
+        return dueIncreaseValue.multiply(multiplier);
+    }
+
+    private BigDecimal getDueIncreaseValue(final Case source, final PilotageDueTariff tariff) {
+
+        final PilotageArea pilotageArea = source.getPort().getPilotageArea();
+
+        return tariff.getPilotageDuesByArea().get(pilotageArea)
                 .values()
                 .stream()
                 .findFirst()
@@ -65,35 +83,22 @@ public class PilotageDueCalculator {
                 .get();
     }
 
-    private BigDecimal evaluateMultiplier(Case source, PilotageDueTariff tariff) {
-        int grossTonnage = source.getShip().getGrossTonnage();
-        int stopValue = tariff.getGrossTonnageThreshold().intValue() + 1;
-        int factor = 0;
+    private BigDecimal evaluateMultiplier(final Case source, final PilotageDueTariff tariff) {
 
-        if (grossTonnage == stopValue) {
-            return BigDecimal.valueOf(1);
-        } else {
-            while (grossTonnage > stopValue) {
-                grossTonnage -= 1000;
-                factor++;
-            }
-        }
+        double grossTonnage = source.getShip().getGrossTonnage().doubleValue();
+        double grossTonnageThreshold = tariff.getGrossTonnageThreshold().doubleValue();
 
-        return BigDecimal.valueOf(factor);
+        double a = (grossTonnage - grossTonnageThreshold) / 1000;
+        double b = (int) a;
+        double c = a - Math.floor(a);
+        c = c > 0 ? 1 : 0;
+
+        double multiplier = b + c == 0 ? 1 : b + c;
+
+        return BigDecimal.valueOf(multiplier);
     }
 
-    private BigDecimal calculateTotalIncrease(Case source, PilotageDueTariff tariff) {
-        BigDecimal dueIncreaseValue = getDueIncreaseValue(source, tariff);
-        BigDecimal multiplier = evaluateMultiplier(source, tariff);
-        return dueIncreaseValue.multiply(multiplier);
-    }
-
-    private boolean evaluateThreshold(Case source, PilotageDueTariff tariff) {
-        Integer grossTonnage = source.getShip().getGrossTonnage();
-        return grossTonnage > tariff.getGrossTonnageThreshold().intValue();
-    }
-
-    private BigDecimal evaluateIncreaseCoefficient(Case source, PilotageDueTariff tariff) {
+    private BigDecimal evaluateIncreaseCoefficient(final Case source, final PilotageDueTariff tariff) {
         return tariff.getIncreaseCoefficientsByCargoType()
                 .entrySet()
                 .stream()
