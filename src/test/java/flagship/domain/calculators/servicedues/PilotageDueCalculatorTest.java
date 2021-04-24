@@ -1,4 +1,4 @@
-package flagship.domain.utils.calculators.servicedues;
+package flagship.domain.calculators.servicedues;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import flagship.domain.cases.entities.Cargo;
@@ -6,8 +6,8 @@ import flagship.domain.cases.entities.Case;
 import flagship.domain.cases.entities.Port;
 import flagship.domain.cases.entities.Ship;
 import flagship.domain.cases.entities.enums.PilotageArea;
-import flagship.domain.utils.calculators.DueCalculatorTest;
-import flagship.domain.utils.tariffs.serviceduestariffs.PilotageDueTariff;
+import flagship.domain.calculators.DueCalculatorTest;
+import flagship.domain.calculators.tariffs.serviceduestariffs.PilotageDueTariff;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -148,9 +148,7 @@ public class PilotageDueCalculatorTest implements DueCalculatorTest {
 
         double a = (grossTonnage - tariff.getGrossTonnageThreshold().doubleValue()) / 1000;
         double b = (int) a;
-        double c = a - Math.floor(a);
-        c = c > 0 ? 1 : 0;
-
+        double c = a - Math.floor(a) > 0 ? 1 : 0;
         double multiplier = b + c == 0 ? 1 : b + c;
 
         return BigDecimal.valueOf(multiplier);

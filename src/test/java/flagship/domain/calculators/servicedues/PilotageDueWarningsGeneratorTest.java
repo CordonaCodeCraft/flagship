@@ -1,12 +1,12 @@
-package flagship.domain.utils.calculators.servicedues;
+package flagship.domain.calculators.servicedues;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import flagship.domain.cases.entities.Case;
 import flagship.domain.cases.entities.Ship;
 import flagship.domain.cases.entities.Warning;
-import flagship.domain.utils.tariffs.serviceduestariffs.HolidayCalendar;
-import flagship.domain.utils.tariffs.serviceduestariffs.PilotageDueTariff;
+import flagship.domain.calculators.HolidayCalendar;
+import flagship.domain.calculators.tariffs.serviceduestariffs.PilotageDueTariff;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,8 +19,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Set;
 
-import static flagship.domain.utils.tariffs.serviceduestariffs.PdaWarning.HOLIDAY;
-import static flagship.domain.utils.tariffs.serviceduestariffs.PdaWarning.PILOT;
+import static flagship.domain.cases.entities.enums.PdaWarning.HOLIDAY;
+import static flagship.domain.cases.entities.enums.PdaWarning.PILOT;
 import static java.time.Month.DECEMBER;
 import static java.time.Month.JANUARY;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;

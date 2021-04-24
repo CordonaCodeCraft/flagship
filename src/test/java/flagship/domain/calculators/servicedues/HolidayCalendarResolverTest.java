@@ -1,6 +1,6 @@
-package flagship.domain.utils.calculators.servicedues;
+package flagship.domain.calculators.servicedues;
 
-import flagship.domain.utils.calculators.resolvers.HolidayCalendarResolver;
+import flagship.domain.calculators.resolvers.HolidayCalendarResolver;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

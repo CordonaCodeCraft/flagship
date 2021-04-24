@@ -1,11 +1,11 @@
-package flagship.domain.utils.calculators.servicedues;
+package flagship.domain.calculators.servicedues;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import flagship.domain.cases.entities.Case;
 import flagship.domain.cases.entities.Port;
 import flagship.domain.cases.entities.enums.PilotageArea;
-import flagship.domain.utils.calculators.resolvers.PilotageAreaResolver;
-import flagship.domain.utils.tariffs.serviceduestariffs.PilotageDueTariff;
+import flagship.domain.calculators.resolvers.PilotageAreaResolver;
+import flagship.domain.calculators.tariffs.serviceduestariffs.PilotageDueTariff;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -95,8 +95,6 @@ class PilotageAreaResolverTest {
     private static Stream<Arguments> getStreamOfPortNamesForPilotageArea(PilotageArea pilotageArea) {
         return tariff.getPortNamesInPilotageAreas().get(pilotageArea)
                 .stream()
-                .map(Arguments::of)
-                .collect(Collectors.toList())
-                .stream();
+                .map(Arguments::of);
     }
 }
