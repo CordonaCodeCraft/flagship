@@ -1,7 +1,7 @@
-package flagship.domain.utils.tariffs.stateduestariffs;
+package flagship.domain.calculators.tariffs.stateduestariffs;
 
 import flagship.domain.cases.entities.enums.ShipType;
-import flagship.domain.utils.tariffs.Tariff;
+import flagship.domain.calculators.tariffs.Tariff;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

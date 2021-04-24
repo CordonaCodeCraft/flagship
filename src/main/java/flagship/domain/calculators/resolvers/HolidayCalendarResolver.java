@@ -1,4 +1,4 @@
-package flagship.domain.utils.calculators.resolvers;
+package flagship.domain.calculators.resolvers;
 
 import java.time.LocalDate;
 import java.util.Set;

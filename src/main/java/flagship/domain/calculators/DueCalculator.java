@@ -1,4 +1,4 @@
-package flagship.domain.utils.calculators;
+package flagship.domain.calculators;
 
 import java.math.BigDecimal;
 

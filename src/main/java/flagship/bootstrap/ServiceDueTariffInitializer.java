@@ -2,10 +2,10 @@ package flagship.bootstrap;
 
 import flagship.domain.cases.entities.enums.CargoType;
 import flagship.domain.cases.entities.enums.PilotageArea;
-import flagship.domain.utils.calculators.resolvers.HolidayCalendarResolver;
-import flagship.domain.utils.tariffs.serviceduestariffs.HolidayCalendar;
-import flagship.domain.utils.tariffs.serviceduestariffs.PdaWarning;
-import flagship.domain.utils.tariffs.serviceduestariffs.PilotageDueTariff;
+import flagship.domain.calculators.resolvers.HolidayCalendarResolver;
+import flagship.domain.calculators.HolidayCalendar;
+import flagship.domain.cases.entities.enums.PdaWarning;
+import flagship.domain.calculators.tariffs.serviceduestariffs.PilotageDueTariff;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -15,8 +15,8 @@ import java.util.*;
 import static flagship.domain.cases.entities.enums.CargoType.HAZARDOUS;
 import static flagship.domain.cases.entities.enums.CargoType.SPECIAL;
 import static flagship.domain.cases.entities.enums.PilotageArea.*;
-import static flagship.domain.utils.tariffs.serviceduestariffs.PdaWarning.HOLIDAY;
-import static flagship.domain.utils.tariffs.serviceduestariffs.PdaWarning.PILOT;
+import static flagship.domain.cases.entities.enums.PdaWarning.HOLIDAY;
+import static flagship.domain.cases.entities.enums.PdaWarning.PILOT;
 import static java.time.Month.*;
 
 @Component

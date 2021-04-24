@@ -1,4 +1,4 @@
-package flagship.domain.utils.tariffs;
+package flagship.domain.calculators.tariffs;
 
 import java.io.Serializable;
 

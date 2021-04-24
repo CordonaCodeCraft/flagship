@@ -1,8 +1,8 @@
-package flagship.domain.utils.calculators.resolvers;
+package flagship.domain.calculators.resolvers;
 
 import flagship.domain.cases.entities.Case;
 import flagship.domain.cases.entities.enums.PilotageArea;
-import flagship.domain.utils.tariffs.serviceduestariffs.PilotageDueTariff;
+import flagship.domain.calculators.tariffs.serviceduestariffs.PilotageDueTariff;
 
 import java.util.Map;
 

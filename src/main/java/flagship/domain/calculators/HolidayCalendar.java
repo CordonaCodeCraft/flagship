@@ -1,4 +1,4 @@
-package flagship.domain.utils.tariffs.serviceduestariffs;
+package flagship.domain.calculators;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

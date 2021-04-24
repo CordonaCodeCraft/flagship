@@ -1,8 +1,9 @@
-package flagship.domain.utils.tariffs.serviceduestariffs;
+package flagship.domain.calculators.tariffs.serviceduestariffs;
 
 import flagship.domain.cases.entities.enums.CargoType;
 import flagship.domain.cases.entities.enums.PilotageArea;
-import flagship.domain.utils.tariffs.Tariff;
+import flagship.domain.cases.entities.enums.PdaWarning;
+import flagship.domain.calculators.tariffs.Tariff;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

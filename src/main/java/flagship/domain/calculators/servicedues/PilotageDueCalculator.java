@@ -1,9 +1,9 @@
-package flagship.domain.utils.calculators.servicedues;
+package flagship.domain.calculators.servicedues;
 
 import flagship.domain.cases.entities.Cargo;
 import flagship.domain.cases.entities.Case;
 import flagship.domain.cases.entities.enums.PilotageArea;
-import flagship.domain.utils.tariffs.serviceduestariffs.PilotageDueTariff;
+import flagship.domain.calculators.tariffs.serviceduestariffs.PilotageDueTariff;
 import lombok.RequiredArgsConstructor;
 
 import java.math.BigDecimal;
@@ -85,15 +85,13 @@ public class PilotageDueCalculator {
 
     private BigDecimal evaluateMultiplier(final Case source, final PilotageDueTariff tariff) {
 
-        double grossTonnage = source.getShip().getGrossTonnage().doubleValue();
-        double grossTonnageThreshold = tariff.getGrossTonnageThreshold().doubleValue();
+        final double grossTonnage = source.getShip().getGrossTonnage().doubleValue();
+        final double grossTonnageThreshold = tariff.getGrossTonnageThreshold().doubleValue();
 
-        double a = (grossTonnage - grossTonnageThreshold) / 1000;
-        double b = (int) a;
-        double c = a - Math.floor(a);
-        c = c > 0 ? 1 : 0;
-
-        double multiplier = b + c == 0 ? 1 : b + c;
+        final double a = (grossTonnage - grossTonnageThreshold) / 1000;
+        final double b = (int) a;
+        final double c = a - Math.floor(a) > 0 ? 1 : 0;
+        final double multiplier = b + c == 0 ? 1 : b + c;
 
         return BigDecimal.valueOf(multiplier);
     }

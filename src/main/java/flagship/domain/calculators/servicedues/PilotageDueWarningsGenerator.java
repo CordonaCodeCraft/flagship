@@ -1,17 +1,17 @@
-package flagship.domain.utils.calculators.servicedues;
+package flagship.domain.calculators.servicedues;
 
 import flagship.domain.cases.entities.Case;
 import flagship.domain.cases.entities.Warning;
-import flagship.domain.utils.tariffs.serviceduestariffs.HolidayCalendar;
-import flagship.domain.utils.tariffs.serviceduestariffs.PilotageDueTariff;
+import flagship.domain.calculators.HolidayCalendar;
+import flagship.domain.calculators.tariffs.serviceduestariffs.PilotageDueTariff;
 
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import static flagship.domain.utils.tariffs.serviceduestariffs.PdaWarning.HOLIDAY;
-import static flagship.domain.utils.tariffs.serviceduestariffs.PdaWarning.PILOT;
+import static flagship.domain.cases.entities.enums.PdaWarning.HOLIDAY;
+import static flagship.domain.cases.entities.enums.PdaWarning.PILOT;
 
 //todo: Confirm, that predefining UUID id is not a problem for Hibernate
 

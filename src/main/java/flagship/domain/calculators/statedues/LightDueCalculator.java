@@ -1,8 +1,8 @@
-package flagship.domain.utils.calculators.statedues;
+package flagship.domain.calculators.statedues;
 
 import flagship.domain.cases.entities.Case;
 import flagship.domain.cases.entities.enums.ShipType;
-import flagship.domain.utils.tariffs.stateduestariffs.LightDueTariff;
+import flagship.domain.calculators.tariffs.stateduestariffs.LightDueTariff;
 
 import java.math.BigDecimal;
 import java.util.Map;

@@ -1,6 +1,6 @@
-package flagship.domain.utils.calculators.statedues;
+package flagship.domain.calculators.statedues;
 
-import flagship.domain.utils.calculators.DueCalculator;
+import flagship.domain.calculators.DueCalculator;
 
 import java.math.BigDecimal;
 
