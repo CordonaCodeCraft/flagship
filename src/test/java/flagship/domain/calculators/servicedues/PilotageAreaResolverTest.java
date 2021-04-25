@@ -15,7 +15,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static flagship.domain.cases.entities.enums.PilotageArea.*;
@@ -44,7 +43,7 @@ class PilotageAreaResolverTest {
     @MethodSource(value = "getPortsInVarnaFirstPilotageArea")
     void shouldResolvePilotageAreaToVarnaFirst(String portName) {
         testCase.getPort().setName(portName);
-        PilotageArea result = PilotageAreaResolver.resolveArea(testCase, tariff);
+        PilotageArea result = PilotageAreaResolver.resolvePilotageArea(testCase, tariff);
         assertThat(result.name()).isEqualTo(VARNA_FIRST.name());
     }
 
@@ -53,7 +52,7 @@ class PilotageAreaResolverTest {
     @MethodSource(value = "getPortsInVarnaSecondPilotageArea")
     void shouldResolvePilotageAreaToVarnaSecond(String portName) {
         testCase.getPort().setName(portName);
-        PilotageArea result = PilotageAreaResolver.resolveArea(testCase, tariff);
+        PilotageArea result = PilotageAreaResolver.resolvePilotageArea(testCase, tariff);
         assertThat(result.name()).isEqualTo(VARNA_SECOND.name());
     }
 
@@ -62,7 +61,7 @@ class PilotageAreaResolverTest {
     @MethodSource(value = "getPortsInVarnaThirdPilotageArea")
     void shouldResolvePilotageAreaToVarnaThird(String portName) {
         testCase.getPort().setName(portName);
-        PilotageArea result = PilotageAreaResolver.resolveArea(testCase, tariff);
+        PilotageArea result = PilotageAreaResolver.resolvePilotageArea(testCase, tariff);
         assertThat(result.name()).isEqualTo(VARNA_THIRD.name());
     }
 
@@ -71,7 +70,7 @@ class PilotageAreaResolverTest {
     @MethodSource(value = "getPortsInBourgasFirstPilotageArea")
     void shouldResolvePilotageAreaToBourgasFirst(String portName) {
         testCase.getPort().setName(portName);
-        PilotageArea result = PilotageAreaResolver.resolveArea(testCase, tariff);
+        PilotageArea result = PilotageAreaResolver.resolvePilotageArea(testCase, tariff);
         assertThat(result.name()).isEqualTo(BOURGAS_FIRST.name());
     }
 

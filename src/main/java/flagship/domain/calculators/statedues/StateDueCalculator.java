@@ -6,13 +6,13 @@ import java.math.BigDecimal;
 
 public abstract class StateDueCalculator<S, P> implements DueCalculator<S, P> {
 
-    public BigDecimal calculate(S source, P properties) {
-        BigDecimal due = calculateDue(source, properties);
+    public BigDecimal calculateFor(S source, P properties) {
+        BigDecimal baseDue = calculateBaseDue(source, properties);
         BigDecimal discountCoefficient = evaluateDiscountCoefficient(source, properties);
-        return calculateDueAfterDiscount(due, discountCoefficient);
+        return calculateDueAfterDiscount(baseDue, discountCoefficient);
     }
 
-    protected abstract BigDecimal calculateDue(S source, P properties);
+    protected abstract BigDecimal calculateBaseDue(S source, P properties);
 
     protected abstract BigDecimal evaluateDiscountCoefficient(S source, P properties);
 

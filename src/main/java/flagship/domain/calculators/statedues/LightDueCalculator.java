@@ -11,7 +11,7 @@ public class LightDueCalculator extends StateDueCalculator<Case, LightDueTariff>
 
     // todo: Validate that gross tonnage is no less than 41, otherwise fixed due per year should be applied.
     @Override
-    protected BigDecimal calculateDue(final Case source, final LightDueTariff tariff) {
+    protected BigDecimal calculateBaseDue(final Case source, final LightDueTariff tariff) {
 
         final ShipType shipType = source.getShip().getType();
         final int grossTonnage = source.getShip().getGrossTonnage();
@@ -47,7 +47,6 @@ public class LightDueCalculator extends StateDueCalculator<Case, LightDueTariff>
             if (callCount >= tariff.getCallCountThreshold()) {
                 discountCoefficient = discountCoefficient.max(tariff.getCallCountDiscountCoefficient());
             }
-
             if (tariff.getDiscountCoefficientsByShipType().containsKey(shipType)) {
                 discountCoefficient = discountCoefficient.max(tariff.getDiscountCoefficientsByShipType().get(shipType));
             }

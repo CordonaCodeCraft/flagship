@@ -58,7 +58,7 @@ class CanalDueCalculatorTest implements DueCalculatorTest {
         BigDecimal canalDue = tariff.getCanalDuesByPortArea().get(testCase.getPort().getArea());
 
         BigDecimal expected = canalDue.multiply(grossTonnage);
-        BigDecimal result = canalDueCalculator.calculate(testCase, tariff);
+        BigDecimal result = canalDueCalculator.calculateFor(testCase, tariff);
 
         assertThat(result).isEqualByComparingTo(expected);
     }
@@ -72,7 +72,7 @@ class CanalDueCalculatorTest implements DueCalculatorTest {
         BigDecimal discountCoefficient = tariff.getDefaultCallCountDiscountCoefficient();
 
         BigDecimal expected = calculateDueAfterDiscount(discountCoefficient);
-        BigDecimal result = canalDueCalculator.calculate(testCase, tariff);
+        BigDecimal result = canalDueCalculator.calculateFor(testCase, tariff);
 
         assertThat(result).isEqualByComparingTo(expected);
     }
@@ -87,7 +87,7 @@ class CanalDueCalculatorTest implements DueCalculatorTest {
         BigDecimal discountCoefficient = tariff.getDiscountCoefficientByShipType().get(testCase.getShip().getType());
 
         BigDecimal expected = calculateDueAfterDiscount(discountCoefficient);
-        BigDecimal result = canalDueCalculator.calculate(testCase, tariff);
+        BigDecimal result = canalDueCalculator.calculateFor(testCase, tariff);
 
         assertThat(result).isEqualByComparingTo(expected);
     }
@@ -106,7 +106,7 @@ class CanalDueCalculatorTest implements DueCalculatorTest {
         BigDecimal discountCoefficient = callCountDiscountCoefficient.max(shipTypeDiscountCoefficient);
 
         BigDecimal expected = calculateDueAfterDiscount(discountCoefficient);
-        BigDecimal result = canalDueCalculator.calculate(testCase, tariff);
+        BigDecimal result = canalDueCalculator.calculateFor(testCase, tariff);
 
         assertThat(result).isEqualByComparingTo(expected);
     }
@@ -122,7 +122,7 @@ class CanalDueCalculatorTest implements DueCalculatorTest {
         BigDecimal discountCoefficient = tariff.getDiscountCoefficientsByPortAreaForContainers().get(portArea);
 
         BigDecimal expected = calculateDueAfterDiscount(discountCoefficient);
-        BigDecimal result = canalDueCalculator.calculate(testCase, tariff);
+        BigDecimal result = canalDueCalculator.calculateFor(testCase, tariff);
 
         assertThat(result).isEqualByComparingTo(expected);
     }
@@ -145,7 +145,7 @@ class CanalDueCalculatorTest implements DueCalculatorTest {
         BigDecimal discountCoefficient = discountCoefficientByPortArea.max(discountCoefficientByPortAreaPerCallCount);
 
         BigDecimal expected = calculateDueAfterDiscount(discountCoefficient);
-        BigDecimal result = canalDueCalculator.calculate(testCase, tariff);
+        BigDecimal result = canalDueCalculator.calculateFor(testCase, tariff);
 
         assertThat(result).isEqualByComparingTo(expected);
     }
@@ -161,7 +161,7 @@ class CanalDueCalculatorTest implements DueCalculatorTest {
         BigDecimal discountCoefficient = BigDecimal.ZERO;
 
         BigDecimal expected = calculateDueAfterDiscount(discountCoefficient);
-        BigDecimal result = canalDueCalculator.calculate(testCase, tariff);
+        BigDecimal result = canalDueCalculator.calculateFor(testCase, tariff);
 
         assertThat(result).isEqualByComparingTo(expected);
     }

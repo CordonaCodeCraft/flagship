@@ -172,6 +172,7 @@ public class ServiceDueTariffInitializer {
 
         officialHolidays.add(LocalDate.of(year, JANUARY, 1));
         officialHolidays.add(LocalDate.of(year, MARCH, 3));
+        //todo: reserach why April of 30th is in the official holidays.
         officialHolidays.add(LocalDate.of(year, APRIL, 30));
         officialHolidays.add(LocalDate.of(year, MAY, 1));
         officialHolidays.add(LocalDate.of(year, MAY, 6));

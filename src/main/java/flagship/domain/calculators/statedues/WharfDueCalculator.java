@@ -12,7 +12,7 @@ import java.util.Set;
 public class WharfDueCalculator extends StateDueCalculator<Case, WharfDueTariff> {
 
     @Override
-    protected BigDecimal calculateDue(final Case source, final WharfDueTariff tariff) {
+    protected BigDecimal calculateBaseDue(final Case source, final WharfDueTariff tariff) {
 
         final Map<ShipType, BigDecimal> wharfDuesByShipType = tariff.getWharfDuesByShipType();
 

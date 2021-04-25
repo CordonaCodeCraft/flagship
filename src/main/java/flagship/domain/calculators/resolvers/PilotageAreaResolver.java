@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class PilotageAreaResolver {
 
-    public static PilotageArea resolveArea(final Case source, final PilotageDueTariff tariff) {
+    public static PilotageArea resolvePilotageArea(final Case source, final PilotageDueTariff tariff) {
 
         final String portName = source.getPort().getName();
 

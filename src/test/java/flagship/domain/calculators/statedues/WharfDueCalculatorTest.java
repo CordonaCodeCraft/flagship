@@ -10,7 +10,6 @@ import flagship.domain.cases.entities.enums.ShipType;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.File;
@@ -54,7 +53,7 @@ class WharfDueCalculatorTest implements DueCalculatorTest {
         testCase.getShip().setType(shipTypeWithDefaultWharfDue);
 
         BigDecimal expected = calculateWharfDue();
-        BigDecimal result = wharfDueCalculator.calculate(testCase, tariff);
+        BigDecimal result = wharfDueCalculator.calculateFor(testCase, tariff);
 
         assertThat(result).isEqualByComparingTo(expected);
     }
@@ -67,7 +66,7 @@ class WharfDueCalculatorTest implements DueCalculatorTest {
         testCase.getShip().setType(shipType);
 
         BigDecimal expected = calculateWharfDue();
-        BigDecimal result = wharfDueCalculator.calculate(testCase, tariff);
+        BigDecimal result = wharfDueCalculator.calculateFor(testCase, tariff);
 
         assertThat(result).isEqualByComparingTo(expected);
     }
@@ -82,7 +81,7 @@ class WharfDueCalculatorTest implements DueCalculatorTest {
         BigDecimal discountCoefficient = tariff.getDiscountCoefficientsByCallPurpose().get(testCase.getCallPurpose());
 
         BigDecimal expected = calculateDueAfterDiscount(discountCoefficient);
-        BigDecimal result = wharfDueCalculator.calculate(testCase, tariff);
+        BigDecimal result = wharfDueCalculator.calculateFor(testCase, tariff);
 
         assertThat(result).isEqualByComparingTo(expected);
     }
@@ -97,7 +96,7 @@ class WharfDueCalculatorTest implements DueCalculatorTest {
         BigDecimal discountCoefficient = BigDecimal.ZERO;
 
         BigDecimal expected = calculateDueAfterDiscount(discountCoefficient);
-        BigDecimal result = wharfDueCalculator.calculate(testCase, tariff);
+        BigDecimal result = wharfDueCalculator.calculateFor(testCase, tariff);
 
         assertThat(result).isEqualByComparingTo(expected);
     }

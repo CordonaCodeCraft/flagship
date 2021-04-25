@@ -13,7 +13,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class PilotageDueCalculator {
 
-    public BigDecimal calculateDue(final Case source, final PilotageDueTariff tariff) {
+    public BigDecimal calculateFor(final Case source, final PilotageDueTariff tariff) {
 
         BigDecimal pilotageDue = getFixedPilotageDue(source, tariff);
 

@@ -56,7 +56,7 @@ public class PilotageDueCalculatorTest implements DueCalculatorTest {
         testCase.getPort().setPilotageArea(pilotageArea);
 
         BigDecimal expected = getFixedPilotageDuePerGrossTonnage(testCase);
-        BigDecimal result = calculator.calculateDue(testCase, tariff);
+        BigDecimal result = calculator.calculateFor(testCase, tariff);
 
         assertThat(result).isEqualByComparingTo(expected);
     }
@@ -76,7 +76,7 @@ public class PilotageDueCalculatorTest implements DueCalculatorTest {
         BigDecimal totalIncrease = increaseValue.multiply(multiplier);
 
         BigDecimal expected = fixedPilotageDue.add(totalIncrease);
-        BigDecimal result = calculator.calculateDue(testCase, tariff);
+        BigDecimal result = calculator.calculateFor(testCase, tariff);
 
         assertThat(result).isEqualByComparingTo(expected);
     }
@@ -93,7 +93,7 @@ public class PilotageDueCalculatorTest implements DueCalculatorTest {
         BigDecimal pilotageDue = getFixedPilotageDuePerGrossTonnage(testCase);
         BigDecimal increase = pilotageDue.multiply(tariff.getIncreaseCoefficientsByCargoType().get(HAZARDOUS));
         BigDecimal expected = pilotageDue.add(increase);
-        BigDecimal result = calculator.calculateDue(testCase, tariff);
+        BigDecimal result = calculator.calculateFor(testCase, tariff);
 
         assertThat(result).isEqualByComparingTo(expected);
     }
@@ -110,7 +110,7 @@ public class PilotageDueCalculatorTest implements DueCalculatorTest {
         BigDecimal pilotageDue = getFixedPilotageDuePerGrossTonnage(testCase);
         BigDecimal increase = pilotageDue.multiply(tariff.getIncreaseCoefficientsByCargoType().get(SPECIAL));
         BigDecimal expected = pilotageDue.add(increase);
-        BigDecimal result = calculator.calculateDue(testCase, tariff);
+        BigDecimal result = calculator.calculateFor(testCase, tariff);
 
         assertThat(result).isEqualByComparingTo(expected);
     }

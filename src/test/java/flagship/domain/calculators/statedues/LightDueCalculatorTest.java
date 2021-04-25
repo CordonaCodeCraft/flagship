@@ -58,7 +58,7 @@ public class LightDueCalculatorTest implements DueCalculatorTest {
 
         BigDecimal expected = evaluateLightDue();
 
-        BigDecimal result = lightDueCalculator.calculate(testCase, tariff);
+        BigDecimal result = lightDueCalculator.calculateFor(testCase, tariff);
 
         assertThat(result).isEqualByComparingTo(expected);
     }
@@ -72,7 +72,7 @@ public class LightDueCalculatorTest implements DueCalculatorTest {
 
         BigDecimal expected = evaluateLightDue();
 
-        BigDecimal result = lightDueCalculator.calculate(testCase, tariff);
+        BigDecimal result = lightDueCalculator.calculateFor(testCase, tariff);
 
         assertThat(result).isEqualByComparingTo(expected);
     }
@@ -87,7 +87,7 @@ public class LightDueCalculatorTest implements DueCalculatorTest {
         BigDecimal discountCoefficient = tariff.getDiscountCoefficientsByShipType().get(testCase.getShip().getType());
 
         BigDecimal expected = calculateDueAfterDiscount(discountCoefficient);
-        BigDecimal result = lightDueCalculator.calculate(testCase, tariff);
+        BigDecimal result = lightDueCalculator.calculateFor(testCase, tariff);
 
         assertThat(result).isEqualByComparingTo(expected);
     }
@@ -101,7 +101,7 @@ public class LightDueCalculatorTest implements DueCalculatorTest {
         BigDecimal discountCoefficient = tariff.getCallCountDiscountCoefficient();
 
         BigDecimal expected = calculateDueAfterDiscount(discountCoefficient);
-        BigDecimal result = lightDueCalculator.calculate(testCase, tariff);
+        BigDecimal result = lightDueCalculator.calculateFor(testCase, tariff);
 
         assertThat(result).isEqualByComparingTo(expected);
     }
@@ -121,7 +121,7 @@ public class LightDueCalculatorTest implements DueCalculatorTest {
         BigDecimal discountCoefficient = callCountDiscountCoefficient.max(shipTypeDiscountCoefficient);
 
         BigDecimal expected = calculateDueAfterDiscount(discountCoefficient);
-        BigDecimal result = lightDueCalculator.calculate(testCase, tariff);
+        BigDecimal result = lightDueCalculator.calculateFor(testCase, tariff);
 
         assertThat(result).isEqualByComparingTo(expected);
     }
@@ -137,7 +137,7 @@ public class LightDueCalculatorTest implements DueCalculatorTest {
         BigDecimal discountCoefficient = BigDecimal.ZERO;
 
         BigDecimal expected = calculateDueAfterDiscount(discountCoefficient);
-        BigDecimal result = lightDueCalculator.calculate(testCase, tariff);
+        BigDecimal result = lightDueCalculator.calculateFor(testCase, tariff);
 
         assertThat(result).isEqualByComparingTo(expected);
     }

@@ -4,5 +4,5 @@ import java.math.BigDecimal;
 
 public interface DueCalculator<S, P> {
 
-  BigDecimal calculate(S source, P properties);
+  BigDecimal calculateFor(S source, P properties);
 }

@@ -14,7 +14,7 @@ import java.util.Set;
 public class TonnageDueCalculator extends StateDueCalculator<Case, TonnageDueTariff> {
 
     @Override
-    protected BigDecimal calculateDue(final Case source, final TonnageDueTariff tariff) {
+    protected BigDecimal calculateBaseDue(final Case source, final TonnageDueTariff tariff) {
         final BigDecimal grossTonnage = BigDecimal.valueOf(source.getShip().getGrossTonnage());
         final BigDecimal tonnageDuePerTon = evaluateTonnageDuePerTon(source, tariff);
         return grossTonnage.multiply(tonnageDuePerTon);
@@ -38,15 +38,12 @@ public class TonnageDueCalculator extends StateDueCalculator<Case, TonnageDueTar
         BigDecimal discountCoefficient = BigDecimal.ZERO;
 
         if (isEligibleForDiscount) {
-
             if (callCount >= tariff.getCallCountThreshold()) {
                 discountCoefficient = discountCoefficient.max(tariff.getCallCountDiscountCoefficient());
             }
-
             if (discountCoefficientsByCallPurpose.containsKey(callPurpose)) {
                 discountCoefficient = discountCoefficient.max(discountCoefficientsByCallPurpose.get(callPurpose));
             }
-
             if (discountCoefficientsByShipType.containsKey(shipType)) {
                 discountCoefficient = discountCoefficient.max(discountCoefficientsByShipType.get(shipType));
             }

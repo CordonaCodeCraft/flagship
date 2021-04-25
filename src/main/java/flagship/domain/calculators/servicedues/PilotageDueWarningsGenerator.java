@@ -14,6 +14,9 @@ import static flagship.domain.cases.entities.enums.PdaWarning.HOLIDAY;
 import static flagship.domain.cases.entities.enums.PdaWarning.PILOT;
 
 //todo: Confirm, that predefining UUID id is not a problem for Hibernate
+//todo: Add warning regarding the wharf due - if between ETA and ETD - the stay of the ship will be increased.
+// This must increase the total and must generate warning. The warning message will say, that the expected wharf due
+// is increased.
 
 public class PilotageDueWarningsGenerator {
 

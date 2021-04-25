@@ -55,7 +55,7 @@ class TonnageDueCalculatorTest implements DueCalculatorTest {
     @DisplayName("Tonnage due by port area")
     @ParameterizedTest(name = "port area : {arguments}")
     @EnumSource(PortArea.class)
-    void testDueByPortArea(PortArea portArea) {
+    void testTonnageDueByPortArea(PortArea portArea) {
 
         ShipType shipTypeDependantOnPortArea = Arrays
                 .stream(ShipType.values())
@@ -76,7 +76,7 @@ class TonnageDueCalculatorTest implements DueCalculatorTest {
         BigDecimal duePerTon = tariff.getTonnageDuesByPortArea().get(testCase.getPort().getArea());
 
         BigDecimal expected = grossTonnage.multiply(duePerTon);
-        BigDecimal result = tonnageDueCalculator.calculate(testCase, tariff);
+        BigDecimal result = tonnageDueCalculator.calculateFor(testCase, tariff);
 
         assertThat(result).isEqualByComparingTo(expected);
     }
@@ -84,14 +84,14 @@ class TonnageDueCalculatorTest implements DueCalculatorTest {
     @DisplayName("Tonnage due by ship type")
     @ParameterizedTest(name = "ship type : {arguments}")
     @MethodSource(value = "getShipTypesAffectingTonnageDue")
-    void testDueByShipType(ShipType shipType) {
+    void testTonnageDueByShipType(ShipType shipType) {
 
         testCase.getShip().setType(shipType);
 
         BigDecimal duePerTon = tariff.getTonnageDuesByShipType().get(testCase.getShip().getType());
 
         BigDecimal expected = grossTonnage.multiply(duePerTon);
-        BigDecimal result = tonnageDueCalculator.calculate(testCase, tariff);
+        BigDecimal result = tonnageDueCalculator.calculateFor(testCase, tariff);
 
         assertThat(result).isEqualByComparingTo(expected);
     }
@@ -99,14 +99,14 @@ class TonnageDueCalculatorTest implements DueCalculatorTest {
     @DisplayName("Tonnage due by call purpose")
     @ParameterizedTest(name = "call purpose : {arguments}")
     @MethodSource(value = "getCallPurposesAffectingTonnageDue")
-    void testDueByCallPurpose(CallPurpose callPurpose) {
+    void testTonnageDueByCallPurpose(CallPurpose callPurpose) {
 
         testCase.setCallPurpose(callPurpose);
 
         BigDecimal duePerTon = tariff.getTonnageDuesByCallPurpose().get(testCase.getCallPurpose());
 
         BigDecimal expected = grossTonnage.multiply(duePerTon);
-        BigDecimal result = tonnageDueCalculator.calculate(testCase, tariff);
+        BigDecimal result = tonnageDueCalculator.calculateFor(testCase, tariff);
 
         assertThat(result).isEqualByComparingTo(expected);
     }
@@ -120,7 +120,7 @@ class TonnageDueCalculatorTest implements DueCalculatorTest {
         BigDecimal discountCoefficient = tariff.getCallCountDiscountCoefficient();
 
         BigDecimal expected = calculateDueAfterDiscount(discountCoefficient);
-        BigDecimal result = tonnageDueCalculator.calculate(testCase, tariff);
+        BigDecimal result = tonnageDueCalculator.calculateFor(testCase, tariff);
 
         assertThat(result).isEqualByComparingTo(expected);
     }
@@ -135,7 +135,7 @@ class TonnageDueCalculatorTest implements DueCalculatorTest {
         BigDecimal discountCoefficient = tariff.getDiscountCoefficientsByCallPurpose().get(callPurpose);
 
         BigDecimal expected = calculateDueAfterDiscount(discountCoefficient);
-        BigDecimal result = tonnageDueCalculator.calculate(testCase, tariff);
+        BigDecimal result = tonnageDueCalculator.calculateFor(testCase, tariff);
 
         assertThat(result).isEqualByComparingTo(expected);
     }
@@ -150,7 +150,7 @@ class TonnageDueCalculatorTest implements DueCalculatorTest {
         BigDecimal discountCoefficient = tariff.getDiscountCoefficientsByShipType().get(testCase.getShip().getType());
 
         BigDecimal expected = calculateDueAfterDiscount(discountCoefficient);
-        BigDecimal result = tonnageDueCalculator.calculate(testCase, tariff);
+        BigDecimal result = tonnageDueCalculator.calculateFor(testCase, tariff);
 
         assertThat(result).isEqualByComparingTo(expected);
     }
@@ -175,7 +175,7 @@ class TonnageDueCalculatorTest implements DueCalculatorTest {
         BigDecimal discountCoefficient = discountCoefficients.stream().max(Comparator.naturalOrder()).get();
 
         BigDecimal expected = calculateDueAfterDiscount(discountCoefficient);
-        BigDecimal result = tonnageDueCalculator.calculate(testCase, tariff);
+        BigDecimal result = tonnageDueCalculator.calculateFor(testCase, tariff);
 
         assertThat(result).isEqualByComparingTo(expected);
     }
@@ -192,7 +192,7 @@ class TonnageDueCalculatorTest implements DueCalculatorTest {
         BigDecimal discountCoefficient = BigDecimal.ZERO;
 
         BigDecimal expected = calculateDueAfterDiscount(discountCoefficient);
-        BigDecimal result = tonnageDueCalculator.calculate(testCase, tariff);
+        BigDecimal result = tonnageDueCalculator.calculateFor(testCase, tariff);
 
         assertThat(result).isEqualByComparingTo(expected);
     }
@@ -209,7 +209,7 @@ class TonnageDueCalculatorTest implements DueCalculatorTest {
         BigDecimal discountCoefficient = BigDecimal.ZERO;
 
         BigDecimal expected = calculateDueAfterDiscount(discountCoefficient);
-        BigDecimal result = tonnageDueCalculator.calculate(testCase, tariff);
+        BigDecimal result = tonnageDueCalculator.calculateFor(testCase, tariff);
 
         assertThat(result).isEqualByComparingTo(expected);
     }
@@ -279,7 +279,7 @@ class TonnageDueCalculatorTest implements DueCalculatorTest {
             duePerGrossTon = tariff.getTonnageDuesByPortArea().get(testCase.getPort().getArea());
         }
 
-        BigDecimal dueTotal = BigDecimal.valueOf(testCase.getShip().getGrossTonnage()).multiply(duePerGrossTon);
+        BigDecimal dueTotal = grossTonnage.multiply(duePerGrossTon);
         BigDecimal discount = dueTotal.multiply(discountCoefficient);
 
         return dueTotal.subtract(discount);
