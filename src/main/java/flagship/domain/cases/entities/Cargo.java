@@ -20,12 +20,8 @@ import static javax.persistence.EnumType.STRING;
 @Table(name = "cargos")
 public class Cargo extends BaseEntity {
 
-    private String description;
+  private String description;
 
-    @Enumerated(value = STRING)
-    private CargoType type;
-
+  @Enumerated(value = STRING)
+  private CargoType type;
 }
-
-
-

@@ -9,27 +9,26 @@ import static java.time.DayOfWeek.SUNDAY;
 
 public abstract class HolidayCalendarResolver {
 
-    //todo: implement without nested while loop
+  // todo: implement without nested while loop
 
-    public static Set<LocalDate> resolve(final Set<LocalDate> holidays) {
+  public static Set<LocalDate> resolve(final Set<LocalDate> holidays) {
 
-        final Set<LocalDate> updatedHolidays = new TreeSet<>(holidays);
+    final Set<LocalDate> updatedHolidays = new TreeSet<>(holidays);
 
-        holidays
-                .stream()
-                .filter(HolidayCalendarResolver::isWeekend)
-                .forEach(date -> {
-                    while (updatedHolidays.contains(date)) {
-                        date = date.plusDays(1);
-                    }
-                    updatedHolidays.add(date);
-                });
+    holidays.stream()
+        .filter(HolidayCalendarResolver::isWeekend)
+        .forEach(
+            date -> {
+              while (updatedHolidays.contains(date)) {
+                date = date.plusDays(1);
+              }
+              updatedHolidays.add(date);
+            });
 
-        return updatedHolidays;
-    }
+    return updatedHolidays;
+  }
 
-    private static boolean isWeekend(final LocalDate day) {
-        return day.getDayOfWeek().equals(SATURDAY) || day.getDayOfWeek().equals(SUNDAY);
-    }
-
+  private static boolean isWeekend(final LocalDate day) {
+    return day.getDayOfWeek().equals(SATURDAY) || day.getDayOfWeek().equals(SUNDAY);
+  }
 }

@@ -1,45 +1,45 @@
 package flagship.domain.calculators.statedues;
 
-import flagship.domain.cases.entities.Case;
-import flagship.domain.cases.entities.enums.CallPurpose;
-import flagship.domain.cases.entities.enums.ShipType;
 import flagship.domain.calculators.tariffs.stateduestariffs.WharfDueTariff;
+import flagship.domain.cases.dto.PdaCase;
 
 import java.math.BigDecimal;
-import java.util.Map;
-import java.util.Set;
 
-public class WharfDueCalculator extends StateDueCalculator<Case, WharfDueTariff> {
+public class WharfDueCalculator extends StateDueCalculator<PdaCase, WharfDueTariff> {
 
-    @Override
-    protected BigDecimal calculateBaseDue(final Case source, final WharfDueTariff tariff) {
+  @Override
+  protected BigDecimal calculateBaseDue(final PdaCase source, final WharfDueTariff tariff) {
 
-        final Map<ShipType, BigDecimal> wharfDuesByShipType = tariff.getWharfDuesByShipType();
+    final BigDecimal lengthOverall =
+        BigDecimal.valueOf(Math.ceil(source.getShip().getLengthOverall().doubleValue()));
 
-        final ShipType shipType = source.getShip().getType();
-        final BigDecimal lengthOverall = BigDecimal.valueOf(Math.ceil(source.getShip().getLengthOverall()));
-        final BigDecimal wharfDuePerMeter = wharfDuesByShipType.getOrDefault(shipType, tariff.getDefaultWharfDue());
+    final BigDecimal wharfDuePerMeter =
+        tariff
+            .getWharfDuesByShipType()
+            .getOrDefault(source.getShip().getType(), tariff.getDefaultWharfDue());
 
-        final BigDecimal wharfDuePerLengthOverall = lengthOverall.multiply(wharfDuePerMeter);
-        final BigDecimal alongsideHoursExpected = BigDecimal.valueOf(source.getAlongsideDaysExpected() * 24);
+    final BigDecimal wharfDuePerLengthOverall = lengthOverall.multiply(wharfDuePerMeter);
+    final BigDecimal alongsideHoursExpected =
+        BigDecimal.valueOf(source.getAlongsideDaysExpected() * 24);
 
-        return alongsideHoursExpected.multiply(wharfDuePerLengthOverall);
+    return alongsideHoursExpected.multiply(wharfDuePerLengthOverall);
+  }
+
+  @Override
+  protected BigDecimal evaluateDiscountCoefficient(
+      final PdaCase source, final WharfDueTariff tariff) {
+
+    BigDecimal discountCoefficient = BigDecimal.ZERO;
+
+    if (isEligibleForDiscount(source, tariff)) {
+      discountCoefficient =
+          tariff.getDiscountCoefficientsByCallPurpose().get(source.getCallPurpose());
     }
+    return discountCoefficient;
+  }
 
-    @Override
-    protected BigDecimal evaluateDiscountCoefficient(final Case source, final WharfDueTariff tariff) {
-
-        final Set<ShipType> shipTypesNotEligibleForDiscount = tariff.getShipTypesNotEligibleForDiscount();
-        final Map<CallPurpose, BigDecimal> discountCoefficientsByCallPurpose = tariff.getDiscountCoefficientsByCallPurpose();
-
-        BigDecimal discountCoefficient = BigDecimal.ZERO;
-
-        boolean shipTypeIsEligibleForDiscount = !shipTypesNotEligibleForDiscount.contains(source.getShip().getType());
-        boolean callPurposeIsEligibleForDiscount = discountCoefficientsByCallPurpose.containsKey(source.getCallPurpose());
-
-        if (shipTypeIsEligibleForDiscount && callPurposeIsEligibleForDiscount) {
-            discountCoefficient = discountCoefficientsByCallPurpose.get(source.getCallPurpose());
-        }
-        return discountCoefficient;
-    }
+  private boolean isEligibleForDiscount(PdaCase source, WharfDueTariff tariff) {
+    return !tariff.getShipTypesNotEligibleForDiscount().contains(source.getShip().getType())
+        && tariff.getDiscountCoefficientsByCallPurpose().containsKey(source.getCallPurpose());
+  }
 }

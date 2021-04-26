@@ -3,12 +3,15 @@ package flagship.domain.calculators.statedues;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import flagship.domain.calculators.DueCalculatorTest;
 import flagship.domain.calculators.tariffs.stateduestariffs.CanalDueTariff;
-import flagship.domain.cases.entities.Case;
-import flagship.domain.cases.entities.Port;
-import flagship.domain.cases.entities.Ship;
+import flagship.domain.cases.dto.PdaCase;
+import flagship.domain.cases.dto.PdaPort;
+import flagship.domain.cases.dto.PdaShip;
 import flagship.domain.cases.entities.enums.PortArea;
 import flagship.domain.cases.entities.enums.ShipType;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.EnumSource;
@@ -28,167 +31,168 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @DisplayName("Canal due calculator tests")
 class CanalDueCalculatorTest implements DueCalculatorTest {
 
-    private static CanalDueTariff tariff;
-    private final CanalDueCalculator canalDueCalculator = new CanalDueCalculator();
-    private Case testCase;
-    private BigDecimal grossTonnage;
+  private static CanalDueTariff tariff;
+  private final CanalDueCalculator canalDueCalculator = new CanalDueCalculator();
+  private PdaCase testCase;
+  private BigDecimal grossTonnage;
 
-    @BeforeAll
-    public static void beforeClass() throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        tariff = mapper.readValue(new File("src/main/resources/canalDueTariff.json"), CanalDueTariff.class);
-    }
+  @BeforeAll
+  public static void beforeClass() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    tariff =
+        mapper.readValue(new File("src/main/resources/canalDueTariff.json"), CanalDueTariff.class);
+  }
 
-    @BeforeEach
-    void setUp() {
-        Integer randomGrossTonnage = getRandomGrossTonnage();
-        Port testPort = Port.builder().area(FIRST).build();
-        Ship testShip = Ship.builder().grossTonnage(randomGrossTonnage).type(GENERAL).build();
-        testCase = Case.builder().ship(testShip).port(testPort).callCount(1).build();
-        grossTonnage = BigDecimal.valueOf(testShip.getGrossTonnage());
-    }
+  private static Stream<Arguments> getShipTypesEligibleForDiscount() {
+    return tariff.getDiscountCoefficientByShipType().keySet().stream().map(Arguments::of);
+  }
 
-    @DisplayName("Canal due by port area")
-    @ParameterizedTest(name = "port area : {arguments}")
-    @EnumSource(PortArea.class)
-    void testDefaultCanalDue(PortArea portArea) {
+  private static Stream<Arguments> getShipTypesNotEligibleForDiscount() {
+    return tariff.getShipTypesNotEligibleForDiscount().stream().map(Arguments::of);
+  }
 
-        testCase.getPort().setArea(portArea);
+  @BeforeEach
+  void setUp() {
+    BigDecimal randomGrossTonnage = getRandomGrossTonnage();
+    PdaPort testPort = PdaPort.builder().area(FIRST).build();
+    PdaShip testShip = PdaShip.builder().grossTonnage(randomGrossTonnage).type(GENERAL).build();
+    testCase = PdaCase.builder().ship(testShip).port(testPort).callCount(1).build();
+    grossTonnage = testShip.getGrossTonnage();
+  }
 
-        BigDecimal canalDue = tariff.getCanalDuesByPortArea().get(testCase.getPort().getArea());
+  @DisplayName("Canal due by port area")
+  @ParameterizedTest(name = "port area : {arguments}")
+  @EnumSource(PortArea.class)
+  void testDefaultCanalDue(PortArea portArea) {
 
-        BigDecimal expected = canalDue.multiply(grossTonnage);
-        BigDecimal result = canalDueCalculator.calculateFor(testCase, tariff);
+    testCase.getPort().setArea(portArea);
 
-        assertThat(result).isEqualByComparingTo(expected);
-    }
+    BigDecimal canalDue = tariff.getCanalDuesByPortArea().get(testCase.getPort().getArea());
 
-    @DisplayName("Canal due with default discount by call count")
-    @Test
-    void testCanalDueWithDefaultDiscountByCallCount() {
+    BigDecimal expected = canalDue.multiply(grossTonnage);
+    BigDecimal result = canalDueCalculator.calculateFor(testCase, tariff);
 
-        testCase.setCallCount(tariff.getCallCountThreshold());
+    assertThat(result).isEqualByComparingTo(expected);
+  }
 
-        BigDecimal discountCoefficient = tariff.getDefaultCallCountDiscountCoefficient();
+  @DisplayName("Canal due with default discount by call count")
+  @Test
+  void testCanalDueWithDefaultDiscountByCallCount() {
 
-        BigDecimal expected = calculateDueAfterDiscount(discountCoefficient);
-        BigDecimal result = canalDueCalculator.calculateFor(testCase, tariff);
+    testCase.setCallCount(tariff.getCallCountThreshold());
 
-        assertThat(result).isEqualByComparingTo(expected);
-    }
+    BigDecimal discountCoefficient = tariff.getDefaultCallCountDiscountCoefficient();
 
-    @DisplayName("Canal due with discount by ship type")
-    @ParameterizedTest(name = "ship type: {arguments}")
-    @MethodSource(value = "getShipTypesEligibleForDiscount")
-    void testCanalDueWithDiscountByShipType(ShipType shipType) {
+    BigDecimal expected = calculateDueAfterDiscount(discountCoefficient);
+    BigDecimal result = canalDueCalculator.calculateFor(testCase, tariff);
 
-        testCase.getShip().setType(shipType);
+    assertThat(result).isEqualByComparingTo(expected);
+  }
 
-        BigDecimal discountCoefficient = tariff.getDiscountCoefficientByShipType().get(testCase.getShip().getType());
+  @DisplayName("Canal due with discount by ship type")
+  @ParameterizedTest(name = "ship type: {arguments}")
+  @MethodSource(value = "getShipTypesEligibleForDiscount")
+  void testCanalDueWithDiscountByShipType(ShipType shipType) {
 
-        BigDecimal expected = calculateDueAfterDiscount(discountCoefficient);
-        BigDecimal result = canalDueCalculator.calculateFor(testCase, tariff);
+    testCase.getShip().setType(shipType);
 
-        assertThat(result).isEqualByComparingTo(expected);
-    }
+    BigDecimal discountCoefficient =
+        tariff.getDiscountCoefficientByShipType().get(testCase.getShip().getType());
 
-    @DisplayName("Canal due with biggest discount")
-    @ParameterizedTest(name = "ship type: {arguments}")
-    @MethodSource(value = "getShipTypesEligibleForDiscount")
-    void testCanalDueWithBiggestDiscount(ShipType shipType) {
+    BigDecimal expected = calculateDueAfterDiscount(discountCoefficient);
+    BigDecimal result = canalDueCalculator.calculateFor(testCase, tariff);
 
-        testCase.getShip().setType(shipType);
-        testCase.setCallCount(tariff.getCallCountThreshold());
+    assertThat(result).isEqualByComparingTo(expected);
+  }
 
-        BigDecimal callCountDiscountCoefficient = tariff.getDefaultCallCountDiscountCoefficient();
-        BigDecimal shipTypeDiscountCoefficient = tariff.getDiscountCoefficientByShipType().get(shipType);
+  @DisplayName("Canal due with biggest discount")
+  @ParameterizedTest(name = "ship type: {arguments}")
+  @MethodSource(value = "getShipTypesEligibleForDiscount")
+  void testCanalDueWithBiggestDiscount(ShipType shipType) {
 
-        BigDecimal discountCoefficient = callCountDiscountCoefficient.max(shipTypeDiscountCoefficient);
+    testCase.getShip().setType(shipType);
+    testCase.setCallCount(tariff.getCallCountThreshold());
 
-        BigDecimal expected = calculateDueAfterDiscount(discountCoefficient);
-        BigDecimal result = canalDueCalculator.calculateFor(testCase, tariff);
+    BigDecimal callCountDiscountCoefficient = tariff.getDefaultCallCountDiscountCoefficient();
+    BigDecimal shipTypeDiscountCoefficient =
+        tariff.getDiscountCoefficientByShipType().get(shipType);
 
-        assertThat(result).isEqualByComparingTo(expected);
-    }
+    BigDecimal discountCoefficient = callCountDiscountCoefficient.max(shipTypeDiscountCoefficient);
 
-    @DisplayName("Canal due for containers with discount by port area")
-    @ParameterizedTest(name = "port area : {arguments}")
-    @EnumSource(PortArea.class)
-    void testCanalDueForContainersWithDiscountByPortArea(PortArea portArea) {
+    BigDecimal expected = calculateDueAfterDiscount(discountCoefficient);
+    BigDecimal result = canalDueCalculator.calculateFor(testCase, tariff);
 
-        testCase.getPort().setArea(portArea);
-        testCase.getShip().setType(CONTAINER);
+    assertThat(result).isEqualByComparingTo(expected);
+  }
 
-        BigDecimal discountCoefficient = tariff.getDiscountCoefficientsByPortAreaForContainers().get(portArea);
+  @DisplayName("Canal due for containers with discount by port area")
+  @ParameterizedTest(name = "port area : {arguments}")
+  @EnumSource(PortArea.class)
+  void testCanalDueForContainersWithDiscountByPortArea(PortArea portArea) {
 
-        BigDecimal expected = calculateDueAfterDiscount(discountCoefficient);
-        BigDecimal result = canalDueCalculator.calculateFor(testCase, tariff);
+    testCase.getPort().setArea(portArea);
+    testCase.getShip().setType(CONTAINER);
 
-        assertThat(result).isEqualByComparingTo(expected);
-    }
+    BigDecimal discountCoefficient =
+        tariff.getDiscountCoefficientsByPortAreaForContainers().get(portArea);
 
-    @DisplayName("Canal due for containers with discount by port area and call count")
-    @ParameterizedTest(name = "port area : {arguments}")
-    @EnumSource(PortArea.class)
-    void testCanalDueForContainersWithDiscountByPortAreaAndCallCount(PortArea portArea) {
+    BigDecimal expected = calculateDueAfterDiscount(discountCoefficient);
+    BigDecimal result = canalDueCalculator.calculateFor(testCase, tariff);
 
-        testCase.getPort().setArea(portArea);
-        testCase.getShip().setType(CONTAINER);
-        testCase.setCallCount(tariff.getCallCountThreshold());
+    assertThat(result).isEqualByComparingTo(expected);
+  }
 
-        BigDecimal discountCoefficientByPortAreaPerCallCount =
-                tariff.getDiscountCoefficientsByPortAreaPerCallCountForContainers().get(testCase.getPort().getArea());
+  @DisplayName("Canal due for containers with discount by port area and call count")
+  @ParameterizedTest(name = "port area : {arguments}")
+  @EnumSource(PortArea.class)
+  void testCanalDueForContainersWithDiscountByPortAreaAndCallCount(PortArea portArea) {
 
-        BigDecimal discountCoefficientByPortArea =
-                tariff.getDiscountCoefficientsByPortAreaForContainers().get(testCase.getPort().getArea());
+    testCase.getPort().setArea(portArea);
+    testCase.getShip().setType(CONTAINER);
+    testCase.setCallCount(tariff.getCallCountThreshold());
 
-        BigDecimal discountCoefficient = discountCoefficientByPortArea.max(discountCoefficientByPortAreaPerCallCount);
+    BigDecimal discountCoefficientByPortAreaPerCallCount =
+        tariff
+            .getDiscountCoefficientsByPortAreaPerCallCountForContainers()
+            .get(testCase.getPort().getArea());
 
-        BigDecimal expected = calculateDueAfterDiscount(discountCoefficient);
-        BigDecimal result = canalDueCalculator.calculateFor(testCase, tariff);
+    BigDecimal discountCoefficientByPortArea =
+        tariff.getDiscountCoefficientsByPortAreaForContainers().get(testCase.getPort().getArea());
 
-        assertThat(result).isEqualByComparingTo(expected);
-    }
+    BigDecimal discountCoefficient =
+        discountCoefficientByPortArea.max(discountCoefficientByPortAreaPerCallCount);
 
-    @DisplayName("Canal due without discount when ship type is not eligible for discount")
-    @ParameterizedTest(name = "ship type: {arguments}")
-    @MethodSource(value = "getShipTypesNotEligibleForDiscount")
-    void testCanalDueWithoutDiscountWhenShipTypeIsNotEligibleForDiscount(ShipType shipType) {
+    BigDecimal expected = calculateDueAfterDiscount(discountCoefficient);
+    BigDecimal result = canalDueCalculator.calculateFor(testCase, tariff);
 
-        testCase.getShip().setType(shipType);
-        testCase.setCallCount(tariff.getCallCountThreshold());
+    assertThat(result).isEqualByComparingTo(expected);
+  }
 
-        BigDecimal discountCoefficient = BigDecimal.ZERO;
+  @DisplayName("Canal due without discount when ship type is not eligible for discount")
+  @ParameterizedTest(name = "ship type: {arguments}")
+  @MethodSource(value = "getShipTypesNotEligibleForDiscount")
+  void testCanalDueWithoutDiscountWhenShipTypeIsNotEligibleForDiscount(ShipType shipType) {
 
-        BigDecimal expected = calculateDueAfterDiscount(discountCoefficient);
-        BigDecimal result = canalDueCalculator.calculateFor(testCase, tariff);
+    testCase.getShip().setType(shipType);
+    testCase.setCallCount(tariff.getCallCountThreshold());
 
-        assertThat(result).isEqualByComparingTo(expected);
-    }
+    BigDecimal discountCoefficient = BigDecimal.ZERO;
 
-    private static Stream<Arguments> getShipTypesEligibleForDiscount() {
-        return tariff.getDiscountCoefficientByShipType()
-                .keySet()
-                .stream()
-                .map(Arguments::of);
-    }
+    BigDecimal expected = calculateDueAfterDiscount(discountCoefficient);
+    BigDecimal result = canalDueCalculator.calculateFor(testCase, tariff);
 
-    private static Stream<Arguments> getShipTypesNotEligibleForDiscount() {
-        return tariff.getShipTypesNotEligibleForDiscount()
-                .stream()
-                .map(Arguments::of);
-    }
+    assertThat(result).isEqualByComparingTo(expected);
+  }
 
-    BigDecimal calculateDueAfterDiscount(BigDecimal discountCoefficient) {
-        BigDecimal duePerGrossTon = tariff.getCanalDuesByPortArea().get(testCase.getPort().getArea());
-        BigDecimal dueTotal = BigDecimal.valueOf(testCase.getShip().getGrossTonnage()).multiply(duePerGrossTon);
-        BigDecimal discount = dueTotal.multiply(discountCoefficient);
-        return dueTotal.subtract(discount);
-    }
+  BigDecimal calculateDueAfterDiscount(BigDecimal discountCoefficient) {
+    BigDecimal duePerGrossTon = tariff.getCanalDuesByPortArea().get(testCase.getPort().getArea());
+    BigDecimal dueTotal = testCase.getShip().getGrossTonnage().multiply(duePerGrossTon);
+    BigDecimal discount = dueTotal.multiply(discountCoefficient);
+    return dueTotal.subtract(discount);
+  }
 
-
-    private Integer getRandomGrossTonnage() {
-        Random random = new Random();
-        return random.ints(500, 200000).findFirst().getAsInt();
-    }
+  private BigDecimal getRandomGrossTonnage() {
+    Random random = new Random();
+    return BigDecimal.valueOf(random.ints(500, 200000).findFirst().getAsInt());
+  }
 }

@@ -28,6 +28,4 @@ public class Port extends BaseEntity {
 
   @Enumerated(value = STRING)
   private PilotageArea pilotageArea;
-
-
 }

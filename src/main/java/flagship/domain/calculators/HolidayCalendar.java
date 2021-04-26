@@ -14,6 +14,5 @@ import java.util.Set;
 @Component
 public class HolidayCalendar {
 
-    private Set<LocalDate> holidayCalendar;
-
+  private Set<LocalDate> holidayCalendar;
 }
