@@ -79,6 +79,7 @@ public class StateDueTariffInitializer {
 
     tonnageDueTariff.setCallCountThreshold(4);
     tonnageDueTariff.setCallCountDiscountCoefficient(BigDecimal.valueOf(0.7));
+    tonnageDueTariff.setDiscountCoefficientForPortOfArrival(BigDecimal.valueOf(0.1));
   }
 
   private static void initializeWharfDueTariff(final WharfDueTariff wharfDueTariff) {

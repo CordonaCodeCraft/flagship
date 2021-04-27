@@ -58,7 +58,15 @@ class TonnageDueCalculatorTest implements DueCalculatorTest {
     PdaPort testPort = PdaPort.builder().area(FIRST).build();
     PdaShip testShip = PdaShip.builder().grossTonnage(randomGrossTonnage).type(GENERAL).build();
     testCase =
-        PdaCase.builder().ship(testShip).port(testPort).callPurpose(LOADING).callCount(1).build();
+        PdaCase.builder()
+            .ship(testShip)
+            .port(testPort)
+            .callPurpose(LOADING)
+            .callCount(1)
+            .arrivesFromBulgarianPort(false)
+            .estimatedDateOfArrival(LocalDate.now())
+            .estimatedDateOfDeparture(LocalDate.now())
+            .build();
     grossTonnage = testShip.getGrossTonnage();
   }
 
@@ -141,6 +149,20 @@ class TonnageDueCalculatorTest implements DueCalculatorTest {
     BigDecimal duePerTon = tariff.getTonnageDuesByCallPurpose().get(testCase.getCallPurpose());
 
     BigDecimal expected = grossTonnage.multiply(duePerTon);
+    BigDecimal result = tonnageDueCalculator.calculateFor(testCase, tariff);
+
+    assertThat(result).isEqualByComparingTo(expected);
+  }
+
+  @DisplayName("Tonnage due with discount by port of arrival")
+  @Test
+  void testTonnageDueWithDiscountByPortOfArrival() {
+
+    testCase.setArrivesFromBulgarianPort(true);
+
+    BigDecimal discountCoefficient = tariff.getDiscountCoefficientForPortOfArrival();
+
+    BigDecimal expected = calculateDueAfterDiscount(discountCoefficient);
     BigDecimal result = tonnageDueCalculator.calculateFor(testCase, tariff);
 
     assertThat(result).isEqualByComparingTo(expected);

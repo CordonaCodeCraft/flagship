@@ -21,6 +21,7 @@ public class TonnageDueTariff extends Tariff {
 
   Integer callCountThreshold;
   BigDecimal callCountDiscountCoefficient;
+  BigDecimal discountCoefficientForPortOfArrival;
   private Map<PortArea, BigDecimal> tonnageDuesByPortArea;
   private Map<ShipType, BigDecimal> tonnageDuesByShipType;
   private Map<CallPurpose, BigDecimal> tonnageDuesByCallPurpose;

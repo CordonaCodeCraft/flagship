@@ -21,4 +21,5 @@ public class PdaCase {
   private Integer alongsideDaysExpected;
   private LocalDate estimatedDateOfArrival;
   private LocalDate estimatedDateOfDeparture;
+  private Boolean arrivesFromBulgarianPort;
 }

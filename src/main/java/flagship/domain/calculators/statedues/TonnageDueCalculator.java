@@ -43,7 +43,10 @@ public class TonnageDueCalculator extends StateDueCalculator<PdaCase, TonnageDue
   protected BigDecimal evaluateDiscountCoefficient(
       final PdaCase source, final TonnageDueTariff tariff) {
 
-    BigDecimal discountCoefficient = BigDecimal.ZERO;
+    BigDecimal discountCoefficient =
+        source.getArrivesFromBulgarianPort()
+            ? tariff.getDiscountCoefficientForPortOfArrival()
+            : BigDecimal.ZERO;
 
     if (isEligibleForDiscount(source, tariff)) {
       if (source.getCallCount() >= tariff.getCallCountThreshold()) {
