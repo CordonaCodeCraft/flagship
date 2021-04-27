@@ -21,6 +21,9 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -30,6 +33,7 @@ import java.util.stream.Stream;
 import static flagship.domain.cases.entities.enums.CallPurpose.LOADING;
 import static flagship.domain.cases.entities.enums.PortArea.FIRST;
 import static flagship.domain.cases.entities.enums.ShipType.GENERAL;
+import static flagship.domain.cases.entities.enums.ShipType.SPECIAL;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DisplayName("Tonnage due calculator tests")
@@ -54,7 +58,7 @@ class TonnageDueCalculatorTest implements DueCalculatorTest {
     PdaPort testPort = PdaPort.builder().area(FIRST).build();
     PdaShip testShip = PdaShip.builder().grossTonnage(randomGrossTonnage).type(GENERAL).build();
     testCase =
-        PdaCase.builder().ship(testShip).callPurpose(LOADING).port(testPort).callCount(1).build();
+        PdaCase.builder().ship(testShip).port(testPort).callPurpose(LOADING).callCount(1).build();
     grossTonnage = testShip.getGrossTonnage();
   }
 
@@ -63,20 +67,20 @@ class TonnageDueCalculatorTest implements DueCalculatorTest {
   @EnumSource(PortArea.class)
   void testTonnageDueByPortArea(PortArea portArea) {
 
-    ShipType shipTypeDependantOnPortArea =
+    ShipType shipTypeTaxedByPortArea =
         Arrays.stream(ShipType.values())
             .filter(type -> !tariff.getTonnageDuesByShipType().containsKey(type))
             .findAny()
             .orElse(GENERAL);
 
-    CallPurpose callPurposeDependantOnPortArea =
+    CallPurpose callPurposeTaxedByPortArea =
         Arrays.stream(CallPurpose.values())
             .filter(purpose -> !tariff.getTonnageDuesByCallPurpose().containsKey(purpose))
             .findAny()
             .orElse(LOADING);
 
-    testCase.getShip().setType(shipTypeDependantOnPortArea);
-    testCase.setCallPurpose(callPurposeDependantOnPortArea);
+    testCase.getShip().setType(shipTypeTaxedByPortArea);
+    testCase.setCallPurpose(callPurposeTaxedByPortArea);
     testCase.getPort().setArea(portArea);
 
     BigDecimal duePerTon = tariff.getTonnageDuesByPortArea().get(testCase.getPort().getArea());
@@ -99,6 +103,31 @@ class TonnageDueCalculatorTest implements DueCalculatorTest {
     BigDecimal expected = grossTonnage.multiply(duePerTon);
     BigDecimal result = tonnageDueCalculator.calculateFor(testCase, tariff);
 
+    assertThat(result).isEqualByComparingTo(expected);
+  }
+
+  @DisplayName("Tonnage due for ship type 'Special'")
+  @Test
+  void shouldIncreaseTonnageDueByExpectedMonthCount() {
+
+    testCase.getShip().setType(SPECIAL);
+    testCase.setEstimatedDateOfArrival(LocalDate.of(2021, 1, 10));
+    testCase.setEstimatedDateOfDeparture(LocalDate.of(2021, 1, 10));
+
+    BigDecimal duePerTon = tariff.getTonnageDuesByShipType().get(SPECIAL);
+    BigDecimal expected = grossTonnage.multiply(duePerTon);
+
+    if (testCase.getEstimatedDateOfArrival().getMonthValue()
+        != testCase.getEstimatedDateOfDeparture().getMonthValue()) {
+      long multiplier =
+          ChronoUnit.MONTHS.between(
+                  YearMonth.from(testCase.getEstimatedDateOfArrival()),
+                  YearMonth.from(testCase.getEstimatedDateOfDeparture()))
+              + 1;
+      expected = expected.multiply(BigDecimal.valueOf(multiplier));
+    }
+
+    BigDecimal result = tonnageDueCalculator.calculateFor(testCase, tariff);
     assertThat(result).isEqualByComparingTo(expected);
   }
 
@@ -166,11 +195,8 @@ class TonnageDueCalculatorTest implements DueCalculatorTest {
   @Test
   void testTonnageDueWithBiggestDiscount() {
 
-    ShipType shipType = getShipTypeEligibleForDiscount();
-    CallPurpose callPurpose = getCallPurposeEligibleForDiscount();
-
-    testCase.getShip().setType(shipType);
-    testCase.setCallPurpose(callPurpose);
+    testCase.getShip().setType(getShipTypeEligibleForDiscount());
+    testCase.setCallPurpose(getCallPurposeEligibleForDiscount());
     testCase.setCallCount(tariff.getCallCountThreshold());
 
     List<BigDecimal> discountCoefficients =

@@ -5,13 +5,38 @@ import flagship.domain.cases.dto.PdaCase;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.YearMonth;
+import java.time.temporal.ChronoUnit;
+
+import static flagship.domain.cases.entities.enums.ShipType.SPECIAL;
 
 @NoArgsConstructor
 public class TonnageDueCalculator extends StateDueCalculator<PdaCase, TonnageDueTariff> {
 
   @Override
   protected BigDecimal calculateBaseDue(final PdaCase source, final TonnageDueTariff tariff) {
-    return source.getShip().getGrossTonnage().multiply(getTonnageDuePerTon(source, tariff));
+
+    BigDecimal baseDue =
+        source.getShip().getGrossTonnage().multiply(getTonnageDuePerTon(source, tariff));
+
+    if (source.getShip().getType() == SPECIAL) {
+      return calculateBaseDueForSpecial(source, baseDue);
+    }
+    return baseDue;
+  }
+
+  private BigDecimal calculateBaseDueForSpecial(final PdaCase source, final BigDecimal baseDue) {
+    if (source.getEstimatedDateOfArrival().getMonthValue()
+        != source.getEstimatedDateOfDeparture().getMonthValue()) {
+      final long multiplier =
+          ChronoUnit.MONTHS.between(
+                  YearMonth.from(source.getEstimatedDateOfArrival()),
+                  YearMonth.from(source.getEstimatedDateOfDeparture()))
+              + 1;
+      return baseDue.multiply(BigDecimal.valueOf(multiplier));
+    } else {
+      return baseDue;
+    }
   }
 
   @Override
