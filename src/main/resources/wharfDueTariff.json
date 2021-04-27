@@ -1,15 +1,13 @@
 {
-  "discountCoefficientsByCallPurpose": {
-    "RESUPPLY": 0.5,
-    "RECRUITMENT": 0.5,
-    "POSTAL": 0.5,
-    "REPAIR": 0.5
+  "discountCoefficientsByCallPurpose" : {
+    "RESUPPLY" : 0.5,
+    "RECRUITMENT" : 0.5,
+    "POSTAL" : 0.5,
+    "REPAIR" : 0.5
   },
-  "shipTypesNotEligibleForDiscount": [
-    "MILITARY"
-  ],
-  "defaultWharfDue": 0.1,
-  "wharfDuesByShipType": {
-    "MILITARY": 0.5
+  "shipTypesNotEligibleForDiscount" : [ "MILITARY" ],
+  "defaultWharfDue" : 0.1,
+  "wharfDuesByShipType" : {
+    "MILITARY" : 0.5
   }
 }

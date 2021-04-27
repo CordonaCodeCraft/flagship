@@ -1,32 +1,18 @@
 {
-  "lightDuesByGrossTonnage": {
-    "40.0": [
-      501,
-      1000
-    ],
-    "70.0": [
-      1001,
-      5000
-    ],
-    "110.0": [
-      5001,
-      10000
-    ],
-    "15.0": [
-      41,
-      500
-    ]
+  "lightDuesByGrossTonnage" : {
+    "40.0" : [ 501, 1000 ],
+    "70.0" : [ 1001, 5000 ],
+    "110.0" : [ 5001, 10000 ],
+    "15.0" : [ 41, 500 ]
   },
-  "lightDuesPerTonByShipType": {
-    "MILITARY": 0.15
+  "lightDuesPerTonByShipType" : {
+    "MILITARY" : 0.15
   },
-  "discountCoefficientsByShipType": {
-    "PASSENGER": 0.5
+  "discountCoefficientsByShipType" : {
+    "PASSENGER" : 0.5
   },
-  "shipTypesNotEligibleForDiscount": [
-    "MILITARY"
-  ],
-  "lightDueMaximumValue": 150.0,
-  "callCountThreshold": 4,
-  "callCountDiscountCoefficient": 0.7
+  "shipTypesNotEligibleForDiscount" : [ "MILITARY" ],
+  "lightDueMaximumValue" : 150.0,
+  "callCountThreshold" : 4,
+  "callCountDiscountCoefficient" : 0.7
 }

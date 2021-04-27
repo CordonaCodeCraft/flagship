@@ -1,271 +1,68 @@
 {
-  "portNamesInPilotageAreas": {
-    "VARNA_FIRST": [
-      "Varna East",
-      "Petrol",
-      "Bulyard",
-      "Bulport Logistik",
-      "SRY",
-      "PCHVM"
-    ],
-    "VARNA_SECOND": [
-      "TEC (Power station)",
-      "Balchik port",
-      "Lesport",
-      "Terem FA",
-      "SRY Dolphin",
-      "Transstroi Varna",
-      "Odessos PBM",
-      "Buoy 9",
-      "Anchorage"
-    ],
-    "VARNA_THIRD": [
-      "Varna West",
-      "Ferry Complex"
-    ],
-    "BOURGAS_FIRST": [
-      "Burgas – Center",
-      "Burgas East 2",
-      "BMF Port Burgas",
-      "West Terminal",
-      "Ship repair yard Port Burgas",
-      "Port Bulgaria West",
-      "Burgas Shipyard",
-      "Port Europa",
-      "Transstroi Burgas",
-      "Port Rosenetz",
-      "Nessebar",
-      "Pomorie",
-      "Sozopol",
-      "Tzarevo",
-      "Shifting of the anchorage area",
-      "deviation",
-      "XX A.k.m",
-      "XX B.k.m"
-    ]
+  "portNamesInPilotageAreas" : {
+    "VARNA_FIRST" : [ "Varna East", "Petrol", "Bulyard", "Bulport Logistik", "SRY", "PCHVM" ],
+    "VARNA_SECOND" : [ "TEC (Power station)", "Balchik port", "Lesport", "Terem FA", "SRY Dolphin", "Transstroi Varna", "Odessos PBM", "Buoy 9", "Anchorage" ],
+    "VARNA_THIRD" : [ "Varna West", "Ferry Complex" ],
+    "BOURGAS_FIRST" : [ "Burgas – Center", "Burgas East 2", "BMF Port Burgas", "West Terminal", "Ship repair yard Port Burgas", "Port Bulgaria West", "Burgas Shipyard", "Port Europa", "Transstroi Burgas", "Port Rosenetz", "Nessebar", "Pomorie", "Sozopol", "Tzarevo", "Shifting of the anchorage area", "deviation", "XX A.k.m", "XX B.k.m" ]
   },
-  "pilotageDuesByArea": {
-    "VARNA_FIRST": {
-      "190.0": [
-        0,
-        999,
-        60
-      ],
-      "220.0": [
-        1000,
-        1999,
-        60
-      ],
-      "250.0": [
-        2000,
-        2999,
-        60
-      ],
-      "290.0": [
-        3000,
-        3999,
-        60
-      ],
-      "320.0": [
-        4000,
-        4999,
-        60
-      ],
-      "350.0": [
-        5000,
-        5999,
-        60
-      ],
-      "390.0": [
-        6000,
-        6999,
-        60
-      ],
-      "430.0": [
-        7000,
-        7999,
-        60
-      ],
-      "460.0": [
-        8000,
-        8999,
-        60
-      ],
-      "500.0": [
-        9000,
-        9999,
-        60
-      ]
+  "pilotageDuesByArea" : {
+    "VARNA_FIRST" : {
+      "190.0" : [ 0, 999, 60 ],
+      "220.0" : [ 1000, 1999, 60 ],
+      "250.0" : [ 2000, 2999, 60 ],
+      "290.0" : [ 3000, 3999, 60 ],
+      "320.0" : [ 4000, 4999, 60 ],
+      "350.0" : [ 5000, 5999, 60 ],
+      "390.0" : [ 6000, 6999, 60 ],
+      "430.0" : [ 7000, 7999, 60 ],
+      "460.0" : [ 8000, 8999, 60 ],
+      "500.0" : [ 9000, 9999, 60 ]
     },
-    "VARNA_SECOND": {
-      "260.0": [
-        0,
-        999,
-        70
-      ],
-      "310.0": [
-        1000,
-        1999,
-        70
-      ],
-      "370.0": [
-        2000,
-        2999,
-        70
-      ],
-      "420.0": [
-        3000,
-        3999,
-        70
-      ],
-      "480.0": [
-        4000,
-        4999,
-        70
-      ],
-      "530.0": [
-        5000,
-        5999,
-        70
-      ],
-      "590.0": [
-        6000,
-        6999,
-        70
-      ],
-      "640.0": [
-        7000,
-        7999,
-        70
-      ],
-      "690.0": [
-        8000,
-        8999,
-        70
-      ],
-      "750.0": [
-        9000,
-        9999,
-        70
-      ]
+    "VARNA_SECOND" : {
+      "260.0" : [ 0, 999, 70 ],
+      "310.0" : [ 1000, 1999, 70 ],
+      "370.0" : [ 2000, 2999, 70 ],
+      "420.0" : [ 3000, 3999, 70 ],
+      "480.0" : [ 4000, 4999, 70 ],
+      "530.0" : [ 5000, 5999, 70 ],
+      "590.0" : [ 6000, 6999, 70 ],
+      "640.0" : [ 7000, 7999, 70 ],
+      "690.0" : [ 8000, 8999, 70 ],
+      "750.0" : [ 9000, 9999, 70 ]
     },
-    "VARNA_THIRD": {
-      "400.0": [
-        0,
-        999,
-        80
-      ],
-      "450.0": [
-        1000,
-        1999,
-        80
-      ],
-      "520.0": [
-        2000,
-        2999,
-        80
-      ],
-      "570.0": [
-        3000,
-        3999,
-        80
-      ],
-      "640.0": [
-        4000,
-        4999,
-        80
-      ],
-      "690.0": [
-        5000,
-        5999,
-        80
-      ],
-      "760.0": [
-        6000,
-        6999,
-        80
-      ],
-      "810.0": [
-        7000,
-        7999,
-        80
-      ],
-      "870.0": [
-        8000,
-        8999,
-        80
-      ],
-      "940.0": [
-        9000,
-        9999,
-        80
-      ]
+    "VARNA_THIRD" : {
+      "400.0" : [ 0, 999, 80 ],
+      "450.0" : [ 1000, 1999, 80 ],
+      "520.0" : [ 2000, 2999, 80 ],
+      "570.0" : [ 3000, 3999, 80 ],
+      "640.0" : [ 4000, 4999, 80 ],
+      "690.0" : [ 5000, 5999, 80 ],
+      "760.0" : [ 6000, 6999, 80 ],
+      "810.0" : [ 7000, 7999, 80 ],
+      "870.0" : [ 8000, 8999, 80 ],
+      "940.0" : [ 9000, 9999, 80 ]
     },
-    "BOURGAS_FIRST": {
-      "240.0": [
-        0,
-        499,
-        75
-      ],
-      "280.0": [
-        500,
-        999,
-        75
-      ],
-      "320.0": [
-        1000,
-        1999,
-        75
-      ],
-      "640.0": [
-        8000,
-        8999,
-        75
-      ],
-      "680.0": [
-        9000,
-        9999,
-        75
-      ],
-      "440.0": [
-        3000,
-        3999,
-        75
-      ],
-      "480.0": [
-        4000,
-        4999,
-        75
-      ],
-      "520.0": [
-        5000,
-        5999,
-        75
-      ],
-      "560.0": [
-        6000,
-        6999,
-        75
-      ],
-      "600.0": [
-        7000,
-        7999,
-        75
-      ],
-      "380.0": [
-        2000,
-        2999,
-        75
-      ]
+    "BOURGAS_FIRST" : {
+      "240.0" : [ 0, 499, 75 ],
+      "280.0" : [ 500, 999, 75 ],
+      "320.0" : [ 1000, 1999, 75 ],
+      "640.0" : [ 8000, 8999, 75 ],
+      "680.0" : [ 9000, 9999, 75 ],
+      "440.0" : [ 3000, 3999, 75 ],
+      "480.0" : [ 4000, 4999, 75 ],
+      "520.0" : [ 5000, 5999, 75 ],
+      "560.0" : [ 6000, 6999, 75 ],
+      "600.0" : [ 7000, 7999, 75 ],
+      "380.0" : [ 2000, 2999, 75 ]
     }
   },
-  "increaseCoefficientsByCargoType": {
-    "HAZARDOUS": 0.2,
-    "SPECIAL": 1.0
+  "increaseCoefficientsByCargoType" : {
+    "HAZARDOUS" : 0.2,
+    "SPECIAL" : 1.0
   },
-  "increaseCoefficientsByWarningType": {
-    "HOLIDAY": 0.5,
-    "PILOT": 0.5
+  "increaseCoefficientsByWarningType" : {
+    "HOLIDAY" : 0.5,
+    "PILOT" : 0.5
   },
-  "grossTonnageThreshold": 10000.0
+  "grossTonnageThreshold" : 10000.0
 }
