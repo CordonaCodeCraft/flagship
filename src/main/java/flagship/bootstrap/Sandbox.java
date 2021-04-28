@@ -10,17 +10,15 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.Period;
-import java.time.Year;
 import java.time.YearMonth;
 import java.time.temporal.ChronoUnit;
 
 import static flagship.domain.cases.entities.enums.CallPurpose.LOADING;
 import static flagship.domain.cases.entities.enums.CargoType.HAZARDOUS;
-import static flagship.domain.cases.entities.enums.PilotageArea.VARNA_FIRST;
-import static flagship.domain.cases.entities.enums.PortArea.FIRST;
+import static flagship.domain.calculators.tariffs.enums.PilotageArea.VARNA_FIRST;
+import static flagship.domain.calculators.tariffs.enums.PortArea.FIRST;
 import static flagship.domain.cases.entities.enums.ShipType.GENERAL;
-import static flagship.domain.cases.entities.enums.TugArea.VTC_FIFTH;
+import static flagship.domain.calculators.tariffs.enums.TugArea.VTC_FIFTH;
 
 public class Sandbox {
 
@@ -47,7 +45,7 @@ public class Sandbox {
                     .type(GENERAL)
                     .lengthOverall(BigDecimal.valueOf(156.25))
                     .grossTonnage(BigDecimal.valueOf(2500))
-                    .requiresSpecialService(true)
+                    .requiresSpecialPilot(true)
                     .hasIncreasedManeuverability(true)
                     .build();
 

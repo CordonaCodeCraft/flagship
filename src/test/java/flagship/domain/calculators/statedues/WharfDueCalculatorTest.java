@@ -54,7 +54,7 @@ class WharfDueCalculatorTest implements DueCalculatorTest {
         Arrays.stream(ShipType.values())
             .filter(type -> !tariff.getWharfDuesByShipType().containsKey(type))
             .findAny()
-            .orElse(MILITARY);
+            .orElse(GENERAL);
 
     testCase.getShip().setType(shipTypeWithDefaultWharfDue);
 

@@ -1,8 +1,8 @@
 package flagship.domain.cases.dto;
 
-import flagship.domain.cases.entities.enums.PilotageArea;
-import flagship.domain.cases.entities.enums.PortArea;
-import flagship.domain.cases.entities.enums.TugArea;
+import flagship.domain.calculators.tariffs.enums.PilotageArea;
+import flagship.domain.calculators.tariffs.enums.PortArea;
+import flagship.domain.calculators.tariffs.enums.TugArea;
 import lombok.*;
 
 @Getter

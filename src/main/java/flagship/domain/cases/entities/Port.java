@@ -1,7 +1,7 @@
 package flagship.domain.cases.entities;
 
-import flagship.domain.cases.entities.enums.PilotageArea;
-import flagship.domain.cases.entities.enums.PortArea;
+import flagship.domain.calculators.tariffs.enums.PilotageArea;
+import flagship.domain.calculators.tariffs.enums.PortArea;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 

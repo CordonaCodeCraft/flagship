@@ -5,7 +5,7 @@ import flagship.domain.calculators.tariffs.stateduestariffs.LightDueTariff;
 import flagship.domain.calculators.tariffs.stateduestariffs.TonnageDueTariff;
 import flagship.domain.calculators.tariffs.stateduestariffs.WharfDueTariff;
 import flagship.domain.cases.entities.enums.CallPurpose;
-import flagship.domain.cases.entities.enums.PortArea;
+import flagship.domain.calculators.tariffs.enums.PortArea;
 import flagship.domain.cases.entities.enums.ShipType;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 import java.util.*;
 
 import static flagship.domain.cases.entities.enums.CallPurpose.*;
-import static flagship.domain.cases.entities.enums.PortArea.*;
+import static flagship.domain.calculators.tariffs.enums.PortArea.*;
 import static flagship.domain.cases.entities.enums.ShipType.*;
 
 @Component

@@ -1,6 +1,6 @@
 package flagship.domain.calculators.tariffs.serviceduestariffs;
 
-import flagship.domain.cases.entities.enums.TugArea;
+import flagship.domain.calculators.tariffs.enums.TugArea;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

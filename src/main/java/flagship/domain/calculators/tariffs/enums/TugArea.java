@@ -1,4 +1,4 @@
-package flagship.domain.cases.entities.enums;
+package flagship.domain.calculators.tariffs.enums;
 
 public enum TugArea {
   VTC_FIRST,

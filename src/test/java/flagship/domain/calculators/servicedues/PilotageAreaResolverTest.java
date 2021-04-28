@@ -1,11 +1,12 @@
 package flagship.domain.calculators.servicedues;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import flagship.domain.calculators.resolvers.PilotageAreaResolver;
 import flagship.domain.calculators.tariffs.serviceduestariffs.PilotageDueTariff;
 import flagship.domain.cases.dto.PdaCase;
 import flagship.domain.cases.dto.PdaPort;
-import flagship.domain.cases.entities.enums.PilotageArea;
+import flagship.domain.calculators.tariffs.enums.PilotageArea;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -17,7 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.stream.Stream;
 
-import static flagship.domain.cases.entities.enums.PilotageArea.*;
+import static flagship.domain.calculators.tariffs.enums.PilotageArea.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DisplayName("Pilotage area resolver tests")
@@ -29,6 +30,7 @@ class PilotageAreaResolverTest {
   @BeforeAll
   public static void BeforeClass() throws IOException {
     ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JavaTimeModule());
     tariff =
         mapper.readValue(
             new File("src/main/resources/pilotageDueTariff.json"), PilotageDueTariff.class);

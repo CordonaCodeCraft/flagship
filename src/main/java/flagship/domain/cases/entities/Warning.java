@@ -18,7 +18,7 @@ import java.time.LocalDate;
 @Table(name = "warnings")
 public class Warning extends BaseEntity {
 
-  private String dueType;
+  private String message;
   private LocalDate warningDate;
   private BigDecimal warningCoefficient;
 }

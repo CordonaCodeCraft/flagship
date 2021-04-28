@@ -15,7 +15,7 @@ public class LightDueCalculator extends StateDueCalculator<PdaCase, LightDueTari
 
     BigDecimal lightDue;
 
-    if (tariff.getLightDuesPerTonByShipType().containsKey(source.getShip().getType())) {
+    if (lightDueIsDependantOnShipType(source, tariff)) {
       lightDue =
           source
               .getShip()
@@ -32,10 +32,13 @@ public class LightDueCalculator extends StateDueCalculator<PdaCase, LightDueTari
               .map(Map.Entry::getKey)
               .orElse(tariff.getLightDueMaximumValue());
     }
-    // todo: replace the magic number 150 with light due maximum value
     return lightDue.doubleValue() <= tariff.getLightDueMaximumValue().doubleValue()
         ? lightDue
         : tariff.getLightDueMaximumValue();
+  }
+
+  private boolean lightDueIsDependantOnShipType(PdaCase source, LightDueTariff tariff) {
+    return tariff.getLightDuesPerTonByShipType().containsKey(source.getShip().getType());
   }
 
   @Override
@@ -45,10 +48,10 @@ public class LightDueCalculator extends StateDueCalculator<PdaCase, LightDueTari
     BigDecimal discountCoefficient = BigDecimal.ZERO;
 
     if (shipTypeIsEligibleForDiscount(source, tariff)) {
-      if (source.getCallCount() >= tariff.getCallCountThreshold()) {
+      if (isEligibleForCallCountDiscount(source, tariff)) {
         discountCoefficient = discountCoefficient.max(tariff.getCallCountDiscountCoefficient());
       }
-      if (tariff.getDiscountCoefficientsByShipType().containsKey(source.getShip().getType())) {
+      if (isEligibleForShipTypeDiscount(source, tariff)) {
         discountCoefficient =
             discountCoefficient.max(
                 tariff.getDiscountCoefficientsByShipType().get(source.getShip().getType()));
@@ -60,5 +63,13 @@ public class LightDueCalculator extends StateDueCalculator<PdaCase, LightDueTari
 
   private boolean shipTypeIsEligibleForDiscount(PdaCase source, LightDueTariff tariff) {
     return !tariff.getShipTypesNotEligibleForDiscount().contains(source.getShip().getType());
+  }
+
+  private boolean isEligibleForCallCountDiscount(PdaCase source, LightDueTariff tariff) {
+    return source.getCallCount() >= tariff.getCallCountThreshold();
+  }
+
+  private boolean isEligibleForShipTypeDiscount(PdaCase source, LightDueTariff tariff) {
+    return tariff.getDiscountCoefficientsByShipType().containsKey(source.getShip().getType());
   }
 }

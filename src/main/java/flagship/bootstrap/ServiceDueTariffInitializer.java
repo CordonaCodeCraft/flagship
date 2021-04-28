@@ -5,9 +5,9 @@ import flagship.domain.calculators.resolvers.HolidayCalendarResolver;
 import flagship.domain.calculators.tariffs.serviceduestariffs.PilotageDueTariff;
 import flagship.domain.calculators.tariffs.serviceduestariffs.TugDueTariff;
 import flagship.domain.cases.entities.enums.CargoType;
-import flagship.domain.cases.entities.enums.PdaWarning;
-import flagship.domain.cases.entities.enums.PilotageArea;
-import flagship.domain.cases.entities.enums.TugArea;
+import flagship.domain.calculators.tariffs.enums.PdaWarning;
+import flagship.domain.calculators.tariffs.enums.PilotageArea;
+import flagship.domain.calculators.tariffs.enums.TugArea;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -16,10 +16,10 @@ import java.util.*;
 
 import static flagship.domain.cases.entities.enums.CargoType.HAZARDOUS;
 import static flagship.domain.cases.entities.enums.CargoType.SPECIAL;
-import static flagship.domain.cases.entities.enums.PdaWarning.HOLIDAY;
-import static flagship.domain.cases.entities.enums.PdaWarning.PILOT;
-import static flagship.domain.cases.entities.enums.PilotageArea.*;
-import static flagship.domain.cases.entities.enums.TugArea.*;
+import static flagship.domain.calculators.tariffs.enums.PdaWarning.HOLIDAY;
+import static flagship.domain.calculators.tariffs.enums.PdaWarning.PILOT;
+import static flagship.domain.calculators.tariffs.enums.PilotageArea.*;
+import static flagship.domain.calculators.tariffs.enums.TugArea.*;
 import static java.time.Month.*;
 
 @Component
@@ -29,12 +29,12 @@ public class ServiceDueTariffInitializer {
       PilotageDueTariff pilotageDueTariff,
       TugDueTariff tugDueTariff,
       HolidayCalendar holidayCalendar) {
-    initializePilotageDueTariff(pilotageDueTariff);
-    initializeTugDueTariff(tugDueTariff);
     initializeHolidayCalendar(holidayCalendar);
+    initializePilotageDueTariff(pilotageDueTariff, holidayCalendar);
+    initializeTugDueTariff(tugDueTariff);
   }
 
-  private static void initializePilotageDueTariff(PilotageDueTariff pilotageDueTariff) {
+  private static void initializePilotageDueTariff(PilotageDueTariff pilotageDueTariff, HolidayCalendar holidayCalendar) {
 
     Map<PilotageArea, List<String>> portNamesInPilotageAreas = new EnumMap<>(PilotageArea.class);
 
@@ -171,6 +171,8 @@ public class ServiceDueTariffInitializer {
         Collections.unmodifiableMap(increaseCoefficientsByWarningType));
 
     pilotageDueTariff.setGrossTonnageThreshold(BigDecimal.valueOf(10000.00));
+
+    pilotageDueTariff.setHolidayCalendar(holidayCalendar.getHolidayCalendar());
   }
 
   private static void initializeHolidayCalendar(HolidayCalendar holidayCalendar) {

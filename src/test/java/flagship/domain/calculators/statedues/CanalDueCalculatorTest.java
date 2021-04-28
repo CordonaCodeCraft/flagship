@@ -6,7 +6,7 @@ import flagship.domain.calculators.tariffs.stateduestariffs.CanalDueTariff;
 import flagship.domain.cases.dto.PdaCase;
 import flagship.domain.cases.dto.PdaPort;
 import flagship.domain.cases.dto.PdaShip;
-import flagship.domain.cases.entities.enums.PortArea;
+import flagship.domain.calculators.tariffs.enums.PortArea;
 import flagship.domain.cases.entities.enums.ShipType;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,7 +23,7 @@ import java.math.BigDecimal;
 import java.util.Random;
 import java.util.stream.Stream;
 
-import static flagship.domain.cases.entities.enums.PortArea.FIRST;
+import static flagship.domain.calculators.tariffs.enums.PortArea.FIRST;
 import static flagship.domain.cases.entities.enums.ShipType.CONTAINER;
 import static flagship.domain.cases.entities.enums.ShipType.GENERAL;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -151,13 +151,13 @@ class CanalDueCalculatorTest implements DueCalculatorTest {
     testCase.getShip().setType(CONTAINER);
     testCase.setCallCount(tariff.getCallCountThreshold());
 
+    BigDecimal discountCoefficientByPortArea =
+            tariff.getDiscountCoefficientsByPortAreaForContainers().get(testCase.getPort().getArea());
+
     BigDecimal discountCoefficientByPortAreaPerCallCount =
         tariff
             .getDiscountCoefficientsByPortAreaPerCallCountForContainers()
             .get(testCase.getPort().getArea());
-
-    BigDecimal discountCoefficientByPortArea =
-        tariff.getDiscountCoefficientsByPortAreaForContainers().get(testCase.getPort().getArea());
 
     BigDecimal discountCoefficient =
         discountCoefficientByPortArea.max(discountCoefficientByPortAreaPerCallCount);

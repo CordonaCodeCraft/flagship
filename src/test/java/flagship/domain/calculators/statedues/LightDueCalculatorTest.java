@@ -58,7 +58,7 @@ public class LightDueCalculatorTest implements DueCalculatorTest {
 
     testCase.getShip().setType(shipType);
 
-    BigDecimal expected = evaluateLightDue();
+    BigDecimal expected = getLightDue();
 
     BigDecimal result = lightDueCalculator.calculateFor(testCase, tariff);
 
@@ -72,7 +72,7 @@ public class LightDueCalculatorTest implements DueCalculatorTest {
 
     testCase.getShip().setType(shipType);
 
-    BigDecimal expected = evaluateLightDue();
+    BigDecimal expected = getLightDue();
 
     BigDecimal result = lightDueCalculator.calculateFor(testCase, tariff);
 
@@ -160,12 +160,12 @@ public class LightDueCalculatorTest implements DueCalculatorTest {
   }
 
   private BigDecimal calculateDueAfterDiscount(BigDecimal discountCoefficient) {
-    BigDecimal lightDue = evaluateLightDue();
+    BigDecimal lightDue = getLightDue();
     BigDecimal discount = lightDue.multiply(discountCoefficient);
     return lightDue.subtract(discount);
   }
 
-  private BigDecimal evaluateLightDue() {
+  private BigDecimal getLightDue() {
 
     BigDecimal lightDue;
 
@@ -187,11 +187,9 @@ public class LightDueCalculatorTest implements DueCalculatorTest {
               .orElse(tariff.getLightDueMaximumValue());
     }
 
-    double lightDueMaximumValue = tariff.getLightDueMaximumValue().doubleValue();
-
-    return lightDue.doubleValue() <= lightDueMaximumValue
+    return lightDue.doubleValue() <= tariff.getLightDueMaximumValue().doubleValue()
         ? lightDue
-        : BigDecimal.valueOf(lightDueMaximumValue);
+        : BigDecimal.valueOf(tariff.getLightDueMaximumValue().doubleValue());
   }
 
   private BigDecimal getRandomGrossTonnage() {
