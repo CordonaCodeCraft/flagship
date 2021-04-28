@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.time.YearMonth;
 import java.time.temporal.ChronoUnit;
+import java.util.Optional;
 
 import static flagship.domain.cases.entities.enums.ShipType.SPECIAL;
 
@@ -20,23 +21,9 @@ public class TonnageDueCalculator extends StateDueCalculator<PdaCase, TonnageDue
         source.getShip().getGrossTonnage().multiply(getTonnageDuePerTon(source, tariff));
 
     if (source.getShip().getType() == SPECIAL) {
-      return calculateBaseDueForSpecial(source, baseDue);
+      return calculateBaseDueForSpecialShip(source, baseDue);
     }
     return baseDue;
-  }
-
-  private BigDecimal calculateBaseDueForSpecial(final PdaCase source, final BigDecimal baseDue) {
-    if (source.getEstimatedDateOfArrival().getMonthValue()
-        != source.getEstimatedDateOfDeparture().getMonthValue()) {
-      final long multiplier =
-          ChronoUnit.MONTHS.between(
-                  YearMonth.from(source.getEstimatedDateOfArrival()),
-                  YearMonth.from(source.getEstimatedDateOfDeparture()))
-              + 1;
-      return baseDue.multiply(BigDecimal.valueOf(multiplier));
-    } else {
-      return baseDue;
-    }
   }
 
   @Override
@@ -49,15 +36,16 @@ public class TonnageDueCalculator extends StateDueCalculator<PdaCase, TonnageDue
             : BigDecimal.ZERO;
 
     if (isEligibleForDiscount(source, tariff)) {
-      if (source.getCallCount() >= tariff.getCallCountThreshold()) {
+
+      if (isEligibleForCallCountDiscount(source, tariff)) {
         discountCoefficient = discountCoefficient.max(tariff.getCallCountDiscountCoefficient());
       }
-      if (tariff.getDiscountCoefficientsByCallPurpose().containsKey(source.getCallPurpose())) {
+      if (isEligibleForCallPurposeDiscount(source, tariff)) {
         discountCoefficient =
             discountCoefficient.max(
                 tariff.getDiscountCoefficientsByCallPurpose().get(source.getCallPurpose()));
       }
-      if (tariff.getDiscountCoefficientsByShipType().containsKey(source.getShip().getType())) {
+      if (isEligibleForShipTypeDiscount(source, tariff)) {
         discountCoefficient =
             discountCoefficient.max(
                 tariff.getDiscountCoefficientsByShipType().get(source.getShip().getType()));
@@ -65,6 +53,50 @@ public class TonnageDueCalculator extends StateDueCalculator<PdaCase, TonnageDue
     }
 
     return discountCoefficient;
+  }
+
+  private BigDecimal calculateBaseDueForSpecialShip(
+      final PdaCase source, final BigDecimal baseDue) {
+
+    if (expectedAlongsideDaysAreProvided(source)) {
+
+      if (expectedAlongsideDaysExceedCurrentMonth(source)) {
+        final long multiplier =
+            ChronoUnit.MONTHS.between(
+                    YearMonth.from(source.getEstimatedDateOfArrival()),
+                    YearMonth.from(source.getEstimatedDateOfDeparture()))
+                + 1;
+        return baseDue.multiply(BigDecimal.valueOf(multiplier));
+      }
+    }
+    return baseDue;
+  }
+
+  private boolean expectedAlongsideDaysAreProvided(PdaCase source) {
+    return Optional.ofNullable(source.getEstimatedDateOfArrival()).isPresent()
+        && Optional.ofNullable(source.getEstimatedDateOfDeparture()).isPresent();
+  }
+
+  private boolean expectedAlongsideDaysExceedCurrentMonth(PdaCase source) {
+    return source.getEstimatedDateOfArrival().getMonthValue()
+        != source.getEstimatedDateOfDeparture().getMonthValue();
+  }
+
+  private boolean isEligibleForDiscount(PdaCase source, TonnageDueTariff tariff) {
+    return !tariff.getShipTypesNotEligibleForDiscount().contains(source.getShip().getType())
+        && !tariff.getCallPurposesNotEligibleForDiscount().contains(source.getCallPurpose());
+  }
+
+  private boolean isEligibleForCallCountDiscount(PdaCase source, TonnageDueTariff tariff) {
+    return source.getCallCount() >= tariff.getCallCountThreshold();
+  }
+
+  private boolean isEligibleForCallPurposeDiscount(PdaCase source, TonnageDueTariff tariff) {
+    return tariff.getDiscountCoefficientsByCallPurpose().containsKey(source.getCallPurpose());
+  }
+
+  private boolean isEligibleForShipTypeDiscount(PdaCase source, TonnageDueTariff tariff) {
+    return tariff.getDiscountCoefficientsByShipType().containsKey(source.getShip().getType());
   }
 
   private BigDecimal getTonnageDuePerTon(PdaCase source, TonnageDueTariff tariff) {
@@ -83,10 +115,5 @@ public class TonnageDueCalculator extends StateDueCalculator<PdaCase, TonnageDue
 
   private boolean dueIsDependantOnCallPurpose(final PdaCase source, final TonnageDueTariff tariff) {
     return tariff.getTonnageDuesByCallPurpose().containsKey(source.getCallPurpose());
-  }
-
-  private boolean isEligibleForDiscount(PdaCase source, TonnageDueTariff tariff) {
-    return !tariff.getShipTypesNotEligibleForDiscount().contains(source.getShip().getType())
-        && !tariff.getCallPurposesNotEligibleForDiscount().contains(source.getCallPurpose());
   }
 }

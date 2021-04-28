@@ -7,7 +7,7 @@ import flagship.domain.cases.dto.PdaCase;
 import flagship.domain.cases.dto.PdaPort;
 import flagship.domain.cases.dto.PdaShip;
 import flagship.domain.cases.entities.enums.CallPurpose;
-import flagship.domain.cases.entities.enums.PortArea;
+import flagship.domain.calculators.tariffs.enums.PortArea;
 import flagship.domain.cases.entities.enums.ShipType;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,7 +31,7 @@ import java.util.Random;
 import java.util.stream.Stream;
 
 import static flagship.domain.cases.entities.enums.CallPurpose.LOADING;
-import static flagship.domain.cases.entities.enums.PortArea.FIRST;
+import static flagship.domain.calculators.tariffs.enums.PortArea.FIRST;
 import static flagship.domain.cases.entities.enums.ShipType.GENERAL;
 import static flagship.domain.cases.entities.enums.ShipType.SPECIAL;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -64,8 +64,6 @@ class TonnageDueCalculatorTest implements DueCalculatorTest {
             .callPurpose(LOADING)
             .callCount(1)
             .arrivesFromBulgarianPort(false)
-            .estimatedDateOfArrival(LocalDate.now())
-            .estimatedDateOfDeparture(LocalDate.now())
             .build();
     grossTonnage = testShip.getGrossTonnage();
   }
