@@ -1,12 +1,13 @@
 package flagship.domain.calculators.servicedues;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import flagship.domain.calculators.DueCalculatorTest;
 import flagship.domain.calculators.tariffs.serviceduestariffs.PilotageDueTariff;
 import flagship.domain.cases.dto.PdaCase;
 import flagship.domain.cases.dto.PdaPort;
 import flagship.domain.cases.dto.PdaShip;
-import flagship.domain.cases.entities.enums.PilotageArea;
+import flagship.domain.calculators.tariffs.enums.PilotageArea;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -17,12 +18,15 @@ import org.junit.jupiter.params.provider.EnumSource;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.Random;
 
 import static flagship.domain.cases.entities.enums.CargoType.*;
-import static flagship.domain.cases.entities.enums.PilotageArea.VARNA_FIRST;
+import static flagship.domain.calculators.tariffs.enums.PdaWarning.HOLIDAY;
+import static flagship.domain.calculators.tariffs.enums.PdaWarning.PILOT;
+import static flagship.domain.calculators.tariffs.enums.PilotageArea.VARNA_FIRST;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DisplayName("Pilotage due calculator tests")
@@ -35,6 +39,7 @@ public class PilotageDueCalculatorTest implements DueCalculatorTest {
   @BeforeAll
   public static void beforeClass() throws IOException {
     ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JavaTimeModule());
     tariff =
         mapper.readValue(
             new File("src/main/resources/pilotageDueTariff.json"), PilotageDueTariff.class);
@@ -43,7 +48,11 @@ public class PilotageDueCalculatorTest implements DueCalculatorTest {
   @BeforeEach
   void setUp() {
     PdaPort testPort = PdaPort.builder().pilotageArea(VARNA_FIRST).build();
-    PdaShip testShip = PdaShip.builder().grossTonnage(BigDecimal.valueOf(1650)).build();
+    PdaShip testShip =
+        PdaShip.builder()
+            .grossTonnage(BigDecimal.valueOf(1650))
+            .requiresSpecialPilot(false)
+            .build();
     testCase = PdaCase.builder().port(testPort).ship(testShip).cargoType(REGULAR).build();
   }
 
@@ -93,6 +102,7 @@ public class PilotageDueCalculatorTest implements DueCalculatorTest {
     BigDecimal pilotageDue = getFixedPilotageDuePerGrossTonnage(testCase);
     BigDecimal increase =
         pilotageDue.multiply(tariff.getIncreaseCoefficientsByCargoType().get(HAZARDOUS));
+
     BigDecimal expected = pilotageDue.add(increase);
     BigDecimal result = calculator.calculateFor(testCase, tariff);
 
@@ -108,6 +118,110 @@ public class PilotageDueCalculatorTest implements DueCalculatorTest {
     BigDecimal pilotageDue = getFixedPilotageDuePerGrossTonnage(testCase);
     BigDecimal increase =
         pilotageDue.multiply(tariff.getIncreaseCoefficientsByCargoType().get(SPECIAL));
+
+    BigDecimal expected = pilotageDue.add(increase);
+    BigDecimal result = calculator.calculateFor(testCase, tariff);
+
+    assertThat(result).isEqualByComparingTo(expected);
+  }
+
+  @DisplayName("Should increase total pilotage due by 50 percent if requires special pilot")
+  @Test
+  void shouldIncreaseTotalPilotageDueBy50PercentIfRequiresSpecialPilot() {
+
+    testCase.getShip().setRequiresSpecialPilot(true);
+
+    BigDecimal pilotageDue = getFixedPilotageDuePerGrossTonnage(testCase);
+    BigDecimal increase =
+        pilotageDue.multiply(tariff.getIncreaseCoefficientsByWarningType().get(PILOT));
+
+    BigDecimal expected = pilotageDue.add(increase);
+    BigDecimal result = calculator.calculateFor(testCase, tariff);
+
+    assertThat(result).isEqualByComparingTo(expected);
+  }
+
+  @DisplayName("Should increase total pilotage due by 50 percent if ETA is holiday")
+  @Test
+  void shouldIncreaseTotalPilotageDueBy50PercentIfEtaIsHoliday() {
+
+    LocalDate estimatedDateOfArrival = tariff.getHolidayCalendar().stream().findFirst().get();
+
+    testCase.setEstimatedDateOfArrival(estimatedDateOfArrival);
+    testCase.setEstimatedDateOfDeparture(LocalDate.of(LocalDate.now().getYear(), 1, 5));
+
+    BigDecimal pilotageDue = getFixedPilotageDuePerGrossTonnage(testCase);
+    BigDecimal increase =
+        pilotageDue.multiply(tariff.getIncreaseCoefficientsByWarningType().get(HOLIDAY));
+
+    BigDecimal expected = pilotageDue.add(increase);
+    BigDecimal result = calculator.calculateFor(testCase, tariff);
+
+    assertThat(result).isEqualByComparingTo(expected);
+  }
+
+  @DisplayName("Should increase total pilotage due by 50 percent if ETD is holiday")
+  @Test
+  void shouldIncreaseTotalPilotageDueBy50PercentIfEtdIsHoliday() {
+
+    LocalDate estimatedDateOfDeparture = tariff.getHolidayCalendar().stream().findFirst().get();
+
+    testCase.setEstimatedDateOfArrival(LocalDate.of(LocalDate.now().getYear(), 1, 5));
+    testCase.setEstimatedDateOfDeparture(estimatedDateOfDeparture);
+
+    BigDecimal pilotageDue = getFixedPilotageDuePerGrossTonnage(testCase);
+    BigDecimal increase =
+        pilotageDue.multiply(tariff.getIncreaseCoefficientsByWarningType().get(HOLIDAY));
+
+    BigDecimal expected = pilotageDue.add(increase);
+    BigDecimal result = calculator.calculateFor(testCase, tariff);
+
+    assertThat(result).isEqualByComparingTo(expected);
+  }
+
+  @DisplayName("Should increase total pilotage due by 100 percent if ETA and ETD are holidays")
+  @Test
+  void shouldIncreaseTotalPilotageDueBy100PercentIfEtaAndEtdAreHoliday() {
+
+    LocalDate estimatedDateOfArrival = tariff.getHolidayCalendar().stream().findFirst().get();
+    LocalDate estimatedDateOfDeparture = tariff.getHolidayCalendar().stream().findFirst().get();
+
+    testCase.setEstimatedDateOfArrival(estimatedDateOfArrival);
+    testCase.setEstimatedDateOfDeparture(estimatedDateOfDeparture);
+
+    BigDecimal pilotageDue = getFixedPilotageDuePerGrossTonnage(testCase);
+    BigDecimal increase =
+        pilotageDue.multiply(
+            tariff
+                .getIncreaseCoefficientsByWarningType()
+                .get(HOLIDAY)
+                .multiply(BigDecimal.valueOf(2)));
+
+    BigDecimal expected = pilotageDue.add(increase);
+    BigDecimal result = calculator.calculateFor(testCase, tariff);
+
+    assertThat(result).isEqualByComparingTo(expected);
+  }
+
+  @DisplayName("Should increase total pilotage due by 150 percent")
+  @Test
+  void shouldIncreaseTotalPilotageDueBy150Percent() {
+
+    LocalDate estimatedDateOfArrival = tariff.getHolidayCalendar().stream().findFirst().get();
+    LocalDate estimatedDateOfDeparture = tariff.getHolidayCalendar().stream().findFirst().get();
+
+    testCase.setEstimatedDateOfArrival(estimatedDateOfArrival);
+    testCase.setEstimatedDateOfDeparture(estimatedDateOfDeparture);
+    testCase.getShip().setRequiresSpecialPilot(true);
+
+    BigDecimal pilotageDue = getFixedPilotageDuePerGrossTonnage(testCase);
+    BigDecimal increase =
+        pilotageDue.multiply(
+            tariff
+                .getIncreaseCoefficientsByWarningType()
+                .get(HOLIDAY)
+                .multiply(BigDecimal.valueOf(3)));
+
     BigDecimal expected = pilotageDue.add(increase);
     BigDecimal result = calculator.calculateFor(testCase, tariff);
 

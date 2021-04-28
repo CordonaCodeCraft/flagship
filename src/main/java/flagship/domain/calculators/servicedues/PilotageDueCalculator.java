@@ -5,10 +5,11 @@ import flagship.domain.cases.dto.PdaCase;
 import lombok.RequiredArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.Comparator;
-import java.util.Map;
+import java.util.*;
 
-// todo: implement logic for increase coefficient by ETA and ETD
+import static flagship.domain.calculators.tariffs.enums.PdaWarning.HOLIDAY;
+import static flagship.domain.calculators.tariffs.enums.PdaWarning.PILOT;
+
 @RequiredArgsConstructor
 public class PilotageDueCalculator {
 
@@ -82,10 +83,41 @@ public class PilotageDueCalculator {
   }
 
   private BigDecimal getIncreaseCoefficient(final PdaCase source, final PilotageDueTariff tariff) {
-    return tariff.getIncreaseCoefficientsByCargoType().entrySet().stream()
-        .filter(entry -> entry.getKey() == source.getCargoType())
-        .map(Map.Entry::getValue)
-        .max(Comparator.naturalOrder())
-        .orElse(BigDecimal.valueOf(0.00));
+
+    List<BigDecimal> increaseCoefficients = new ArrayList<>();
+
+    BigDecimal increaseCoefficientByCargoType =
+        tariff.getIncreaseCoefficientsByCargoType().entrySet().stream()
+            .filter(entry -> entry.getKey() == source.getCargoType())
+            .map(Map.Entry::getValue)
+            .max(Comparator.naturalOrder())
+            .orElse(BigDecimal.ZERO);
+
+    increaseCoefficients.add(increaseCoefficientByCargoType);
+
+    BigDecimal increaseCoefficientByPilot =
+        source.getShip().getRequiresSpecialPilot()
+            ? tariff.getIncreaseCoefficientsByWarningType().get(PILOT)
+            : BigDecimal.ZERO;
+
+    increaseCoefficients.add(increaseCoefficientByPilot);
+
+    if (Optional.ofNullable(source.getEstimatedDateOfArrival()).isPresent()) {
+      BigDecimal increaseCoefficientByETA =
+          tariff.getHolidayCalendar().contains(source.getEstimatedDateOfArrival())
+              ? tariff.getIncreaseCoefficientsByWarningType().get(HOLIDAY)
+              : BigDecimal.ZERO;
+      increaseCoefficients.add(increaseCoefficientByETA);
+    }
+
+    if (Optional.ofNullable(source.getEstimatedDateOfDeparture()).isPresent()) {
+      BigDecimal increaseCoefficientByETD =
+          tariff.getHolidayCalendar().contains(source.getEstimatedDateOfDeparture())
+              ? tariff.getIncreaseCoefficientsByWarningType().get(HOLIDAY)
+              : BigDecimal.ZERO;
+      increaseCoefficients.add(increaseCoefficientByETD);
+    }
+
+    return increaseCoefficients.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
   }
 }
