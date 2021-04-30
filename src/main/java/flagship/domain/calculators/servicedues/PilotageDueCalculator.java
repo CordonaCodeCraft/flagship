@@ -1,5 +1,6 @@
 package flagship.domain.calculators.servicedues;
 
+import flagship.domain.calculators.DueCalculator;
 import flagship.domain.calculators.tariffs.serviceduestariffs.PilotageDueTariff;
 import flagship.domain.cases.dto.PdaCase;
 import lombok.RequiredArgsConstructor;
@@ -11,8 +12,9 @@ import static flagship.domain.calculators.tariffs.enums.PdaWarning.HOLIDAY;
 import static flagship.domain.calculators.tariffs.enums.PdaWarning.PILOT;
 
 @RequiredArgsConstructor
-public class PilotageDueCalculator {
+public class PilotageDueCalculator implements DueCalculator<PdaCase, PilotageDueTariff> {
 
+  @Override
   public BigDecimal calculateFor(final PdaCase source, final PilotageDueTariff tariff) {
 
     BigDecimal pilotageDue = getFixedPilotageDue(source, tariff);

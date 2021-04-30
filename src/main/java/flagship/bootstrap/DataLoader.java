@@ -76,6 +76,10 @@ public class DataLoader implements ApplicationRunner {
             Paths.get("src/main/resources/pilotageDueTariff.json").toFile(), pilotageDueTariff);
 
     objectMapper
+            .writerWithDefaultPrettyPrinter()
+            .writeValue(Paths.get("src/main/resources/tugDueTariff.json").toFile(), tugDueTariff);
+
+    objectMapper
         .writerWithDefaultPrettyPrinter()
         .writeValue(Paths.get("src/main/resources/holidayCalendar.json").toFile(), holidayCalendar);
   }

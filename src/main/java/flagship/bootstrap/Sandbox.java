@@ -1,37 +1,31 @@
 package flagship.bootstrap;
 
+import flagship.domain.calculators.tariffs.serviceduestariffs.TugDueTariff;
 import flagship.domain.cases.dto.PdaCase;
 import flagship.domain.cases.dto.PdaPort;
 import flagship.domain.cases.dto.PdaShip;
 import flagship.domain.cases.dto.mappers.CaseMapper;
 import flagship.domain.cases.entities.Case;
+import flagship.domain.calculators.tariffs.enums.PortName;
 import org.json.JSONException;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.YearMonth;
-import java.time.temporal.ChronoUnit;
 
 import static flagship.domain.cases.entities.enums.CallPurpose.LOADING;
 import static flagship.domain.cases.entities.enums.CargoType.HAZARDOUS;
-import static flagship.domain.calculators.tariffs.enums.PilotageArea.VARNA_FIRST;
+import static flagship.domain.calculators.tariffs.serviceduestariffs.PilotageDueTariff.PilotageArea.VARNA_FIRST;
 import static flagship.domain.calculators.tariffs.enums.PortArea.FIRST;
 import static flagship.domain.cases.entities.enums.ShipType.GENERAL;
-import static flagship.domain.calculators.tariffs.enums.TugArea.VTC_FIFTH;
 
 public class Sandbox {
 
   public static void main(String[] args) throws JSONException, IOException {
 
-    LocalDate first = LocalDate.of(2021, 1, 29);
-    LocalDate second = LocalDate.of(2021, 10, 11);
+    String test = PortName.DEVIATION.name;
 
-    int diff = (int) ChronoUnit.MONTHS.between(YearMonth.from(first),YearMonth.from(second));
-
-    int result = diff == 0 ? 1 : diff + 1;
-
-    System.out.println(result);
+    System.out.println();
 
 //    dtoConversions();
 
@@ -54,7 +48,7 @@ public class Sandbox {
                     .name("Varna")
                     .area(FIRST)
                     .pilotageArea(VARNA_FIRST)
-                    .tugArea(VTC_FIFTH)
+                    .tugArea(TugDueTariff.TugArea.VTC_FIFTH)
                     .build();
 
     PdaCase pdaCase =

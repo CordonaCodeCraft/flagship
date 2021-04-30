@@ -7,7 +7,6 @@ import flagship.domain.calculators.tariffs.serviceduestariffs.PilotageDueTariff;
 import flagship.domain.cases.dto.PdaCase;
 import flagship.domain.cases.dto.PdaPort;
 import flagship.domain.cases.dto.PdaShip;
-import flagship.domain.calculators.tariffs.enums.PilotageArea;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -23,10 +22,11 @@ import java.util.Comparator;
 import java.util.Map;
 import java.util.Random;
 
+import static flagship.domain.calculators.tariffs.serviceduestariffs.PilotageDueTariff.*;
 import static flagship.domain.cases.entities.enums.CargoType.*;
 import static flagship.domain.calculators.tariffs.enums.PdaWarning.HOLIDAY;
 import static flagship.domain.calculators.tariffs.enums.PdaWarning.PILOT;
-import static flagship.domain.calculators.tariffs.enums.PilotageArea.VARNA_FIRST;
+import static flagship.domain.calculators.tariffs.serviceduestariffs.PilotageDueTariff.PilotageArea.VARNA_FIRST;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DisplayName("Pilotage due calculator tests")
@@ -84,7 +84,7 @@ public class PilotageDueCalculatorTest implements DueCalculatorTest {
 
     BigDecimal fixedPilotageDue = getFixedPilotageDuePerGrossTonnage(testCase);
     BigDecimal increaseValue = getIncreaseValue(testCase);
-    BigDecimal multiplier = evaluateMultiplier(grossTonnage);
+    BigDecimal multiplier = getMultiplier(testCase.getShip().getGrossTonnage());
     BigDecimal totalIncrease = increaseValue.multiply(multiplier);
 
     BigDecimal expected = fixedPilotageDue.add(totalIncrease);
@@ -264,7 +264,7 @@ public class PilotageDueCalculatorTest implements DueCalculatorTest {
         .get();
   }
 
-  private BigDecimal evaluateMultiplier(BigDecimal grossTonnage) {
+  private BigDecimal getMultiplier(BigDecimal grossTonnage) {
 
     double a =
         (grossTonnage.doubleValue() - tariff.getGrossTonnageThreshold().doubleValue()) / 1000;

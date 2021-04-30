@@ -15,7 +15,7 @@ import static flagship.domain.calculators.tariffs.enums.PdaWarning.HOLIDAY;
 
 // todo: Confirm, that predefining UUID id is not a problem for Hibernate
 
-// todo: add warning that the PDA is not precise at calculating wharf, pilotage and tug dues
+// todo: add warning that the PDA is not precise at calculating wharf, pilotage and tug dues and moorning/unmoorning
 // because ETA and ETD are not provided
 
 // todo: Add warning regarding the wharf due - if between ETA and ETD - the stay of the ship will be

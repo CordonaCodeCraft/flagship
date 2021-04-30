@@ -1,19 +1,19 @@
 package flagship.bootstrap;
 
+import flagship.domain.calculators.tariffs.enums.PortArea;
 import flagship.domain.calculators.tariffs.stateduestariffs.CanalDueTariff;
 import flagship.domain.calculators.tariffs.stateduestariffs.LightDueTariff;
 import flagship.domain.calculators.tariffs.stateduestariffs.TonnageDueTariff;
 import flagship.domain.calculators.tariffs.stateduestariffs.WharfDueTariff;
 import flagship.domain.cases.entities.enums.CallPurpose;
-import flagship.domain.calculators.tariffs.enums.PortArea;
 import flagship.domain.cases.entities.enums.ShipType;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.*;
 
-import static flagship.domain.cases.entities.enums.CallPurpose.*;
 import static flagship.domain.calculators.tariffs.enums.PortArea.*;
+import static flagship.domain.cases.entities.enums.CallPurpose.*;
 import static flagship.domain.cases.entities.enums.ShipType.*;
 
 @Component
@@ -146,17 +146,12 @@ public class StateDueTariffInitializer {
 
   private static void initializeLightDueTariff(final LightDueTariff lightDueTariff) {
 
-    final Map<BigDecimal, Integer[]> lightDuesByGrossTonnage = new HashMap<>();
+    final Map<BigDecimal, Integer[]> lightDuesByGrossTonnage = new TreeMap<>();
 
-    Integer[] range1 = {41, 500};
-    Integer[] range2 = {501, 1000};
-    Integer[] range3 = {1001, 5000};
-    Integer[] range4 = {5001, 10000};
-
-    lightDuesByGrossTonnage.put(BigDecimal.valueOf(15.00), range1);
-    lightDuesByGrossTonnage.put(BigDecimal.valueOf(40.00), range2);
-    lightDuesByGrossTonnage.put(BigDecimal.valueOf(70.00), range3);
-    lightDuesByGrossTonnage.put(BigDecimal.valueOf(110.00), range4);
+    lightDuesByGrossTonnage.put(BigDecimal.valueOf(15.00), new Integer[] {41, 500});
+    lightDuesByGrossTonnage.put(BigDecimal.valueOf(40.00), new Integer[] {501, 1000});
+    lightDuesByGrossTonnage.put(BigDecimal.valueOf(70.00), new Integer[] {1001, 5000});
+    lightDuesByGrossTonnage.put(BigDecimal.valueOf(110.00), new Integer[] {5001, 10000});
     lightDueTariff.setLightDuesByGrossTonnage(Collections.unmodifiableMap(lightDuesByGrossTonnage));
 
     final Map<ShipType, BigDecimal> lightDuesByShipType = new EnumMap<>(ShipType.class);
