@@ -15,7 +15,9 @@ public class TugAreaResolver {
         .get(source.getPort().getTugServiceProvider())
         .entrySet()
         .stream()
-        .filter(entrySet -> entrySet.getValue().contains(source.getPort().getName()))
+        .filter(
+            entry ->
+                entry.getValue().stream().anyMatch(v -> v.name.equals(source.getPort().getName())))
         .map(Map.Entry::getKey)
         .findFirst()
         .get();

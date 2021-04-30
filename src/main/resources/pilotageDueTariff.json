@@ -1,9 +1,9 @@
 {
   "portNamesInPilotageAreas" : {
-    "VARNA_FIRST" : [ "Varna East", "Petrol", "Bulyard", "Bulport Logistik", "SRY", "PCHVM" ],
-    "VARNA_SECOND" : [ "TEC (Power station)", "Balchik port", "Lesport", "Terem FA", "SRY Dolphin", "Transstroi Varna", "Odessos PBM", "Buoy 9", "Anchorage" ],
-    "VARNA_THIRD" : [ "Varna West", "Ferry Complex" ],
-    "BOURGAS_FIRST" : [ "Burgas – Center", "Burgas East 2", "BMF Port Burgas", "West Terminal", "Ship repair yard Port Burgas", "Port Bulgaria West", "Burgas Shipyard", "Port Europa", "Transstroi Burgas", "Port Rosenetz", "Nessebar", "Pomorie", "Sozopol", "Tzarevo", "Shifting of the anchorage area", "deviation", "XX A.k.m", "XX B.k.m" ]
+    "VARNA_FIRST" : [ "VARNA_EAST", "PETROL", "BULYARD", "BULPORT_LOGISTIK", "SRY", "PCHMV" ],
+    "VARNA_SECOND" : [ "TEC_POWER_STATION", "BALCHIK_PORT", "LESPORT", "TEREM_FA", "SRY_DOLPHIN", "TRANSSTROI_VARNA", "ODESSOS_PBM", "BUOY_9", "ANCHORAGE" ],
+    "VARNA_THIRD" : [ "VARNA_WEST", "FERRY_COMPLEX" ],
+    "BOURGAS_FIRST" : [ "BOURGAS_CENTER", "BOURGAS_EAST_2", "BMF_PORT_BOURGAS", "WEST_TERMINAL", "SRY_PORT_BOURGAS", "PORT_BULGARIA_WEST", "BOURGAS_SHIPYARD", "PORT_EUROPA", "TRANSSTROI_BOURGAS", "PORT_ROSENETZ", "NESSEBAR", "POMORIE", "SOZOPOL", "TZAREVO", "SHIFTING_ANCHORAGE_AREA", "DEVIATION", "XX_A_K_M", "XX_B_K_M" ]
   },
   "pilotageDuesByArea" : {
     "VARNA_FIRST" : {
@@ -46,14 +46,14 @@
       "240.0" : [ 0, 499, 75 ],
       "280.0" : [ 500, 999, 75 ],
       "320.0" : [ 1000, 1999, 75 ],
-      "640.0" : [ 8000, 8999, 75 ],
-      "680.0" : [ 9000, 9999, 75 ],
+      "380.0" : [ 2000, 2999, 75 ],
       "440.0" : [ 3000, 3999, 75 ],
       "480.0" : [ 4000, 4999, 75 ],
       "520.0" : [ 5000, 5999, 75 ],
       "560.0" : [ 6000, 6999, 75 ],
       "600.0" : [ 7000, 7999, 75 ],
-      "380.0" : [ 2000, 2999, 75 ]
+      "640.0" : [ 8000, 8999, 75 ],
+      "680.0" : [ 9000, 9999, 75 ]
     }
   },
   "increaseCoefficientsByCargoType" : {

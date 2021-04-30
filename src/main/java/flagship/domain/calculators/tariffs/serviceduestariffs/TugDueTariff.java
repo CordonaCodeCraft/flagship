@@ -1,15 +1,14 @@
 package flagship.domain.calculators.tariffs.serviceduestariffs;
 
 import flagship.domain.calculators.tariffs.enums.PdaWarning;
+import flagship.domain.calculators.tariffs.enums.PortName;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -19,7 +18,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class TugDueTariff {
 
-  private Map<TugProvider, Map<TugArea, List<String>>> portNamesInTugAreas;
+  private Map<TugProvider, Map<TugArea, Set<PortName>>> portNamesInTugAreas;
   private Map<TugArea, Map<BigDecimal, Integer[]>> tugDuesByArea;
   private Map<BigDecimal, Integer[]> tugCountByGrossTonnage;
   private Map<PdaWarning, BigDecimal> increaseCoefficientsByWarningType;

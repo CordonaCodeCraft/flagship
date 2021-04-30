@@ -212,6 +212,6 @@ class TugAreaResolverTest {
   }
 
   private static Stream<Arguments> getStreamOfPortNames(TugDueTariff.TugProvider vtc, TugArea vtcFirst) {
-    return tariff.getPortNamesInTugAreas().get(vtc).get(vtcFirst).stream().map(Arguments::of);
+    return tariff.getPortNamesInTugAreas().get(vtc).get(vtcFirst).stream().map(e -> e.name).map(Arguments::of);
   }
 }

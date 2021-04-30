@@ -1,18 +1,18 @@
 {
   "portNamesInTugAreas" : {
     "VTC" : {
-      "VTC_FIRST" : [ "Varna East", "PCHMV", "Odessos PBM", "Petrol", "Lesport", "TEC (Power station)" ],
-      "VTC_SECOND" : [ "Varna West", "Ferry Complex" ],
-      "VTC_THIRD" : [ "Bulyard", "SRY Odessos", "MTG Dolphin", "SRY TEREM" ],
-      "VTC_FOURTH" : [ "Shifting in Bulyard (VTC)", "Shifting in SRY Odessos (VTC)", "Shifting in MTG Dolphin (VTC)", "Shifting in SRY TEREM (VTC)" ],
-      "VTC_FIFTH" : [ "Port Balchik" ]
+      "VTC_FIRST" : [ "VARNA_EAST", "PETROL", "PCHMV", "TEC_POWER_STATION", "LESPORT", "ODESSOS_PBM" ],
+      "VTC_SECOND" : [ "VARNA_WEST", "FERRY_COMPLEX" ],
+      "VTC_THIRD" : [ "BULYARD", "TEREM_FA", "SRY_ODESSOS", "MTG_DOLPHIN" ],
+      "VTC_FOURTH" : [ "SHIFTING_BULYARD", "SHIFTING_SRY_ODESSOS", "SHIFTING_MTG_DOLPHIN", "SHIFTING_TEREM_FA" ],
+      "VTC_FIFTH" : [ "BALCHIK_PORT" ]
     },
     "PORTFLEET" : {
-      "PORTFLEET_FIRST" : [ "Varna East", "TEC Ezerovo", "Petrol", "Lesport", "Odessos PBM", "PCHMV" ],
-      "PORTFLEET_SECOND" : [ "Varna West", "Ferry Complex" ],
-      "PORTFLEET_THIRD" : [ "Bulyard", "SRY Odessos", "MTG Dolphin", "SRY TEREM" ],
-      "PORTFLEET_FOURTH" : [ "Shifting in Bulyard (Portfleet)", "Shifting in SRY Odessos (Portfleet)", "Shifting in MTG Dolphin (Portfleet)", "Shifting in SRY TEREM (Portfleet)" ],
-      "PORTFLEET_FIFTH" : [ "Port Balchik" ]
+      "PORTFLEET_FIRST" : [ "VARNA_EAST", "PETROL", "PCHMV", "LESPORT", "ODESSOS_PBM", "TEC_EZEROVO" ],
+      "PORTFLEET_SECOND" : [ "VARNA_WEST", "FERRY_COMPLEX" ],
+      "PORTFLEET_THIRD" : [ "BULYARD", "TEREM_FA", "SRY_ODESSOS", "MTG_DOLPHIN" ],
+      "PORTFLEET_FOURTH" : [ "SHIFTING_BULYARD", "SHIFTING_SRY_ODESSOS", "SHIFTING_MTG_DOLPHIN", "SHIFTING_TEREM_FA" ],
+      "PORTFLEET_FIFTH" : [ "BALCHIK_PORT" ]
     }
   },
   "tugDuesByArea" : {

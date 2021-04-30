@@ -1,12 +1,10 @@
-package flagship.domain.calculators.servicedues;
+package flagship.domain.calculators.resolvers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import flagship.domain.calculators.resolvers.PilotageAreaResolver;
 import flagship.domain.calculators.tariffs.serviceduestariffs.PilotageDueTariff;
 import flagship.domain.cases.dto.PdaCase;
 import flagship.domain.cases.dto.PdaPort;
-import flagship.domain.calculators.tariffs.enums.PilotageArea;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -18,7 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.stream.Stream;
 
-import static flagship.domain.calculators.tariffs.enums.PilotageArea.*;
+import static flagship.domain.calculators.tariffs.serviceduestariffs.PilotageDueTariff.PilotageArea.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DisplayName("Pilotage area resolver tests")
@@ -42,39 +40,43 @@ class PilotageAreaResolverTest {
     testCase = PdaCase.builder().port(testPort).build();
   }
 
-  @DisplayName("Should resolve port name to VARNA_FIRST pilotage area")
+  @DisplayName("Should resolve port name to Varna first pilotage area")
   @ParameterizedTest(name = "port name : {arguments}")
   @MethodSource(value = "getPortsInVarnaFirstPilotageArea")
   void shouldResolvePilotageAreaToVarnaFirst(String portName) {
     testCase.getPort().setName(portName);
-    PilotageArea result = PilotageAreaResolver.resolvePilotageArea(testCase, tariff);
+    PilotageDueTariff.PilotageArea result =
+        PilotageAreaResolver.resolvePilotageArea(testCase, tariff);
     assertThat(result.name()).isEqualTo(VARNA_FIRST.name());
   }
 
-  @DisplayName("Should resolve port name to VARNA_SECOND pilotage area")
+  @DisplayName("Should resolve port name to Varna second pilotage area")
   @ParameterizedTest(name = "port name : {arguments}")
   @MethodSource(value = "getPortsInVarnaSecondPilotageArea")
   void shouldResolvePilotageAreaToVarnaSecond(String portName) {
     testCase.getPort().setName(portName);
-    PilotageArea result = PilotageAreaResolver.resolvePilotageArea(testCase, tariff);
+    PilotageDueTariff.PilotageArea result =
+        PilotageAreaResolver.resolvePilotageArea(testCase, tariff);
     assertThat(result.name()).isEqualTo(VARNA_SECOND.name());
   }
 
-  @DisplayName("Should resolve port name to VARNA_THIRD pilotage area")
+  @DisplayName("Should resolve port name to Varna third pilotage area")
   @ParameterizedTest(name = "port name : {arguments}")
   @MethodSource(value = "getPortsInVarnaThirdPilotageArea")
   void shouldResolvePilotageAreaToVarnaThird(String portName) {
     testCase.getPort().setName(portName);
-    PilotageArea result = PilotageAreaResolver.resolvePilotageArea(testCase, tariff);
+    PilotageDueTariff.PilotageArea result =
+        PilotageAreaResolver.resolvePilotageArea(testCase, tariff);
     assertThat(result.name()).isEqualTo(VARNA_THIRD.name());
   }
 
-  @DisplayName("Should resolve port name to BOURGAS_FIRST pilotage area")
+  @DisplayName("Should resolve port name to Bourgas first pilotage area")
   @ParameterizedTest(name = "port name : {arguments}")
   @MethodSource(value = "getPortsInBourgasFirstPilotageArea")
   void shouldResolvePilotageAreaToBourgasFirst(String portName) {
     testCase.getPort().setName(portName);
-    PilotageArea result = PilotageAreaResolver.resolvePilotageArea(testCase, tariff);
+    PilotageDueTariff.PilotageArea result =
+        PilotageAreaResolver.resolvePilotageArea(testCase, tariff);
     assertThat(result.name()).isEqualTo(BOURGAS_FIRST.name());
   }
 
@@ -94,7 +96,10 @@ class PilotageAreaResolverTest {
     return getStreamOfPortNamesForPilotageArea(BOURGAS_FIRST);
   }
 
-  private static Stream<Arguments> getStreamOfPortNamesForPilotageArea(PilotageArea pilotageArea) {
-    return tariff.getPortNamesInPilotageAreas().get(pilotageArea).stream().map(Arguments::of);
+  private static Stream<Arguments> getStreamOfPortNamesForPilotageArea(
+      PilotageDueTariff.PilotageArea pilotageArea) {
+    return tariff.getPortNamesInPilotageAreas().get(pilotageArea).stream()
+        .map(e -> e.name)
+        .map(Arguments::of);
   }
 }

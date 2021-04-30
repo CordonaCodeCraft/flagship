@@ -7,6 +7,7 @@ import flagship.domain.calculators.tariffs.serviceduestariffs.PilotageDueTariff;
 import flagship.domain.calculators.tariffs.serviceduestariffs.PilotageDueTariff.PilotageArea;
 import flagship.domain.calculators.tariffs.serviceduestariffs.TugDueTariff;
 import flagship.domain.cases.entities.enums.CargoType;
+import flagship.domain.calculators.tariffs.enums.PortName;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -23,6 +24,7 @@ import static flagship.domain.calculators.tariffs.serviceduestariffs.TugDueTarif
 import static flagship.domain.calculators.tariffs.serviceduestariffs.TugDueTariff.TugProvider.VTC;
 import static flagship.domain.cases.entities.enums.CargoType.HAZARDOUS;
 import static flagship.domain.cases.entities.enums.CargoType.SPECIAL;
+import static flagship.domain.calculators.tariffs.enums.PortName.*;
 import static java.time.Month.*;
 
 @Component
@@ -40,54 +42,45 @@ public class ServiceDueTariffInitializer {
   private static void initializePilotageDueTariff(
       PilotageDueTariff pilotageDueTariff, HolidayCalendar holidayCalendar) {
 
-    Map<PilotageArea, List<String>> portNamesInPilotageAreas = new EnumMap<>(PilotageArea.class);
+    Map<PilotageArea, Set<PortName>> portNamesInPilotageAreas = new EnumMap<>(PilotageArea.class);
 
-    List<String> portNamesInFirstVarnaPilotageArea = new ArrayList<>();
+    Set<PortName> portNamesInFirstVarnaPilotageArea =
+        EnumSet.of(VARNA_EAST, PETROL, BULYARD, BULPORT_LOGISTIK, SRY, PCHMV);
 
-    portNamesInFirstVarnaPilotageArea.add("Varna East");
-    portNamesInFirstVarnaPilotageArea.add("Petrol");
-    portNamesInFirstVarnaPilotageArea.add("Bulyard");
-    portNamesInFirstVarnaPilotageArea.add("Bulport Logistik");
-    portNamesInFirstVarnaPilotageArea.add("SRY");
-    portNamesInFirstVarnaPilotageArea.add("PCHMV");
+    Set<PortName> portNamesInSecondVarnaPilotageArea =
+        EnumSet.of(
+            TEC_POWER_STATION,
+            BALCHIK_PORT,
+            LESPORT,
+            TEREM_FA,
+            SRY_DOLPHIN,
+            TRANSSTROI_VARNA,
+            ODESSOS_PBM,
+            BUOY_9,
+            ANCHORAGE);
 
-    List<String> portNamesInSecondVarnaPilotageArea = new ArrayList<>();
+    Set<PortName> portNamesInThirdVarnaPilotageArea = EnumSet.of(VARNA_WEST, FERRY_COMPLEX);
 
-    portNamesInSecondVarnaPilotageArea.add("TEC (Power station)");
-    portNamesInSecondVarnaPilotageArea.add("Balchik port");
-    portNamesInSecondVarnaPilotageArea.add("Lesport");
-    portNamesInSecondVarnaPilotageArea.add("Terem FA");
-    portNamesInSecondVarnaPilotageArea.add("SRY Dolphin");
-    portNamesInSecondVarnaPilotageArea.add("Transstroi Varna");
-    portNamesInSecondVarnaPilotageArea.add("Odessos PBM");
-    portNamesInSecondVarnaPilotageArea.add("Buoy 9");
-    portNamesInSecondVarnaPilotageArea.add("Anchorage");
-
-    List<String> portNamesInThirdVarnaPilotageArea = new ArrayList<>();
-
-    portNamesInThirdVarnaPilotageArea.add("Varna West");
-    portNamesInThirdVarnaPilotageArea.add("Ferry Complex");
-
-    List<String> portNamesInFirstBourgasPilotageArea = new ArrayList<>();
-
-    portNamesInFirstBourgasPilotageArea.add("Bourgas – Center");
-    portNamesInFirstBourgasPilotageArea.add("Bourgas East 2");
-    portNamesInFirstBourgasPilotageArea.add("BMF Port Bourgas");
-    portNamesInFirstBourgasPilotageArea.add("West Terminal");
-    portNamesInFirstBourgasPilotageArea.add("Ship Repair Yard Port Bourgas");
-    portNamesInFirstBourgasPilotageArea.add("Port Bulgaria West");
-    portNamesInFirstBourgasPilotageArea.add("Bourgas Shipyard");
-    portNamesInFirstBourgasPilotageArea.add("Port Europa");
-    portNamesInFirstBourgasPilotageArea.add("Transstroi Bourgas");
-    portNamesInFirstBourgasPilotageArea.add("Port Rosenetz");
-    portNamesInFirstBourgasPilotageArea.add("Nessebar");
-    portNamesInFirstBourgasPilotageArea.add("Pomorie");
-    portNamesInFirstBourgasPilotageArea.add("Sozopol");
-    portNamesInFirstBourgasPilotageArea.add("Tzarevo");
-    portNamesInFirstBourgasPilotageArea.add("Shifting of the anchorage area");
-    portNamesInFirstBourgasPilotageArea.add("deviation");
-    portNamesInFirstBourgasPilotageArea.add("XX A.k.m");
-    portNamesInFirstBourgasPilotageArea.add("XX B.k.m");
+    Set<PortName> portNamesInFirstBourgasPilotageArea =
+        EnumSet.of(
+            BOURGAS_CENTER,
+            BOURGAS_EAST_2,
+            BMF_PORT_BOURGAS,
+            WEST_TERMINAL,
+            SRY_PORT_BOURGAS,
+            PORT_BULGARIA_WEST,
+            BOURGAS_SHIPYARD,
+            PORT_EUROPA,
+            TRANSSTROI_BOURGAS,
+            PORT_ROSENETZ,
+            NESSEBAR,
+            POMORIE,
+            SOZOPOL,
+            TZAREVO,
+            SHIFTING_ANCHORAGE_AREA,
+            DEVIATION,
+            XX_A_K_M,
+            XX_B_K_M);
 
     portNamesInPilotageAreas.put(VARNA_FIRST, portNamesInFirstVarnaPilotageArea);
     portNamesInPilotageAreas.put(VARNA_SECOND, portNamesInSecondVarnaPilotageArea);
@@ -208,37 +201,24 @@ public class ServiceDueTariffInitializer {
   private static void initializeTugDueTariff(
       TugDueTariff tugDueTariff, HolidayCalendar holidayCalendar) {
 
-    Map<TugProvider, Map<TugArea, List<String>>> portNamesInTugAreas =
+    Map<TugProvider, Map<TugArea, Set<PortName>>> portNamesInTugAreas =
         new EnumMap<>(TugProvider.class);
 
-    Map<TugArea, List<String>> portNamesInVtcTugAreas = new EnumMap<>(TugArea.class);
+    Map<TugArea, Set<PortName>> portNamesInVtcTugAreas = new EnumMap<>(TugArea.class);
 
-    List<String> portNamesInVtcFirstTugArea = new ArrayList<>();
-    portNamesInVtcFirstTugArea.add("Varna East");
-    portNamesInVtcFirstTugArea.add("PCHMV");
-    portNamesInVtcFirstTugArea.add("Odessos PBM");
-    portNamesInVtcFirstTugArea.add("Petrol");
-    portNamesInVtcFirstTugArea.add("Lesport");
-    portNamesInVtcFirstTugArea.add("TEC (Power station)");
+    Set<PortName> portNamesInVtcFirstTugArea =
+        EnumSet.of(VARNA_EAST, PCHMV, ODESSOS_PBM, PETROL, LESPORT, TEC_POWER_STATION);
 
-    List<String> portNamesInVtcSecondTugArea = new ArrayList<>();
-    portNamesInVtcSecondTugArea.add("Varna West");
-    portNamesInVtcSecondTugArea.add("Ferry Complex");
+    Set<PortName> portNamesInVtcSecondTugArea = EnumSet.of(VARNA_WEST, FERRY_COMPLEX);
 
-    List<String> portNamesInVtcThirdTugArea = new ArrayList<>();
-    portNamesInVtcThirdTugArea.add("Bulyard");
-    portNamesInVtcThirdTugArea.add("SRY Odessos");
-    portNamesInVtcThirdTugArea.add("MTG Dolphin");
-    portNamesInVtcThirdTugArea.add("SRY TEREM");
+    Set<PortName> portNamesInVtcThirdTugArea =
+        EnumSet.of(BULYARD, SRY_ODESSOS, MTG_DOLPHIN, TEREM_FA);
 
-    List<String> portNamesInVtcFourthTugArea = new ArrayList<>();
-    portNamesInVtcFourthTugArea.add("Shifting in Bulyard (VTC)");
-    portNamesInVtcFourthTugArea.add("Shifting in SRY Odessos (VTC)");
-    portNamesInVtcFourthTugArea.add("Shifting in MTG Dolphin (VTC)");
-    portNamesInVtcFourthTugArea.add("Shifting in SRY TEREM (VTC)");
+    Set<PortName> portNamesInVtcFourthTugArea =
+        EnumSet.of(
+            SHIFTING_BULYARD, SHIFTING_SRY_ODESSOS, SHIFTING_MTG_DOLPHIN, SHIFTING_TEREM_FA);
 
-    List<String> portNamesInVtcFifthTugArea = new ArrayList<>();
-    portNamesInVtcFifthTugArea.add("Port Balchik");
+    Set<PortName> portNamesInVtcFifthTugArea = EnumSet.of(BALCHIK_PORT);
 
     portNamesInVtcTugAreas.put(VTC_FIRST, portNamesInVtcFirstTugArea);
     portNamesInVtcTugAreas.put(VTC_SECOND, portNamesInVtcSecondTugArea);
@@ -246,34 +226,21 @@ public class ServiceDueTariffInitializer {
     portNamesInVtcTugAreas.put(VTC_FOURTH, portNamesInVtcFourthTugArea);
     portNamesInVtcTugAreas.put(VTC_FIFTH, portNamesInVtcFifthTugArea);
 
-    Map<TugArea, List<String>> portNamesInPortFleetTugAreas = new EnumMap<>(TugArea.class);
+    Map<TugArea, Set<PortName>> portNamesInPortFleetTugAreas = new EnumMap<>(TugArea.class);
 
-    List<String> portNamesInPortfleetFirstTugArea = new ArrayList<>();
-    portNamesInPortfleetFirstTugArea.add("Varna East");
-    portNamesInPortfleetFirstTugArea.add("TEC Ezerovo");
-    portNamesInPortfleetFirstTugArea.add("Petrol");
-    portNamesInPortfleetFirstTugArea.add("Lesport");
-    portNamesInPortfleetFirstTugArea.add("Odessos PBM");
-    portNamesInPortfleetFirstTugArea.add("PCHMV");
+    Set<PortName> portNamesInPortfleetFirstTugArea =
+        EnumSet.of(VARNA_EAST, TEC_EZEROVO, PETROL, LESPORT, ODESSOS_PBM, PCHMV);
 
-    List<String> portNamesInPortfleetSecondTugArea = new ArrayList<>();
-    portNamesInPortfleetSecondTugArea.add("Varna West");
-    portNamesInPortfleetSecondTugArea.add("Ferry Complex");
+    Set<PortName> portNamesInPortfleetSecondTugArea = EnumSet.of(VARNA_WEST, FERRY_COMPLEX);
 
-    List<String> portNamesInPortfleetThirdTugArea = new ArrayList<>();
-    portNamesInPortfleetThirdTugArea.add("Bulyard");
-    portNamesInPortfleetThirdTugArea.add("SRY Odessos");
-    portNamesInPortfleetThirdTugArea.add("MTG Dolphin");
-    portNamesInPortfleetThirdTugArea.add("SRY TEREM");
+    Set<PortName> portNamesInPortfleetThirdTugArea =
+        EnumSet.of(BULYARD, SRY_ODESSOS, MTG_DOLPHIN, TEREM_FA);
 
-    List<String> portNamesInPortfleetFourthTugArea = new ArrayList<>();
-    portNamesInPortfleetFourthTugArea.add("Shifting in Bulyard (Portfleet)");
-    portNamesInPortfleetFourthTugArea.add("Shifting in SRY Odessos (Portfleet)");
-    portNamesInPortfleetFourthTugArea.add("Shifting in MTG Dolphin (Portfleet)");
-    portNamesInPortfleetFourthTugArea.add("Shifting in SRY TEREM (Portfleet)");
+    Set<PortName> portNamesInPortfleetFourthTugArea =
+        EnumSet.of(
+            SHIFTING_BULYARD, SHIFTING_SRY_ODESSOS, SHIFTING_MTG_DOLPHIN, SHIFTING_TEREM_FA);
 
-    List<String> portNamesInPortfleetFifthTugArea = new ArrayList<>();
-    portNamesInPortfleetFifthTugArea.add("Port Balchik");
+    Set<PortName> portNamesInPortfleetFifthTugArea = EnumSet.of(BALCHIK_PORT);
 
     portNamesInPortFleetTugAreas.put(PORTFLEET_FIRST, portNamesInPortfleetFirstTugArea);
     portNamesInPortFleetTugAreas.put(PORTFLEET_SECOND, portNamesInPortfleetSecondTugArea);
@@ -438,7 +405,7 @@ public class ServiceDueTariffInitializer {
     tugDueTariff.setTugDuesByArea(Collections.unmodifiableMap(tugDuesByArea));
     tugDueTariff.setTugCountByGrossTonnage(Collections.unmodifiableMap(tugCountByGrossTonnage));
     tugDueTariff.setIncreaseCoefficientsByWarningType(
-            Collections.unmodifiableMap(increaseCoefficientsByWarningType));
+        Collections.unmodifiableMap(increaseCoefficientsByWarningType));
 
     tugDueTariff.setHolidayCalendar(holidayCalendar.getHolidayCalendar());
     tugDueTariff.setGrossTonnageThreshold(BigDecimal.valueOf(10000.00));
