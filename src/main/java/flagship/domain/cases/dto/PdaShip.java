@@ -18,4 +18,5 @@ public class PdaShip {
   private BigDecimal grossTonnage;
   private Boolean requiresSpecialPilot;
   private Boolean hasIncreasedManeuverability;
+  private Boolean transportsDangerousCargo;
 }
