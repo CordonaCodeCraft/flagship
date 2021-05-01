@@ -31,15 +31,7 @@ public class TugDueCalculator extends ServiceDueCalculator<PdaCase, Tariff> {
       tugDue = tugDue.add(calculateAdditionalDue());
     }
 
-    tugDue = tugDue.multiply(getTugCount());
-
-    final BigDecimal increaseCoefficient = getIncreaseCoefficient();
-
-    if (increaseCoefficient.doubleValue() > 0) {
-      return tugDue.multiply(increaseCoefficient);
-    }
-
-    return tugDue;
+    return tugDue.multiply(getTugCount());
   }
 
   private BigDecimal calculateAdditionalDue() {
@@ -106,29 +98,6 @@ public class TugDueCalculator extends ServiceDueCalculator<PdaCase, Tariff> {
         || (source.getShip().getTransportsDangerousCargo()
             && source.getShip().getGrossTonnage().intValue()
                 < tariff.getGrossTonnageThresholdForTugCountReduce().intValue());
-  }
-
-  private BigDecimal getIncreaseCoefficient() {
-
-    final List<BigDecimal> increaseCoefficients = new ArrayList<>();
-
-    if (Optional.ofNullable(source.getEstimatedDateOfArrival()).isPresent()) {
-      final BigDecimal increaseCoefficientByETA =
-          tariff.getHolidayCalendar().contains(source.getEstimatedDateOfArrival())
-              ? tariff.getIncreaseCoefficientsByWarningType().get(HOLIDAY)
-              : BigDecimal.ZERO;
-      increaseCoefficients.add(increaseCoefficientByETA);
-    }
-
-    if (Optional.ofNullable(source.getEstimatedDateOfDeparture()).isPresent()) {
-      final BigDecimal increaseCoefficientByETD =
-          tariff.getHolidayCalendar().contains(source.getEstimatedDateOfDeparture())
-              ? tariff.getIncreaseCoefficientsByWarningType().get(HOLIDAY)
-              : BigDecimal.ZERO;
-      increaseCoefficients.add(increaseCoefficientByETD);
-    }
-
-    return increaseCoefficients.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
   }
 
   private boolean shipGrossTonnageInRange(final Map.Entry<BigDecimal, Integer[]> entry) {

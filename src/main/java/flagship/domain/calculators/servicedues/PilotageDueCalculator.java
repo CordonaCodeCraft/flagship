@@ -6,9 +6,11 @@ import flagship.domain.cases.dto.PdaCase;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 
-import static flagship.domain.calculators.tariffs.enums.PdaWarning.HOLIDAY;
 import static flagship.domain.calculators.tariffs.enums.PdaWarning.PILOT;
 
 @NoArgsConstructor
@@ -109,22 +111,6 @@ public class PilotageDueCalculator extends ServiceDueCalculator<PdaCase, Tariff>
             : BigDecimal.ZERO;
 
     increaseCoefficients.add(increaseCoefficientByPilot);
-
-    if (Optional.ofNullable(source.getEstimatedDateOfArrival()).isPresent()) {
-      BigDecimal increaseCoefficientByETA =
-          tariff.getHolidayCalendar().contains(source.getEstimatedDateOfArrival())
-              ? tariff.getIncreaseCoefficientsByWarningType().get(HOLIDAY)
-              : BigDecimal.ZERO;
-      increaseCoefficients.add(increaseCoefficientByETA);
-    }
-
-    if (Optional.ofNullable(source.getEstimatedDateOfDeparture()).isPresent()) {
-      BigDecimal increaseCoefficientByETD =
-          tariff.getHolidayCalendar().contains(source.getEstimatedDateOfDeparture())
-              ? tariff.getIncreaseCoefficientsByWarningType().get(HOLIDAY)
-              : BigDecimal.ZERO;
-      increaseCoefficients.add(increaseCoefficientByETD);
-    }
 
     return increaseCoefficients.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
   }

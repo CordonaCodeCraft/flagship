@@ -17,12 +17,10 @@ import org.junit.jupiter.params.provider.EnumSource;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.Random;
 
-import static flagship.domain.calculators.tariffs.enums.PdaWarning.HOLIDAY;
 import static flagship.domain.calculators.tariffs.enums.PdaWarning.PILOT;
 import static flagship.domain.calculators.tariffs.serviceduestariffs.PilotageDueTariff.PilotageArea;
 import static flagship.domain.calculators.tariffs.serviceduestariffs.PilotageDueTariff.PilotageArea.VARNA_FIRST;
@@ -148,84 +146,21 @@ public class PilotageDueCalculatorTest implements DueCalculatorTest {
     assertThat(result).isEqualByComparingTo(expected);
   }
 
-  @DisplayName("Should increase total pilotage due by 50 percent if ETA is holiday")
-  @Test
-  void shouldIncreaseTotalPilotageDueBy50PercentIfEtaIsHoliday() {
-
-    LocalDate estimatedDateOfArrival = tariff.getHolidayCalendar().stream().findFirst().get();
-
-    testCase.setEstimatedDateOfArrival(estimatedDateOfArrival);
-    testCase.setEstimatedDateOfDeparture(LocalDate.of(LocalDate.now().getYear(), 1, 5));
-
-    calculator.set(testCase, tariff);
-
-    BigDecimal pilotageDue = getFixedPilotageDuePerGrossTonnage(testCase);
-    BigDecimal increaseCoefficient = tariff.getIncreaseCoefficientsByWarningType().get(HOLIDAY);
-
-    BigDecimal expected = pilotageDue.multiply(increaseCoefficient);
-    BigDecimal result = calculator.calculate();
-
-    assertThat(result).isEqualByComparingTo(expected);
-  }
-
-  @DisplayName("Should increase total pilotage due by 50 percent if ETD is holiday")
-  @Test
-  void shouldIncreaseTotalPilotageDueBy50PercentIfEtdIsHoliday() {
-
-    LocalDate estimatedDateOfDeparture = tariff.getHolidayCalendar().stream().findFirst().get();
-
-    testCase.setEstimatedDateOfArrival(LocalDate.of(LocalDate.now().getYear(), 1, 5));
-    testCase.setEstimatedDateOfDeparture(estimatedDateOfDeparture);
-
-    calculator.set(testCase, tariff);
-
-    BigDecimal pilotageDue = getFixedPilotageDuePerGrossTonnage(testCase);
-    BigDecimal increaseCoefficient = tariff.getIncreaseCoefficientsByWarningType().get(HOLIDAY);
-
-    BigDecimal expected = pilotageDue.multiply(increaseCoefficient);
-    BigDecimal result = calculator.calculate();
-
-    assertThat(result).isEqualByComparingTo(expected);
-  }
-
-  @DisplayName("Should increase total pilotage due by 100 percent if ETA and ETD are holidays")
-  @Test
-  void shouldIncreaseTotalPilotageDueBy100PercentIfEtaAndEtdAreHoliday() {
-
-    LocalDate estimatedDateOfArrival = tariff.getHolidayCalendar().stream().findFirst().get();
-    LocalDate estimatedDateOfDeparture = tariff.getHolidayCalendar().stream().findFirst().get();
-
-    testCase.setEstimatedDateOfArrival(estimatedDateOfArrival);
-    testCase.setEstimatedDateOfDeparture(estimatedDateOfDeparture);
-
-    calculator.set(testCase, tariff);
-
-    BigDecimal pilotageDue = getFixedPilotageDuePerGrossTonnage(testCase);
-    BigDecimal increaseCoefficient =
-        tariff.getIncreaseCoefficientsByWarningType().get(HOLIDAY).multiply(BigDecimal.valueOf(2));
-
-    BigDecimal expected = pilotageDue.multiply(increaseCoefficient);
-    BigDecimal result = calculator.calculate();
-
-    assertThat(result).isEqualByComparingTo(expected);
-  }
-
   @DisplayName("Should increase total pilotage due by 150 percent")
   @Test
   void shouldIncreaseTotalPilotageDueBy150Percent() {
 
-    LocalDate estimatedDateOfArrival = tariff.getHolidayCalendar().stream().findFirst().get();
-    LocalDate estimatedDateOfDeparture = tariff.getHolidayCalendar().stream().findFirst().get();
-
-    testCase.setEstimatedDateOfArrival(estimatedDateOfArrival);
-    testCase.setEstimatedDateOfDeparture(estimatedDateOfDeparture);
+    testCase.setCargoType(SPECIAL);
     testCase.getShip().setRequiresSpecialPilot(true);
 
     calculator.set(testCase, tariff);
 
     BigDecimal pilotageDue = getFixedPilotageDuePerGrossTonnage(testCase);
     BigDecimal increaseCoefficient =
-            tariff.getIncreaseCoefficientsByWarningType().get(HOLIDAY).multiply(BigDecimal.valueOf(3));
+        tariff
+            .getIncreaseCoefficientsByCargoType()
+            .get(SPECIAL)
+            .add(tariff.getIncreaseCoefficientsByWarningType().get(PILOT));
 
     BigDecimal expected = pilotageDue.multiply(increaseCoefficient);
     BigDecimal result = calculator.calculate();
