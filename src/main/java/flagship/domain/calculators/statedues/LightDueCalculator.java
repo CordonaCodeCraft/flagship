@@ -1,21 +1,39 @@
 package flagship.domain.calculators.statedues;
 
+import flagship.domain.calculators.tariffs.Tariff;
 import flagship.domain.calculators.tariffs.stateduestariffs.LightDueTariff;
 import flagship.domain.cases.dto.PdaCase;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.Map;
 
-public class LightDueCalculator extends StateDueCalculator<PdaCase, LightDueTariff> {
+// todo: Validate that gross tonnage is no less than 41, otherwise fixed due per year should be
+// applied
 
-  // todo: Validate that gross tonnage is no less than 41, otherwise fixed due per year should be
-  // applied.
+@NoArgsConstructor
+public class LightDueCalculator extends StateDueCalculator<PdaCase, Tariff> {
+
+  private PdaCase source;
+  private LightDueTariff tariff;
+
   @Override
-  protected BigDecimal calculateBaseDue(final PdaCase source, final LightDueTariff tariff) {
+  public void set(final PdaCase source, final Tariff tariff) {
+    this.source = source;
+    this.tariff = (LightDueTariff) tariff;
+  }
+
+  @Override
+  public BigDecimal calculate() {
+    return calculateDueAfterDiscount(calculateBaseDue(), evaluateDiscountCoefficient());
+  }
+
+  @Override
+  protected BigDecimal calculateBaseDue() {
 
     BigDecimal lightDue;
 
-    if (lightDueIsDependantOnShipType(source, tariff)) {
+    if (lightDueIsDependantOnShipType()) {
       lightDue =
           source
               .getShip()
@@ -24,10 +42,7 @@ public class LightDueCalculator extends StateDueCalculator<PdaCase, LightDueTari
     } else {
       lightDue =
           tariff.getLightDuesByGrossTonnage().entrySet().stream()
-              .filter(
-                  entry ->
-                      source.getShip().getGrossTonnage().intValue() >= entry.getValue()[0]
-                          && source.getShip().getGrossTonnage().intValue() <= entry.getValue()[1])
+              .filter(this::shipGrossTonnageInRange)
               .findFirst()
               .map(Map.Entry::getKey)
               .orElse(tariff.getLightDueMaximumValue());
@@ -37,21 +52,20 @@ public class LightDueCalculator extends StateDueCalculator<PdaCase, LightDueTari
         : tariff.getLightDueMaximumValue();
   }
 
-  private boolean lightDueIsDependantOnShipType(PdaCase source, LightDueTariff tariff) {
+  private boolean lightDueIsDependantOnShipType() {
     return tariff.getLightDuesPerTonByShipType().containsKey(source.getShip().getType());
   }
 
   @Override
-  protected BigDecimal evaluateDiscountCoefficient(
-      final PdaCase source, final LightDueTariff tariff) {
+  protected BigDecimal evaluateDiscountCoefficient() {
 
     BigDecimal discountCoefficient = BigDecimal.ZERO;
 
-    if (shipTypeIsEligibleForDiscount(source, tariff)) {
-      if (isEligibleForCallCountDiscount(source, tariff)) {
+    if (shipTypeIsEligibleForDiscount()) {
+      if (isEligibleForCallCountDiscount()) {
         discountCoefficient = discountCoefficient.max(tariff.getCallCountDiscountCoefficient());
       }
-      if (isEligibleForShipTypeDiscount(source, tariff)) {
+      if (isEligibleForShipTypeDiscount()) {
         discountCoefficient =
             discountCoefficient.max(
                 tariff.getDiscountCoefficientsByShipType().get(source.getShip().getType()));
@@ -61,15 +75,20 @@ public class LightDueCalculator extends StateDueCalculator<PdaCase, LightDueTari
     return discountCoefficient;
   }
 
-  private boolean shipTypeIsEligibleForDiscount(PdaCase source, LightDueTariff tariff) {
+  private boolean shipTypeIsEligibleForDiscount() {
     return !tariff.getShipTypesNotEligibleForDiscount().contains(source.getShip().getType());
   }
 
-  private boolean isEligibleForCallCountDiscount(PdaCase source, LightDueTariff tariff) {
+  private boolean isEligibleForCallCountDiscount() {
     return source.getCallCount() >= tariff.getCallCountThreshold();
   }
 
-  private boolean isEligibleForShipTypeDiscount(PdaCase source, LightDueTariff tariff) {
+  private boolean isEligibleForShipTypeDiscount() {
     return tariff.getDiscountCoefficientsByShipType().containsKey(source.getShip().getType());
+  }
+
+  private boolean shipGrossTonnageInRange(final Map.Entry<BigDecimal, Integer[]> entry) {
+    return source.getShip().getGrossTonnage().intValue() >= entry.getValue()[0]
+        && source.getShip().getGrossTonnage().intValue() <= entry.getValue()[1];
   }
 }

@@ -1,5 +1,6 @@
 package flagship.domain.calculators.tariffs.serviceduestariffs;
 
+import flagship.domain.calculators.tariffs.Tariff;
 import flagship.domain.calculators.tariffs.enums.PdaWarning;
 import flagship.domain.calculators.tariffs.enums.PortName;
 import lombok.Getter;
@@ -16,7 +17,7 @@ import java.util.Set;
 @Setter
 @Component
 @NoArgsConstructor
-public class TugDueTariff {
+public class TugDueTariff extends Tariff {
 
   private Map<TugProvider, Map<TugArea, Set<PortName>>> portNamesInTugAreas;
   private Map<TugArea, Map<BigDecimal, Integer[]>> tugDuesByArea;
@@ -44,5 +45,4 @@ public class TugDueTariff {
     PORTFLEET_FOURTH,
     PORTFLEET_FIFTH,
   }
-
 }

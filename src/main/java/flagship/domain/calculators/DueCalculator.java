@@ -2,7 +2,9 @@ package flagship.domain.calculators;
 
 import java.math.BigDecimal;
 
-public interface DueCalculator<S, P> {
+public interface DueCalculator<S, T> {
 
-  BigDecimal calculateFor(S source, P properties);
+  void set(S source, T tariff);
+
+  BigDecimal calculate();
 }

@@ -1,16 +1,33 @@
 package flagship.domain.calculators.statedues;
 
+import flagship.domain.calculators.tariffs.Tariff;
 import flagship.domain.calculators.tariffs.stateduestariffs.CanalDueTariff;
 import flagship.domain.cases.dto.PdaCase;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
 import static flagship.domain.cases.entities.enums.ShipType.CONTAINER;
 
-public class CanalDueCalculator extends StateDueCalculator<PdaCase, CanalDueTariff> {
+@NoArgsConstructor
+public class CanalDueCalculator extends StateDueCalculator<PdaCase, Tariff> {
+
+  private PdaCase source;
+  private CanalDueTariff tariff;
 
   @Override
-  protected BigDecimal calculateBaseDue(final PdaCase source, final CanalDueTariff tariff) {
+  public void set(final PdaCase source, final Tariff tariff) {
+    this.source = source;
+    this.tariff = (CanalDueTariff) tariff;
+  }
+
+  @Override
+  public BigDecimal calculate() {
+    return calculateDueAfterDiscount(calculateBaseDue(), evaluateDiscountCoefficient());
+  }
+
+  @Override
+  protected BigDecimal calculateBaseDue() {
     return source
         .getShip()
         .getGrossTonnage()
@@ -18,14 +35,13 @@ public class CanalDueCalculator extends StateDueCalculator<PdaCase, CanalDueTari
   }
 
   @Override
-  protected BigDecimal evaluateDiscountCoefficient(
-      final PdaCase source, final CanalDueTariff tariff) {
+  protected BigDecimal evaluateDiscountCoefficient() {
 
     BigDecimal discountCoefficient = BigDecimal.ZERO;
 
-    if (isEligibleForDiscount(source, tariff)) {
+    if (isEligibleForDiscount()) {
       if (source.getShip().getType() == CONTAINER) {
-        if (satisfiesCallCountThreshold(source, tariff)) {
+        if (satisfiesCallCountThreshold()) {
           discountCoefficient =
               discountCoefficient.max(
                   tariff
@@ -38,7 +54,7 @@ public class CanalDueCalculator extends StateDueCalculator<PdaCase, CanalDueTari
                     .getDiscountCoefficientsByPortAreaForContainers()
                     .get(source.getPort().getArea()));
       } else {
-        if (satisfiesCallCountThreshold(source, tariff)) {
+        if (satisfiesCallCountThreshold()) {
           discountCoefficient =
               discountCoefficient.max(tariff.getDefaultCallCountDiscountCoefficient());
         }
@@ -53,11 +69,11 @@ public class CanalDueCalculator extends StateDueCalculator<PdaCase, CanalDueTari
     return discountCoefficient;
   }
 
-  private boolean isEligibleForDiscount(PdaCase source, CanalDueTariff tariff) {
+  private boolean isEligibleForDiscount() {
     return !tariff.getShipTypesNotEligibleForDiscount().contains(source.getShip().getType());
   }
 
-  private boolean satisfiesCallCountThreshold(PdaCase source, CanalDueTariff tariff) {
+  private boolean satisfiesCallCountThreshold() {
     return source.getCallCount() >= tariff.getCallCountThreshold();
   }
 }

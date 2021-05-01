@@ -22,14 +22,13 @@ import java.util.Arrays;
 import java.util.stream.Stream;
 
 import static flagship.domain.cases.entities.enums.ShipType.GENERAL;
-import static flagship.domain.cases.entities.enums.ShipType.MILITARY;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DisplayName("Wharf due calculator tests")
 class WharfDueCalculatorTest implements DueCalculatorTest {
 
   private static WharfDueTariff tariff;
-  private final WharfDueCalculator wharfDueCalculator = new WharfDueCalculator();
+  private final WharfDueCalculator calculator = new WharfDueCalculator();
   private PdaCase testCase;
 
   @BeforeAll
@@ -37,6 +36,18 @@ class WharfDueCalculatorTest implements DueCalculatorTest {
     ObjectMapper mapper = new ObjectMapper();
     tariff =
         mapper.readValue(new File("src/main/resources/wharfDueTariff.json"), WharfDueTariff.class);
+  }
+
+  private static Stream<Arguments> getShipTypesAffectingWharfDue() {
+    return tariff.getWharfDuesByShipType().keySet().stream().map(Arguments::of);
+  }
+
+  private static Stream<Arguments> getCallPurposesEligibleForDiscount() {
+    return tariff.getDiscountCoefficientsByCallPurpose().keySet().stream().map(Arguments::of);
+  }
+
+  private static Stream<Arguments> getShipTypesNotEligibleForDiscount() {
+    return tariff.getShipTypesNotEligibleForDiscount().stream().map(Arguments::of);
   }
 
   @BeforeEach
@@ -58,8 +69,10 @@ class WharfDueCalculatorTest implements DueCalculatorTest {
 
     testCase.getShip().setType(shipTypeWithDefaultWharfDue);
 
+    calculator.set(testCase, tariff);
+
     BigDecimal expected = calculateWharfDue();
-    BigDecimal result = wharfDueCalculator.calculateFor(testCase, tariff);
+    BigDecimal result = calculator.calculate();
 
     assertThat(result).isEqualByComparingTo(expected);
   }
@@ -71,8 +84,10 @@ class WharfDueCalculatorTest implements DueCalculatorTest {
 
     testCase.getShip().setType(shipType);
 
+    calculator.set(testCase, tariff);
+
     BigDecimal expected = calculateWharfDue();
-    BigDecimal result = wharfDueCalculator.calculateFor(testCase, tariff);
+    BigDecimal result = calculator.calculate();
 
     assertThat(result).isEqualByComparingTo(expected);
   }
@@ -84,11 +99,13 @@ class WharfDueCalculatorTest implements DueCalculatorTest {
 
     testCase.setCallPurpose(callPurpose);
 
+    calculator.set(testCase, tariff);
+
     BigDecimal discountCoefficient =
         tariff.getDiscountCoefficientsByCallPurpose().get(testCase.getCallPurpose());
 
     BigDecimal expected = calculateDueAfterDiscount(discountCoefficient);
-    BigDecimal result = wharfDueCalculator.calculateFor(testCase, tariff);
+    BigDecimal result = calculator.calculate();
 
     assertThat(result).isEqualByComparingTo(expected);
   }
@@ -100,24 +117,14 @@ class WharfDueCalculatorTest implements DueCalculatorTest {
 
     testCase.getShip().setType(shipType);
 
+    calculator.set(testCase, tariff);
+
     BigDecimal discountCoefficient = BigDecimal.ZERO;
 
     BigDecimal expected = calculateDueAfterDiscount(discountCoefficient);
-    BigDecimal result = wharfDueCalculator.calculateFor(testCase, tariff);
+    BigDecimal result = calculator.calculate();
 
     assertThat(result).isEqualByComparingTo(expected);
-  }
-
-  private static Stream<Arguments> getShipTypesAffectingWharfDue() {
-    return tariff.getWharfDuesByShipType().keySet().stream().map(Arguments::of);
-  }
-
-  private static Stream<Arguments> getCallPurposesEligibleForDiscount() {
-    return tariff.getDiscountCoefficientsByCallPurpose().keySet().stream().map(Arguments::of);
-  }
-
-  private static Stream<Arguments> getShipTypesNotEligibleForDiscount() {
-    return tariff.getShipTypesNotEligibleForDiscount().stream().map(Arguments::of);
   }
 
   private BigDecimal calculateDueAfterDiscount(BigDecimal discountCoefficient) {

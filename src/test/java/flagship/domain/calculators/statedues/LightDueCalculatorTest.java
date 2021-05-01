@@ -29,7 +29,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 public class LightDueCalculatorTest implements DueCalculatorTest {
 
   private static LightDueTariff tariff;
-  private final LightDueCalculator lightDueCalculator = new LightDueCalculator();
+  private final LightDueCalculator calculator = new LightDueCalculator();
   private PdaCase testCase;
 
   @BeforeAll
@@ -37,6 +37,18 @@ public class LightDueCalculatorTest implements DueCalculatorTest {
     ObjectMapper mapper = new ObjectMapper();
     tariff =
         mapper.readValue(new File("src/main/resources/lightDueTariff.json"), LightDueTariff.class);
+  }
+
+  private static Stream<Arguments> getShipTypesAffectingLightDue() {
+    return tariff.getLightDuesPerTonByShipType().keySet().stream().map(Arguments::of);
+  }
+
+  private static Stream<Arguments> getShipTypesEligibleForDiscount() {
+    return tariff.getDiscountCoefficientsByShipType().keySet().stream().map(Arguments::of);
+  }
+
+  private static Stream<Arguments> GetShipTypesNotEligibleForDiscount() {
+    return tariff.getShipTypesNotEligibleForDiscount().stream().map(Arguments::of);
   }
 
   @BeforeEach
@@ -58,9 +70,11 @@ public class LightDueCalculatorTest implements DueCalculatorTest {
 
     testCase.getShip().setType(shipType);
 
+    calculator.set(testCase, tariff);
+
     BigDecimal expected = getLightDue();
 
-    BigDecimal result = lightDueCalculator.calculateFor(testCase, tariff);
+    BigDecimal result = calculator.calculate();
 
     assertThat(result).isEqualByComparingTo(expected);
   }
@@ -72,9 +86,11 @@ public class LightDueCalculatorTest implements DueCalculatorTest {
 
     testCase.getShip().setType(shipType);
 
+    calculator.set(testCase, tariff);
+
     BigDecimal expected = getLightDue();
 
-    BigDecimal result = lightDueCalculator.calculateFor(testCase, tariff);
+    BigDecimal result = calculator.calculate();
 
     assertThat(result).isEqualByComparingTo(expected);
   }
@@ -86,11 +102,13 @@ public class LightDueCalculatorTest implements DueCalculatorTest {
 
     testCase.getShip().setType(shipType);
 
+    calculator.set(testCase, tariff);
+
     BigDecimal discountCoefficient =
         tariff.getDiscountCoefficientsByShipType().get(testCase.getShip().getType());
 
     BigDecimal expected = calculateDueAfterDiscount(discountCoefficient);
-    BigDecimal result = lightDueCalculator.calculateFor(testCase, tariff);
+    BigDecimal result = calculator.calculate();
 
     assertThat(result).isEqualByComparingTo(expected);
   }
@@ -101,10 +119,12 @@ public class LightDueCalculatorTest implements DueCalculatorTest {
 
     testCase.setCallCount(tariff.getCallCountThreshold());
 
+    calculator.set(testCase, tariff);
+
     BigDecimal discountCoefficient = tariff.getCallCountDiscountCoefficient();
 
     BigDecimal expected = calculateDueAfterDiscount(discountCoefficient);
-    BigDecimal result = lightDueCalculator.calculateFor(testCase, tariff);
+    BigDecimal result = calculator.calculate();
 
     assertThat(result).isEqualByComparingTo(expected);
   }
@@ -119,6 +139,8 @@ public class LightDueCalculatorTest implements DueCalculatorTest {
     testCase.getShip().setType(shipType);
     testCase.setCallCount(tariff.getCallCountThreshold());
 
+    calculator.set(testCase, tariff);
+
     BigDecimal callCountDiscountCoefficient = tariff.getCallCountDiscountCoefficient();
     BigDecimal shipTypeDiscountCoefficient =
         tariff.getDiscountCoefficientsByShipType().get(testCase.getShip().getType());
@@ -126,7 +148,7 @@ public class LightDueCalculatorTest implements DueCalculatorTest {
     BigDecimal discountCoefficient = callCountDiscountCoefficient.max(shipTypeDiscountCoefficient);
 
     BigDecimal expected = calculateDueAfterDiscount(discountCoefficient);
-    BigDecimal result = lightDueCalculator.calculateFor(testCase, tariff);
+    BigDecimal result = calculator.calculate();
 
     assertThat(result).isEqualByComparingTo(expected);
   }
@@ -139,24 +161,14 @@ public class LightDueCalculatorTest implements DueCalculatorTest {
     testCase.getShip().setType(shipType);
     testCase.setCallCount(tariff.getCallCountThreshold());
 
+    calculator.set(testCase, tariff);
+
     BigDecimal discountCoefficient = BigDecimal.ZERO;
 
     BigDecimal expected = calculateDueAfterDiscount(discountCoefficient);
-    BigDecimal result = lightDueCalculator.calculateFor(testCase, tariff);
+    BigDecimal result = calculator.calculate();
 
     assertThat(result).isEqualByComparingTo(expected);
-  }
-
-  private static Stream<Arguments> getShipTypesAffectingLightDue() {
-    return tariff.getLightDuesPerTonByShipType().keySet().stream().map(Arguments::of);
-  }
-
-  private static Stream<Arguments> getShipTypesEligibleForDiscount() {
-    return tariff.getDiscountCoefficientsByShipType().keySet().stream().map(Arguments::of);
-  }
-
-  private static Stream<Arguments> GetShipTypesNotEligibleForDiscount() {
-    return tariff.getShipTypesNotEligibleForDiscount().stream().map(Arguments::of);
   }
 
   private BigDecimal calculateDueAfterDiscount(BigDecimal discountCoefficient) {

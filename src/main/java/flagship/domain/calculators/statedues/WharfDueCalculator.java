@@ -1,14 +1,31 @@
 package flagship.domain.calculators.statedues;
 
+import flagship.domain.calculators.tariffs.Tariff;
 import flagship.domain.calculators.tariffs.stateduestariffs.WharfDueTariff;
 import flagship.domain.cases.dto.PdaCase;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
-public class WharfDueCalculator extends StateDueCalculator<PdaCase, WharfDueTariff> {
+@NoArgsConstructor
+public class WharfDueCalculator extends StateDueCalculator<PdaCase, Tariff> {
+
+  private PdaCase source;
+  private WharfDueTariff tariff;
 
   @Override
-  protected BigDecimal calculateBaseDue(final PdaCase source, final WharfDueTariff tariff) {
+  public void set(final PdaCase source, final Tariff tariff) {
+    this.source = source;
+    this.tariff = (WharfDueTariff) tariff;
+  }
+
+  @Override
+  public BigDecimal calculate() {
+    return calculateDueAfterDiscount(calculateBaseDue(), evaluateDiscountCoefficient());
+  }
+
+  @Override
+  protected BigDecimal calculateBaseDue() {
 
     final BigDecimal lengthOverall =
         BigDecimal.valueOf(Math.ceil(source.getShip().getLengthOverall().doubleValue()));
@@ -26,19 +43,18 @@ public class WharfDueCalculator extends StateDueCalculator<PdaCase, WharfDueTari
   }
 
   @Override
-  protected BigDecimal evaluateDiscountCoefficient(
-      final PdaCase source, final WharfDueTariff tariff) {
+  protected BigDecimal evaluateDiscountCoefficient() {
 
     BigDecimal discountCoefficient = BigDecimal.ZERO;
 
-    if (isEligibleForDiscount(source, tariff)) {
+    if (isEligibleForDiscount()) {
       discountCoefficient =
           tariff.getDiscountCoefficientsByCallPurpose().get(source.getCallPurpose());
     }
     return discountCoefficient;
   }
 
-  private boolean isEligibleForDiscount(PdaCase source, WharfDueTariff tariff) {
+  private boolean isEligibleForDiscount() {
     return !tariff.getShipTypesNotEligibleForDiscount().contains(source.getShip().getType())
         && tariff.getDiscountCoefficientsByCallPurpose().containsKey(source.getCallPurpose());
   }

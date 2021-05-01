@@ -22,11 +22,11 @@ import java.util.Comparator;
 import java.util.Map;
 import java.util.Random;
 
-import static flagship.domain.calculators.tariffs.serviceduestariffs.PilotageDueTariff.*;
-import static flagship.domain.cases.entities.enums.CargoType.*;
 import static flagship.domain.calculators.tariffs.enums.PdaWarning.HOLIDAY;
 import static flagship.domain.calculators.tariffs.enums.PdaWarning.PILOT;
+import static flagship.domain.calculators.tariffs.serviceduestariffs.PilotageDueTariff.PilotageArea;
 import static flagship.domain.calculators.tariffs.serviceduestariffs.PilotageDueTariff.PilotageArea.VARNA_FIRST;
+import static flagship.domain.cases.entities.enums.CargoType.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DisplayName("Pilotage due calculator tests")
@@ -66,8 +66,10 @@ public class PilotageDueCalculatorTest implements DueCalculatorTest {
     testCase.getShip().setGrossTonnage(grossTonnage);
     testCase.getPort().setPilotageArea(pilotageArea);
 
+    calculator.set(testCase, tariff);
+
     BigDecimal expected = getFixedPilotageDuePerGrossTonnage(testCase);
-    BigDecimal result = calculator.calculateFor(testCase, tariff);
+    BigDecimal result = calculator.calculate();
 
     assertThat(result).isEqualByComparingTo(expected);
   }
@@ -82,13 +84,15 @@ public class PilotageDueCalculatorTest implements DueCalculatorTest {
     testCase.getShip().setGrossTonnage(grossTonnage);
     testCase.getPort().setPilotageArea(pilotageArea);
 
+    calculator.set(testCase, tariff);
+
     BigDecimal fixedPilotageDue = getFixedPilotageDuePerGrossTonnage(testCase);
     BigDecimal increaseValue = getIncreaseValue(testCase);
     BigDecimal multiplier = getMultiplier(testCase.getShip().getGrossTonnage());
     BigDecimal totalIncrease = increaseValue.multiply(multiplier);
 
     BigDecimal expected = fixedPilotageDue.add(totalIncrease);
-    BigDecimal result = calculator.calculateFor(testCase, tariff);
+    BigDecimal result = calculator.calculate();
 
     assertThat(result).isEqualByComparingTo(expected);
   }
@@ -99,12 +103,13 @@ public class PilotageDueCalculatorTest implements DueCalculatorTest {
 
     testCase.setCargoType(HAZARDOUS);
 
-    BigDecimal pilotageDue = getFixedPilotageDuePerGrossTonnage(testCase);
-    BigDecimal increase =
-        pilotageDue.multiply(tariff.getIncreaseCoefficientsByCargoType().get(HAZARDOUS));
+    calculator.set(testCase, tariff);
 
-    BigDecimal expected = pilotageDue.add(increase);
-    BigDecimal result = calculator.calculateFor(testCase, tariff);
+    BigDecimal pilotageDue = getFixedPilotageDuePerGrossTonnage(testCase);
+    BigDecimal increaseCoefficient = tariff.getIncreaseCoefficientsByCargoType().get(HAZARDOUS);
+
+    BigDecimal expected = pilotageDue.multiply(increaseCoefficient);
+    BigDecimal result = calculator.calculate();
 
     assertThat(result).isEqualByComparingTo(expected);
   }
@@ -115,12 +120,13 @@ public class PilotageDueCalculatorTest implements DueCalculatorTest {
 
     testCase.setCargoType(SPECIAL);
 
-    BigDecimal pilotageDue = getFixedPilotageDuePerGrossTonnage(testCase);
-    BigDecimal increase =
-        pilotageDue.multiply(tariff.getIncreaseCoefficientsByCargoType().get(SPECIAL));
+    calculator.set(testCase, tariff);
 
-    BigDecimal expected = pilotageDue.add(increase);
-    BigDecimal result = calculator.calculateFor(testCase, tariff);
+    BigDecimal pilotageDue = getFixedPilotageDuePerGrossTonnage(testCase);
+    BigDecimal increaseCoefficient = tariff.getIncreaseCoefficientsByCargoType().get(SPECIAL);
+
+    BigDecimal expected = pilotageDue.multiply(increaseCoefficient);
+    BigDecimal result = calculator.calculate();
 
     assertThat(result).isEqualByComparingTo(expected);
   }
@@ -131,12 +137,13 @@ public class PilotageDueCalculatorTest implements DueCalculatorTest {
 
     testCase.getShip().setRequiresSpecialPilot(true);
 
-    BigDecimal pilotageDue = getFixedPilotageDuePerGrossTonnage(testCase);
-    BigDecimal increase =
-        pilotageDue.multiply(tariff.getIncreaseCoefficientsByWarningType().get(PILOT));
+    calculator.set(testCase, tariff);
 
-    BigDecimal expected = pilotageDue.add(increase);
-    BigDecimal result = calculator.calculateFor(testCase, tariff);
+    BigDecimal pilotageDue = getFixedPilotageDuePerGrossTonnage(testCase);
+    BigDecimal increaseCoefficient = tariff.getIncreaseCoefficientsByWarningType().get(PILOT);
+
+    BigDecimal expected = pilotageDue.multiply(increaseCoefficient);
+    BigDecimal result = calculator.calculate();
 
     assertThat(result).isEqualByComparingTo(expected);
   }
@@ -150,12 +157,13 @@ public class PilotageDueCalculatorTest implements DueCalculatorTest {
     testCase.setEstimatedDateOfArrival(estimatedDateOfArrival);
     testCase.setEstimatedDateOfDeparture(LocalDate.of(LocalDate.now().getYear(), 1, 5));
 
-    BigDecimal pilotageDue = getFixedPilotageDuePerGrossTonnage(testCase);
-    BigDecimal increase =
-        pilotageDue.multiply(tariff.getIncreaseCoefficientsByWarningType().get(HOLIDAY));
+    calculator.set(testCase, tariff);
 
-    BigDecimal expected = pilotageDue.add(increase);
-    BigDecimal result = calculator.calculateFor(testCase, tariff);
+    BigDecimal pilotageDue = getFixedPilotageDuePerGrossTonnage(testCase);
+    BigDecimal increaseCoefficient = tariff.getIncreaseCoefficientsByWarningType().get(HOLIDAY);
+
+    BigDecimal expected = pilotageDue.multiply(increaseCoefficient);
+    BigDecimal result = calculator.calculate();
 
     assertThat(result).isEqualByComparingTo(expected);
   }
@@ -169,12 +177,13 @@ public class PilotageDueCalculatorTest implements DueCalculatorTest {
     testCase.setEstimatedDateOfArrival(LocalDate.of(LocalDate.now().getYear(), 1, 5));
     testCase.setEstimatedDateOfDeparture(estimatedDateOfDeparture);
 
-    BigDecimal pilotageDue = getFixedPilotageDuePerGrossTonnage(testCase);
-    BigDecimal increase =
-        pilotageDue.multiply(tariff.getIncreaseCoefficientsByWarningType().get(HOLIDAY));
+    calculator.set(testCase, tariff);
 
-    BigDecimal expected = pilotageDue.add(increase);
-    BigDecimal result = calculator.calculateFor(testCase, tariff);
+    BigDecimal pilotageDue = getFixedPilotageDuePerGrossTonnage(testCase);
+    BigDecimal increaseCoefficient = tariff.getIncreaseCoefficientsByWarningType().get(HOLIDAY);
+
+    BigDecimal expected = pilotageDue.multiply(increaseCoefficient);
+    BigDecimal result = calculator.calculate();
 
     assertThat(result).isEqualByComparingTo(expected);
   }
@@ -189,16 +198,14 @@ public class PilotageDueCalculatorTest implements DueCalculatorTest {
     testCase.setEstimatedDateOfArrival(estimatedDateOfArrival);
     testCase.setEstimatedDateOfDeparture(estimatedDateOfDeparture);
 
-    BigDecimal pilotageDue = getFixedPilotageDuePerGrossTonnage(testCase);
-    BigDecimal increase =
-        pilotageDue.multiply(
-            tariff
-                .getIncreaseCoefficientsByWarningType()
-                .get(HOLIDAY)
-                .multiply(BigDecimal.valueOf(2)));
+    calculator.set(testCase, tariff);
 
-    BigDecimal expected = pilotageDue.add(increase);
-    BigDecimal result = calculator.calculateFor(testCase, tariff);
+    BigDecimal pilotageDue = getFixedPilotageDuePerGrossTonnage(testCase);
+    BigDecimal increaseCoefficient =
+        tariff.getIncreaseCoefficientsByWarningType().get(HOLIDAY).multiply(BigDecimal.valueOf(2));
+
+    BigDecimal expected = pilotageDue.multiply(increaseCoefficient);
+    BigDecimal result = calculator.calculate();
 
     assertThat(result).isEqualByComparingTo(expected);
   }
@@ -214,16 +221,14 @@ public class PilotageDueCalculatorTest implements DueCalculatorTest {
     testCase.setEstimatedDateOfDeparture(estimatedDateOfDeparture);
     testCase.getShip().setRequiresSpecialPilot(true);
 
-    BigDecimal pilotageDue = getFixedPilotageDuePerGrossTonnage(testCase);
-    BigDecimal increase =
-        pilotageDue.multiply(
-            tariff
-                .getIncreaseCoefficientsByWarningType()
-                .get(HOLIDAY)
-                .multiply(BigDecimal.valueOf(3)));
+    calculator.set(testCase, tariff);
 
-    BigDecimal expected = pilotageDue.add(increase);
-    BigDecimal result = calculator.calculateFor(testCase, tariff);
+    BigDecimal pilotageDue = getFixedPilotageDuePerGrossTonnage(testCase);
+    BigDecimal increaseCoefficient =
+            tariff.getIncreaseCoefficientsByWarningType().get(HOLIDAY).multiply(BigDecimal.valueOf(3));
+
+    BigDecimal expected = pilotageDue.multiply(increaseCoefficient);
+    BigDecimal result = calculator.calculate();
 
     assertThat(result).isEqualByComparingTo(expected);
   }

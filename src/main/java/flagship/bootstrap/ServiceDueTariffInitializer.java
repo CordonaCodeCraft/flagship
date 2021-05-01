@@ -3,11 +3,11 @@ package flagship.bootstrap;
 import flagship.domain.calculators.HolidayCalendar;
 import flagship.domain.calculators.resolvers.HolidayCalendarResolver;
 import flagship.domain.calculators.tariffs.enums.PdaWarning;
+import flagship.domain.calculators.tariffs.enums.PortName;
 import flagship.domain.calculators.tariffs.serviceduestariffs.PilotageDueTariff;
 import flagship.domain.calculators.tariffs.serviceduestariffs.PilotageDueTariff.PilotageArea;
 import flagship.domain.calculators.tariffs.serviceduestariffs.TugDueTariff;
 import flagship.domain.cases.entities.enums.CargoType;
-import flagship.domain.calculators.tariffs.enums.PortName;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -16,6 +16,7 @@ import java.util.*;
 
 import static flagship.domain.calculators.tariffs.enums.PdaWarning.HOLIDAY;
 import static flagship.domain.calculators.tariffs.enums.PdaWarning.PILOT;
+import static flagship.domain.calculators.tariffs.enums.PortName.*;
 import static flagship.domain.calculators.tariffs.serviceduestariffs.PilotageDueTariff.PilotageArea.*;
 import static flagship.domain.calculators.tariffs.serviceduestariffs.TugDueTariff.TugArea;
 import static flagship.domain.calculators.tariffs.serviceduestariffs.TugDueTariff.TugArea.*;
@@ -24,7 +25,6 @@ import static flagship.domain.calculators.tariffs.serviceduestariffs.TugDueTarif
 import static flagship.domain.calculators.tariffs.serviceduestariffs.TugDueTariff.TugProvider.VTC;
 import static flagship.domain.cases.entities.enums.CargoType.HAZARDOUS;
 import static flagship.domain.cases.entities.enums.CargoType.SPECIAL;
-import static flagship.domain.calculators.tariffs.enums.PortName.*;
 import static java.time.Month.*;
 
 @Component
@@ -215,8 +215,7 @@ public class ServiceDueTariffInitializer {
         EnumSet.of(BULYARD, SRY_ODESSOS, MTG_DOLPHIN, TEREM_FA);
 
     Set<PortName> portNamesInVtcFourthTugArea =
-        EnumSet.of(
-            SHIFTING_BULYARD, SHIFTING_SRY_ODESSOS, SHIFTING_MTG_DOLPHIN, SHIFTING_TEREM_FA);
+        EnumSet.of(SHIFTING_BULYARD, SHIFTING_SRY_ODESSOS, SHIFTING_MTG_DOLPHIN, SHIFTING_TEREM_FA);
 
     Set<PortName> portNamesInVtcFifthTugArea = EnumSet.of(BALCHIK_PORT);
 
@@ -237,8 +236,7 @@ public class ServiceDueTariffInitializer {
         EnumSet.of(BULYARD, SRY_ODESSOS, MTG_DOLPHIN, TEREM_FA);
 
     Set<PortName> portNamesInPortfleetFourthTugArea =
-        EnumSet.of(
-            SHIFTING_BULYARD, SHIFTING_SRY_ODESSOS, SHIFTING_MTG_DOLPHIN, SHIFTING_TEREM_FA);
+        EnumSet.of(SHIFTING_BULYARD, SHIFTING_SRY_ODESSOS, SHIFTING_MTG_DOLPHIN, SHIFTING_TEREM_FA);
 
     Set<PortName> portNamesInPortfleetFifthTugArea = EnumSet.of(BALCHIK_PORT);
 

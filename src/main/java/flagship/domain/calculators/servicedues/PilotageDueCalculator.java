@@ -1,9 +1,9 @@
 package flagship.domain.calculators.servicedues;
 
-import flagship.domain.calculators.DueCalculator;
+import flagship.domain.calculators.tariffs.Tariff;
 import flagship.domain.calculators.tariffs.serviceduestariffs.PilotageDueTariff;
 import flagship.domain.cases.dto.PdaCase;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -11,28 +11,36 @@ import java.util.*;
 import static flagship.domain.calculators.tariffs.enums.PdaWarning.HOLIDAY;
 import static flagship.domain.calculators.tariffs.enums.PdaWarning.PILOT;
 
-@RequiredArgsConstructor
-public class PilotageDueCalculator implements DueCalculator<PdaCase, PilotageDueTariff> {
+@NoArgsConstructor
+public class PilotageDueCalculator extends ServiceDueCalculator<PdaCase, Tariff> {
+
+  private PdaCase source;
+  private PilotageDueTariff tariff;
+
+  public void set(final PdaCase source, final Tariff tariff) {
+    this.source = source;
+    this.tariff = (PilotageDueTariff) tariff;
+  }
 
   @Override
-  public BigDecimal calculateFor(final PdaCase source, final PilotageDueTariff tariff) {
+  public BigDecimal calculate() {
 
-    BigDecimal pilotageDue = getFixedPilotageDue(source, tariff);
+    BigDecimal pilotageDue = getFixedPilotageDue();
 
-    if (grossTonnageIsAboveThreshold(source, tariff)) {
-      pilotageDue = pilotageDue.add(calculateTotalIncrease(source, tariff));
+    if (grossTonnageIsAboveThreshold()) {
+      pilotageDue = pilotageDue.add(calculateAdditionalDue());
     }
 
-    BigDecimal increaseCoefficient = getIncreaseCoefficient(source, tariff);
+    BigDecimal increaseCoefficient = getIncreaseCoefficient();
 
     if (increaseCoefficient.doubleValue() > 0) {
-      pilotageDue = pilotageDue.add(pilotageDue.multiply(increaseCoefficient));
+      return pilotageDue.multiply(increaseCoefficient);
     }
 
     return pilotageDue;
   }
 
-  private BigDecimal getFixedPilotageDue(final PdaCase source, final PilotageDueTariff tariff) {
+  private BigDecimal getFixedPilotageDue() {
     return tariff
         .getPilotageDuesByArea()
         .get(source.getPort().getPilotageArea())
@@ -44,34 +52,32 @@ public class PilotageDueCalculator implements DueCalculator<PdaCase, PilotageDue
                     && source.getShip().getGrossTonnage().intValue() <= entry.getValue()[1])
         .map(Map.Entry::getKey)
         .findFirst()
-        .orElse(getBiggestFixedPilotageDue(source, tariff));
+        .orElse(getBiggestFixedPilotageDue());
   }
 
-  private BigDecimal getBiggestFixedPilotageDue(
-      final PdaCase source, final PilotageDueTariff tariff) {
+  private BigDecimal getBiggestFixedPilotageDue() {
     return tariff.getPilotageDuesByArea().get(source.getPort().getPilotageArea()).keySet().stream()
         .max(Comparator.naturalOrder())
         .get();
   }
 
-  private boolean grossTonnageIsAboveThreshold(
-      final PdaCase source, final PilotageDueTariff tariff) {
+  private boolean grossTonnageIsAboveThreshold() {
     return source.getShip().getGrossTonnage().intValue()
         >= tariff.getGrossTonnageThreshold().intValue();
   }
 
-  private BigDecimal calculateTotalIncrease(final PdaCase source, final PilotageDueTariff tariff) {
-    return getDueIncreaseValue(source, tariff).multiply(evaluateMultiplier(source, tariff));
+  private BigDecimal calculateAdditionalDue() {
+    return getDueAdditionalValue().multiply(getMultiplier());
   }
 
-  private BigDecimal getDueIncreaseValue(final PdaCase source, final PilotageDueTariff tariff) {
+  private BigDecimal getDueAdditionalValue() {
     return tariff.getPilotageDuesByArea().get(source.getPort().getPilotageArea()).values().stream()
         .findFirst()
         .map(array -> BigDecimal.valueOf(array[2]))
         .get();
   }
 
-  private BigDecimal evaluateMultiplier(final PdaCase source, final PilotageDueTariff tariff) {
+  private BigDecimal getMultiplier() {
 
     final double grossTonnage = source.getShip().getGrossTonnage().doubleValue();
     final double grossTonnageThreshold = tariff.getGrossTonnageThreshold().doubleValue();
@@ -84,7 +90,7 @@ public class PilotageDueCalculator implements DueCalculator<PdaCase, PilotageDue
     return BigDecimal.valueOf(multiplier);
   }
 
-  private BigDecimal getIncreaseCoefficient(final PdaCase source, final PilotageDueTariff tariff) {
+  private BigDecimal getIncreaseCoefficient() {
 
     List<BigDecimal> increaseCoefficients = new ArrayList<>();
 

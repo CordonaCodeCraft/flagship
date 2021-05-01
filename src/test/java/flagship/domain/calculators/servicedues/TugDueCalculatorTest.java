@@ -21,6 +21,7 @@ import java.util.Comparator;
 import java.util.Map;
 import java.util.Random;
 
+import static flagship.domain.calculators.tariffs.enums.PdaWarning.HOLIDAY;
 import static flagship.domain.calculators.tariffs.serviceduestariffs.TugDueTariff.TugArea;
 import static flagship.domain.calculators.tariffs.serviceduestariffs.TugDueTariff.TugArea.VTC_FIRST;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -61,11 +62,14 @@ class TugDueCalculatorTest {
     testCase.getShip().setGrossTonnage(grossTonnage);
     testCase.getPort().setTugArea(tugArea);
 
+    calculator.set(testCase, tariff);
+
     BigDecimal fixedTugDuePerGrossTonnage = getFixedTugDuePerGrossTonnage(testCase);
     BigDecimal tugCount = getTugCount(testCase);
 
     BigDecimal expected = fixedTugDuePerGrossTonnage.multiply(tugCount);
-    BigDecimal result = calculator.calculateFor(testCase, tariff);
+    BigDecimal result = calculator.calculate();
+
     assertThat(result).isEqualByComparingTo(expected);
   }
 
@@ -80,13 +84,15 @@ class TugDueCalculatorTest {
     testCase.getShip().setGrossTonnage(grossTonnage);
     testCase.getPort().setTugArea(tugArea);
 
+    calculator.set(testCase, tariff);
+
     BigDecimal fixedTugDuePerGrossTonnage = getFixedTugDuePerGrossTonnage(testCase);
     BigDecimal totalIncrease =
         getIncreaseValue(testCase).multiply(getMultiplier(testCase.getShip().getGrossTonnage()));
     BigDecimal tugCount = getTugCount(testCase);
 
     BigDecimal expected = fixedTugDuePerGrossTonnage.add(totalIncrease).multiply(tugCount);
-    BigDecimal result = calculator.calculateFor(testCase, tariff);
+    BigDecimal result = calculator.calculate();
 
     assertThat(result).isEqualByComparingTo(expected);
   }
@@ -98,11 +104,14 @@ class TugDueCalculatorTest {
     testCase.getShip().setGrossTonnage(BigDecimal.valueOf(9500));
     testCase.getShip().setHasIncreasedManeuverability(true);
 
+    calculator.set(testCase, tariff);
+
     BigDecimal fixedTugDuePerGrossTonnage = getFixedTugDuePerGrossTonnage(testCase);
     BigDecimal tugCount = getTugCount(testCase).subtract(BigDecimal.valueOf(1));
 
     BigDecimal expected = fixedTugDuePerGrossTonnage.multiply(tugCount);
-    BigDecimal result = calculator.calculateFor(testCase, tariff);
+    BigDecimal result = calculator.calculate();
+
     assertThat(result).isEqualByComparingTo(expected);
   }
 
@@ -117,6 +126,8 @@ class TugDueCalculatorTest {
     testCase.getShip().setTransportsDangerousCargo(true);
     testCase.getShip().setHasIncreasedManeuverability(true);
 
+    calculator.set(testCase, tariff);
+
     BigDecimal fixedTugDuePerGrossTonnage = getFixedTugDuePerGrossTonnage(testCase);
     BigDecimal totalIncrease =
         getIncreaseValue(testCase).multiply(getMultiplier(testCase.getShip().getGrossTonnage()));
@@ -124,7 +135,8 @@ class TugDueCalculatorTest {
     BigDecimal tugCount = getTugCount(testCase).subtract(BigDecimal.valueOf(1));
 
     BigDecimal expected = tugDueTotal.multiply(tugCount);
-    BigDecimal result = calculator.calculateFor(testCase, tariff);
+    BigDecimal result = calculator.calculate();
+
     assertThat(result).isEqualByComparingTo(expected);
   }
 
@@ -139,6 +151,8 @@ class TugDueCalculatorTest {
     testCase.getShip().setTransportsDangerousCargo(true);
     testCase.getShip().setHasIncreasedManeuverability(true);
 
+    calculator.set(testCase, tariff);
+
     BigDecimal fixedTugDuePerGrossTonnage = getFixedTugDuePerGrossTonnage(testCase);
     BigDecimal totalIncrease =
         getIncreaseValue(testCase).multiply(getMultiplier(testCase.getShip().getGrossTonnage()));
@@ -146,7 +160,7 @@ class TugDueCalculatorTest {
     BigDecimal tugCount = getTugCount(testCase);
 
     BigDecimal expected = tugDueTotal.multiply(tugCount);
-    BigDecimal result = calculator.calculateFor(testCase, tariff);
+    BigDecimal result = calculator.calculate();
 
     assertThat(result).isEqualByComparingTo(expected);
   }
@@ -160,12 +174,17 @@ class TugDueCalculatorTest {
     testCase.setEstimatedDateOfArrival(estimatedDateOfArrival);
     testCase.setEstimatedDateOfDeparture(LocalDate.of(LocalDate.now().getYear(), 1, 5));
 
+    calculator.set(testCase, tariff);
+
     BigDecimal fixedTugDuePerGrossTonnage = getFixedTugDuePerGrossTonnage(testCase);
     BigDecimal tugCount = getTugCount(testCase);
 
     BigDecimal expected =
-        fixedTugDuePerGrossTonnage.multiply(tugCount).multiply(BigDecimal.valueOf(1));
-    BigDecimal result = calculator.calculateFor(testCase, tariff);
+        fixedTugDuePerGrossTonnage
+            .multiply(tugCount)
+            .multiply(tariff.getIncreaseCoefficientsByWarningType().get(HOLIDAY));
+    BigDecimal result = calculator.calculate();
+
     assertThat(result).isEqualByComparingTo(expected);
   }
 
@@ -178,12 +197,17 @@ class TugDueCalculatorTest {
     testCase.setEstimatedDateOfDeparture(estimatedDateOfDeparture);
     testCase.setEstimatedDateOfArrival(LocalDate.of(LocalDate.now().getYear(), 1, 5));
 
+    calculator.set(testCase, tariff);
+
     BigDecimal fixedTugDuePerGrossTonnage = getFixedTugDuePerGrossTonnage(testCase);
     BigDecimal tugCount = getTugCount(testCase);
 
     BigDecimal expected =
-            fixedTugDuePerGrossTonnage.multiply(tugCount).multiply(BigDecimal.valueOf(1));
-    BigDecimal result = calculator.calculateFor(testCase, tariff);
+        fixedTugDuePerGrossTonnage
+            .multiply(tugCount)
+            .multiply(tariff.getIncreaseCoefficientsByWarningType().get(HOLIDAY));
+    BigDecimal result = calculator.calculate();
+
     assertThat(result).isEqualByComparingTo(expected);
   }
 
@@ -197,15 +221,22 @@ class TugDueCalculatorTest {
     testCase.setEstimatedDateOfArrival(estimatedDateOfArrival);
     testCase.setEstimatedDateOfDeparture(estimatedDateOfDeparture);
 
+    calculator.set(testCase, tariff);
+
     BigDecimal fixedTugDuePerGrossTonnage = getFixedTugDuePerGrossTonnage(testCase);
     BigDecimal tugCount = getTugCount(testCase);
 
     BigDecimal expected =
-            fixedTugDuePerGrossTonnage.multiply(tugCount).multiply(BigDecimal.valueOf(2));
-    BigDecimal result = calculator.calculateFor(testCase, tariff);
+        fixedTugDuePerGrossTonnage
+            .multiply(tugCount)
+            .multiply(
+                tariff
+                    .getIncreaseCoefficientsByWarningType()
+                    .get(HOLIDAY)
+                    .multiply(BigDecimal.valueOf(2)));
+    BigDecimal result = calculator.calculate();
     assertThat(result).isEqualByComparingTo(expected);
   }
-
 
   private BigDecimal getMultiplier(BigDecimal grossTonnage) {
     double a =
@@ -256,7 +287,4 @@ class TugDueCalculatorTest {
         && testCase.getShip().getGrossTonnage().intValue() <= entry.getValue()[1];
   }
 
-  //      System.out.printf(
-  //        "Port area: %s for GT %s - due is %s and tug count is %s%n",
-  //        tugArea.name(), grossTonnage, fixedTugDuePerGrossTonnage, tugCount);
 }

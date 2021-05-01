@@ -2,8 +2,8 @@ package flagship.domain.calculators.tariffs.serviceduestariffs;
 
 import flagship.domain.calculators.tariffs.Tariff;
 import flagship.domain.calculators.tariffs.enums.PdaWarning;
-import flagship.domain.cases.entities.enums.CargoType;
 import flagship.domain.calculators.tariffs.enums.PortName;
+import flagship.domain.cases.entities.enums.CargoType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

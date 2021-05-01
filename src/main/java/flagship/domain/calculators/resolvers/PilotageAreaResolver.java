@@ -12,8 +12,7 @@ public class PilotageAreaResolver {
     return tariff.getPortNamesInPilotageAreas().entrySet().stream()
         .filter(
             entry ->
-                entry.getValue().stream()
-                    .anyMatch(v -> v.name.equals(source.getPort().getName())))
+                entry.getValue().stream().anyMatch(v -> v.name.equals(source.getPort().getName())))
         .map(Map.Entry::getKey)
         .findFirst()
         .get();

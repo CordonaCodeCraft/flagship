@@ -34,6 +34,29 @@ class PilotageAreaResolverTest {
             new File("src/main/resources/pilotageDueTariff.json"), PilotageDueTariff.class);
   }
 
+  private static Stream<Arguments> getPortsInVarnaFirstPilotageArea() {
+    return getStreamOfPortNamesForPilotageArea(VARNA_FIRST);
+  }
+
+  private static Stream<Arguments> getPortsInVarnaSecondPilotageArea() {
+    return getStreamOfPortNamesForPilotageArea(VARNA_SECOND);
+  }
+
+  private static Stream<Arguments> getPortsInVarnaThirdPilotageArea() {
+    return getStreamOfPortNamesForPilotageArea(VARNA_THIRD);
+  }
+
+  private static Stream<Arguments> getPortsInBourgasFirstPilotageArea() {
+    return getStreamOfPortNamesForPilotageArea(BOURGAS_FIRST);
+  }
+
+  private static Stream<Arguments> getStreamOfPortNamesForPilotageArea(
+      PilotageDueTariff.PilotageArea pilotageArea) {
+    return tariff.getPortNamesInPilotageAreas().get(pilotageArea).stream()
+        .map(e -> e.name)
+        .map(Arguments::of);
+  }
+
   @BeforeEach
   void setUp() {
     PdaPort testPort = new PdaPort();
@@ -78,28 +101,5 @@ class PilotageAreaResolverTest {
     PilotageDueTariff.PilotageArea result =
         PilotageAreaResolver.resolvePilotageArea(testCase, tariff);
     assertThat(result.name()).isEqualTo(BOURGAS_FIRST.name());
-  }
-
-  private static Stream<Arguments> getPortsInVarnaFirstPilotageArea() {
-    return getStreamOfPortNamesForPilotageArea(VARNA_FIRST);
-  }
-
-  private static Stream<Arguments> getPortsInVarnaSecondPilotageArea() {
-    return getStreamOfPortNamesForPilotageArea(VARNA_SECOND);
-  }
-
-  private static Stream<Arguments> getPortsInVarnaThirdPilotageArea() {
-    return getStreamOfPortNamesForPilotageArea(VARNA_THIRD);
-  }
-
-  private static Stream<Arguments> getPortsInBourgasFirstPilotageArea() {
-    return getStreamOfPortNamesForPilotageArea(BOURGAS_FIRST);
-  }
-
-  private static Stream<Arguments> getStreamOfPortNamesForPilotageArea(
-      PilotageDueTariff.PilotageArea pilotageArea) {
-    return tariff.getPortNamesInPilotageAreas().get(pilotageArea).stream()
-        .map(e -> e.name)
-        .map(Arguments::of);
   }
 }

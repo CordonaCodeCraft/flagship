@@ -35,6 +35,53 @@ class TugAreaResolverTest {
     tariff = mapper.readValue(new File("src/main/resources/tugDueTariff.json"), TugDueTariff.class);
   }
 
+  private static Stream<Arguments> getPortsInVtcFirstTugArea() {
+    return getStreamOfPortNames(VTC, VTC_FIRST);
+  }
+
+  private static Stream<Arguments> getPortsInVtcSecondTugArea() {
+    return getStreamOfPortNames(VTC, VTC_SECOND);
+  }
+
+  private static Stream<Arguments> getPortsInVtcThirdTugArea() {
+    return getStreamOfPortNames(VTC, VTC_THIRD);
+  }
+
+  private static Stream<Arguments> getPortsInVtcFourthTugArea() {
+    return getStreamOfPortNames(VTC, VTC_FOURTH);
+  }
+
+  private static Stream<Arguments> getPortsInVtcFifthTugArea() {
+    return getStreamOfPortNames(VTC, VTC_FIFTH);
+  }
+
+  private static Stream<Arguments> getPortsInPortfleetFirstTugArea() {
+    return getStreamOfPortNames(PORTFLEET, PORTFLEET_FIRST);
+  }
+
+  private static Stream<Arguments> getPortsInPortfleetSecondTugArea() {
+    return getStreamOfPortNames(PORTFLEET, PORTFLEET_SECOND);
+  }
+
+  private static Stream<Arguments> getPortsInPortfleetThirdTugArea() {
+    return getStreamOfPortNames(PORTFLEET, PORTFLEET_THIRD);
+  }
+
+  private static Stream<Arguments> getPortsInPortfleetFourthTugArea() {
+    return getStreamOfPortNames(PORTFLEET, PORTFLEET_FOURTH);
+  }
+
+  private static Stream<Arguments> getPortsInPortfleetFifthTugArea() {
+    return getStreamOfPortNames(PORTFLEET, PORTFLEET_FIFTH);
+  }
+
+  private static Stream<Arguments> getStreamOfPortNames(
+      TugDueTariff.TugProvider vtc, TugArea vtcFirst) {
+    return tariff.getPortNamesInTugAreas().get(vtc).get(vtcFirst).stream()
+        .map(e -> e.name)
+        .map(Arguments::of);
+  }
+
   @BeforeEach
   void setUp() {
     PdaPort testPort = new PdaPort();
@@ -169,49 +216,5 @@ class TugAreaResolverTest {
     TugArea result = TugAreaResolver.resolveTugArea(testCase, tariff);
 
     assertThat(result.name()).isEqualTo(PORTFLEET_FIFTH.name());
-  }
-
-  private static Stream<Arguments> getPortsInVtcFirstTugArea() {
-    return getStreamOfPortNames(VTC, VTC_FIRST);
-  }
-
-  private static Stream<Arguments> getPortsInVtcSecondTugArea() {
-    return getStreamOfPortNames(VTC, VTC_SECOND);
-  }
-
-  private static Stream<Arguments> getPortsInVtcThirdTugArea() {
-    return getStreamOfPortNames(VTC, VTC_THIRD);
-  }
-
-  private static Stream<Arguments> getPortsInVtcFourthTugArea() {
-    return getStreamOfPortNames(VTC, VTC_FOURTH);
-  }
-
-  private static Stream<Arguments> getPortsInVtcFifthTugArea() {
-    return getStreamOfPortNames(VTC, VTC_FIFTH);
-  }
-
-  private static Stream<Arguments> getPortsInPortfleetFirstTugArea() {
-    return getStreamOfPortNames(PORTFLEET, PORTFLEET_FIRST);
-  }
-
-  private static Stream<Arguments> getPortsInPortfleetSecondTugArea() {
-    return getStreamOfPortNames(PORTFLEET, PORTFLEET_SECOND);
-  }
-
-  private static Stream<Arguments> getPortsInPortfleetThirdTugArea() {
-    return getStreamOfPortNames(PORTFLEET, PORTFLEET_THIRD);
-  }
-
-  private static Stream<Arguments> getPortsInPortfleetFourthTugArea() {
-    return getStreamOfPortNames(PORTFLEET, PORTFLEET_FOURTH);
-  }
-
-  private static Stream<Arguments> getPortsInPortfleetFifthTugArea() {
-    return getStreamOfPortNames(PORTFLEET, PORTFLEET_FIFTH);
-  }
-
-  private static Stream<Arguments> getStreamOfPortNames(TugDueTariff.TugProvider vtc, TugArea vtcFirst) {
-    return tariff.getPortNamesInTugAreas().get(vtc).get(vtcFirst).stream().map(e -> e.name).map(Arguments::of);
   }
 }

@@ -22,10 +22,9 @@ public class Ship extends BaseEntity {
 
   @Enumerated(value = STRING)
   private ShipType type;
+
   private String name;
   private String imoNumber;
   private Double lengthOverall;
   private Integer grossTonnage;
-
-
 }
