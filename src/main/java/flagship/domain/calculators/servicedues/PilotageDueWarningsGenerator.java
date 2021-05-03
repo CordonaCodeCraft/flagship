@@ -29,6 +29,8 @@ import static flagship.domain.calculators.tariffs.enums.PdaWarning.HOLIDAY;
 // than the end of the month
 // the exact increase can not be evaluated
 
+//todo: generate warnings for mooring due
+
 public class PilotageDueWarningsGenerator {
 
   private static final String PILOTAGE_DUE = "Pilotage due";

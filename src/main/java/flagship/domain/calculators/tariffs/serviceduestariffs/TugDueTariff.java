@@ -19,7 +19,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class TugDueTariff extends Tariff {
 
-  private Map<TugProvider, Map<TugArea, Set<PortName>>> portNamesInTugAreas;
+  private Map<TugServiceProvider, Map<TugArea, Set<PortName>>> portNamesInTugAreas;
   private Map<TugArea, Map<BigDecimal, Integer[]>> tugDuesByArea;
   private Map<BigDecimal, Integer[]> tugCountByGrossTonnage;
   private Map<PdaWarning, BigDecimal> increaseCoefficientsByWarningType;
@@ -28,7 +28,7 @@ public class TugDueTariff extends Tariff {
   private BigDecimal grossTonnageThresholdForTugCountReduce;
   private BigDecimal maximumTugCount;
 
-  public enum TugProvider {
+  public enum TugServiceProvider {
     VTC,
     PORTFLEET,
   }

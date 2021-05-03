@@ -18,8 +18,8 @@ import java.util.stream.Stream;
 
 import static flagship.domain.calculators.tariffs.serviceduestariffs.TugDueTariff.TugArea;
 import static flagship.domain.calculators.tariffs.serviceduestariffs.TugDueTariff.TugArea.*;
-import static flagship.domain.calculators.tariffs.serviceduestariffs.TugDueTariff.TugProvider.PORTFLEET;
-import static flagship.domain.calculators.tariffs.serviceduestariffs.TugDueTariff.TugProvider.VTC;
+import static flagship.domain.calculators.tariffs.serviceduestariffs.TugDueTariff.TugServiceProvider.PORTFLEET;
+import static flagship.domain.calculators.tariffs.serviceduestariffs.TugDueTariff.TugServiceProvider.VTC;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DisplayName("Tug area resolver tests")
@@ -76,7 +76,7 @@ class TugAreaResolverTest {
   }
 
   private static Stream<Arguments> getStreamOfPortNames(
-      TugDueTariff.TugProvider vtc, TugArea vtcFirst) {
+          TugDueTariff.TugServiceProvider vtc, TugArea vtcFirst) {
     return tariff.getPortNamesInTugAreas().get(vtc).get(vtcFirst).stream()
         .map(e -> e.name)
         .map(Arguments::of);

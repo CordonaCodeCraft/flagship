@@ -16,16 +16,15 @@ import org.junit.jupiter.params.provider.EnumSource;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.Random;
 
-import static flagship.domain.calculators.tariffs.enums.PdaWarning.HOLIDAY;
 import static flagship.domain.calculators.tariffs.serviceduestariffs.TugDueTariff.TugArea;
 import static flagship.domain.calculators.tariffs.serviceduestariffs.TugDueTariff.TugArea.VTC_FIRST;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+@DisplayName("Tug due calculator tests")
 class TugDueCalculatorTest {
 
   private static TugDueTariff tariff;
@@ -51,7 +50,7 @@ class TugDueCalculatorTest {
     testCase = PdaCase.builder().ship(testShip).port(testPort).build();
   }
 
-  @DisplayName("Should calculate correct fixed tug due within threshold")
+  @DisplayName("Should calculate fixed tug due within threshold")
   @ParameterizedTest(name = "tug area : {arguments}")
   @EnumSource(TugArea.class)
   void testTugDueCalculationWithinThreshold(TugArea tugArea) {
@@ -73,7 +72,7 @@ class TugDueCalculatorTest {
     assertThat(result).isEqualByComparingTo(expected);
   }
 
-  @DisplayName("Should calculate correct increased tug due")
+  @DisplayName("Should calculate increased tug due")
   @ParameterizedTest(name = "tug area : {arguments}")
   @EnumSource(TugArea.class)
   void testCalculateIncreasedTugDue(TugArea tugArea) {
@@ -213,5 +212,4 @@ class TugDueCalculatorTest {
     return testCase.getShip().getGrossTonnage().intValue() >= entry.getValue()[0]
         && testCase.getShip().getGrossTonnage().intValue() <= entry.getValue()[1];
   }
-
 }

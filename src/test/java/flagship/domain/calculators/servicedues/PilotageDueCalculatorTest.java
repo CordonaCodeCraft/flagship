@@ -54,7 +54,7 @@ public class PilotageDueCalculatorTest implements DueCalculatorTest {
     testCase = PdaCase.builder().port(testPort).ship(testShip).cargoType(REGULAR).build();
   }
 
-  @DisplayName("Should calculate correct fixed pilotage due by pilotage area")
+  @DisplayName("Should calculate fixed pilotage due by pilotage area")
   @ParameterizedTest(name = "pilotage area: {arguments}")
   @EnumSource(PilotageArea.class)
   void testPilotageDueCalculationWithinThreshold(PilotageArea pilotageArea) {
@@ -72,7 +72,7 @@ public class PilotageDueCalculatorTest implements DueCalculatorTest {
     assertThat(result).isEqualByComparingTo(expected);
   }
 
-  @DisplayName("Should calculate correct increased pilotage due")
+  @DisplayName("Should calculate increased pilotage due")
   @ParameterizedTest(name = "pilotage area: {arguments}")
   @EnumSource(PilotageArea.class)
   void testCalculateIncreasedPilotageDue(PilotageArea pilotageArea) {
