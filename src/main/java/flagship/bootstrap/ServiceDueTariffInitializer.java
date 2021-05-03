@@ -4,6 +4,7 @@ import flagship.domain.calculators.HolidayCalendar;
 import flagship.domain.calculators.resolvers.HolidayCalendarResolver;
 import flagship.domain.calculators.tariffs.enums.PdaWarning;
 import flagship.domain.calculators.tariffs.enums.PortName;
+import flagship.domain.calculators.tariffs.serviceduestariffs.MooringDueTariff;
 import flagship.domain.calculators.tariffs.serviceduestariffs.PilotageDueTariff;
 import flagship.domain.calculators.tariffs.serviceduestariffs.PilotageDueTariff.PilotageArea;
 import flagship.domain.calculators.tariffs.serviceduestariffs.TugDueTariff;
@@ -16,13 +17,13 @@ import java.util.*;
 
 import static flagship.domain.calculators.tariffs.enums.PdaWarning.HOLIDAY;
 import static flagship.domain.calculators.tariffs.enums.PdaWarning.PILOT;
-import static flagship.domain.calculators.tariffs.enums.PortName.*;
+import static flagship.domain.calculators.tariffs.serviceduestariffs.MooringDueTariff.MooringServiceProvider;
 import static flagship.domain.calculators.tariffs.serviceduestariffs.PilotageDueTariff.PilotageArea.*;
 import static flagship.domain.calculators.tariffs.serviceduestariffs.TugDueTariff.TugArea;
 import static flagship.domain.calculators.tariffs.serviceduestariffs.TugDueTariff.TugArea.*;
-import static flagship.domain.calculators.tariffs.serviceduestariffs.TugDueTariff.TugProvider;
-import static flagship.domain.calculators.tariffs.serviceduestariffs.TugDueTariff.TugProvider.PORTFLEET;
-import static flagship.domain.calculators.tariffs.serviceduestariffs.TugDueTariff.TugProvider.VTC;
+import static flagship.domain.calculators.tariffs.serviceduestariffs.TugDueTariff.TugServiceProvider;
+import static flagship.domain.calculators.tariffs.serviceduestariffs.TugDueTariff.TugServiceProvider.PORTFLEET;
+import static flagship.domain.calculators.tariffs.serviceduestariffs.TugDueTariff.TugServiceProvider.VTC;
 import static flagship.domain.cases.entities.enums.CargoType.HAZARDOUS;
 import static flagship.domain.cases.entities.enums.CargoType.SPECIAL;
 import static java.time.Month.*;
@@ -33,10 +34,12 @@ public class ServiceDueTariffInitializer {
   public static void initializeTariff(
       PilotageDueTariff pilotageDueTariff,
       TugDueTariff tugDueTariff,
+      MooringDueTariff mooringDueTariff,
       HolidayCalendar holidayCalendar) {
     initializeHolidayCalendar(holidayCalendar);
     initializePilotageDueTariff(pilotageDueTariff, holidayCalendar);
     initializeTugDueTariff(tugDueTariff, holidayCalendar);
+    initializeMooringDueTariff(mooringDueTariff, holidayCalendar);
   }
 
   private static void initializePilotageDueTariff(
@@ -45,42 +48,49 @@ public class ServiceDueTariffInitializer {
     Map<PilotageArea, Set<PortName>> portNamesInPilotageAreas = new EnumMap<>(PilotageArea.class);
 
     Set<PortName> portNamesInFirstVarnaPilotageArea =
-        EnumSet.of(VARNA_EAST, PETROL, BULYARD, BULPORT_LOGISTIK, SRY, PCHMV);
+        EnumSet.of(
+            PortName.VARNA_EAST,
+            PortName.PETROL,
+            PortName.BULYARD,
+            PortName.BULPORT_LOGISTIK,
+            PortName.SRY,
+            PortName.PCHMV);
 
     Set<PortName> portNamesInSecondVarnaPilotageArea =
         EnumSet.of(
-            TEC_POWER_STATION,
-            BALCHIK_PORT,
-            LESPORT,
-            TEREM_FA,
-            SRY_DOLPHIN,
-            TRANSSTROI_VARNA,
-            ODESSOS_PBM,
-            BUOY_9,
-            ANCHORAGE);
+            PortName.TEC_POWER_STATION,
+            PortName.BALCHIK_PORT,
+            PortName.LESPORT,
+            PortName.TEREM_FA,
+            PortName.SRY_DOLPHIN,
+            PortName.TRANSSTROI_VARNA,
+            PortName.ODESSOS_PBM,
+            PortName.BUOY_9,
+            PortName.ANCHORAGE);
 
-    Set<PortName> portNamesInThirdVarnaPilotageArea = EnumSet.of(VARNA_WEST, FERRY_COMPLEX);
+    Set<PortName> portNamesInThirdVarnaPilotageArea =
+        EnumSet.of(PortName.VARNA_WEST, PortName.FERRY_COMPLEX);
 
     Set<PortName> portNamesInFirstBourgasPilotageArea =
         EnumSet.of(
-            BOURGAS_CENTER,
-            BOURGAS_EAST_2,
-            BMF_PORT_BOURGAS,
-            WEST_TERMINAL,
-            SRY_PORT_BOURGAS,
-            PORT_BULGARIA_WEST,
-            BOURGAS_SHIPYARD,
-            PORT_EUROPA,
-            TRANSSTROI_BOURGAS,
-            PORT_ROSENETZ,
-            NESSEBAR,
-            POMORIE,
-            SOZOPOL,
-            TZAREVO,
-            SHIFTING_ANCHORAGE_AREA,
-            DEVIATION,
-            XX_A_K_M,
-            XX_B_K_M);
+            PortName.BOURGAS_CENTER,
+            PortName.BOURGAS_EAST_2,
+            PortName.BMF_PORT_BOURGAS,
+            PortName.WEST_TERMINAL,
+            PortName.SRY_PORT_BOURGAS,
+            PortName.PORT_BULGARIA_WEST,
+            PortName.BOURGAS_SHIPYARD,
+            PortName.PORT_EUROPA,
+            PortName.TRANSSTROI_BOURGAS,
+            PortName.PORT_ROSENETZ,
+            PortName.NESSEBAR,
+            PortName.POMORIE,
+            PortName.SOZOPOL,
+            PortName.TZAREVO,
+            PortName.SHIFTING_ANCHORAGE_AREA,
+            PortName.DEVIATION,
+            PortName.XX_A_K_M,
+            PortName.XX_B_K_M);
 
     portNamesInPilotageAreas.put(VARNA_FIRST, portNamesInFirstVarnaPilotageArea);
     portNamesInPilotageAreas.put(VARNA_SECOND, portNamesInSecondVarnaPilotageArea);
@@ -201,23 +211,34 @@ public class ServiceDueTariffInitializer {
   private static void initializeTugDueTariff(
       TugDueTariff tugDueTariff, HolidayCalendar holidayCalendar) {
 
-    Map<TugProvider, Map<TugArea, Set<PortName>>> portNamesInTugAreas =
-        new EnumMap<>(TugProvider.class);
+    Map<TugServiceProvider, Map<TugArea, Set<PortName>>> portNamesInTugAreas =
+        new EnumMap<>(TugServiceProvider.class);
 
     Map<TugArea, Set<PortName>> portNamesInVtcTugAreas = new EnumMap<>(TugArea.class);
 
     Set<PortName> portNamesInVtcFirstTugArea =
-        EnumSet.of(VARNA_EAST, PCHMV, ODESSOS_PBM, PETROL, LESPORT, TEC_POWER_STATION);
+        EnumSet.of(
+            PortName.VARNA_EAST,
+            PortName.PCHMV,
+            PortName.ODESSOS_PBM,
+            PortName.PETROL,
+            PortName.LESPORT,
+            PortName.TEC_POWER_STATION);
 
-    Set<PortName> portNamesInVtcSecondTugArea = EnumSet.of(VARNA_WEST, FERRY_COMPLEX);
+    Set<PortName> portNamesInVtcSecondTugArea =
+        EnumSet.of(PortName.VARNA_WEST, PortName.FERRY_COMPLEX);
 
     Set<PortName> portNamesInVtcThirdTugArea =
-        EnumSet.of(BULYARD, SRY_ODESSOS, MTG_DOLPHIN, TEREM_FA);
+        EnumSet.of(PortName.BULYARD, PortName.SRY_ODESSOS, PortName.MTG_DOLPHIN, PortName.TEREM_FA);
 
     Set<PortName> portNamesInVtcFourthTugArea =
-        EnumSet.of(SHIFTING_BULYARD, SHIFTING_SRY_ODESSOS, SHIFTING_MTG_DOLPHIN, SHIFTING_TEREM_FA);
+        EnumSet.of(
+            PortName.SHIFTING_BULYARD,
+            PortName.SHIFTING_SRY_ODESSOS,
+            PortName.SHIFTING_MTG_DOLPHIN,
+            PortName.SHIFTING_TEREM_FA);
 
-    Set<PortName> portNamesInVtcFifthTugArea = EnumSet.of(BALCHIK_PORT);
+    Set<PortName> portNamesInVtcFifthTugArea = EnumSet.of(PortName.BALCHIK_PORT);
 
     portNamesInVtcTugAreas.put(VTC_FIRST, portNamesInVtcFirstTugArea);
     portNamesInVtcTugAreas.put(VTC_SECOND, portNamesInVtcSecondTugArea);
@@ -228,17 +249,28 @@ public class ServiceDueTariffInitializer {
     Map<TugArea, Set<PortName>> portNamesInPortFleetTugAreas = new EnumMap<>(TugArea.class);
 
     Set<PortName> portNamesInPortfleetFirstTugArea =
-        EnumSet.of(VARNA_EAST, TEC_EZEROVO, PETROL, LESPORT, ODESSOS_PBM, PCHMV);
+        EnumSet.of(
+            PortName.VARNA_EAST,
+            PortName.TEC_EZEROVO,
+            PortName.PETROL,
+            PortName.LESPORT,
+            PortName.ODESSOS_PBM,
+            PortName.PCHMV);
 
-    Set<PortName> portNamesInPortfleetSecondTugArea = EnumSet.of(VARNA_WEST, FERRY_COMPLEX);
+    Set<PortName> portNamesInPortfleetSecondTugArea =
+        EnumSet.of(PortName.VARNA_WEST, PortName.FERRY_COMPLEX);
 
     Set<PortName> portNamesInPortfleetThirdTugArea =
-        EnumSet.of(BULYARD, SRY_ODESSOS, MTG_DOLPHIN, TEREM_FA);
+        EnumSet.of(PortName.BULYARD, PortName.SRY_ODESSOS, PortName.MTG_DOLPHIN, PortName.TEREM_FA);
 
     Set<PortName> portNamesInPortfleetFourthTugArea =
-        EnumSet.of(SHIFTING_BULYARD, SHIFTING_SRY_ODESSOS, SHIFTING_MTG_DOLPHIN, SHIFTING_TEREM_FA);
+        EnumSet.of(
+            PortName.SHIFTING_BULYARD,
+            PortName.SHIFTING_SRY_ODESSOS,
+            PortName.SHIFTING_MTG_DOLPHIN,
+            PortName.SHIFTING_TEREM_FA);
 
-    Set<PortName> portNamesInPortfleetFifthTugArea = EnumSet.of(BALCHIK_PORT);
+    Set<PortName> portNamesInPortfleetFifthTugArea = EnumSet.of(PortName.BALCHIK_PORT);
 
     portNamesInPortFleetTugAreas.put(PORTFLEET_FIRST, portNamesInPortfleetFirstTugArea);
     portNamesInPortFleetTugAreas.put(PORTFLEET_SECOND, portNamesInPortfleetSecondTugArea);
@@ -252,134 +284,135 @@ public class ServiceDueTariffInitializer {
     Map<TugArea, Map<BigDecimal, Integer[]>> tugDuesByArea = new EnumMap<>(TugArea.class);
 
     Map<BigDecimal, Integer[]> tugDuesInVtcFirstTugArea = new TreeMap<>();
-    tugDuesInVtcFirstTugArea.put(BigDecimal.valueOf(300), new Integer[] {150, 1000, 45});
-    tugDuesInVtcFirstTugArea.put(BigDecimal.valueOf(410), new Integer[] {1001, 2000, 45});
-    tugDuesInVtcFirstTugArea.put(BigDecimal.valueOf(520), new Integer[] {2001, 2499, 45});
-    tugDuesInVtcFirstTugArea.put(BigDecimal.valueOf(820), new Integer[] {2500, 3000, 55});
-    tugDuesInVtcFirstTugArea.put(BigDecimal.valueOf(1020), new Integer[] {3001, 4000, 55});
-    tugDuesInVtcFirstTugArea.put(BigDecimal.valueOf(1220), new Integer[] {4001, 5000, 55});
-    tugDuesInVtcFirstTugArea.put(BigDecimal.valueOf(1420), new Integer[] {5001, 6000, 55});
-    tugDuesInVtcFirstTugArea.put(BigDecimal.valueOf(1620), new Integer[] {6001, 7000, 55});
-    tugDuesInVtcFirstTugArea.put(BigDecimal.valueOf(1820), new Integer[] {7001, 8000, 55});
-    tugDuesInVtcFirstTugArea.put(BigDecimal.valueOf(2020), new Integer[] {8001, 9000, 55});
-    tugDuesInVtcFirstTugArea.put(BigDecimal.valueOf(2220), new Integer[] {9001, 10000, 55});
+    tugDuesInVtcFirstTugArea.put(BigDecimal.valueOf(300.00), new Integer[] {150, 1000, 45});
+    tugDuesInVtcFirstTugArea.put(BigDecimal.valueOf(410.00), new Integer[] {1001, 2000, 45});
+    tugDuesInVtcFirstTugArea.put(BigDecimal.valueOf(520.00), new Integer[] {2001, 2499, 45});
+    tugDuesInVtcFirstTugArea.put(BigDecimal.valueOf(820.00), new Integer[] {2500, 3000, 55});
+    tugDuesInVtcFirstTugArea.put(BigDecimal.valueOf(1020.00), new Integer[] {3001, 4000, 55});
+    tugDuesInVtcFirstTugArea.put(BigDecimal.valueOf(1220.00), new Integer[] {4001, 5000, 55});
+    tugDuesInVtcFirstTugArea.put(BigDecimal.valueOf(1420.00), new Integer[] {5001, 6000, 55});
+    tugDuesInVtcFirstTugArea.put(BigDecimal.valueOf(1620.00), new Integer[] {6001, 7000, 55});
+    tugDuesInVtcFirstTugArea.put(BigDecimal.valueOf(1820.00), new Integer[] {7001, 8000, 55});
+    tugDuesInVtcFirstTugArea.put(BigDecimal.valueOf(2020.00), new Integer[] {8001, 9000, 55});
+    tugDuesInVtcFirstTugArea.put(BigDecimal.valueOf(2220.00), new Integer[] {9001, 10000, 55});
 
     Map<BigDecimal, Integer[]> tugDuesInVtcSecondTugArea = new TreeMap<>();
-    tugDuesInVtcSecondTugArea.put(BigDecimal.valueOf(300), new Integer[] {150, 1000, 45});
-    tugDuesInVtcSecondTugArea.put(BigDecimal.valueOf(410), new Integer[] {1001, 2000, 45});
-    tugDuesInVtcSecondTugArea.put(BigDecimal.valueOf(520), new Integer[] {2001, 2499, 45});
-    tugDuesInVtcSecondTugArea.put(BigDecimal.valueOf(1060), new Integer[] {2500, 3000, 65});
-    tugDuesInVtcSecondTugArea.put(BigDecimal.valueOf(1320), new Integer[] {3001, 4000, 65});
-    tugDuesInVtcSecondTugArea.put(BigDecimal.valueOf(1580), new Integer[] {4001, 5000, 65});
-    tugDuesInVtcSecondTugArea.put(BigDecimal.valueOf(1840), new Integer[] {5001, 6000, 65});
-    tugDuesInVtcSecondTugArea.put(BigDecimal.valueOf(2100), new Integer[] {6001, 7000, 65});
-    tugDuesInVtcSecondTugArea.put(BigDecimal.valueOf(2360), new Integer[] {7001, 8000, 65});
-    tugDuesInVtcSecondTugArea.put(BigDecimal.valueOf(2620), new Integer[] {8001, 9000, 65});
-    tugDuesInVtcSecondTugArea.put(BigDecimal.valueOf(2880), new Integer[] {9001, 10000, 65});
+    tugDuesInVtcSecondTugArea.put(BigDecimal.valueOf(300.00), new Integer[] {150, 1000, 45});
+    tugDuesInVtcSecondTugArea.put(BigDecimal.valueOf(410.00), new Integer[] {1001, 2000, 45});
+    tugDuesInVtcSecondTugArea.put(BigDecimal.valueOf(520.00), new Integer[] {2001, 2499, 45});
+    tugDuesInVtcSecondTugArea.put(BigDecimal.valueOf(1060.00), new Integer[] {2500, 3000, 65});
+    tugDuesInVtcSecondTugArea.put(BigDecimal.valueOf(1320.00), new Integer[] {3001, 4000, 65});
+    tugDuesInVtcSecondTugArea.put(BigDecimal.valueOf(1580.00), new Integer[] {4001, 5000, 65});
+    tugDuesInVtcSecondTugArea.put(BigDecimal.valueOf(1840.00), new Integer[] {5001, 6000, 65});
+    tugDuesInVtcSecondTugArea.put(BigDecimal.valueOf(2100.00), new Integer[] {6001, 7000, 65});
+    tugDuesInVtcSecondTugArea.put(BigDecimal.valueOf(2360.00), new Integer[] {7001, 8000, 65});
+    tugDuesInVtcSecondTugArea.put(BigDecimal.valueOf(2620.00), new Integer[] {8001, 9000, 65});
+    tugDuesInVtcSecondTugArea.put(BigDecimal.valueOf(2880.00), new Integer[] {9001, 10000, 65});
 
     Map<BigDecimal, Integer[]> tugDuesInVtcThirdTugArea = new TreeMap<>();
-    tugDuesInVtcThirdTugArea.put(BigDecimal.valueOf(300), new Integer[] {150, 1000, 45});
-    tugDuesInVtcThirdTugArea.put(BigDecimal.valueOf(410), new Integer[] {1001, 2000, 45});
-    tugDuesInVtcThirdTugArea.put(BigDecimal.valueOf(520), new Integer[] {2001, 2499, 45});
-    tugDuesInVtcThirdTugArea.put(BigDecimal.valueOf(720), new Integer[] {2500, 3000, 50});
-    tugDuesInVtcThirdTugArea.put(BigDecimal.valueOf(870), new Integer[] {3001, 4000, 50});
-    tugDuesInVtcThirdTugArea.put(BigDecimal.valueOf(1020), new Integer[] {4001, 5000, 50});
-    tugDuesInVtcThirdTugArea.put(BigDecimal.valueOf(1170), new Integer[] {5001, 6000, 50});
-    tugDuesInVtcThirdTugArea.put(BigDecimal.valueOf(1320), new Integer[] {6001, 7000, 50});
-    tugDuesInVtcThirdTugArea.put(BigDecimal.valueOf(1470), new Integer[] {7001, 8000, 50});
-    tugDuesInVtcThirdTugArea.put(BigDecimal.valueOf(1620), new Integer[] {8001, 9000, 50});
-    tugDuesInVtcThirdTugArea.put(BigDecimal.valueOf(1770), new Integer[] {9001, 10000, 50});
+    tugDuesInVtcThirdTugArea.put(BigDecimal.valueOf(300.00), new Integer[] {150, 1000, 45});
+    tugDuesInVtcThirdTugArea.put(BigDecimal.valueOf(410.00), new Integer[] {1001, 2000, 45});
+    tugDuesInVtcThirdTugArea.put(BigDecimal.valueOf(520.00), new Integer[] {2001, 2499, 45});
+    tugDuesInVtcThirdTugArea.put(BigDecimal.valueOf(720.00), new Integer[] {2500, 3000, 50});
+    tugDuesInVtcThirdTugArea.put(BigDecimal.valueOf(870.00), new Integer[] {3001, 4000, 50});
+    tugDuesInVtcThirdTugArea.put(BigDecimal.valueOf(1020.00), new Integer[] {4001, 5000, 50});
+    tugDuesInVtcThirdTugArea.put(BigDecimal.valueOf(1170.00), new Integer[] {5001, 6000, 50});
+    tugDuesInVtcThirdTugArea.put(BigDecimal.valueOf(1320.00), new Integer[] {6001, 7000, 50});
+    tugDuesInVtcThirdTugArea.put(BigDecimal.valueOf(1470.00), new Integer[] {7001, 8000, 50});
+    tugDuesInVtcThirdTugArea.put(BigDecimal.valueOf(1620.00), new Integer[] {8001, 9000, 50});
+    tugDuesInVtcThirdTugArea.put(BigDecimal.valueOf(1770.00), new Integer[] {9001, 10000, 50});
 
     Map<BigDecimal, Integer[]> tugDuesInVtcFourthTugArea = new TreeMap<>();
-    tugDuesInVtcFourthTugArea.put(BigDecimal.valueOf(300), new Integer[] {150, 1000, 45});
-    tugDuesInVtcFourthTugArea.put(BigDecimal.valueOf(410), new Integer[] {1001, 2000, 45});
-    tugDuesInVtcFourthTugArea.put(BigDecimal.valueOf(520), new Integer[] {2001, 2499, 45});
-    tugDuesInVtcFourthTugArea.put(BigDecimal.valueOf(650), new Integer[] {2500, 3000, 50});
-    tugDuesInVtcFourthTugArea.put(BigDecimal.valueOf(780), new Integer[] {3001, 4000, 50});
-    tugDuesInVtcFourthTugArea.put(BigDecimal.valueOf(910), new Integer[] {4001, 5000, 50});
-    tugDuesInVtcFourthTugArea.put(BigDecimal.valueOf(1040), new Integer[] {5001, 6000, 50});
-    tugDuesInVtcFourthTugArea.put(BigDecimal.valueOf(1170), new Integer[] {6001, 7000, 50});
-    tugDuesInVtcFourthTugArea.put(BigDecimal.valueOf(1300), new Integer[] {7001, 8000, 50});
-    tugDuesInVtcFourthTugArea.put(BigDecimal.valueOf(1430), new Integer[] {8001, 9000, 50});
-    tugDuesInVtcFourthTugArea.put(BigDecimal.valueOf(1560), new Integer[] {9001, 10000, 50});
+    tugDuesInVtcFourthTugArea.put(BigDecimal.valueOf(300.00), new Integer[] {150, 1000, 45});
+    tugDuesInVtcFourthTugArea.put(BigDecimal.valueOf(410.00), new Integer[] {1001, 2000, 45});
+    tugDuesInVtcFourthTugArea.put(BigDecimal.valueOf(520.00), new Integer[] {2001, 2499, 45});
+    tugDuesInVtcFourthTugArea.put(BigDecimal.valueOf(650.00), new Integer[] {2500, 3000, 50});
+    tugDuesInVtcFourthTugArea.put(BigDecimal.valueOf(780.00), new Integer[] {3001, 4000, 50});
+    tugDuesInVtcFourthTugArea.put(BigDecimal.valueOf(910.00), new Integer[] {4001, 5000, 50});
+    tugDuesInVtcFourthTugArea.put(BigDecimal.valueOf(1040.00), new Integer[] {5001, 6000, 50});
+    tugDuesInVtcFourthTugArea.put(BigDecimal.valueOf(1170.00), new Integer[] {6001, 7000, 50});
+    tugDuesInVtcFourthTugArea.put(BigDecimal.valueOf(1300.00), new Integer[] {7001, 8000, 50});
+    tugDuesInVtcFourthTugArea.put(BigDecimal.valueOf(1430.00), new Integer[] {8001, 9000, 50});
+    tugDuesInVtcFourthTugArea.put(BigDecimal.valueOf(1560.00), new Integer[] {9001, 10000, 50});
 
     Map<BigDecimal, Integer[]> tugDuesInVtcFifthTugArea = new TreeMap<>();
-    tugDuesInVtcFifthTugArea.put(BigDecimal.valueOf(430), new Integer[] {150, 1000, 65});
-    tugDuesInVtcFifthTugArea.put(BigDecimal.valueOf(560), new Integer[] {1001, 2000, 65});
-    tugDuesInVtcFifthTugArea.put(BigDecimal.valueOf(690), new Integer[] {2001, 2499, 65});
-    tugDuesInVtcFifthTugArea.put(BigDecimal.valueOf(1060), new Integer[] {2500, 3000, 65});
-    tugDuesInVtcFifthTugArea.put(BigDecimal.valueOf(1320), new Integer[] {3001, 4000, 65});
-    tugDuesInVtcFifthTugArea.put(BigDecimal.valueOf(1580), new Integer[] {4001, 5000, 65});
-    tugDuesInVtcFifthTugArea.put(BigDecimal.valueOf(1840), new Integer[] {5001, 6000, 65});
-    tugDuesInVtcFifthTugArea.put(BigDecimal.valueOf(2100), new Integer[] {6001, 7000, 65});
-    tugDuesInVtcFifthTugArea.put(BigDecimal.valueOf(2360), new Integer[] {7001, 8000, 65});
-    tugDuesInVtcFifthTugArea.put(BigDecimal.valueOf(2620), new Integer[] {8001, 9000, 65});
-    tugDuesInVtcFifthTugArea.put(BigDecimal.valueOf(2880), new Integer[] {9001, 10000, 65});
+    tugDuesInVtcFifthTugArea.put(BigDecimal.valueOf(430.00), new Integer[] {150, 1000, 65});
+    tugDuesInVtcFifthTugArea.put(BigDecimal.valueOf(560.00), new Integer[] {1001, 2000, 65});
+    tugDuesInVtcFifthTugArea.put(BigDecimal.valueOf(690.00), new Integer[] {2001, 2499, 65});
+    tugDuesInVtcFifthTugArea.put(BigDecimal.valueOf(1060.00), new Integer[] {2500, 3000, 65});
+    tugDuesInVtcFifthTugArea.put(BigDecimal.valueOf(1320.00), new Integer[] {3001, 4000, 65});
+    tugDuesInVtcFifthTugArea.put(BigDecimal.valueOf(1580.00), new Integer[] {4001, 5000, 65});
+    tugDuesInVtcFifthTugArea.put(BigDecimal.valueOf(1840.00), new Integer[] {5001, 6000, 65});
+    tugDuesInVtcFifthTugArea.put(BigDecimal.valueOf(2100.00), new Integer[] {6001, 7000, 65});
+    tugDuesInVtcFifthTugArea.put(BigDecimal.valueOf(2360.00), new Integer[] {7001, 8000, 65});
+    tugDuesInVtcFifthTugArea.put(BigDecimal.valueOf(2620.00), new Integer[] {8001, 9000, 65});
+    tugDuesInVtcFifthTugArea.put(BigDecimal.valueOf(2880.00), new Integer[] {9001, 10000, 65});
 
     Map<BigDecimal, Integer[]> tugDuesInPortFleetFirstTugArea = new TreeMap<>();
-    tugDuesInPortFleetFirstTugArea.put(BigDecimal.valueOf(300), new Integer[] {150, 1000, 45});
-    tugDuesInPortFleetFirstTugArea.put(BigDecimal.valueOf(410), new Integer[] {1001, 2000, 45});
-    tugDuesInPortFleetFirstTugArea.put(BigDecimal.valueOf(520), new Integer[] {2001, 2499, 45});
-    tugDuesInPortFleetFirstTugArea.put(BigDecimal.valueOf(820), new Integer[] {2500, 3000, 55});
-    tugDuesInPortFleetFirstTugArea.put(BigDecimal.valueOf(1020), new Integer[] {3001, 4000, 55});
-    tugDuesInPortFleetFirstTugArea.put(BigDecimal.valueOf(1220), new Integer[] {4001, 5000, 55});
-    tugDuesInPortFleetFirstTugArea.put(BigDecimal.valueOf(1420), new Integer[] {5001, 6000, 55});
-    tugDuesInPortFleetFirstTugArea.put(BigDecimal.valueOf(1620), new Integer[] {6001, 7000, 55});
-    tugDuesInPortFleetFirstTugArea.put(BigDecimal.valueOf(1820), new Integer[] {7001, 8000, 55});
-    tugDuesInPortFleetFirstTugArea.put(BigDecimal.valueOf(2020), new Integer[] {8001, 9000, 55});
-    tugDuesInPortFleetFirstTugArea.put(BigDecimal.valueOf(2220), new Integer[] {9001, 10000, 55});
+    tugDuesInPortFleetFirstTugArea.put(BigDecimal.valueOf(300.00), new Integer[] {150, 1000, 45});
+    tugDuesInPortFleetFirstTugArea.put(BigDecimal.valueOf(410.00), new Integer[] {1001, 2000, 45});
+    tugDuesInPortFleetFirstTugArea.put(BigDecimal.valueOf(520.00), new Integer[] {2001, 2499, 45});
+    tugDuesInPortFleetFirstTugArea.put(BigDecimal.valueOf(820.00), new Integer[] {2500, 3000, 55});
+    tugDuesInPortFleetFirstTugArea.put(BigDecimal.valueOf(1020.00), new Integer[] {3001, 4000, 55});
+    tugDuesInPortFleetFirstTugArea.put(BigDecimal.valueOf(1220.00), new Integer[] {4001, 5000, 55});
+    tugDuesInPortFleetFirstTugArea.put(BigDecimal.valueOf(1420.00), new Integer[] {5001, 6000, 55});
+    tugDuesInPortFleetFirstTugArea.put(BigDecimal.valueOf(1620.00), new Integer[] {6001, 7000, 55});
+    tugDuesInPortFleetFirstTugArea.put(BigDecimal.valueOf(1820.00), new Integer[] {7001, 8000, 55});
+    tugDuesInPortFleetFirstTugArea.put(BigDecimal.valueOf(2020.00), new Integer[] {8001, 9000, 55});
+    tugDuesInPortFleetFirstTugArea.put(
+        BigDecimal.valueOf(2220.00), new Integer[] {9001, 10000, 55});
 
-    Map<BigDecimal, Integer[]> tugDuesInPortFleetSecondTugArea = new TreeMap<>();
-    tugDuesInPortFleetSecondTugArea.put(BigDecimal.valueOf(300), new Integer[] {150, 1000, 45});
-    tugDuesInPortFleetSecondTugArea.put(BigDecimal.valueOf(410), new Integer[] {1001, 2000, 45});
-    tugDuesInPortFleetSecondTugArea.put(BigDecimal.valueOf(520), new Integer[] {2001, 2499, 45});
-    tugDuesInPortFleetSecondTugArea.put(BigDecimal.valueOf(1060), new Integer[] {2500, 3000, 65});
-    tugDuesInPortFleetSecondTugArea.put(BigDecimal.valueOf(1320), new Integer[] {3001, 4000, 65});
-    tugDuesInPortFleetSecondTugArea.put(BigDecimal.valueOf(1580), new Integer[] {4001, 5000, 65});
-    tugDuesInPortFleetSecondTugArea.put(BigDecimal.valueOf(1840), new Integer[] {5001, 6000, 65});
-    tugDuesInPortFleetSecondTugArea.put(BigDecimal.valueOf(2100), new Integer[] {6001, 7000, 65});
-    tugDuesInPortFleetSecondTugArea.put(BigDecimal.valueOf(2360), new Integer[] {7001, 8000, 65});
-    tugDuesInPortFleetSecondTugArea.put(BigDecimal.valueOf(2620), new Integer[] {8001, 9000, 65});
-    tugDuesInPortFleetSecondTugArea.put(BigDecimal.valueOf(2880), new Integer[] {9001, 10000, 65});
+    Map<BigDecimal, Integer[]> tugDuesInPFSecondTugArea = new TreeMap<>();
+    tugDuesInPFSecondTugArea.put(BigDecimal.valueOf(300.00), new Integer[] {150, 1000, 45});
+    tugDuesInPFSecondTugArea.put(BigDecimal.valueOf(410.00), new Integer[] {1001, 2000, 45});
+    tugDuesInPFSecondTugArea.put(BigDecimal.valueOf(520.00), new Integer[] {2001, 2499, 45});
+    tugDuesInPFSecondTugArea.put(BigDecimal.valueOf(1060.00), new Integer[] {2500, 3000, 65});
+    tugDuesInPFSecondTugArea.put(BigDecimal.valueOf(1320.00), new Integer[] {3001, 4000, 65});
+    tugDuesInPFSecondTugArea.put(BigDecimal.valueOf(1580.00), new Integer[] {4001, 5000, 65});
+    tugDuesInPFSecondTugArea.put(BigDecimal.valueOf(1840.00), new Integer[] {5001, 6000, 65});
+    tugDuesInPFSecondTugArea.put(BigDecimal.valueOf(2100.00), new Integer[] {6001, 7000, 65});
+    tugDuesInPFSecondTugArea.put(BigDecimal.valueOf(2360.00), new Integer[] {7001, 8000, 65});
+    tugDuesInPFSecondTugArea.put(BigDecimal.valueOf(2620.00), new Integer[] {8001, 9000, 65});
+    tugDuesInPFSecondTugArea.put(BigDecimal.valueOf(2880.00), new Integer[] {9001, 10000, 65});
 
-    Map<BigDecimal, Integer[]> tugDuesInPortFleetThirdTugArea = new TreeMap<>();
-    tugDuesInPortFleetThirdTugArea.put(BigDecimal.valueOf(300), new Integer[] {150, 1000, 45});
-    tugDuesInPortFleetThirdTugArea.put(BigDecimal.valueOf(410), new Integer[] {1001, 2000, 45});
-    tugDuesInPortFleetThirdTugArea.put(BigDecimal.valueOf(520), new Integer[] {2001, 2499, 45});
-    tugDuesInPortFleetThirdTugArea.put(BigDecimal.valueOf(720), new Integer[] {2500, 3000, 50});
-    tugDuesInPortFleetThirdTugArea.put(BigDecimal.valueOf(870), new Integer[] {3001, 4000, 50});
-    tugDuesInPortFleetThirdTugArea.put(BigDecimal.valueOf(1020), new Integer[] {4001, 5000, 50});
-    tugDuesInPortFleetThirdTugArea.put(BigDecimal.valueOf(1170), new Integer[] {5001, 6000, 50});
-    tugDuesInPortFleetThirdTugArea.put(BigDecimal.valueOf(1320), new Integer[] {6001, 7000, 50});
-    tugDuesInPortFleetThirdTugArea.put(BigDecimal.valueOf(1470), new Integer[] {7001, 8000, 50});
-    tugDuesInPortFleetThirdTugArea.put(BigDecimal.valueOf(1620), new Integer[] {8001, 9000, 50});
-    tugDuesInPortFleetThirdTugArea.put(BigDecimal.valueOf(1770), new Integer[] {9001, 10000, 50});
+    Map<BigDecimal, Integer[]> tugDuesInPFThirdTugArea = new TreeMap<>();
+    tugDuesInPFThirdTugArea.put(BigDecimal.valueOf(300.00), new Integer[] {150, 1000, 45});
+    tugDuesInPFThirdTugArea.put(BigDecimal.valueOf(410.00), new Integer[] {1001, 2000, 45});
+    tugDuesInPFThirdTugArea.put(BigDecimal.valueOf(520.00), new Integer[] {2001, 2499, 45});
+    tugDuesInPFThirdTugArea.put(BigDecimal.valueOf(720.00), new Integer[] {2500, 3000, 50});
+    tugDuesInPFThirdTugArea.put(BigDecimal.valueOf(870.00), new Integer[] {3001, 4000, 50});
+    tugDuesInPFThirdTugArea.put(BigDecimal.valueOf(1020.00), new Integer[] {4001, 5000, 50});
+    tugDuesInPFThirdTugArea.put(BigDecimal.valueOf(1170.00), new Integer[] {5001, 6000, 50});
+    tugDuesInPFThirdTugArea.put(BigDecimal.valueOf(1320.00), new Integer[] {6001, 7000, 50});
+    tugDuesInPFThirdTugArea.put(BigDecimal.valueOf(1470.00), new Integer[] {7001, 8000, 50});
+    tugDuesInPFThirdTugArea.put(BigDecimal.valueOf(1620.00), new Integer[] {8001, 9000, 50});
+    tugDuesInPFThirdTugArea.put(BigDecimal.valueOf(1770.00), new Integer[] {9001, 10000, 50});
 
-    Map<BigDecimal, Integer[]> tugDuesInPortFleetFourthTugArea = new TreeMap<>();
-    tugDuesInPortFleetFourthTugArea.put(BigDecimal.valueOf(300), new Integer[] {150, 1000, 45});
-    tugDuesInPortFleetFourthTugArea.put(BigDecimal.valueOf(410), new Integer[] {1001, 2000, 45});
-    tugDuesInPortFleetFourthTugArea.put(BigDecimal.valueOf(520), new Integer[] {2001, 2499, 45});
-    tugDuesInPortFleetFourthTugArea.put(BigDecimal.valueOf(650), new Integer[] {2500, 3000, 50});
-    tugDuesInPortFleetFourthTugArea.put(BigDecimal.valueOf(780), new Integer[] {3001, 4000, 50});
-    tugDuesInPortFleetFourthTugArea.put(BigDecimal.valueOf(910), new Integer[] {4001, 5000, 50});
-    tugDuesInPortFleetFourthTugArea.put(BigDecimal.valueOf(1040), new Integer[] {5001, 6000, 50});
-    tugDuesInPortFleetFourthTugArea.put(BigDecimal.valueOf(1170), new Integer[] {6001, 7000, 50});
-    tugDuesInPortFleetFourthTugArea.put(BigDecimal.valueOf(1300), new Integer[] {7001, 8000, 50});
-    tugDuesInPortFleetFourthTugArea.put(BigDecimal.valueOf(1430), new Integer[] {8001, 9000, 50});
-    tugDuesInPortFleetFourthTugArea.put(BigDecimal.valueOf(1560), new Integer[] {9001, 10000, 50});
+    Map<BigDecimal, Integer[]> tugDuesInPFFourthTugArea = new TreeMap<>();
+    tugDuesInPFFourthTugArea.put(BigDecimal.valueOf(300.00), new Integer[] {150, 1000, 45});
+    tugDuesInPFFourthTugArea.put(BigDecimal.valueOf(410.00), new Integer[] {1001, 2000, 45});
+    tugDuesInPFFourthTugArea.put(BigDecimal.valueOf(520.00), new Integer[] {2001, 2499, 45});
+    tugDuesInPFFourthTugArea.put(BigDecimal.valueOf(650.00), new Integer[] {2500, 3000, 50});
+    tugDuesInPFFourthTugArea.put(BigDecimal.valueOf(780.00), new Integer[] {3001, 4000, 50});
+    tugDuesInPFFourthTugArea.put(BigDecimal.valueOf(910.00), new Integer[] {4001, 5000, 50});
+    tugDuesInPFFourthTugArea.put(BigDecimal.valueOf(1040.00), new Integer[] {5001, 6000, 50});
+    tugDuesInPFFourthTugArea.put(BigDecimal.valueOf(1170.00), new Integer[] {6001, 7000, 50});
+    tugDuesInPFFourthTugArea.put(BigDecimal.valueOf(1300.00), new Integer[] {7001, 8000, 50});
+    tugDuesInPFFourthTugArea.put(BigDecimal.valueOf(1430.00), new Integer[] {8001, 9000, 50});
+    tugDuesInPFFourthTugArea.put(BigDecimal.valueOf(1560.00), new Integer[] {9001, 10000, 50});
 
-    Map<BigDecimal, Integer[]> tugDuesInPortFleetFifthTugArea = new TreeMap<>();
-    tugDuesInPortFleetFifthTugArea.put(BigDecimal.valueOf(430), new Integer[] {150, 1000, 65});
-    tugDuesInPortFleetFifthTugArea.put(BigDecimal.valueOf(560), new Integer[] {1001, 2000, 65});
-    tugDuesInPortFleetFifthTugArea.put(BigDecimal.valueOf(690), new Integer[] {2001, 2499, 65});
-    tugDuesInPortFleetFifthTugArea.put(BigDecimal.valueOf(1060), new Integer[] {2500, 3000, 65});
-    tugDuesInPortFleetFifthTugArea.put(BigDecimal.valueOf(1320), new Integer[] {3001, 4000, 65});
-    tugDuesInPortFleetFifthTugArea.put(BigDecimal.valueOf(1580), new Integer[] {4001, 5000, 65});
-    tugDuesInPortFleetFifthTugArea.put(BigDecimal.valueOf(1840), new Integer[] {5001, 6000, 65});
-    tugDuesInPortFleetFifthTugArea.put(BigDecimal.valueOf(2100), new Integer[] {6001, 7000, 65});
-    tugDuesInPortFleetFifthTugArea.put(BigDecimal.valueOf(2360), new Integer[] {7001, 8000, 65});
-    tugDuesInPortFleetFifthTugArea.put(BigDecimal.valueOf(2620), new Integer[] {8001, 9000, 65});
-    tugDuesInPortFleetFifthTugArea.put(BigDecimal.valueOf(2880), new Integer[] {9001, 10000, 65});
+    Map<BigDecimal, Integer[]> tugDuesInPFFifthTugArea = new TreeMap<>();
+    tugDuesInPFFifthTugArea.put(BigDecimal.valueOf(430.00), new Integer[] {150, 1000, 65});
+    tugDuesInPFFifthTugArea.put(BigDecimal.valueOf(560.00), new Integer[] {1001, 2000, 65});
+    tugDuesInPFFifthTugArea.put(BigDecimal.valueOf(690.00), new Integer[] {2001, 2499, 65});
+    tugDuesInPFFifthTugArea.put(BigDecimal.valueOf(1060.00), new Integer[] {2500, 3000, 65});
+    tugDuesInPFFifthTugArea.put(BigDecimal.valueOf(1320.00), new Integer[] {3001, 4000, 65});
+    tugDuesInPFFifthTugArea.put(BigDecimal.valueOf(1580.00), new Integer[] {4001, 5000, 65});
+    tugDuesInPFFifthTugArea.put(BigDecimal.valueOf(1840.00), new Integer[] {5001, 6000, 65});
+    tugDuesInPFFifthTugArea.put(BigDecimal.valueOf(2100.00), new Integer[] {6001, 7000, 65});
+    tugDuesInPFFifthTugArea.put(BigDecimal.valueOf(2360.00), new Integer[] {7001, 8000, 65});
+    tugDuesInPFFifthTugArea.put(BigDecimal.valueOf(2620.00), new Integer[] {8001, 9000, 65});
+    tugDuesInPFFifthTugArea.put(BigDecimal.valueOf(2880.00), new Integer[] {9001, 10000, 65});
 
     tugDuesByArea.put(VTC_FIRST, tugDuesInVtcFirstTugArea);
     tugDuesByArea.put(VTC_SECOND, tugDuesInVtcSecondTugArea);
@@ -387,14 +420,14 @@ public class ServiceDueTariffInitializer {
     tugDuesByArea.put(VTC_FOURTH, tugDuesInVtcFourthTugArea);
     tugDuesByArea.put(VTC_FIFTH, tugDuesInVtcFifthTugArea);
     tugDuesByArea.put(PORTFLEET_FIRST, tugDuesInPortFleetFirstTugArea);
-    tugDuesByArea.put(PORTFLEET_SECOND, tugDuesInPortFleetSecondTugArea);
-    tugDuesByArea.put(PORTFLEET_THIRD, tugDuesInPortFleetThirdTugArea);
-    tugDuesByArea.put(PORTFLEET_FOURTH, tugDuesInPortFleetFourthTugArea);
-    tugDuesByArea.put(PORTFLEET_FIFTH, tugDuesInPortFleetFifthTugArea);
+    tugDuesByArea.put(PORTFLEET_SECOND, tugDuesInPFSecondTugArea);
+    tugDuesByArea.put(PORTFLEET_THIRD, tugDuesInPFThirdTugArea);
+    tugDuesByArea.put(PORTFLEET_FOURTH, tugDuesInPFFourthTugArea);
+    tugDuesByArea.put(PORTFLEET_FIFTH, tugDuesInPFFifthTugArea);
 
     Map<BigDecimal, Integer[]> tugCountByGrossTonnage = new TreeMap<>();
-    tugCountByGrossTonnage.put(BigDecimal.valueOf(1), new Integer[] {150, 4499});
-    tugCountByGrossTonnage.put(BigDecimal.valueOf(2), new Integer[] {4500, 17999});
+    tugCountByGrossTonnage.put(BigDecimal.valueOf(1.00), new Integer[] {150, 4499});
+    tugCountByGrossTonnage.put(BigDecimal.valueOf(2.00), new Integer[] {4500, 17999});
 
     Map<PdaWarning, BigDecimal> increaseCoefficientsByWarningType = new EnumMap<>(PdaWarning.class);
     increaseCoefficientsByWarningType.put(HOLIDAY, BigDecimal.valueOf(1.0));
@@ -407,7 +440,70 @@ public class ServiceDueTariffInitializer {
 
     tugDueTariff.setHolidayCalendar(holidayCalendar.getHolidayCalendar());
     tugDueTariff.setGrossTonnageThreshold(BigDecimal.valueOf(10000.00));
-    tugDueTariff.setGrossTonnageThresholdForTugCountReduce(BigDecimal.valueOf(18000));
-    tugDueTariff.setMaximumTugCount(BigDecimal.valueOf(3));
+    tugDueTariff.setGrossTonnageThresholdForTugCountReduce(BigDecimal.valueOf(18000.00));
+    tugDueTariff.setMaximumTugCount(BigDecimal.valueOf(3.00));
+  }
+
+  private static void initializeMooringDueTariff(
+      MooringDueTariff mooringDueTariff, HolidayCalendar holidayCalendar) {
+
+    Map<MooringServiceProvider, Map<BigDecimal, Integer[]>> mooringDuesByProvider =
+        new EnumMap<>(MooringServiceProvider.class);
+
+    Map<BigDecimal, Integer[]> lesportMooringDues = new TreeMap<>();
+    lesportMooringDues.put(BigDecimal.valueOf(100.00), new Integer[] {150, 3000, 40});
+    lesportMooringDues.put(BigDecimal.valueOf(130.00), new Integer[] {3001, 6000, 40});
+    lesportMooringDues.put(BigDecimal.valueOf(160.00), new Integer[] {6001, 8000, 40});
+    lesportMooringDues.put(BigDecimal.valueOf(190.00), new Integer[] {8001, 10000, 40});
+
+    Map<BigDecimal, Integer[]> odessosMooringDues = new TreeMap<>();
+    odessosMooringDues.put(BigDecimal.valueOf(120.00), new Integer[] {150, 1000, 300});
+    odessosMooringDues.put(BigDecimal.valueOf(160.00), new Integer[] {1001, 3000, 300});
+    odessosMooringDues.put(BigDecimal.valueOf(240.00), new Integer[] {3001, 5000, 300});
+
+    Map<BigDecimal, Integer[]> balchikMooringDues = new TreeMap<>();
+    balchikMooringDues.put(BigDecimal.valueOf(80.00), new Integer[] {150, 3000, 160});
+    balchikMooringDues.put(BigDecimal.valueOf(110.00), new Integer[] {3001, 6000, 160});
+    balchikMooringDues.put(BigDecimal.valueOf(130.00), new Integer[] {6001, 8000, 160});
+    balchikMooringDues.put(BigDecimal.valueOf(160.00), new Integer[] {8001, 10000, 160});
+
+    Map<BigDecimal, Integer[]> vtcMooringDues = new TreeMap<>();
+    vtcMooringDues.put(BigDecimal.valueOf(60.00), new Integer[] {150, 1000, 35});
+    vtcMooringDues.put(BigDecimal.valueOf(90.00), new Integer[] {1001, 2000, 35});
+    vtcMooringDues.put(BigDecimal.valueOf(120.00), new Integer[] {2001, 3000, 35});
+    vtcMooringDues.put(BigDecimal.valueOf(140.00), new Integer[] {3001, 4000, 35});
+    vtcMooringDues.put(BigDecimal.valueOf(160.00), new Integer[] {4001, 5000, 35});
+    vtcMooringDues.put(BigDecimal.valueOf(180.00), new Integer[] {5001, 6000, 35});
+    vtcMooringDues.put(BigDecimal.valueOf(200.00), new Integer[] {6001, 7000, 35});
+    vtcMooringDues.put(BigDecimal.valueOf(220.00), new Integer[] {7001, 8000, 35});
+    vtcMooringDues.put(BigDecimal.valueOf(230.00), new Integer[] {8001, 9000, 35});
+    vtcMooringDues.put(BigDecimal.valueOf(240.00), new Integer[] {9001, 10000, 35});
+
+    Map<BigDecimal, Integer[]> portfleetMooringDues = new TreeMap<>();
+    portfleetMooringDues.put(BigDecimal.valueOf(60.00), new Integer[] {150, 1000, 35});
+    portfleetMooringDues.put(BigDecimal.valueOf(90.00), new Integer[] {1001, 2000, 35});
+    portfleetMooringDues.put(BigDecimal.valueOf(120.00), new Integer[] {2001, 3000, 35});
+    portfleetMooringDues.put(BigDecimal.valueOf(140.00), new Integer[] {3001, 4000, 35});
+    portfleetMooringDues.put(BigDecimal.valueOf(160.00), new Integer[] {4001, 5000, 35});
+    portfleetMooringDues.put(BigDecimal.valueOf(180.00), new Integer[] {5001, 6000, 35});
+    portfleetMooringDues.put(BigDecimal.valueOf(200.00), new Integer[] {6001, 7000, 35});
+    portfleetMooringDues.put(BigDecimal.valueOf(220.00), new Integer[] {7001, 8000, 35});
+    portfleetMooringDues.put(BigDecimal.valueOf(230.00), new Integer[] {8001, 9000, 35});
+    portfleetMooringDues.put(BigDecimal.valueOf(240.00), new Integer[] {9001, 10000, 35});
+
+    mooringDuesByProvider.put(MooringServiceProvider.LESPORT, lesportMooringDues);
+    mooringDuesByProvider.put(MooringServiceProvider.ODESSOS, odessosMooringDues);
+    mooringDuesByProvider.put(MooringServiceProvider.BALCHIK, balchikMooringDues);
+    mooringDuesByProvider.put(MooringServiceProvider.VTC, vtcMooringDues);
+    mooringDuesByProvider.put(MooringServiceProvider.PORTFLEET, portfleetMooringDues);
+
+    mooringDueTariff.setMooringDuesByProvider(Collections.unmodifiableMap(mooringDuesByProvider));
+    mooringDueTariff.setHolidayCalendar(holidayCalendar.getHolidayCalendar());
+
+    mooringDueTariff.setLesportGrossTonnageThreshold(BigDecimal.valueOf(10000.00));
+    mooringDueTariff.setBalchikGrossTonnageThreshold(BigDecimal.valueOf(10000.00));
+    mooringDueTariff.setVtcGrossTonnageThreshold(BigDecimal.valueOf(10000.00));
+    mooringDueTariff.setPortfleetGrossTonnageThreshold(BigDecimal.valueOf(10000.00));
+    mooringDueTariff.setOdessosGrossTonnageThreshold(BigDecimal.valueOf(5000.00));
   }
 }

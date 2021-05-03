@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import flagship.domain.calculators.HolidayCalendar;
+import flagship.domain.calculators.tariffs.serviceduestariffs.MooringDueTariff;
 import flagship.domain.calculators.tariffs.serviceduestariffs.PilotageDueTariff;
 import flagship.domain.calculators.tariffs.serviceduestariffs.TugDueTariff;
 import flagship.domain.calculators.tariffs.stateduestariffs.CanalDueTariff;
@@ -32,6 +33,7 @@ public class DataLoader implements ApplicationRunner {
 
   private final PilotageDueTariff pilotageDueTariff;
   private final TugDueTariff tugDueTariff;
+  private final MooringDueTariff mooringDueTariff;
   private final HolidayCalendar holidayCalendar;
 
   @Override
@@ -39,7 +41,8 @@ public class DataLoader implements ApplicationRunner {
 
     StateDueTariffInitializer.initializeTariffs(
         tonnageDueTariff, wharfDueTariff, canalDueTariff, lightDueTariff);
-    ServiceDueTariffInitializer.initializeTariff(pilotageDueTariff, tugDueTariff, holidayCalendar);
+    ServiceDueTariffInitializer.initializeTariff(
+        pilotageDueTariff, tugDueTariff, mooringDueTariff, holidayCalendar);
 
     produceStateDueJsonFiles();
     produceServiceDueJsonFiles();
@@ -78,6 +81,11 @@ public class DataLoader implements ApplicationRunner {
     objectMapper
         .writerWithDefaultPrettyPrinter()
         .writeValue(Paths.get("src/main/resources/tugDueTariff.json").toFile(), tugDueTariff);
+
+    objectMapper
+        .writerWithDefaultPrettyPrinter()
+        .writeValue(
+            Paths.get("src/main/resources/mooringDueTariff.json").toFile(), mooringDueTariff);
 
     objectMapper
         .writerWithDefaultPrettyPrinter()
