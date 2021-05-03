@@ -2,24 +2,22 @@ package flagship.domain.calculators.servicedues;
 
 import flagship.domain.calculators.tariffs.Tariff;
 import flagship.domain.calculators.tariffs.serviceduestariffs.MooringDueTariff;
-import flagship.domain.calculators.tariffs.serviceduestariffs.MooringDueTariff.MooringServiceProvider;
 import flagship.domain.cases.dto.PdaCase;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.Comparator;
-import java.util.Map;
 
 @NoArgsConstructor
 public class MooringDueCalculator extends ServiceDueCalculator<PdaCase, Tariff> {
 
-  private static PdaCase source;
-  private static MooringDueTariff tariff;
+  private PdaCase source;
+  private MooringDueTariff tariff;
 
   @Override
   public void set(final PdaCase source, final Tariff tariff) {
-    MooringDueCalculator.source = source;
-    MooringDueCalculator.tariff = (MooringDueTariff) tariff;
+    this.source = source;
+    this.tariff = (MooringDueTariff) tariff;
   }
 
   @Override
@@ -29,145 +27,128 @@ public class MooringDueCalculator extends ServiceDueCalculator<PdaCase, Tariff> 
 
     switch (source.getPort().getMooringServiceProvider()) {
       case VTC:
-        mooringDue = VtcMooringDueCalculator.calculateVtcMooringDue();
+        mooringDue = new VtcMooringDueCalculator().calculateVtcMooringDue();
         break;
       case PORTFLEET:
-        mooringDue = PortfleetMooringDueCalculator.calculatePortfleetMooringDue();
+        mooringDue = new PortfleetMooringDueCalculator().calculatePortfleetMooringDue();
         break;
       case LESPORT:
-        mooringDue = LesportMooringDueCalculator.calculateLesportMooringDue();
+        mooringDue = new LesportMooringDueCalculator().calculateLesportMooringDue();
         break;
       case ODESSOS:
-        mooringDue = OdessosMooringDueCalculator.calculateOdessosMooringDue();
+        mooringDue = new OdessosMooringDueCalculator().calculateOdessosMooringDue();
         break;
       case BALCHIK:
-        mooringDue = BalchikMooringDueCalculator.calculateBalchikMooringDue();
+        mooringDue = new BalchikMooringDueCalculator().calculateBalchikMooringDue();
     }
 
     return mooringDue;
   }
 
-  private static class VtcMooringDueCalculator {
+  private class VtcMooringDueCalculator {
 
-    private static BigDecimal calculateVtcMooringDue() {
+    private BigDecimal calculateVtcMooringDue() {
       return commonMooringDueCalculation(tariff.getVtcGrossTonnageThreshold());
     }
   }
 
-  private static class PortfleetMooringDueCalculator {
+  private class PortfleetMooringDueCalculator {
 
-    private static BigDecimal calculatePortfleetMooringDue() {
+    private BigDecimal calculatePortfleetMooringDue() {
       return commonMooringDueCalculation(tariff.getPortfleetGrossTonnageThreshold());
     }
   }
 
-  private static class LesportMooringDueCalculator {
+  private class LesportMooringDueCalculator {
 
-    private static BigDecimal calculateLesportMooringDue() {
+    private BigDecimal calculateLesportMooringDue() {
       return commonMooringDueCalculation(tariff.getLesportGrossTonnageThreshold());
     }
   }
 
-  private static class OdessosMooringDueCalculator {
+  private class OdessosMooringDueCalculator {
 
-    public static BigDecimal calculateOdessosMooringDue() {
+    public BigDecimal calculateOdessosMooringDue() {
 
-      BigDecimal fixedMooringDue = getFixedMooringDue(source.getPort().getMooringServiceProvider());
+      BigDecimal fixedMooringDue =
+          getFixedDue(
+              source,
+              source.getPort().getMooringServiceProvider(),
+              tariff.getMooringDuesByProvider());
 
       if (grossTonnageIsAboveThreshold()) {
-        fixedMooringDue = getAdditionalValue();
+        fixedMooringDue =
+            getAdditionalDueValue(
+                source.getPort().getMooringServiceProvider(), tariff.getMooringDuesByProvider());
       }
 
       return fixedMooringDue;
     }
   }
 
-  private static class BalchikMooringDueCalculator {
+  private class BalchikMooringDueCalculator {
 
-    public static BigDecimal calculateBalchikMooringDue() {
+    public BigDecimal calculateBalchikMooringDue() {
 
-      BigDecimal fixedMooringDue = getFixedMooringDue(source.getPort().getMooringServiceProvider());
+      BigDecimal fixedMooringDue =
+          getFixedDue(
+              source,
+              source.getPort().getMooringServiceProvider(),
+              tariff.getMooringDuesByProvider());
 
       if (grossTonnageIsAboveThreshold()) {
-        fixedMooringDue = getAdditionalValue();
+        fixedMooringDue =
+            getAdditionalDueValue(
+                source.getPort().getMooringServiceProvider(), tariff.getMooringDuesByProvider());
       }
 
-      return fixedMooringDue.multiply(BigDecimal.valueOf(2));
+      return fixedMooringDue.multiply(BigDecimal.valueOf(2.00));
     }
   }
 
-  private static BigDecimal commonMooringDueCalculation(final BigDecimal grossTonnageThreshold) {
+  private BigDecimal commonMooringDueCalculation(final BigDecimal grossTonnageThreshold) {
 
-    BigDecimal fixedMooringDue = getFixedMooringDue(source.getPort().getMooringServiceProvider());
+    BigDecimal fixedMooringDue =
+        getFixedDue(
+            source,
+            source.getPort().getMooringServiceProvider(),
+            tariff.getMooringDuesByProvider());
 
     if (grossTonnageIsAboveThreshold()) {
       fixedMooringDue = fixedMooringDue.add(calculateAdditionalDue(grossTonnageThreshold));
     }
-    return fixedMooringDue.multiply(BigDecimal.valueOf(2));
+    return fixedMooringDue.multiply(BigDecimal.valueOf(2.00));
   }
 
-  private static BigDecimal getFixedMooringDue(final MooringServiceProvider provider) {
-    return tariff.getMooringDuesByProvider().get(provider).entrySet().stream()
-        .filter(MooringDueCalculator::shipGrossTonnageIsInRange)
-        .map(Map.Entry::getKey)
-        .findFirst()
-        .orElse(getBiggestFixedMooringDue());
-  }
-
-  private static boolean shipGrossTonnageIsInRange(final Map.Entry<BigDecimal, Integer[]> entry) {
-    return source.getShip().getGrossTonnage().intValue() >= entry.getValue()[0]
-        && source.getShip().getGrossTonnage().intValue() <= entry.getValue()[1];
-  }
-
-  private static BigDecimal getBiggestFixedMooringDue() {
-    return tariff
-        .getMooringDuesByProvider()
-        .get(source.getPort().getMooringServiceProvider())
-        .keySet()
-        .stream()
-        .max(Comparator.naturalOrder())
-        .get();
-  }
-
-  private static boolean grossTonnageIsAboveThreshold() {
+  private boolean grossTonnageIsAboveThreshold() {
 
     switch (source.getPort().getMooringServiceProvider()) {
       case VTC:
-        return source.getShip().getGrossTonnage().doubleValue()
-            > tariff.getVtcGrossTonnageThreshold().doubleValue();
+        return grossTonnageIsAboveThreshold(source, tariff.getVtcGrossTonnageThreshold());
       case PORTFLEET:
-        return source.getShip().getGrossTonnage().doubleValue()
-            > tariff.getPortfleetGrossTonnageThreshold().doubleValue();
+        return grossTonnageIsAboveThreshold(source, tariff.getPortfleetGrossTonnageThreshold());
       case LESPORT:
-        return source.getShip().getGrossTonnage().doubleValue()
-            > tariff.getLesportGrossTonnageThreshold().doubleValue();
+        return grossTonnageIsAboveThreshold(source, tariff.getLesportGrossTonnageThreshold());
       case ODESSOS:
-        return source.getShip().getGrossTonnage().doubleValue()
-            > tariff.getOdessosGrossTonnageThreshold().doubleValue();
+        return grossTonnageIsAboveThreshold(source, tariff.getOdessosGrossTonnageThreshold());
       case BALCHIK:
-        return source.getShip().getGrossTonnage().doubleValue()
-            > tariff.getBalchikGrossTonnageThreshold().doubleValue();
+        return grossTonnageIsAboveThreshold(source, tariff.getBalchikGrossTonnageThreshold());
     }
 
     return false;
   }
 
-  private static BigDecimal calculateAdditionalDue(final BigDecimal grossTonnageThreshold) {
-    final BigDecimal additionalValue = getAdditionalValue();
+  private BigDecimal calculateAdditionalDue(final BigDecimal grossTonnageThreshold) {
+    final BigDecimal additionalValue =
+        getAdditionalDueValue(
+            source.getPort().getMooringServiceProvider(), tariff.getMooringDuesByProvider());
     final BigDecimal multiplier = getMultiplier(grossTonnageThreshold);
     return additionalValue.multiply(multiplier);
   }
 
-  private static BigDecimal getAdditionalValue() {
-    return BigDecimal.valueOf(
-        tariff
-            .getMooringDuesByProvider()
-            .get(source.getPort().getMooringServiceProvider())
-            .get(getBiggestFixedMooringDue())[2]);
-  }
-
-  private static BigDecimal getMultiplier(final BigDecimal threshold) {
-    final double a = (source.getShip().getGrossTonnage().doubleValue() - threshold.doubleValue()) / 1000;
+  private BigDecimal getMultiplier(final BigDecimal threshold) {
+    final double a =
+        (source.getShip().getGrossTonnage().doubleValue() - threshold.doubleValue()) / 1000;
     final double b = a - Math.floor(a) > 0 ? 1 : 0;
 
     return BigDecimal.valueOf((int) a + b);

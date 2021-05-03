@@ -1,4 +1,4 @@
-package flagship.domain.calculators.servicedues;
+package flagship.domain.calculators;
 
 import flagship.domain.calculators.HolidayCalendar;
 import flagship.domain.calculators.tariffs.serviceduestariffs.PilotageDueTariff;
@@ -31,7 +31,7 @@ import static flagship.domain.calculators.tariffs.enums.PdaWarning.HOLIDAY;
 
 //todo: generate warnings for mooring due
 
-public class PilotageDueWarningsGenerator {
+public class PdaWarningsGenerator {
 
   private static final String PILOTAGE_DUE = "Pilotage due";
   private static final String WHARF_DUE = "Wharf due";

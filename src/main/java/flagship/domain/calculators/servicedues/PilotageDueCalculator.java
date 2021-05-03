@@ -27,9 +27,10 @@ public class PilotageDueCalculator extends ServiceDueCalculator<PdaCase, Tariff>
   @Override
   public BigDecimal calculate() {
 
-    BigDecimal pilotageDue = getFixedPilotageDue();
+    BigDecimal pilotageDue =
+        getFixedDue(source, source.getPort().getPilotageArea(), tariff.getPilotageDuesByArea());
 
-    if (grossTonnageIsAboveThreshold()) {
+    if (grossTonnageIsAboveThreshold(source, tariff.getGrossTonnageThreshold())) {
       pilotageDue = pilotageDue.add(calculateAdditionalDue());
     }
 
@@ -42,41 +43,9 @@ public class PilotageDueCalculator extends ServiceDueCalculator<PdaCase, Tariff>
     return pilotageDue;
   }
 
-  private BigDecimal getFixedPilotageDue() {
-    return tariff
-        .getPilotageDuesByArea()
-        .get(source.getPort().getPilotageArea())
-        .entrySet()
-        .stream()
-        .filter(
-            entry ->
-                source.getShip().getGrossTonnage().intValue() >= entry.getValue()[0]
-                    && source.getShip().getGrossTonnage().intValue() <= entry.getValue()[1])
-        .map(Map.Entry::getKey)
-        .findFirst()
-        .orElse(getBiggestFixedPilotageDue());
-  }
-
-  private BigDecimal getBiggestFixedPilotageDue() {
-    return tariff.getPilotageDuesByArea().get(source.getPort().getPilotageArea()).keySet().stream()
-        .max(Comparator.naturalOrder())
-        .get();
-  }
-
-  private boolean grossTonnageIsAboveThreshold() {
-    return source.getShip().getGrossTonnage().intValue()
-        >= tariff.getGrossTonnageThreshold().intValue();
-  }
-
   private BigDecimal calculateAdditionalDue() {
-    return getDueAdditionalValue().multiply(getMultiplier());
-  }
-
-  private BigDecimal getDueAdditionalValue() {
-    return tariff.getPilotageDuesByArea().get(source.getPort().getPilotageArea()).values().stream()
-        .findFirst()
-        .map(array -> BigDecimal.valueOf(array[2]))
-        .get();
+    return getAdditionalDueValue(source.getPort().getPilotageArea(), tariff.getPilotageDuesByArea())
+        .multiply(getMultiplier());
   }
 
   private BigDecimal getMultiplier() {

@@ -3,6 +3,7 @@ package flagship.domain.calculators.servicedues;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import flagship.domain.calculators.HolidayCalendar;
+import flagship.domain.calculators.PdaWarningsGenerator;
 import flagship.domain.calculators.tariffs.serviceduestariffs.PilotageDueTariff;
 import flagship.domain.cases.dto.PdaCase;
 import flagship.domain.cases.dto.PdaShip;
@@ -24,11 +25,11 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @Disabled("Disabled until the warning model is clarified")
 @DisplayName("Pilotage due warning generator tests")
-class PilotageDueWarningsGeneratorTest {
+class PdaWarningsGeneratorTest {
 
   private static HolidayCalendar calendar;
   private static PilotageDueTariff tariff;
-  private final PilotageDueWarningsGenerator warningsGenerator = new PilotageDueWarningsGenerator();
+  private final PdaWarningsGenerator warningsGenerator = new PdaWarningsGenerator();
   private PdaCase testCase;
 
   @BeforeAll

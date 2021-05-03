@@ -6,9 +6,8 @@ import flagship.domain.cases.dto.PdaCase;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.*;
-
-import static flagship.domain.calculators.tariffs.enums.PdaWarning.HOLIDAY;
+import java.util.Comparator;
+import java.util.Map;
 
 @NoArgsConstructor
 public class TugDueCalculator extends ServiceDueCalculator<PdaCase, Tariff> {
@@ -25,9 +24,10 @@ public class TugDueCalculator extends ServiceDueCalculator<PdaCase, Tariff> {
   @Override
   public BigDecimal calculate() {
 
-    BigDecimal tugDue = getFixedTugDue();
+    BigDecimal tugDue =
+        getFixedDue(source, source.getPort().getTugArea(), tariff.getTugDuesByArea());
 
-    if (grossTonnageIsAboveThreshold()) {
+    if (grossTonnageIsAboveThreshold(source, tariff.getGrossTonnageThreshold())) {
       tugDue = tugDue.add(calculateAdditionalDue());
     }
 
@@ -35,28 +35,8 @@ public class TugDueCalculator extends ServiceDueCalculator<PdaCase, Tariff> {
   }
 
   private BigDecimal calculateAdditionalDue() {
-    return getDueAdditionalValue().multiply(getMultiplier());
-  }
-
-  private BigDecimal getFixedTugDue() {
-    return tariff.getTugDuesByArea().get(source.getPort().getTugArea()).entrySet().stream()
-        .filter(this::shipGrossTonnageInRange)
-        .map(Map.Entry::getKey)
-        .findFirst()
-        .orElse(getBiggestFixedTugDue());
-  }
-
-  private boolean grossTonnageIsAboveThreshold() {
-    return source.getShip().getGrossTonnage().doubleValue()
-        > tariff.getGrossTonnageThreshold().doubleValue();
-  }
-
-  private BigDecimal getDueAdditionalValue() {
-    return BigDecimal.valueOf(
-        tariff
-            .getTugDuesByArea()
-            .get(source.getPort().getTugArea())
-            .get(getBiggestFixedTugDue())[2]);
+    return getAdditionalDueValue(source.getPort().getTugArea(), tariff.getTugDuesByArea())
+        .multiply(getMultiplier());
   }
 
   private BigDecimal getMultiplier() {
@@ -69,17 +49,11 @@ public class TugDueCalculator extends ServiceDueCalculator<PdaCase, Tariff> {
     return BigDecimal.valueOf((int) a + b);
   }
 
-  private BigDecimal getBiggestFixedTugDue() {
-    return tariff.getTugDuesByArea().get(source.getPort().getTugArea()).keySet().stream()
-        .max(Comparator.naturalOrder())
-        .get();
-  }
-
   private BigDecimal getTugCount() {
 
     final BigDecimal tugCount =
         tariff.getTugCountByGrossTonnage().entrySet().stream()
-            .filter(this::shipGrossTonnageInRange)
+            .filter(entry -> grossTonnageIsInRange(source, entry))
             .map(Map.Entry::getKey)
             .findFirst()
             .orElse(tariff.getMaximumTugCount());
@@ -88,8 +62,8 @@ public class TugDueCalculator extends ServiceDueCalculator<PdaCase, Tariff> {
       return tugCount;
     } else {
       return tugCount.intValue() == 1
-          ? BigDecimal.valueOf(1)
-          : tugCount.subtract(BigDecimal.valueOf(1));
+          ? BigDecimal.valueOf(1.00)
+          : tugCount.subtract(BigDecimal.valueOf(1.00));
     }
   }
 
@@ -100,8 +74,4 @@ public class TugDueCalculator extends ServiceDueCalculator<PdaCase, Tariff> {
                 < tariff.getGrossTonnageThresholdForTugCountReduce().intValue());
   }
 
-  private boolean shipGrossTonnageInRange(final Map.Entry<BigDecimal, Integer[]> entry) {
-    return source.getShip().getGrossTonnage().intValue() >= entry.getValue()[0]
-        && source.getShip().getGrossTonnage().intValue() <= entry.getValue()[1];
-  }
 }
