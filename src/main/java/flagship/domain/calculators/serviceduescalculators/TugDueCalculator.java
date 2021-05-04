@@ -1,13 +1,14 @@
-package flagship.domain.calculators.servicedues;
+package flagship.domain.calculators.serviceduescalculators;
 
-import flagship.domain.calculators.tariffs.Tariff;
-import flagship.domain.calculators.tariffs.serviceduestariffs.TugDueTariff;
+import flagship.domain.tariffs.Tariff;
+import flagship.domain.tariffs.serviceduestariffs.TugDueTariff;
 import flagship.domain.cases.dto.PdaCase;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.Comparator;
 import java.util.Map;
+
+import static flagship.domain.tariffs.PdaWarningsGenerator.PdaWarning.*;
 
 @NoArgsConstructor
 public class TugDueCalculator extends ServiceDueCalculator<PdaCase, Tariff> {
@@ -69,7 +70,7 @@ public class TugDueCalculator extends ServiceDueCalculator<PdaCase, Tariff> {
 
   private boolean isNotEligibleForTugCountReduce() {
     return !source.getShip().getHasIncreasedManeuverability()
-        || (source.getShip().getTransportsDangerousCargo()
+        || (source.getWarnings().contains(DANGEROUS_TUG_CARGO)
             && source.getShip().getGrossTonnage().intValue()
                 < tariff.getGrossTonnageThresholdForTugCountReduce().intValue());
   }

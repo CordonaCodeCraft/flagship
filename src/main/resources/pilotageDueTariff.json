@@ -56,13 +56,11 @@
       "680.0" : [ 9000, 9999, 75 ]
     }
   },
-  "increaseCoefficientsByCargoType" : {
-    "HAZARDOUS" : 0.2,
-    "SPECIAL" : 1.0
-  },
-  "increaseCoefficientsByWarningType" : {
+  "increaseCoefficientsByPdaWarning" : {
     "HOLIDAY" : 0.5,
-    "PILOT" : 0.5
+    "SPECIAL_PILOT" : 0.5,
+    "HAZARDOUS_PILOTAGE_CARGO" : 0.2,
+    "SPECIAL_PILOTAGE_CARGO" : 1.0
   },
   "holidayCalendar" : [ "2021-01-01", "2021-03-03", "2021-04-30", "2021-05-01", "2021-05-02", "2021-05-03", "2021-05-04", "2021-05-06", "2021-05-24", "2021-09-06", "2021-09-22", "2021-12-24", "2021-12-25", "2021-12-26", "2021-12-27", "2021-12-28" ],
   "grossTonnageThreshold" : 10000.0

@@ -1,12 +1,11 @@
-package flagship.domain.calculators.servicedues;
+package flagship.domain.calculators.serviceduescalculators;
 
-import flagship.domain.calculators.tariffs.Tariff;
-import flagship.domain.calculators.tariffs.serviceduestariffs.MooringDueTariff;
+import flagship.domain.tariffs.Tariff;
+import flagship.domain.tariffs.serviceduestariffs.MooringDueTariff;
 import flagship.domain.cases.dto.PdaCase;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.Comparator;
 
 @NoArgsConstructor
 public class MooringDueCalculator extends ServiceDueCalculator<PdaCase, Tariff> {

@@ -16,7 +16,5 @@ public class PdaShip {
   private ShipType type;
   private BigDecimal lengthOverall;
   private BigDecimal grossTonnage;
-  private Boolean requiresSpecialPilot;
   private Boolean hasIncreasedManeuverability;
-  private Boolean transportsDangerousCargo;
 }

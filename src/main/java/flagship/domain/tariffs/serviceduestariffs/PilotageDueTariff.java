@@ -1,9 +1,8 @@
-package flagship.domain.calculators.tariffs.serviceduestariffs;
+package flagship.domain.tariffs.serviceduestariffs;
 
-import flagship.domain.calculators.tariffs.Tariff;
-import flagship.domain.calculators.tariffs.enums.PdaWarning;
-import flagship.domain.calculators.tariffs.enums.PortName;
-import flagship.domain.cases.entities.enums.CargoType;
+import flagship.domain.tariffs.PdaWarningsGenerator;
+import flagship.domain.tariffs.Tariff;
+import flagship.domain.tariffs.PortName;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,6 +13,8 @@ import java.time.LocalDate;
 import java.util.Map;
 import java.util.Set;
 
+import static flagship.domain.tariffs.PdaWarningsGenerator.*;
+
 @Getter
 @Setter
 @Component
@@ -22,8 +23,7 @@ public class PilotageDueTariff extends Tariff {
 
   private Map<PilotageArea, Set<PortName>> portNamesInPilotageAreas;
   private Map<PilotageArea, Map<BigDecimal, Integer[]>> pilotageDuesByArea;
-  private Map<CargoType, BigDecimal> increaseCoefficientsByCargoType;
-  private Map<PdaWarning, BigDecimal> increaseCoefficientsByWarningType;
+  private Map<PdaWarning, BigDecimal> increaseCoefficientsByPdaWarning;
   private Set<LocalDate> holidayCalendar;
   private BigDecimal grossTonnageThreshold;
 

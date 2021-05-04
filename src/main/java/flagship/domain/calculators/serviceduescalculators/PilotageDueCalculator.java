@@ -1,17 +1,15 @@
-package flagship.domain.calculators.servicedues;
+package flagship.domain.calculators.serviceduescalculators;
 
-import flagship.domain.calculators.tariffs.Tariff;
-import flagship.domain.calculators.tariffs.serviceduestariffs.PilotageDueTariff;
 import flagship.domain.cases.dto.PdaCase;
+import flagship.domain.tariffs.Tariff;
+import flagship.domain.tariffs.serviceduestariffs.PilotageDueTariff;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 
-import static flagship.domain.calculators.tariffs.enums.PdaWarning.PILOT;
+import static flagship.domain.tariffs.PdaWarningsGenerator.PdaWarning.*;
 
 @NoArgsConstructor
 public class PilotageDueCalculator extends ServiceDueCalculator<PdaCase, Tariff> {
@@ -65,18 +63,22 @@ public class PilotageDueCalculator extends ServiceDueCalculator<PdaCase, Tariff>
 
     List<BigDecimal> increaseCoefficients = new ArrayList<>();
 
-    BigDecimal increaseCoefficientByCargoType =
-        tariff.getIncreaseCoefficientsByCargoType().entrySet().stream()
-            .filter(entry -> entry.getKey() == source.getCargoType())
-            .map(Map.Entry::getValue)
-            .max(Comparator.naturalOrder())
-            .orElse(BigDecimal.ZERO);
+    BigDecimal increaseCoefficientForHazardousCargo =
+        source.getWarnings().contains(HAZARDOUS_PILOTAGE_CARGO)
+            ? tariff.getIncreaseCoefficientsByPdaWarning().get(HAZARDOUS_PILOTAGE_CARGO)
+            : BigDecimal.ZERO;
 
-    increaseCoefficients.add(increaseCoefficientByCargoType);
+    BigDecimal increaseCoefficientForSpecialCargo =
+        source.getWarnings().contains(SPECIAL_PILOTAGE_CARGO)
+            ? tariff.getIncreaseCoefficientsByPdaWarning().get(SPECIAL_PILOTAGE_CARGO)
+            : BigDecimal.ZERO;
+
+    increaseCoefficients.add(
+        increaseCoefficientForHazardousCargo.max(increaseCoefficientForSpecialCargo));
 
     BigDecimal increaseCoefficientByPilot =
-        source.getShip().getRequiresSpecialPilot()
-            ? tariff.getIncreaseCoefficientsByWarningType().get(PILOT)
+        source.getWarnings().contains(SPECIAL_PILOT)
+            ? tariff.getIncreaseCoefficientsByPdaWarning().get(SPECIAL_PILOT)
             : BigDecimal.ZERO;
 
     increaseCoefficients.add(increaseCoefficientByPilot);

@@ -1,31 +1,27 @@
 package flagship.bootstrap;
 
-import flagship.domain.calculators.HolidayCalendar;
-import flagship.domain.calculators.resolvers.HolidayCalendarResolver;
-import flagship.domain.calculators.tariffs.enums.PdaWarning;
-import flagship.domain.calculators.tariffs.enums.PortName;
-import flagship.domain.calculators.tariffs.serviceduestariffs.MooringDueTariff;
-import flagship.domain.calculators.tariffs.serviceduestariffs.PilotageDueTariff;
-import flagship.domain.calculators.tariffs.serviceduestariffs.PilotageDueTariff.PilotageArea;
-import flagship.domain.calculators.tariffs.serviceduestariffs.TugDueTariff;
-import flagship.domain.cases.entities.enums.CargoType;
+import flagship.domain.resolvers.HolidayCalendarResolver;
+import flagship.domain.tariffs.HolidayCalendar;
+import flagship.domain.tariffs.PortName;
+import flagship.domain.tariffs.serviceduestariffs.MooringDueTariff;
+import flagship.domain.tariffs.serviceduestariffs.PilotageDueTariff;
+import flagship.domain.tariffs.serviceduestariffs.PilotageDueTariff.PilotageArea;
+import flagship.domain.tariffs.serviceduestariffs.TugDueTariff;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
 
-import static flagship.domain.calculators.tariffs.enums.PdaWarning.HOLIDAY;
-import static flagship.domain.calculators.tariffs.enums.PdaWarning.PILOT;
-import static flagship.domain.calculators.tariffs.serviceduestariffs.MooringDueTariff.MooringServiceProvider;
-import static flagship.domain.calculators.tariffs.serviceduestariffs.PilotageDueTariff.PilotageArea.*;
-import static flagship.domain.calculators.tariffs.serviceduestariffs.TugDueTariff.TugArea;
-import static flagship.domain.calculators.tariffs.serviceduestariffs.TugDueTariff.TugArea.*;
-import static flagship.domain.calculators.tariffs.serviceduestariffs.TugDueTariff.TugServiceProvider;
-import static flagship.domain.calculators.tariffs.serviceduestariffs.TugDueTariff.TugServiceProvider.PORTFLEET;
-import static flagship.domain.calculators.tariffs.serviceduestariffs.TugDueTariff.TugServiceProvider.VTC;
-import static flagship.domain.cases.entities.enums.CargoType.HAZARDOUS;
-import static flagship.domain.cases.entities.enums.CargoType.SPECIAL;
+import static flagship.domain.tariffs.PdaWarningsGenerator.PdaWarning;
+import static flagship.domain.tariffs.PdaWarningsGenerator.PdaWarning.*;
+import static flagship.domain.tariffs.serviceduestariffs.MooringDueTariff.MooringServiceProvider;
+import static flagship.domain.tariffs.serviceduestariffs.PilotageDueTariff.PilotageArea.*;
+import static flagship.domain.tariffs.serviceduestariffs.TugDueTariff.TugArea;
+import static flagship.domain.tariffs.serviceduestariffs.TugDueTariff.TugArea.*;
+import static flagship.domain.tariffs.serviceduestariffs.TugDueTariff.TugServiceProvider;
+import static flagship.domain.tariffs.serviceduestariffs.TugDueTariff.TugServiceProvider.PORTFLEET;
+import static flagship.domain.tariffs.serviceduestariffs.TugDueTariff.TugServiceProvider.VTC;
 import static java.time.Month.*;
 
 @Component
@@ -162,19 +158,14 @@ public class ServiceDueTariffInitializer {
 
     pilotageDueTariff.setPilotageDuesByArea(Collections.unmodifiableMap(pilotageDuesByArea));
 
-    Map<CargoType, BigDecimal> increaseCoefficientByCargoType = new EnumMap<>(CargoType.class);
-    increaseCoefficientByCargoType.put(HAZARDOUS, BigDecimal.valueOf(0.2));
-    increaseCoefficientByCargoType.put(SPECIAL, BigDecimal.valueOf(1.0));
-
-    pilotageDueTariff.setIncreaseCoefficientsByCargoType(
-        Collections.unmodifiableMap(increaseCoefficientByCargoType));
-
     Map<PdaWarning, BigDecimal> increaseCoefficientsByWarningType = new EnumMap<>(PdaWarning.class);
 
     increaseCoefficientsByWarningType.put(HOLIDAY, BigDecimal.valueOf(0.5));
-    increaseCoefficientsByWarningType.put(PILOT, BigDecimal.valueOf(0.5));
+    increaseCoefficientsByWarningType.put(SPECIAL_PILOT, BigDecimal.valueOf(0.5));
+    increaseCoefficientsByWarningType.put(HAZARDOUS_PILOTAGE_CARGO, BigDecimal.valueOf(0.2));
+    increaseCoefficientsByWarningType.put(SPECIAL_PILOTAGE_CARGO, BigDecimal.valueOf(1.0));
 
-    pilotageDueTariff.setIncreaseCoefficientsByWarningType(
+    pilotageDueTariff.setIncreaseCoefficientsByPdaWarning(
         Collections.unmodifiableMap(increaseCoefficientsByWarningType));
 
     pilotageDueTariff.setGrossTonnageThreshold(BigDecimal.valueOf(10000.00));
@@ -497,9 +488,13 @@ public class ServiceDueTariffInitializer {
     mooringDuesByProvider.put(MooringServiceProvider.VTC, vtcMooringDues);
     mooringDuesByProvider.put(MooringServiceProvider.PORTFLEET, portfleetMooringDues);
 
+    Map<PdaWarning, BigDecimal> increaseCoefficientsByWarningType = new EnumMap<>(PdaWarning.class);
+    increaseCoefficientsByWarningType.put(HOLIDAY, BigDecimal.valueOf(1.0));
+
     mooringDueTariff.setMooringDuesByProvider(Collections.unmodifiableMap(mooringDuesByProvider));
     mooringDueTariff.setHolidayCalendar(holidayCalendar.getHolidayCalendar());
-
+    mooringDueTariff.setIncreaseCoefficientsByWarningType(
+        Collections.unmodifiableMap(increaseCoefficientsByWarningType));
     mooringDueTariff.setLesportGrossTonnageThreshold(BigDecimal.valueOf(10000.00));
     mooringDueTariff.setBalchikGrossTonnageThreshold(BigDecimal.valueOf(10000.00));
     mooringDueTariff.setVtcGrossTonnageThreshold(BigDecimal.valueOf(10000.00));

@@ -1,12 +1,12 @@
-package flagship.domain.calculators.servicedues;
+package flagship.domain.calculators.serviceduescalculators;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import flagship.domain.calculators.DueCalculatorTest;
-import flagship.domain.calculators.tariffs.serviceduestariffs.PilotageDueTariff;
 import flagship.domain.cases.dto.PdaCase;
 import flagship.domain.cases.dto.PdaPort;
 import flagship.domain.cases.dto.PdaShip;
+import flagship.domain.tariffs.serviceduestariffs.PilotageDueTariff;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -18,13 +18,13 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
 
-import static flagship.domain.calculators.tariffs.enums.PdaWarning.PILOT;
-import static flagship.domain.calculators.tariffs.serviceduestariffs.PilotageDueTariff.PilotageArea;
-import static flagship.domain.calculators.tariffs.serviceduestariffs.PilotageDueTariff.PilotageArea.VARNA_FIRST;
-import static flagship.domain.cases.entities.enums.CargoType.*;
+import static flagship.domain.tariffs.PdaWarningsGenerator.PdaWarning.*;
+import static flagship.domain.tariffs.serviceduestariffs.PilotageDueTariff.PilotageArea;
+import static flagship.domain.tariffs.serviceduestariffs.PilotageDueTariff.PilotageArea.VARNA_FIRST;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DisplayName("Pilotage due calculator tests")
@@ -46,12 +46,8 @@ public class PilotageDueCalculatorTest implements DueCalculatorTest {
   @BeforeEach
   void setUp() {
     PdaPort testPort = PdaPort.builder().pilotageArea(VARNA_FIRST).build();
-    PdaShip testShip =
-        PdaShip.builder()
-            .grossTonnage(BigDecimal.valueOf(1650))
-            .requiresSpecialPilot(false)
-            .build();
-    testCase = PdaCase.builder().port(testPort).ship(testShip).cargoType(REGULAR).build();
+    PdaShip testShip = PdaShip.builder().grossTonnage(BigDecimal.valueOf(1650)).build();
+    testCase = PdaCase.builder().port(testPort).ship(testShip).warnings(new HashSet<>()).build();
   }
 
   @DisplayName("Should calculate fixed pilotage due by pilotage area")
@@ -99,12 +95,13 @@ public class PilotageDueCalculatorTest implements DueCalculatorTest {
   @Test
   void shouldIncreaseTotalPilotageDueBy20Percent() {
 
-    testCase.setCargoType(HAZARDOUS);
+    testCase.getWarnings().add(HAZARDOUS_PILOTAGE_CARGO);
 
     calculator.set(testCase, tariff);
 
     BigDecimal pilotageDue = getFixedPilotageDuePerGrossTonnage(testCase);
-    BigDecimal increaseCoefficient = tariff.getIncreaseCoefficientsByCargoType().get(HAZARDOUS);
+    BigDecimal increaseCoefficient =
+        tariff.getIncreaseCoefficientsByPdaWarning().get(HAZARDOUS_PILOTAGE_CARGO);
 
     BigDecimal expected = pilotageDue.multiply(increaseCoefficient);
     BigDecimal result = calculator.calculate();
@@ -116,12 +113,13 @@ public class PilotageDueCalculatorTest implements DueCalculatorTest {
   @Test
   void shouldIncreaseTotalPilotageDueBy100Percent() {
 
-    testCase.setCargoType(SPECIAL);
+    testCase.getWarnings().add(SPECIAL_PILOTAGE_CARGO);
 
     calculator.set(testCase, tariff);
 
     BigDecimal pilotageDue = getFixedPilotageDuePerGrossTonnage(testCase);
-    BigDecimal increaseCoefficient = tariff.getIncreaseCoefficientsByCargoType().get(SPECIAL);
+    BigDecimal increaseCoefficient =
+        tariff.getIncreaseCoefficientsByPdaWarning().get(SPECIAL_PILOTAGE_CARGO);
 
     BigDecimal expected = pilotageDue.multiply(increaseCoefficient);
     BigDecimal result = calculator.calculate();
@@ -133,12 +131,13 @@ public class PilotageDueCalculatorTest implements DueCalculatorTest {
   @Test
   void shouldIncreaseTotalPilotageDueBy50PercentIfRequiresSpecialPilot() {
 
-    testCase.getShip().setRequiresSpecialPilot(true);
+    testCase.getWarnings().add(SPECIAL_PILOT);
 
     calculator.set(testCase, tariff);
 
     BigDecimal pilotageDue = getFixedPilotageDuePerGrossTonnage(testCase);
-    BigDecimal increaseCoefficient = tariff.getIncreaseCoefficientsByWarningType().get(PILOT);
+    BigDecimal increaseCoefficient =
+        tariff.getIncreaseCoefficientsByPdaWarning().get(SPECIAL_PILOT);
 
     BigDecimal expected = pilotageDue.multiply(increaseCoefficient);
     BigDecimal result = calculator.calculate();
@@ -150,17 +149,17 @@ public class PilotageDueCalculatorTest implements DueCalculatorTest {
   @Test
   void shouldIncreaseTotalPilotageDueBy150Percent() {
 
-    testCase.setCargoType(SPECIAL);
-    testCase.getShip().setRequiresSpecialPilot(true);
+    testCase.getWarnings().add(SPECIAL_PILOTAGE_CARGO);
+    testCase.getWarnings().add(SPECIAL_PILOT);
 
     calculator.set(testCase, tariff);
 
     BigDecimal pilotageDue = getFixedPilotageDuePerGrossTonnage(testCase);
     BigDecimal increaseCoefficient =
         tariff
-            .getIncreaseCoefficientsByCargoType()
-            .get(SPECIAL)
-            .add(tariff.getIncreaseCoefficientsByWarningType().get(PILOT));
+            .getIncreaseCoefficientsByPdaWarning()
+            .get(SPECIAL_PILOTAGE_CARGO)
+            .add(tariff.getIncreaseCoefficientsByPdaWarning().get(SPECIAL_PILOT));
 
     BigDecimal expected = pilotageDue.multiply(increaseCoefficient);
     BigDecimal result = calculator.calculate();

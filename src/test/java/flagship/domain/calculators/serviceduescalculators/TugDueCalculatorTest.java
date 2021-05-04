@@ -1,8 +1,8 @@
-package flagship.domain.calculators.servicedues;
+package flagship.domain.calculators.serviceduescalculators;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import flagship.domain.calculators.tariffs.serviceduestariffs.TugDueTariff;
+import flagship.domain.tariffs.serviceduestariffs.TugDueTariff;
 import flagship.domain.cases.dto.PdaCase;
 import flagship.domain.cases.dto.PdaPort;
 import flagship.domain.cases.dto.PdaShip;
@@ -17,11 +17,13 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
 
-import static flagship.domain.calculators.tariffs.serviceduestariffs.TugDueTariff.TugArea;
-import static flagship.domain.calculators.tariffs.serviceduestariffs.TugDueTariff.TugArea.VTC_FIRST;
+import static flagship.domain.tariffs.PdaWarningsGenerator.PdaWarning.*;
+import static flagship.domain.tariffs.serviceduestariffs.TugDueTariff.TugArea;
+import static flagship.domain.tariffs.serviceduestariffs.TugDueTariff.TugArea.VTC_FIRST;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DisplayName("Tug due calculator tests")
@@ -44,10 +46,9 @@ class TugDueCalculatorTest {
         PdaShip.builder()
             .grossTonnage(BigDecimal.valueOf(1650))
             .hasIncreasedManeuverability(false)
-            .transportsDangerousCargo(false)
             .build();
     PdaPort testPort = PdaPort.builder().tugArea(VTC_FIRST).build();
-    testCase = PdaCase.builder().ship(testShip).port(testPort).build();
+    testCase = PdaCase.builder().ship(testShip).port(testPort).warnings(new HashSet<>()).build();
   }
 
   @DisplayName("Should calculate fixed tug due within threshold")
@@ -122,7 +123,7 @@ class TugDueCalculatorTest {
         .getShip()
         .setGrossTonnage(
             BigDecimal.valueOf(tariff.getGrossTonnageThresholdForTugCountReduce().intValue() + 1));
-    testCase.getShip().setTransportsDangerousCargo(true);
+    testCase.getWarnings().add(DANGEROUS_TUG_CARGO);
     testCase.getShip().setHasIncreasedManeuverability(true);
 
     calculator.set(testCase, tariff);
@@ -147,7 +148,7 @@ class TugDueCalculatorTest {
         .getShip()
         .setGrossTonnage(
             BigDecimal.valueOf(tariff.getGrossTonnageThresholdForTugCountReduce().intValue() - 1));
-    testCase.getShip().setTransportsDangerousCargo(true);
+    testCase.getWarnings().add(DANGEROUS_TUG_CARGO);
     testCase.getShip().setHasIncreasedManeuverability(true);
 
     calculator.set(testCase, tariff);

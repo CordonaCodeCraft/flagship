@@ -1,7 +1,8 @@
-package flagship.domain.calculators.tariffs.serviceduestariffs;
+package flagship.domain.tariffs.serviceduestariffs;
 
-import flagship.domain.calculators.tariffs.Tariff;
-import flagship.domain.calculators.tariffs.enums.PortName;
+import flagship.domain.tariffs.PdaWarningsGenerator;
+import flagship.domain.tariffs.PdaWarningsGenerator.PdaWarning;
+import flagship.domain.tariffs.Tariff;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,6 +20,7 @@ import java.util.Set;
 public class MooringDueTariff extends Tariff {
 
   private Map<MooringServiceProvider, Map<BigDecimal, Integer[]>> mooringDuesByProvider;
+  private Map<PdaWarning, BigDecimal> increaseCoefficientsByWarningType;
   private Set<LocalDate> holidayCalendar;
   private BigDecimal lesportGrossTonnageThreshold;
   private BigDecimal odessosGrossTonnageThreshold;

@@ -1,9 +1,9 @@
-package flagship.domain.calculators.servicedues;
+package flagship.domain.calculators.serviceduescalculators;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import flagship.domain.calculators.tariffs.serviceduestariffs.MooringDueTariff;
-import flagship.domain.calculators.tariffs.serviceduestariffs.MooringDueTariff.MooringServiceProvider;
+import flagship.domain.tariffs.serviceduestariffs.MooringDueTariff;
+import flagship.domain.tariffs.serviceduestariffs.MooringDueTariff.MooringServiceProvider;
 import flagship.domain.cases.dto.PdaCase;
 import flagship.domain.cases.dto.PdaPort;
 import flagship.domain.cases.dto.PdaShip;
@@ -21,7 +21,7 @@ import java.util.Comparator;
 import java.util.Map;
 import java.util.Random;
 
-import static flagship.domain.calculators.tariffs.serviceduestariffs.MooringDueTariff.MooringServiceProvider.*;
+import static flagship.domain.tariffs.serviceduestariffs.MooringDueTariff.MooringServiceProvider.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DisplayName("Mooring due calculator tests")
