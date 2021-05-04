@@ -1,13 +1,12 @@
 package flagship.domain.cases.dto;
 
-import flagship.domain.calculators.tariffs.enums.PortArea;
-import flagship.domain.calculators.tariffs.serviceduestariffs.MooringDueTariff;
-import flagship.domain.calculators.tariffs.serviceduestariffs.PilotageDueTariff;
+import flagship.domain.tariffs.stateduestariffs.PortArea;
+import flagship.domain.tariffs.serviceduestariffs.PilotageDueTariff;
 import lombok.*;
 
-import static flagship.domain.calculators.tariffs.serviceduestariffs.MooringDueTariff.*;
-import static flagship.domain.calculators.tariffs.serviceduestariffs.TugDueTariff.TugArea;
-import static flagship.domain.calculators.tariffs.serviceduestariffs.TugDueTariff.TugServiceProvider;
+import static flagship.domain.tariffs.serviceduestariffs.MooringDueTariff.*;
+import static flagship.domain.tariffs.serviceduestariffs.TugDueTariff.TugArea;
+import static flagship.domain.tariffs.serviceduestariffs.TugDueTariff.TugServiceProvider;
 
 @Getter
 @Setter
@@ -17,7 +16,7 @@ import static flagship.domain.calculators.tariffs.serviceduestariffs.TugDueTarif
 public class PdaPort {
 
   private String name;
-  private PortArea area;
+  private PortArea portArea;
   private PilotageDueTariff.PilotageArea pilotageArea;
   private TugArea tugArea;
   private TugServiceProvider tugServiceProvider;

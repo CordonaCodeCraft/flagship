@@ -1,9 +1,8 @@
 package flagship.bootstrap;
 
-import flagship.domain.calculators.servicedues.PilotageDueCalculator;
-import flagship.domain.calculators.tariffs.Tariff;
-import flagship.domain.calculators.tariffs.serviceduestariffs.PilotageDueTariff;
-import flagship.domain.calculators.tariffs.serviceduestariffs.TugDueTariff;
+import flagship.domain.tariffs.Tariff;
+import flagship.domain.tariffs.serviceduestariffs.PilotageDueTariff;
+import flagship.domain.tariffs.serviceduestariffs.TugDueTariff;
 import flagship.domain.cases.dto.PdaCase;
 import flagship.domain.cases.dto.PdaPort;
 import flagship.domain.cases.dto.PdaShip;
@@ -13,10 +12,9 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import static flagship.domain.calculators.tariffs.enums.PortArea.FIRST;
-import static flagship.domain.calculators.tariffs.serviceduestariffs.PilotageDueTariff.PilotageArea.VARNA_FIRST;
+import static flagship.domain.tariffs.stateduestariffs.PortArea.FIRST;
+import static flagship.domain.tariffs.serviceduestariffs.PilotageDueTariff.PilotageArea.VARNA_FIRST;
 import static flagship.domain.cases.entities.enums.CallPurpose.LOADING;
-import static flagship.domain.cases.entities.enums.CargoType.HAZARDOUS;
 import static flagship.domain.cases.entities.enums.ShipType.GENERAL;
 
 public class Sandbox {
@@ -33,14 +31,13 @@ public class Sandbox {
             .type(GENERAL)
             .lengthOverall(BigDecimal.valueOf(156.25))
             .grossTonnage(BigDecimal.valueOf(2500))
-            .requiresSpecialPilot(true)
             .hasIncreasedManeuverability(true)
             .build();
 
     PdaPort port =
         PdaPort.builder()
             .name("Varna")
-            .area(FIRST)
+            .portArea(FIRST)
             .pilotageArea(VARNA_FIRST)
             .tugArea(TugDueTariff.TugArea.VTC_FIFTH)
             .build();
@@ -49,7 +46,6 @@ public class Sandbox {
         PdaCase.builder()
             .ship(ship)
             .port(port)
-            .cargoType(HAZARDOUS)
             .callPurpose(LOADING)
             .callCount(5)
             .alongsideDaysExpected(10)
