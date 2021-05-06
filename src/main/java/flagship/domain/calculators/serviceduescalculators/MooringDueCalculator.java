@@ -1,8 +1,8 @@
 package flagship.domain.calculators.serviceduescalculators;
 
+import flagship.domain.cases.dto.PdaCase;
 import flagship.domain.tariffs.Tariff;
 import flagship.domain.tariffs.serviceduestariffs.MooringDueTariff;
-import flagship.domain.cases.dto.PdaCase;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
@@ -39,6 +39,10 @@ public class MooringDueCalculator extends ServiceDueCalculator<PdaCase, Tariff> 
         break;
       case BALCHIK:
         mooringDue = new BalchikMooringDueCalculator().calculateBalchikMooringDue();
+        break;
+      case PCHMV:
+        mooringDue = new PchvmMooringDueCalculator().calculatePchvmMooringDue();
+        break;
     }
 
     return mooringDue;
@@ -62,6 +66,12 @@ public class MooringDueCalculator extends ServiceDueCalculator<PdaCase, Tariff> 
 
     private BigDecimal calculateLesportMooringDue() {
       return commonMooringDueCalculation(tariff.getLesportGrossTonnageThreshold());
+    }
+  }
+
+  private class PchvmMooringDueCalculator {
+    public BigDecimal calculatePchvmMooringDue() {
+      return commonMooringDueCalculation(tariff.getPchvmGrossTonnageThreshold());
     }
   }
 
@@ -132,6 +142,8 @@ public class MooringDueCalculator extends ServiceDueCalculator<PdaCase, Tariff> 
         return grossTonnageIsAboveThreshold(source, tariff.getOdessosGrossTonnageThreshold());
       case BALCHIK:
         return grossTonnageIsAboveThreshold(source, tariff.getBalchikGrossTonnageThreshold());
+      case PCHMV:
+        return grossTonnageIsAboveThreshold(source, tariff.getPchvmGrossTonnageThreshold());
     }
 
     return false;

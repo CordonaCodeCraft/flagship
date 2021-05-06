@@ -458,6 +458,16 @@ public class ServiceDueTariffInitializer {
     balchikMooringDues.put(BigDecimal.valueOf(130.00), new Integer[] {6001, 8000, 160});
     balchikMooringDues.put(BigDecimal.valueOf(160.00), new Integer[] {8001, 10000, 160});
 
+    Map<BigDecimal, Integer[]> pchvmMooringDues = new TreeMap<>();
+    pchvmMooringDues.put(BigDecimal.valueOf(50.00), new Integer[] {150, 1000, 15});
+    pchvmMooringDues.put(BigDecimal.valueOf(70.00), new Integer[] {1001, 2000, 15});
+    pchvmMooringDues.put(BigDecimal.valueOf(80.00), new Integer[] {2001, 3000, 15});
+    pchvmMooringDues.put(BigDecimal.valueOf(100.00), new Integer[] {3001, 4000, 15});
+    pchvmMooringDues.put(BigDecimal.valueOf(110.00), new Integer[] {4001, 5000, 15});
+    pchvmMooringDues.put(BigDecimal.valueOf(120.00), new Integer[] {5001, 6000, 15});
+    pchvmMooringDues.put(BigDecimal.valueOf(130.00), new Integer[] {6001, 8000, 15});
+    pchvmMooringDues.put(BigDecimal.valueOf(150.00), new Integer[] {8001, 10000, 15});
+
     Map<BigDecimal, Integer[]> vtcMooringDues = new TreeMap<>();
     vtcMooringDues.put(BigDecimal.valueOf(60.00), new Integer[] {150, 1000, 35});
     vtcMooringDues.put(BigDecimal.valueOf(90.00), new Integer[] {1001, 2000, 35});
@@ -485,6 +495,7 @@ public class ServiceDueTariffInitializer {
     mooringDuesByProvider.put(MooringServiceProvider.LESPORT, lesportMooringDues);
     mooringDuesByProvider.put(MooringServiceProvider.ODESSOS, odessosMooringDues);
     mooringDuesByProvider.put(MooringServiceProvider.BALCHIK, balchikMooringDues);
+    mooringDuesByProvider.put(MooringServiceProvider.PCHMV, pchvmMooringDues);
     mooringDuesByProvider.put(MooringServiceProvider.VTC, vtcMooringDues);
     mooringDuesByProvider.put(MooringServiceProvider.PORTFLEET, portfleetMooringDues);
 
@@ -497,6 +508,7 @@ public class ServiceDueTariffInitializer {
         Collections.unmodifiableMap(increaseCoefficientsByWarningType));
     mooringDueTariff.setLesportGrossTonnageThreshold(BigDecimal.valueOf(10000.00));
     mooringDueTariff.setBalchikGrossTonnageThreshold(BigDecimal.valueOf(10000.00));
+    mooringDueTariff.setPchvmGrossTonnageThreshold(BigDecimal.valueOf(10000.00));
     mooringDueTariff.setVtcGrossTonnageThreshold(BigDecimal.valueOf(10000.00));
     mooringDueTariff.setPortfleetGrossTonnageThreshold(BigDecimal.valueOf(10000.00));
     mooringDueTariff.setOdessosGrossTonnageThreshold(BigDecimal.valueOf(5000.00));

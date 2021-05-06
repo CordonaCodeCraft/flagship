@@ -25,6 +25,7 @@ public class MooringDueTariff extends Tariff {
   private BigDecimal lesportGrossTonnageThreshold;
   private BigDecimal odessosGrossTonnageThreshold;
   private BigDecimal balchikGrossTonnageThreshold;
+  private BigDecimal pchvmGrossTonnageThreshold;
   private BigDecimal vtcGrossTonnageThreshold;
   private BigDecimal portfleetGrossTonnageThreshold;
 
@@ -33,7 +34,8 @@ public class MooringDueTariff extends Tariff {
     PORTFLEET,
     LESPORT,
     ODESSOS,
-    BALCHIK
+    BALCHIK,
+    PCHMV,
   }
 
 }
