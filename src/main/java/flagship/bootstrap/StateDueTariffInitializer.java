@@ -21,12 +21,14 @@ public class StateDueTariffInitializer {
       final WharfDueTariff wharfDueTariff,
       final CanalDueTariff canalDueTariff,
       final LightDueTariff lightDueTariff,
-      MarpolDueTariff marpolDueTariff) {
+      MarpolDueTariff marpolDueTariff,
+      BoomContainmentTariff boomContainmentTariff) {
     initializeTonnageDueTariff(tonnageDueTariff);
     initializeWharfDueTariff(wharfDueTariff);
     initializeCanalDueTariff(canalDueTariff);
     initializeLightDueTariff(lightDueTariff);
     initializeMarpolDueTariff(marpolDueTariff);
+    initializeBoomContainmentTariff(boomContainmentTariff);
   }
 
   private static void initializeTonnageDueTariff(final TonnageDueTariff tonnageDueTariff) {
@@ -254,5 +256,18 @@ public class StateDueTariffInitializer {
     marpolDueTariff.setOdessosFixedMarpolDue(BigDecimal.valueOf(120.00));
     marpolDueTariff.setOdessosFreeGarbageDisposalQuantity(BigDecimal.valueOf(10.00));
     marpolDueTariff.setOdessosFreeSewageDisposalQuantity(BigDecimal.valueOf(1.00));
+  }
+
+  private static void initializeBoomContainmentTariff(BoomContainmentTariff boomContainmentTariff) {
+
+    Map<GtRange, BigDecimal> boomContainmentDuePerGrossTonnage = new LinkedHashMap<>();
+    boomContainmentDuePerGrossTonnage.put(new GtRange(150, 3000), BigDecimal.valueOf(700.00));
+    boomContainmentDuePerGrossTonnage.put(new GtRange(3001, 5000), BigDecimal.valueOf(1000.00));
+    boomContainmentDuePerGrossTonnage.put(new GtRange(5001, 10000), BigDecimal.valueOf(1500.00));
+    boomContainmentDuePerGrossTonnage.put(new GtRange(10001, 20000), BigDecimal.valueOf(1800.00));
+
+    boomContainmentTariff.setBoomContainmentDuePerGrossTonnage(
+        Collections.unmodifiableMap(boomContainmentDuePerGrossTonnage));
+    boomContainmentTariff.setMaximumBoomContainmentDueValue(BigDecimal.valueOf(2500.00));
   }
 }

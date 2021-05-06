@@ -29,6 +29,7 @@ public class DataLoader implements ApplicationRunner {
   private final CanalDueTariff canalDueTariff;
   private final LightDueTariff lightDueTariff;
   private final MarpolDueTariff marpolDueTariff;
+  private final BoomContainmentTariff boomContainmentTariff;
 
   private final PilotageDueTariff pilotageDueTariff;
   private final TugDueTariff tugDueTariff;
@@ -39,14 +40,20 @@ public class DataLoader implements ApplicationRunner {
   public void run(ApplicationArguments args) throws Exception {
 
     StateDueTariffInitializer.initializeTariffs(
-        tonnageDueTariff, wharfDueTariff, canalDueTariff, lightDueTariff, marpolDueTariff);
+        tonnageDueTariff,
+        wharfDueTariff,
+        canalDueTariff,
+        lightDueTariff,
+        marpolDueTariff,
+        boomContainmentTariff);
     ServiceDueTariffInitializer.initializeTariff(
         pilotageDueTariff, tugDueTariff, mooringDueTariff, holidayCalendar);
 
     produceStateDueJsonFiles();
     produceServiceDueJsonFiles();
 
-    MarpolDueTariff tariff = objectMapper.readValue(
+    MarpolDueTariff tariff =
+        objectMapper.readValue(
             new File("src/main/resources/marpolDueTariff.json"), MarpolDueTariff.class);
 
     System.out.println();
@@ -72,8 +79,14 @@ public class DataLoader implements ApplicationRunner {
         .writeValue(Paths.get("src/main/resources/canalDueTariff.json").toFile(), canalDueTariff);
 
     objectMapper
-            .writerWithDefaultPrettyPrinter()
-            .writeValue(Paths.get("src/main/resources/marpolDueTariff.json").toFile(), marpolDueTariff);
+        .writerWithDefaultPrettyPrinter()
+        .writeValue(Paths.get("src/main/resources/marpolDueTariff.json").toFile(), marpolDueTariff);
+
+    objectMapper
+        .writerWithDefaultPrettyPrinter()
+        .writeValue(
+            Paths.get("src/main/resources/boomContainmentDueTariff.json").toFile(),
+            boomContainmentTariff);
   }
 
   private void produceServiceDueJsonFiles() throws IOException {
