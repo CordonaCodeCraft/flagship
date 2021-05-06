@@ -43,14 +43,6 @@ class CanalDueCalculatorTest implements DueCalculatorTest {
         mapper.readValue(new File("src/main/resources/canalDueTariff.json"), CanalDueTariff.class);
   }
 
-  private static Stream<Arguments> getShipTypesEligibleForDiscount() {
-    return tariff.getDiscountCoefficientByShipType().keySet().stream().map(Arguments::of);
-  }
-
-  private static Stream<Arguments> getShipTypesNotEligibleForDiscount() {
-    return tariff.getShipTypesNotEligibleForDiscount().stream().map(Arguments::of);
-  }
-
   @BeforeEach
   void setUp() {
     BigDecimal randomGrossTonnage = getRandomGrossTonnage();
@@ -198,6 +190,13 @@ class CanalDueCalculatorTest implements DueCalculatorTest {
     assertThat(result).isEqualByComparingTo(expected);
   }
 
+  private static Stream<Arguments> getShipTypesEligibleForDiscount() {
+    return tariff.getDiscountCoefficientByShipType().keySet().stream().map(Arguments::of);
+  }
+
+  private static Stream<Arguments> getShipTypesNotEligibleForDiscount() {
+    return tariff.getShipTypesNotEligibleForDiscount().stream().map(Arguments::of);
+  }
   BigDecimal calculateDueAfterDiscount(BigDecimal discountCoefficient) {
     BigDecimal duePerGrossTon = tariff.getCanalDuesByPortArea().get(testCase.getPort().getPortArea());
     BigDecimal dueTotal = testCase.getShip().getGrossTonnage().multiply(duePerGrossTon);

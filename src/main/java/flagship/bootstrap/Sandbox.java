@@ -1,27 +1,28 @@
 package flagship.bootstrap;
 
-import flagship.domain.tariffs.Tariff;
-import flagship.domain.tariffs.serviceduestariffs.PilotageDueTariff;
-import flagship.domain.tariffs.serviceduestariffs.TugDueTariff;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import flagship.domain.cases.dto.PdaCase;
 import flagship.domain.cases.dto.PdaPort;
 import flagship.domain.cases.dto.PdaShip;
+import flagship.domain.tariffs.Tariff;
+import flagship.domain.tariffs.serviceduestariffs.PilotageDueTariff;
+import flagship.domain.tariffs.serviceduestariffs.TugDueTariff;
 import org.json.JSONException;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import static flagship.domain.tariffs.stateduestariffs.PortArea.FIRST;
-import static flagship.domain.tariffs.serviceduestariffs.PilotageDueTariff.PilotageArea.VARNA_FIRST;
 import static flagship.domain.cases.entities.enums.CallPurpose.LOADING;
 import static flagship.domain.cases.entities.enums.ShipType.GENERAL;
+import static flagship.domain.tariffs.serviceduestariffs.PilotageDueTariff.PilotageArea.VARNA_FIRST;
+import static flagship.domain.tariffs.stateduestariffs.PortArea.FIRST;
 
 public class Sandbox {
 
   public static void main(String[] args) throws JSONException, IOException {
 
-//    dtoConversions();
+    //    dtoConversions();
   }
 
   private static void dtoConversions() {

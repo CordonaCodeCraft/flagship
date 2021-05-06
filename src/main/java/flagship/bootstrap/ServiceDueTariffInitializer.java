@@ -99,7 +99,7 @@ public class ServiceDueTariffInitializer {
     Map<PilotageArea, Map<BigDecimal, Integer[]>> pilotageDuesByArea =
         new EnumMap<>(PilotageArea.class);
 
-    Map<BigDecimal, Integer[]> varnaFirstAreaPilotageDues = new LinkedHashMap<>();
+    Map<BigDecimal, Integer[]> varnaFirstAreaPilotageDues = new TreeMap<>();
     varnaFirstAreaPilotageDues.put(BigDecimal.valueOf(190.00), new Integer[] {0, 999, 60});
     varnaFirstAreaPilotageDues.put(BigDecimal.valueOf(220.00), new Integer[] {1000, 1999, 60});
     varnaFirstAreaPilotageDues.put(BigDecimal.valueOf(250.00), new Integer[] {2000, 2999, 60});
@@ -111,7 +111,7 @@ public class ServiceDueTariffInitializer {
     varnaFirstAreaPilotageDues.put(BigDecimal.valueOf(460.00), new Integer[] {8000, 8999, 60});
     varnaFirstAreaPilotageDues.put(BigDecimal.valueOf(500.00), new Integer[] {9000, 9999, 60});
 
-    Map<BigDecimal, Integer[]> varnaSecondAreaPilotageDues = new LinkedHashMap<>();
+    Map<BigDecimal, Integer[]> varnaSecondAreaPilotageDues = new TreeMap<>();
     varnaSecondAreaPilotageDues.put(BigDecimal.valueOf(260.00), new Integer[] {0, 999, 70});
     varnaSecondAreaPilotageDues.put(BigDecimal.valueOf(310.00), new Integer[] {1000, 1999, 70});
     varnaSecondAreaPilotageDues.put(BigDecimal.valueOf(370.00), new Integer[] {2000, 2999, 70});
@@ -123,7 +123,7 @@ public class ServiceDueTariffInitializer {
     varnaSecondAreaPilotageDues.put(BigDecimal.valueOf(690.00), new Integer[] {8000, 8999, 70});
     varnaSecondAreaPilotageDues.put(BigDecimal.valueOf(750.00), new Integer[] {9000, 9999, 70});
 
-    Map<BigDecimal, Integer[]> varnaThirdAreaPilotageDues = new LinkedHashMap<>();
+    Map<BigDecimal, Integer[]> varnaThirdAreaPilotageDues = new TreeMap<>();
     varnaThirdAreaPilotageDues.put(BigDecimal.valueOf(400.00), new Integer[] {0, 999, 80});
     varnaThirdAreaPilotageDues.put(BigDecimal.valueOf(450.00), new Integer[] {1000, 1999, 80});
     varnaThirdAreaPilotageDues.put(BigDecimal.valueOf(520.00), new Integer[] {2000, 2999, 80});
@@ -138,7 +138,7 @@ public class ServiceDueTariffInitializer {
     Map<PilotageArea, Map<BigDecimal, Integer[]>> bourgasAreaPilotageFees =
         new EnumMap<>(PilotageArea.class);
 
-    Map<BigDecimal, Integer[]> bourgasFirstAreaPilotageDues = new LinkedHashMap<>();
+    Map<BigDecimal, Integer[]> bourgasFirstAreaPilotageDues = new TreeMap<>();
     bourgasFirstAreaPilotageDues.put(BigDecimal.valueOf(240.00), new Integer[] {0, 499, 75});
     bourgasFirstAreaPilotageDues.put(BigDecimal.valueOf(280.00), new Integer[] {500, 999, 75});
     bourgasFirstAreaPilotageDues.put(BigDecimal.valueOf(320.00), new Integer[] {1000, 1999, 75});
