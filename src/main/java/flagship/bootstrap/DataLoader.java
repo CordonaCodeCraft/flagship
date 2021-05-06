@@ -7,16 +7,14 @@ import flagship.domain.tariffs.HolidayCalendar;
 import flagship.domain.tariffs.serviceduestariffs.MooringDueTariff;
 import flagship.domain.tariffs.serviceduestariffs.PilotageDueTariff;
 import flagship.domain.tariffs.serviceduestariffs.TugDueTariff;
-import flagship.domain.tariffs.stateduestariffs.CanalDueTariff;
-import flagship.domain.tariffs.stateduestariffs.LightDueTariff;
-import flagship.domain.tariffs.stateduestariffs.TonnageDueTariff;
-import flagship.domain.tariffs.stateduestariffs.WharfDueTariff;
+import flagship.domain.tariffs.stateduestariffs.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 
@@ -30,6 +28,7 @@ public class DataLoader implements ApplicationRunner {
   private final WharfDueTariff wharfDueTariff;
   private final CanalDueTariff canalDueTariff;
   private final LightDueTariff lightDueTariff;
+  private final MarpolDueTariff marpolDueTariff;
 
   private final PilotageDueTariff pilotageDueTariff;
   private final TugDueTariff tugDueTariff;
@@ -40,12 +39,17 @@ public class DataLoader implements ApplicationRunner {
   public void run(ApplicationArguments args) throws Exception {
 
     StateDueTariffInitializer.initializeTariffs(
-        tonnageDueTariff, wharfDueTariff, canalDueTariff, lightDueTariff);
+        tonnageDueTariff, wharfDueTariff, canalDueTariff, lightDueTariff, marpolDueTariff);
     ServiceDueTariffInitializer.initializeTariff(
         pilotageDueTariff, tugDueTariff, mooringDueTariff, holidayCalendar);
 
     produceStateDueJsonFiles();
     produceServiceDueJsonFiles();
+
+    MarpolDueTariff tariff = objectMapper.readValue(
+            new File("src/main/resources/marpolDueTariff.json"), MarpolDueTariff.class);
+
+    System.out.println();
   }
 
   private void produceStateDueJsonFiles() throws IOException {
@@ -66,6 +70,10 @@ public class DataLoader implements ApplicationRunner {
     objectMapper
         .writerWithDefaultPrettyPrinter()
         .writeValue(Paths.get("src/main/resources/canalDueTariff.json").toFile(), canalDueTariff);
+
+    objectMapper
+            .writerWithDefaultPrettyPrinter()
+            .writeValue(Paths.get("src/main/resources/marpolDueTariff.json").toFile(), marpolDueTariff);
   }
 
   private void produceServiceDueJsonFiles() throws IOException {
