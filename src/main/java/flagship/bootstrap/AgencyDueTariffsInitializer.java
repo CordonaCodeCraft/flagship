@@ -82,6 +82,7 @@ public class AgencyDueTariffsInitializer {
     agencyDuesTariff.setBasicAgencyDueGrossTonnageThreshold(BigDecimal.valueOf(10000.00));
     agencyDuesTariff.setClearanceIn(BigDecimal.valueOf(60.00));
     agencyDuesTariff.setClearanceOut(BigDecimal.valueOf(60.00));
+    agencyDuesTariff.setBaseCommunicationsDue(BigDecimal.valueOf(100.00));
     agencyDuesTariff.setCommunicationsDueGrossTonnageThreshold(BigDecimal.valueOf(1000.00));
     agencyDuesTariff.setCommunicationsAdditionalDue(BigDecimal.valueOf(10.00));
   }

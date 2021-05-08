@@ -1,0 +1,52 @@
+{
+  "basicAgencyDuePerGrossTonnage" : {
+    "150 - 1000" : "505.0 - null",
+    "1001 - 2000" : "610.0 - null",
+    "2001 - 3000" : "715.0 - null",
+    "3001 - 4000" : "835.0 - null",
+    "4001 - 5000" : "955.0 - null",
+    "5001 - 6000" : "1090.0 - null",
+    "6001 - 7000" : "1225.0 - null",
+    "7001 - 8000" : "1375.0 - null",
+    "8001 - 9000" : "1525.0 - null",
+    "9001 - 10000" : "1690.0 - null",
+    "10001 - 650000" : "1690.0 - 75"
+  },
+  "carsDueByGrossTonnageAndAlongsideDaysExpected" : {
+    "150 - 5999" : {
+      "1 - 1" : 80.0,
+      "1 - 5" : 120.0,
+      "6 - 10" : 180.0,
+      "11 - 20" : 250.0
+    },
+    "6000 - 14999" : {
+      "1 - 1" : 110.0,
+      "1 - 5" : 150.0,
+      "6 - 10" : 200.0,
+      "11 - 20" : 300.0
+    },
+    "15000 - 650000" : {
+      "1 - 1" : 150.0,
+      "1 - 5" : 230.0,
+      "6 - 10" : 300.0,
+      "11 - 20" : 350.0
+    }
+  },
+  "carsDuesIncreaseCoefficientByPortName" : {
+    "BALCHIK_PORT" : 1,
+    "LESPORT" : 0.3,
+    "TEREM_FA" : 0.3,
+    "SRY_DOLPHIN" : 0.3,
+    "VARNA_WEST" : 0.5,
+    "FERRY_COMPLEX" : 0.5,
+    "BOURGAS_WEST_TERMINAL" : 0.3,
+    "PORT_ROSENETZ" : 0.5
+  },
+  "basicAgencyDueDiscountCoefficientByCallPurpose" : 0.5,
+  "basicAgencyDueGrossTonnageThreshold" : 10000.0,
+  "clearanceIn" : 60.0,
+  "clearanceOut" : 60.0,
+  "baseCommunicationsDue" : 100.0,
+  "communicationsDueGrossTonnageThreshold" : 1000.0,
+  "communicationsAdditionalDue" : 10.0
+}
