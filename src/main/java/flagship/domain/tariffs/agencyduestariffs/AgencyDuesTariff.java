@@ -28,4 +28,6 @@ public class AgencyDuesTariff extends Tariff {
   private BigDecimal baseCommunicationsDue;
   private BigDecimal communicationsDueGrossTonnageThreshold;
   private BigDecimal communicationsAdditionalDue;
+  private BigDecimal bankExpensesCoefficient;
+  private BigDecimal overtimeCoefficient;
 }

@@ -35,7 +35,7 @@ public class AgencyDueTariffsInitializer {
     basicAgencyDuePerGT.put(new Range(8001, 9000), new Due(BigDecimal.valueOf(1525.00)));
     basicAgencyDuePerGT.put(new Range(9001, 10000), new Due(BigDecimal.valueOf(1690.00)));
     basicAgencyDuePerGT.put(
-        new Range(10001, 650000), new Due(BigDecimal.valueOf(1690.00), BigDecimal.valueOf(75)));
+        new Range(10001, 650000), new Due(BigDecimal.valueOf(1690.00), BigDecimal.valueOf(75.00)));
 
     Map<Range, Map<Range, BigDecimal>> carsDueByGrossTonnageAndAlongsideDaysExpected =
         new LinkedHashMap<>();
@@ -85,5 +85,7 @@ public class AgencyDueTariffsInitializer {
     agencyDuesTariff.setBaseCommunicationsDue(BigDecimal.valueOf(100.00));
     agencyDuesTariff.setCommunicationsDueGrossTonnageThreshold(BigDecimal.valueOf(1000.00));
     agencyDuesTariff.setCommunicationsAdditionalDue(BigDecimal.valueOf(10.00));
+    agencyDuesTariff.setBankExpensesCoefficient(BigDecimal.valueOf(0.5));
+    agencyDuesTariff.setOvertimeCoefficient(BigDecimal.valueOf(0.2));
   }
 }

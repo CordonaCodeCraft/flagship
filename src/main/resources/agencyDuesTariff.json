@@ -10,7 +10,7 @@
     "7001 - 8000" : "1375.0 - null",
     "8001 - 9000" : "1525.0 - null",
     "9001 - 10000" : "1690.0 - null",
-    "10001 - 650000" : "1690.0 - 75"
+    "10001 - 650000" : "1690.0 - 75.0"
   },
   "carsDueByGrossTonnageAndAlongsideDaysExpected" : {
     "150 - 5999" : {
@@ -48,5 +48,7 @@
   "clearanceOut" : 60.0,
   "baseCommunicationsDue" : 100.0,
   "communicationsDueGrossTonnageThreshold" : 1000.0,
-  "communicationsAdditionalDue" : 10.0
+  "communicationsAdditionalDue" : 10.0,
+  "bankExpensesCoefficient" : 0.5,
+  "overtimeCoefficient" : 0.2
 }
