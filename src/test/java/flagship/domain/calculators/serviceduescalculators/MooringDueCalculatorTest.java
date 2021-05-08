@@ -51,7 +51,7 @@ class MooringDueCalculatorTest {
   @ParameterizedTest(name = "provider : {arguments}")
   @EnumSource(
       value = MooringServiceProvider.class,
-      names = {"VTC", "PORTFLEET"})
+      names = {"VTC", "PORTFLEET", "PCHMV"})
   void testCalculateFixedMooringDueForVtcAndPortFleet(MooringServiceProvider provider) {
 
     BigDecimal grossTonnage =
@@ -74,7 +74,7 @@ class MooringDueCalculatorTest {
   @ParameterizedTest(name = "provider : {arguments}")
   @EnumSource(
       value = MooringServiceProvider.class,
-      names = {"VTC", "PORTFLEET"})
+      names = {"VTC", "PORTFLEET", "PCHMV"})
   void testCalculateIncreasedMooringDueForVtcAndPortFleet(MooringServiceProvider provider) {
 
     BigDecimal grossTonnage =
@@ -213,55 +213,6 @@ class MooringDueCalculatorTest {
     calculator.set(testCase, tariff);
 
     BigDecimal expected = getAdditionalValue();
-    BigDecimal result = calculator.calculate();
-
-    assertThat(result).isEqualByComparingTo(expected);
-  }
-
-  @DisplayName("Should calculate fixed mooring due for PCHVM within threshold")
-  @Test
-  void testCalculateMooringDueForPchvmWithinThreshold() {
-
-    BigDecimal grossTonnage =
-            getRandomGrossTonnage(150, tariff.getPchvmGrossTonnageThreshold().intValue());
-
-    testCase.getPort().setMooringServiceProvider(PCHMV);
-    testCase.getShip().setGrossTonnage(grossTonnage);
-
-    calculator.set(testCase, tariff);
-
-    BigDecimal fixedMooringDue = getFixedMooringDue(testCase.getPort().getMooringServiceProvider());
-
-    System.out.println(grossTonnage);
-    System.out.println(fixedMooringDue);
-
-    BigDecimal expected = fixedMooringDue.multiply(BigDecimal.valueOf(2.0));
-    BigDecimal result = calculator.calculate();
-
-    assertThat(result).isEqualByComparingTo(expected);
-  }
-
-  @DisplayName("Should calculate increased mooring due for PCHVM")
-  @Test
-  void testCalculateIncreasedMooringDueForPchvm() {
-
-    BigDecimal grossTonnage =
-            getRandomGrossTonnage(tariff.getPchvmGrossTonnageThreshold().intValue(), 200000);
-
-    testCase.getPort().setMooringServiceProvider(PCHMV);
-    testCase.getShip().setGrossTonnage(grossTonnage);
-
-    calculator.set(testCase, tariff);
-
-    BigDecimal fixedMooringDue = getFixedMooringDue(testCase.getPort().getMooringServiceProvider());
-
-    BigDecimal additionalValue = getAdditionalValue();
-
-    BigDecimal multiplier = getMultiplier(tariff.getPchvmGrossTonnageThreshold());
-
-    BigDecimal additionalDue = additionalValue.multiply(multiplier);
-
-    BigDecimal expected = fixedMooringDue.add(additionalDue).multiply(BigDecimal.valueOf(2));
     BigDecimal result = calculator.calculate();
 
     assertThat(result).isEqualByComparingTo(expected);

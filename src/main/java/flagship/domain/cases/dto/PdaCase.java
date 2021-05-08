@@ -4,6 +4,7 @@ import flagship.domain.cases.entities.enums.CallPurpose;
 import flagship.domain.cases.entities.enums.CargoType;
 import flagship.domain.tariffs.PdaWarningsGenerator;
 import lombok.*;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -15,6 +16,7 @@ import static flagship.domain.tariffs.PdaWarningsGenerator.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Component
 public class PdaCase {
 
   private PdaShip ship;

@@ -2,7 +2,9 @@ package flagship.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import flagship.domain.tariffs.GtRange;
+import flagship.config.serialization.DueDeserializer;
+import flagship.domain.tariffs.Due;
+import flagship.domain.tariffs.Range;
 import flagship.config.serialization.RangeDeserializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +16,8 @@ public class Config {
   public ObjectMapper objectMapper() {
     ObjectMapper objectMapper = new ObjectMapper();
     SimpleModule simpleModule = new SimpleModule();
-    simpleModule.addKeyDeserializer(GtRange.class, new RangeDeserializer());
+    simpleModule.addKeyDeserializer(Range.class, new RangeDeserializer());
+    simpleModule.addDeserializer(Due.class, new DueDeserializer());
     objectMapper.registerModule(simpleModule);
     return objectMapper;
   }

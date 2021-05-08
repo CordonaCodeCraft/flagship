@@ -6,7 +6,7 @@ import flagship.config.serialization.RangeDeserializer;
 import flagship.domain.cases.dto.PdaCase;
 import flagship.domain.cases.dto.PdaPort;
 import flagship.domain.cases.dto.PdaShip;
-import flagship.domain.tariffs.GtRange;
+import flagship.domain.tariffs.Range;
 import flagship.domain.tariffs.stateduestariffs.BoomContainmentTariff;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,7 +34,7 @@ class BoomContainmentCalculatorTest {
   public static void beforeClass() throws IOException {
     ObjectMapper mapper = new ObjectMapper();
     SimpleModule simpleModule = new SimpleModule();
-    simpleModule.addKeyDeserializer(GtRange.class, new RangeDeserializer());
+    simpleModule.addKeyDeserializer(Range.class, new RangeDeserializer());
     mapper.registerModule(simpleModule);
     tariff =
         mapper.readValue(
@@ -111,13 +111,13 @@ class BoomContainmentCalculatorTest {
 
   private int getBoomContainmentGrossTonnageThreshold() {
     return tariff.getBoomContainmentDuePerGrossTonnage().keySet().stream()
-        .mapToInt(GtRange::getMax)
+        .mapToInt(Range::getMax)
         .max()
         .getAsInt();
   }
 
   private boolean grossTonnageIsWithinBoomContainmentDueRange(
-      Map.Entry<GtRange, BigDecimal> entry) {
+      Map.Entry<Range, BigDecimal> entry) {
     return testCase.getShip().getGrossTonnage().intValue() >= entry.getKey().getMin()
         && testCase.getShip().getGrossTonnage().intValue() <= entry.getKey().getMax();
   }

@@ -23,7 +23,7 @@ public class PilotageDueTariff extends Tariff {
 
   private Map<PilotageArea, Set<PortName>> portNamesInPilotageAreas;
   private Map<PilotageArea, Map<BigDecimal, Integer[]>> pilotageDuesByArea;
-  private Map<PdaWarning, BigDecimal> increaseCoefficientsByPdaWarning;
+  private Map<PdaWarning, BigDecimal> increaseCoefficientsByWarningType;
   private Set<LocalDate> holidayCalendar;
   private BigDecimal grossTonnageThreshold;
 

@@ -1,6 +1,6 @@
 package flagship.domain.tariffs.stateduestariffs;
 
-import flagship.domain.tariffs.GtRange;
+import flagship.domain.tariffs.Range;
 import flagship.domain.tariffs.Tariff;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,6 +16,6 @@ import java.util.Map;
 @NoArgsConstructor
 public class BoomContainmentTariff extends Tariff {
 
-    private Map<GtRange, BigDecimal> boomContainmentDuePerGrossTonnage;
+    private Map<Range, BigDecimal> boomContainmentDuePerGrossTonnage;
     private BigDecimal maximumBoomContainmentDueValue;
 }

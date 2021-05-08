@@ -1,6 +1,6 @@
 package flagship.domain.tariffs.stateduestariffs;
 
-import flagship.domain.tariffs.GtRange;
+import flagship.domain.tariffs.Range;
 import flagship.domain.tariffs.Tariff;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,9 +16,9 @@ import java.util.Map;
 @NoArgsConstructor
 public class MarpolDueTariff extends Tariff {
 
-  private Map<GtRange, BigDecimal> freeSewageDisposalQuantitiesPerGrossTonnage;
-  private Map<GtRange, BigDecimal> freeGarbageDisposalQuantitiesPerGrossTonnage;
-  private Map<GtRange, BigDecimal[]> marpolDuePerGrossTonnage;
+  private Map<Range, BigDecimal> freeSewageDisposalQuantitiesPerGrossTonnage;
+  private Map<Range, BigDecimal> freeGarbageDisposalQuantitiesPerGrossTonnage;
+  private Map<Range, BigDecimal[]> marpolDuePerGrossTonnage;
   private BigDecimal maximumFreeSewageDisposalQuantity;
   private BigDecimal maximumFreeGarbageDisposalQuantity;
   private BigDecimal[] maximumMarpolDueValues;

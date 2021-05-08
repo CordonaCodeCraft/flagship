@@ -24,18 +24,17 @@ public class AgencyDueTariffsInitializer {
   private static void initializeBasicAgencyDueTariff(final AgencyDuesTariff agencyDuesTariff) {
 
     Map<Range, Due> basicAgencyDuePerGT = new LinkedHashMap<>();
-    basicAgencyDuePerGT.put(new Range(150, 1000), new Due(BigDecimal.valueOf(505.00)));
-    basicAgencyDuePerGT.put(new Range(1001, 2000), new Due(BigDecimal.valueOf(610.00)));
-    basicAgencyDuePerGT.put(new Range(2001, 3000), new Due(BigDecimal.valueOf(715.00)));
-    basicAgencyDuePerGT.put(new Range(3001, 4000), new Due(BigDecimal.valueOf(835.00)));
-    basicAgencyDuePerGT.put(new Range(4001, 5000), new Due(BigDecimal.valueOf(955.00)));
-    basicAgencyDuePerGT.put(new Range(5001, 6000), new Due(BigDecimal.valueOf(1090.00)));
-    basicAgencyDuePerGT.put(new Range(6001, 7000), new Due(BigDecimal.valueOf(1225.00)));
-    basicAgencyDuePerGT.put(new Range(7001, 8000), new Due(BigDecimal.valueOf(1375.00)));
-    basicAgencyDuePerGT.put(new Range(8001, 9000), new Due(BigDecimal.valueOf(1525.00)));
-    basicAgencyDuePerGT.put(new Range(9001, 10000), new Due(BigDecimal.valueOf(1690.00)));
-    basicAgencyDuePerGT.put(
-        new Range(10001, 650000), new Due(BigDecimal.valueOf(1690.00), BigDecimal.valueOf(75.00)));
+    basicAgencyDuePerGT.put(new Range(150, 1000), new Due(505.00));
+    basicAgencyDuePerGT.put(new Range(1001, 2000), new Due(610.00));
+    basicAgencyDuePerGT.put(new Range(2001, 3000), new Due(715.00));
+    basicAgencyDuePerGT.put(new Range(3001, 4000), new Due(835.00));
+    basicAgencyDuePerGT.put(new Range(4001, 5000), new Due(955.00));
+    basicAgencyDuePerGT.put(new Range(5001, 6000), new Due(1090.00));
+    basicAgencyDuePerGT.put(new Range(6001, 7000), new Due(1225.00));
+    basicAgencyDuePerGT.put(new Range(7001, 8000), new Due(1375.00));
+    basicAgencyDuePerGT.put(new Range(8001, 9000), new Due(1525.00));
+    basicAgencyDuePerGT.put(new Range(9001, 10000), new Due(1690.00));
+    basicAgencyDuePerGT.put(new Range(10001, 650000), new Due(1690.00, 75.00));
 
     Map<Range, Map<Range, BigDecimal>> carsDueByGrossTonnageAndAlongsideDaysExpected =
         new LinkedHashMap<>();

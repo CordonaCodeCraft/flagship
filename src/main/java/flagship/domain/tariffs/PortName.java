@@ -21,7 +21,7 @@ public enum PortName {
   BOURGAS_CENTER("Bourgas – Center"),
   BOURGAS_EAST_2("Bourgas East 2"),
   BMF_PORT_BOURGAS("BMF Port Bourgas"),
-  WEST_TERMINAL("West Terminal"),
+  BOURGAS_WEST_TERMINAL("Bourgas West Terminal"),
   SRY_PORT_BOURGAS("Ship Repair Yard Port Bourgas"),
   PORT_BULGARIA_WEST("Port Bulgaria West"),
   BOURGAS_SHIPYARD("Bourgas Shipyard"),

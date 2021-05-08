@@ -43,10 +43,11 @@ class CarsDueCalculatorTest extends BaseCalculatorTest {
   @BeforeEach
   void setUp() {
     PdaShip testShip = PdaShip.builder().grossTonnage(getRandomGrossTonnage(150, 650000)).build();
+    PdaPort testPort = PdaPort.builder().name(PortName.SHIFTING_SRY_ODESSOS.name).build();
     testCase =
         PdaCase.builder()
             .alongsideDaysExpected(getRandomNumber())
-            .port(new PdaPort())
+            .port(testPort)
             .ship(testShip)
             .build();
   }

@@ -13,7 +13,6 @@ import java.math.BigDecimal;
 @Embeddable
 public class ServiceAccount {
 
-  // todo: When those are being calculated - multiply by two - for arrival and departure
   private BigDecimal pilotageServiceDue;
   private BigDecimal tugServiceDue;
 }

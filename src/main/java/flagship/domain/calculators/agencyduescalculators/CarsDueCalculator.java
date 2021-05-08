@@ -28,6 +28,7 @@ public class CarsDueCalculator implements DueCalculator<PdaCase, Tariff> {
   public BigDecimal calculate() {
 
     BigDecimal carsDue = getCarsDue();
+
     final BigDecimal increaseCoefficient = getIncreaseCoefficient();
 
     if (increaseCoefficient.doubleValue() > 0) {
@@ -38,12 +39,16 @@ public class CarsDueCalculator implements DueCalculator<PdaCase, Tariff> {
   }
 
   private BigDecimal getIncreaseCoefficient() {
+
     final PortName portName =
         Arrays.stream(PortName.values())
             .filter(e -> e.name.equals(source.getPort().getName()))
             .findFirst()
             .get();
-    return tariff.getCarsDuesIncreaseCoefficientByPortName().get(portName);
+
+    return tariff
+        .getCarsDuesIncreaseCoefficientByPortName()
+        .getOrDefault(portName, BigDecimal.ZERO);
   }
 
   private BigDecimal getCarsDue() {

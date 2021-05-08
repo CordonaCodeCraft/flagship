@@ -9,7 +9,7 @@ import java.io.Serializable;
 @Setter
 @AllArgsConstructor
 @EqualsAndHashCode
-public class GtRange implements Serializable {
+public class Range implements Serializable {
 
   private static final long serialVersionUID = 5204742248423249478L;
 

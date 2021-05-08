@@ -4,17 +4,17 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import flagship.domain.tariffs.GtRange;
+import flagship.domain.tariffs.Range;
 
 import java.io.IOException;
 import java.io.StringWriter;
 
-public class RangeSerializer extends JsonSerializer<GtRange> {
+public class RangeSerializer extends JsonSerializer<Range> {
 
   private final ObjectMapper mapper = new ObjectMapper();
 
   @Override
-  public void serialize(GtRange value, JsonGenerator gen, SerializerProvider serializers)
+  public void serialize(Range value, JsonGenerator gen, SerializerProvider serializers)
       throws IOException {
     StringWriter writer = new StringWriter();
     mapper.writeValue(writer, value);

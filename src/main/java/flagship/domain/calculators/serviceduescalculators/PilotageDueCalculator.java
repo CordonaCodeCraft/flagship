@@ -65,12 +65,12 @@ public class PilotageDueCalculator extends ServiceDueCalculator<PdaCase, Tariff>
 
     BigDecimal increaseCoefficientForHazardousCargo =
         source.getWarnings().contains(HAZARDOUS_PILOTAGE_CARGO)
-            ? tariff.getIncreaseCoefficientsByPdaWarning().get(HAZARDOUS_PILOTAGE_CARGO)
+            ? tariff.getIncreaseCoefficientsByWarningType().get(HAZARDOUS_PILOTAGE_CARGO)
             : BigDecimal.ZERO;
 
     BigDecimal increaseCoefficientForSpecialCargo =
         source.getWarnings().contains(SPECIAL_PILOTAGE_CARGO)
-            ? tariff.getIncreaseCoefficientsByPdaWarning().get(SPECIAL_PILOTAGE_CARGO)
+            ? tariff.getIncreaseCoefficientsByWarningType().get(SPECIAL_PILOTAGE_CARGO)
             : BigDecimal.ZERO;
 
     increaseCoefficients.add(
@@ -78,7 +78,7 @@ public class PilotageDueCalculator extends ServiceDueCalculator<PdaCase, Tariff>
 
     BigDecimal increaseCoefficientByPilot =
         source.getWarnings().contains(SPECIAL_PILOT)
-            ? tariff.getIncreaseCoefficientsByPdaWarning().get(SPECIAL_PILOT)
+            ? tariff.getIncreaseCoefficientsByWarningType().get(SPECIAL_PILOT)
             : BigDecimal.ZERO;
 
     increaseCoefficients.add(increaseCoefficientByPilot);

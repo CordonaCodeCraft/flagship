@@ -25,9 +25,9 @@ import static flagship.domain.tariffs.serviceduestariffs.TugDueTariff.TugService
 import static java.time.Month.*;
 
 @Component
-public class ServiceDueTariffInitializer {
+public class ServiceDuesTariffsInitializer {
 
-  public static void initializeTariff(
+  public static void initializeTariffs(
       PilotageDueTariff pilotageDueTariff,
       TugDueTariff tugDueTariff,
       MooringDueTariff mooringDueTariff,
@@ -72,7 +72,7 @@ public class ServiceDueTariffInitializer {
             PortName.BOURGAS_CENTER,
             PortName.BOURGAS_EAST_2,
             PortName.BMF_PORT_BOURGAS,
-            PortName.WEST_TERMINAL,
+            PortName.BOURGAS_WEST_TERMINAL,
             PortName.SRY_PORT_BOURGAS,
             PortName.PORT_BULGARIA_WEST,
             PortName.BOURGAS_SHIPYARD,
@@ -165,7 +165,7 @@ public class ServiceDueTariffInitializer {
     increaseCoefficientsByWarningType.put(HAZARDOUS_PILOTAGE_CARGO, BigDecimal.valueOf(0.2));
     increaseCoefficientsByWarningType.put(SPECIAL_PILOTAGE_CARGO, BigDecimal.valueOf(1.0));
 
-    pilotageDueTariff.setIncreaseCoefficientsByPdaWarning(
+    pilotageDueTariff.setIncreaseCoefficientsByWarningType(
         Collections.unmodifiableMap(increaseCoefficientsByWarningType));
 
     pilotageDueTariff.setGrossTonnageThreshold(BigDecimal.valueOf(10000.00));

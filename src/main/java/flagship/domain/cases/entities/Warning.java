@@ -1,18 +1,17 @@
 package flagship.domain.cases.entities;
 
-import flagship.domain.tariffs.PdaWarningsGenerator;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Optional;
+import java.util.Objects;
 
-import static flagship.domain.tariffs.PdaWarningsGenerator.*;
+import static flagship.domain.tariffs.PdaWarningsGenerator.DueType;
+import static flagship.domain.tariffs.PdaWarningsGenerator.PdaWarning;
 import static javax.persistence.EnumType.STRING;
 
 @Getter
@@ -33,5 +32,20 @@ public class Warning extends BaseEntity {
 
   private LocalDate warningDate;
 
-  private BigDecimal warningCoefficient;
+  private BigDecimal warningFactor;
+
+  @Override
+  public boolean equals(final Object other) {
+    if (this == other) return true;
+    if (other == null || getClass() != other.getClass()) return false;
+    if (!super.equals(other)) return false;
+
+    final Warning warning = (Warning) other;
+
+    if (dueType != warning.dueType) return false;
+    if (warningType != warning.warningType) return false;
+    if (!Objects.equals(warningDate, warning.warningDate)) return false;
+    return warningFactor.equals(warning.warningFactor);
+  }
+
 }

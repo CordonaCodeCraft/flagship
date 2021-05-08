@@ -19,14 +19,9 @@ import java.util.Set;
 public class ProformaDisbursementAccount extends BaseEntity {
 
   @Embedded private StateAccount stateAccount;
-
   @Embedded private ServiceAccount serviceAccount;
-
   @Embedded private AgencyAccount agencyAccount;
-
   @OneToMany private Set<Warning> warnings;
-
   private BigDecimal discount;
-
   private BigDecimal turnoverExpected;
 }

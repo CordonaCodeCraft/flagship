@@ -3,7 +3,7 @@ package flagship.domain.cases.entities.enums;
 public enum CallPurpose {
   LOADING,
   UNLOADING,
-  LOADING_UNLOADING,
+  LOADING_AND_UNLOADING,
   RESUPPLY,
   RECRUITMENT,
   POSTAL,

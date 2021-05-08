@@ -2,7 +2,7 @@ package flagship.domain.calculators.stateduescalculators;
 
 import flagship.domain.calculators.DueCalculator;
 import flagship.domain.cases.dto.PdaCase;
-import flagship.domain.tariffs.GtRange;
+import flagship.domain.tariffs.Range;
 import flagship.domain.tariffs.Tariff;
 import flagship.domain.tariffs.stateduestariffs.BoomContainmentTariff;
 
@@ -17,7 +17,7 @@ public class BoomContainmentCalculator implements DueCalculator<PdaCase, Tariff>
   private BoomContainmentTariff tariff;
 
   @Override
-  public void set(PdaCase source, Tariff tariff) {
+  public void set(final PdaCase source, final Tariff tariff) {
     this.source = source;
     this.tariff = (BoomContainmentTariff) tariff;
   }
@@ -36,8 +36,8 @@ public class BoomContainmentCalculator implements DueCalculator<PdaCase, Tariff>
     }
   }
 
-  private boolean grossTonnageIsWithinBoomContainmentDueRange(
-      Map.Entry<GtRange, BigDecimal> entry) {
+  private boolean grossTonnageIsWithinBoomContainmentDueRange(final
+      Map.Entry<Range, BigDecimal> entry) {
     return source.getShip().getGrossTonnage().intValue() >= entry.getKey().getMin()
         && source.getShip().getGrossTonnage().intValue() <= entry.getKey().getMax();
   }

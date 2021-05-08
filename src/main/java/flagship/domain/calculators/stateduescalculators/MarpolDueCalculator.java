@@ -3,7 +3,7 @@ package flagship.domain.calculators.stateduescalculators;
 import flagship.domain.calculators.DueCalculator;
 import flagship.domain.cases.dto.PdaCase;
 import flagship.domain.tariffs.PortName;
-import flagship.domain.tariffs.GtRange;
+import flagship.domain.tariffs.Range;
 import flagship.domain.tariffs.Tariff;
 import flagship.domain.tariffs.stateduestariffs.MarpolDueTariff;
 
@@ -17,7 +17,7 @@ public class MarpolDueCalculator implements DueCalculator<PdaCase, Tariff> {
   private MarpolDueTariff tariff;
 
   @Override
-  public void set(PdaCase source, Tariff tariff) {
+  public void set(final PdaCase source, final Tariff tariff) {
     this.source = source;
     this.tariff = (MarpolDueTariff) tariff;
   }
@@ -54,12 +54,12 @@ public class MarpolDueCalculator implements DueCalculator<PdaCase, Tariff> {
   private boolean grossTonnageOverThreshold() {
     return source.getShip().getGrossTonnage().intValue()
         > tariff.getMarpolDuePerGrossTonnage().keySet().stream()
-            .mapToInt(GtRange::getMax)
+            .mapToInt(Range::getMax)
             .max()
             .getAsInt();
   }
 
-  private boolean grossTonnageIsWithinRange(Map.Entry<GtRange, BigDecimal[]> entry) {
+  private boolean grossTonnageIsWithinRange(final Map.Entry<Range, BigDecimal[]> entry) {
     return source.getShip().getGrossTonnage().intValue() >= entry.getKey().getMin()
         && source.getShip().getGrossTonnage().intValue() <= entry.getKey().getMax();
   }
@@ -92,7 +92,7 @@ public class MarpolDueCalculator implements DueCalculator<PdaCase, Tariff> {
           .orElse(tariff.getMaximumFreeGarbageDisposalQuantity());
     }
 
-    private boolean grossTonnageIsWithinFreeWasteRange(Map.Entry<GtRange, BigDecimal> entry) {
+    private boolean grossTonnageIsWithinFreeWasteRange(Map.Entry<Range, BigDecimal> entry) {
       return source.getShip().getGrossTonnage().intValue() >= entry.getKey().getMin()
           && source.getShip().getGrossTonnage().intValue() <= entry.getKey().getMax();
     }

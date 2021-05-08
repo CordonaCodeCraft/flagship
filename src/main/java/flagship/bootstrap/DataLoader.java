@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import flagship.domain.tariffs.HolidayCalendar;
-import flagship.domain.tariffs.agencyduestariffs.BasicAgencyDueTariff;
+import flagship.domain.tariffs.agencyduestariffs.AgencyDuesTariff;
 import flagship.domain.tariffs.serviceduestariffs.MooringDueTariff;
 import flagship.domain.tariffs.serviceduestariffs.PilotageDueTariff;
 import flagship.domain.tariffs.serviceduestariffs.TugDueTariff;
@@ -15,7 +15,6 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 
@@ -37,7 +36,7 @@ public class DataLoader implements ApplicationRunner {
   private final MooringDueTariff mooringDueTariff;
   private final HolidayCalendar holidayCalendar;
 
-  private final BasicAgencyDueTariff basicAgencyDueTariff;
+  private final AgencyDuesTariff agencyDuesTariff;
 
   @Override
   public void run(ApplicationArguments args) throws Exception {
@@ -52,17 +51,12 @@ public class DataLoader implements ApplicationRunner {
     ServiceDuesTariffsInitializer.initializeTariffs(
         pilotageDueTariff, tugDueTariff, mooringDueTariff, holidayCalendar);
 
-    AgencyDueTariffsInitializer.initializeTariffs(basicAgencyDueTariff);
+    AgencyDueTariffsInitializer.initializeTariffs(agencyDuesTariff);
 
     produceStateDuesJsonFiles();
     produceServiceDuesJsonFiles();
-    produceAgencyDuesJsonFiles();
+    produceAgencyDuesJsonFile();
 
-    MarpolDueTariff tariff =
-        objectMapper.readValue(
-            new File("src/main/resources/marpolDueTariff.json"), MarpolDueTariff.class);
-
-    System.out.println();
   }
 
   private void produceStateDuesJsonFiles() throws IOException {
@@ -119,11 +113,11 @@ public class DataLoader implements ApplicationRunner {
         .writeValue(Paths.get("src/main/resources/holidayCalendar.json").toFile(), holidayCalendar);
   }
 
-  private void produceAgencyDuesJsonFiles() throws IOException {
+  private void produceAgencyDuesJsonFile() throws IOException {
     objectMapper
         .writerWithDefaultPrettyPrinter()
         .writeValue(
-            Paths.get("src/main/resources/basicAgencyDueTariff.json").toFile(),
-            basicAgencyDueTariff);
+            Paths.get("src/main/resources/agencyDuesTariff.json").toFile(),
+                agencyDuesTariff);
   }
 }

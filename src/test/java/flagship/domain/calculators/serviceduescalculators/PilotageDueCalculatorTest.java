@@ -101,7 +101,7 @@ public class PilotageDueCalculatorTest implements DueCalculatorTest {
 
     BigDecimal pilotageDue = getFixedPilotageDuePerGrossTonnage(testCase);
     BigDecimal increaseCoefficient =
-        tariff.getIncreaseCoefficientsByPdaWarning().get(HAZARDOUS_PILOTAGE_CARGO);
+        tariff.getIncreaseCoefficientsByWarningType().get(HAZARDOUS_PILOTAGE_CARGO);
 
     BigDecimal expected = pilotageDue.multiply(increaseCoefficient);
     BigDecimal result = calculator.calculate();
@@ -119,7 +119,7 @@ public class PilotageDueCalculatorTest implements DueCalculatorTest {
 
     BigDecimal pilotageDue = getFixedPilotageDuePerGrossTonnage(testCase);
     BigDecimal increaseCoefficient =
-        tariff.getIncreaseCoefficientsByPdaWarning().get(SPECIAL_PILOTAGE_CARGO);
+        tariff.getIncreaseCoefficientsByWarningType().get(SPECIAL_PILOTAGE_CARGO);
 
     BigDecimal expected = pilotageDue.multiply(increaseCoefficient);
     BigDecimal result = calculator.calculate();
@@ -137,7 +137,7 @@ public class PilotageDueCalculatorTest implements DueCalculatorTest {
 
     BigDecimal pilotageDue = getFixedPilotageDuePerGrossTonnage(testCase);
     BigDecimal increaseCoefficient =
-        tariff.getIncreaseCoefficientsByPdaWarning().get(SPECIAL_PILOT);
+        tariff.getIncreaseCoefficientsByWarningType().get(SPECIAL_PILOT);
 
     BigDecimal expected = pilotageDue.multiply(increaseCoefficient);
     BigDecimal result = calculator.calculate();
@@ -157,9 +157,9 @@ public class PilotageDueCalculatorTest implements DueCalculatorTest {
     BigDecimal pilotageDue = getFixedPilotageDuePerGrossTonnage(testCase);
     BigDecimal increaseCoefficient =
         tariff
-            .getIncreaseCoefficientsByPdaWarning()
+            .getIncreaseCoefficientsByWarningType()
             .get(SPECIAL_PILOTAGE_CARGO)
-            .add(tariff.getIncreaseCoefficientsByPdaWarning().get(SPECIAL_PILOT));
+            .add(tariff.getIncreaseCoefficientsByWarningType().get(SPECIAL_PILOT));
 
     BigDecimal expected = pilotageDue.multiply(increaseCoefficient);
     BigDecimal result = calculator.calculate();
