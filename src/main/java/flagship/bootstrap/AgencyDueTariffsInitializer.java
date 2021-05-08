@@ -2,7 +2,7 @@ package flagship.bootstrap;
 
 import flagship.domain.tariffs.Due;
 import flagship.domain.tariffs.GtRange;
-import flagship.domain.tariffs.agencyduestariffs.BasicAgencyDueTariff;
+import flagship.domain.tariffs.agencyduestariffs.AgencyDuesTariff;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -13,12 +13,12 @@ import java.util.Map;
 @Component
 public class AgencyDueTariffsInitializer {
 
-  public static void initializeTariffs(final BasicAgencyDueTariff basicAgencyDueTariff) {
+  public static void initializeTariffs(final AgencyDuesTariff basicAgencyDueTariff) {
     initializeBasicAgencyDueTariff(basicAgencyDueTariff);
   }
 
   private static void initializeBasicAgencyDueTariff(
-      final BasicAgencyDueTariff basicAgencyDueTariff) {
+      final AgencyDuesTariff agencyDuesTariff) {
 
     Map<GtRange, Due> basicAgencyDuePerGT = new LinkedHashMap<>();
     basicAgencyDuePerGT.put(new GtRange(150, 1000), new Due(BigDecimal.valueOf(505.00)));
@@ -34,9 +34,11 @@ public class AgencyDueTariffsInitializer {
     basicAgencyDuePerGT.put(
         new GtRange(10001, 650000), new Due(BigDecimal.valueOf(1690.00), BigDecimal.valueOf(75)));
 
-    basicAgencyDueTariff.setBasicAgencyDuePerGrossTonnage(
+    agencyDuesTariff.setBasicAgencyDuePerGrossTonnage(
         Collections.unmodifiableMap(basicAgencyDuePerGT));
-    basicAgencyDueTariff.setDiscountCoefficientForCallPurpose(BigDecimal.valueOf(0.5));
-    basicAgencyDueTariff.setGrossTonnageThreshold(BigDecimal.valueOf(10000.00));
+    agencyDuesTariff.setBasicAgencyDueDiscountCoefficientByCallPurpose(BigDecimal.valueOf(0.5));
+    agencyDuesTariff.setBasicAgencyDueGrossTonnageThreshold(BigDecimal.valueOf(10000.00));
+    agencyDuesTariff.setClearanceIn(BigDecimal.valueOf(60.00));
+    agencyDuesTariff.setClearanceOut(BigDecimal.valueOf(60.00));
   }
 }
