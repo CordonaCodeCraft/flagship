@@ -1,7 +1,9 @@
 package flagship.domain.tariffs.serviceduestariffs;
 
-import flagship.domain.tariffs.Tariff;
+import flagship.domain.tariffs.Due;
 import flagship.domain.tariffs.PortName;
+import flagship.domain.tariffs.Range;
+import flagship.domain.tariffs.Tariff;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,7 +14,7 @@ import java.time.LocalDate;
 import java.util.Map;
 import java.util.Set;
 
-import static flagship.domain.tariffs.PdaWarningsGenerator.*;
+import static flagship.domain.tariffs.PdaWarningsGenerator.PdaWarning;
 
 @Getter
 @Setter
@@ -21,13 +23,12 @@ import static flagship.domain.tariffs.PdaWarningsGenerator.*;
 public class TugDueTariff extends Tariff {
 
   private Map<TugServiceProvider, Map<TugArea, Set<PortName>>> portNamesInTugAreas;
-  private Map<TugArea, Map<BigDecimal, Integer[]>> tugDuesByArea;
-  private Map<BigDecimal, Integer[]> tugCountByGrossTonnage;
+  private Map<TugArea, Map<Range, Due>> tugDuesByArea;
+  private Map<Range, BigDecimal> tugCountByGrossTonnage;
   private Map<PdaWarning, BigDecimal> increaseCoefficientsByWarningType;
   private Set<LocalDate> holidayCalendar;
   private BigDecimal grossTonnageThreshold;
   private BigDecimal grossTonnageThresholdForTugCountReduce;
-  private BigDecimal maximumTugCount;
 
   public enum TugServiceProvider {
     VTC,

@@ -30,9 +30,11 @@ public class DueDeserializer extends StdDeserializer<Due> {
     String left = pairs[0].trim();
     String right = pairs[1].trim();
 
-    BigDecimal base = left.equals("null") ? null : BigDecimal.valueOf(Double.parseDouble(left));
+    BigDecimal base =
+        left.equals("0") ? BigDecimal.ZERO : BigDecimal.valueOf(Double.parseDouble(left));
 
-    BigDecimal add = right.equals("null") ? null : BigDecimal.valueOf(Double.parseDouble(right));
+    BigDecimal add =
+        right.equals("0") ? BigDecimal.ZERO : BigDecimal.valueOf(Double.parseDouble(right));
 
     return new Due(base, add);
   }

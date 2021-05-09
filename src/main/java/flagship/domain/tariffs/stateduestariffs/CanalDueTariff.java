@@ -1,7 +1,8 @@
 package flagship.domain.tariffs.stateduestariffs;
 
-import flagship.domain.tariffs.Tariff;
 import flagship.domain.cases.entities.enums.ShipType;
+import flagship.domain.tariffs.Due;
+import flagship.domain.tariffs.Tariff;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,7 +18,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class CanalDueTariff extends Tariff {
 
-  private Map<PortArea, BigDecimal> canalDuesByPortArea;
+  private Map<PortArea, Due> canalDuesByPortArea;
   private Map<ShipType, BigDecimal> discountCoefficientByShipType;
   private Map<PortArea, BigDecimal> discountCoefficientsByPortAreaForContainers;
   private Map<PortArea, BigDecimal> discountCoefficientsByPortAreaPerCallCountForContainers;

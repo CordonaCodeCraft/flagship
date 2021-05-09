@@ -1,7 +1,7 @@
 package flagship.domain.resolvers;
 
-import flagship.domain.tariffs.serviceduestariffs.TugDueTariff;
 import flagship.domain.cases.dto.PdaCase;
+import flagship.domain.tariffs.serviceduestariffs.TugDueTariff;
 
 import java.util.Map;
 

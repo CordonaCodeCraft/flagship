@@ -1,6 +1,5 @@
 package flagship.bootstrap;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import flagship.domain.cases.dto.PdaCase;
 import flagship.domain.cases.dto.PdaPort;
 import flagship.domain.cases.dto.PdaShip;

@@ -1,9 +1,9 @@
 package flagship.domain.tariffs.stateduestariffs;
 
-import flagship.domain.tariffs.PdaWarningsGenerator;
-import flagship.domain.tariffs.Tariff;
 import flagship.domain.cases.entities.enums.CallPurpose;
 import flagship.domain.cases.entities.enums.ShipType;
+import flagship.domain.tariffs.Due;
+import flagship.domain.tariffs.Tariff;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,16 +13,14 @@ import java.math.BigDecimal;
 import java.util.Map;
 import java.util.Set;
 
-import static flagship.domain.tariffs.PdaWarningsGenerator.*;
-
 @Getter
 @Setter
 @Component
 @NoArgsConstructor
 public class WharfDueTariff extends Tariff {
 
-  private Map<ShipType, BigDecimal> WharfDuesByShipType;
+  private Map<ShipType, Due> WharfDuesByShipType;
   private Map<CallPurpose, BigDecimal> discountCoefficientsByCallPurpose;
   private Set<ShipType> shipTypesNotEligibleForDiscount;
-  private BigDecimal defaultWharfDue;
+  private Due defaultWharfDue;
 }

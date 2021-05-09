@@ -3,13 +3,10 @@ package flagship.domain.calculators.agencyduescalculators;
 import flagship.domain.calculators.BaseCalculatorTest;
 import flagship.domain.cases.dto.PdaCase;
 import flagship.domain.cases.dto.PdaShip;
-import flagship.domain.tariffs.agencyduestariffs.AgencyDuesTariff;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
-import java.io.IOException;
 import java.math.BigDecimal;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -17,18 +14,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @DisplayName("Communications due calculator tests")
 class CommunicationsDueCalculatorTest extends BaseCalculatorTest {
 
-  private AgencyDuesTariff tariff = new AgencyDuesTariff();
-  private CommunicationsDueCalculator calculator = new CommunicationsDueCalculator();
-
-  {
-    try {
-      tariff =
-          mapper.readValue(
-              new File(TARIFFS_PATH + "agencyDuesTariff.json"), AgencyDuesTariff.class);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-  }
+  private final CommunicationsDueCalculator calculator = new CommunicationsDueCalculator();
 
   @BeforeEach
   void setUp() {
@@ -44,11 +30,11 @@ class CommunicationsDueCalculatorTest extends BaseCalculatorTest {
         .getShip()
         .setGrossTonnage(
             getRandomGrossTonnage(
-                MIN_GT, tariff.getCommunicationsDueGrossTonnageThreshold().intValue()));
+                MIN_GT, agencyDuesTariff.getCommunicationsDueGrossTonnageThreshold().intValue()));
 
-    calculator.set(testCase, tariff);
+    calculator.set(testCase, agencyDuesTariff);
 
-    final BigDecimal expected = tariff.getBaseCommunicationsDue();
+    final BigDecimal expected = agencyDuesTariff.getBaseCommunicationsDue();
     final BigDecimal result = calculator.calculate();
 
     assertThat(result).isEqualByComparingTo(expected);
@@ -62,14 +48,15 @@ class CommunicationsDueCalculatorTest extends BaseCalculatorTest {
         .getShip()
         .setGrossTonnage(
             getRandomGrossTonnage(
-                tariff.getCommunicationsDueGrossTonnageThreshold().intValue() + 1, MAX_GT));
+                agencyDuesTariff.getCommunicationsDueGrossTonnageThreshold().intValue() + 1,
+                MAX_GT));
 
-    calculator.set(testCase, tariff);
+    calculator.set(testCase, agencyDuesTariff);
 
-    final BigDecimal baseDue = tariff.getBaseCommunicationsDue();
-    final BigDecimal addition = tariff.getCommunicationsAdditionalDue();
+    final BigDecimal baseDue = agencyDuesTariff.getBaseCommunicationsDue();
+    final BigDecimal addition = agencyDuesTariff.getCommunicationsAdditionalDue();
     final BigDecimal multiplier =
-        getMultiplier(tariff.getCommunicationsDueGrossTonnageThreshold().intValue());
+        getMultiplier(agencyDuesTariff.getCommunicationsDueGrossTonnageThreshold());
 
     final BigDecimal expected = baseDue.add(addition.multiply(multiplier));
     final BigDecimal result = calculator.calculate();

@@ -56,7 +56,6 @@ public class DataLoader implements ApplicationRunner {
     produceStateDuesJsonFiles();
     produceServiceDuesJsonFiles();
     produceAgencyDuesJsonFile();
-
   }
 
   private void produceStateDuesJsonFiles() throws IOException {
@@ -117,7 +116,6 @@ public class DataLoader implements ApplicationRunner {
     objectMapper
         .writerWithDefaultPrettyPrinter()
         .writeValue(
-            Paths.get("src/main/resources/agencyDuesTariff.json").toFile(),
-                agencyDuesTariff);
+            Paths.get("src/main/resources/agencyDuesTariff.json").toFile(), agencyDuesTariff);
   }
 }

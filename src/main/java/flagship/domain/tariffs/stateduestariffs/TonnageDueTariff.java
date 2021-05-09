@@ -1,8 +1,9 @@
 package flagship.domain.tariffs.stateduestariffs;
 
-import flagship.domain.tariffs.Tariff;
 import flagship.domain.cases.entities.enums.CallPurpose;
 import flagship.domain.cases.entities.enums.ShipType;
+import flagship.domain.tariffs.Due;
+import flagship.domain.tariffs.Tariff;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,14 +19,14 @@ import java.util.Set;
 @NoArgsConstructor
 public class TonnageDueTariff extends Tariff {
 
-  Integer callCountThreshold;
-  BigDecimal callCountDiscountCoefficient;
-  BigDecimal discountCoefficientForPortOfArrival;
-  private Map<PortArea, BigDecimal> tonnageDuesByPortArea;
-  private Map<ShipType, BigDecimal> tonnageDuesByShipType;
-  private Map<CallPurpose, BigDecimal> tonnageDuesByCallPurpose;
+  private Map<PortArea, Due> tonnageDuesByPortArea;
+  private Map<ShipType, Due> tonnageDuesByShipType;
+  private Map<CallPurpose, Due> tonnageDuesByCallPurpose;
   private Map<CallPurpose, BigDecimal> discountCoefficientsByCallPurpose;
   private Map<ShipType, BigDecimal> discountCoefficientsByShipType;
   private Set<ShipType> shipTypesNotEligibleForDiscount;
   private Set<CallPurpose> callPurposesNotEligibleForDiscount;
+  private Integer callCountThreshold;
+  private BigDecimal callCountDiscountCoefficient;
+  private BigDecimal discountCoefficientForPortOfArrival;
 }

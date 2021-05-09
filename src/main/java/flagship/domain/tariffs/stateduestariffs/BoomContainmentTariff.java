@@ -1,5 +1,6 @@
 package flagship.domain.tariffs.stateduestariffs;
 
+import flagship.domain.tariffs.Due;
 import flagship.domain.tariffs.Range;
 import flagship.domain.tariffs.Tariff;
 import lombok.Getter;
@@ -7,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
 import java.util.Map;
 
 @Getter
@@ -16,6 +16,5 @@ import java.util.Map;
 @NoArgsConstructor
 public class BoomContainmentTariff extends Tariff {
 
-    private Map<Range, BigDecimal> boomContainmentDuePerGrossTonnage;
-    private BigDecimal maximumBoomContainmentDueValue;
+  private Map<Range, Due> boomContainmentDuePerGrossTonnage;
 }

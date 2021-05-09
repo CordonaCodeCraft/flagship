@@ -36,26 +36,26 @@ public class AgencyDueTariffsInitializer {
     basicAgencyDuePerGT.put(new Range(9001, 10000), new Due(1690.00));
     basicAgencyDuePerGT.put(new Range(10001, 650000), new Due(1690.00, 75.00));
 
-    Map<Range, Map<Range, BigDecimal>> carsDueByGrossTonnageAndAlongsideDaysExpected =
+    Map<Range, Map<Range, Due>> carsDueByGrossTonnageAndAlongsideDaysExpected =
         new LinkedHashMap<>();
 
-    Map<Range, BigDecimal> first = new LinkedHashMap<>();
-    first.put(new Range(1, 1), BigDecimal.valueOf(80.00));
-    first.put(new Range(1, 5), BigDecimal.valueOf(120.00));
-    first.put(new Range(6, 10), BigDecimal.valueOf(180.00));
-    first.put(new Range(11, 20), BigDecimal.valueOf(250.00));
+    Map<Range, Due> first = new LinkedHashMap<>();
+    first.put(new Range(1, 1), new Due(80.00));
+    first.put(new Range(1, 5), new Due(120.00));
+    first.put(new Range(6, 10), new Due(180.00));
+    first.put(new Range(11, 20), new Due(250.00));
 
-    Map<Range, BigDecimal> second = new LinkedHashMap<>();
-    second.put(new Range(1, 1), BigDecimal.valueOf(110.00));
-    second.put(new Range(1, 5), BigDecimal.valueOf(150.00));
-    second.put(new Range(6, 10), BigDecimal.valueOf(200.00));
-    second.put(new Range(11, 20), BigDecimal.valueOf(300.00));
+    Map<Range, Due> second = new LinkedHashMap<>();
+    second.put(new Range(1, 1), new Due(110.00));
+    second.put(new Range(1, 5), new Due(150.00));
+    second.put(new Range(6, 10), new Due(200.00));
+    second.put(new Range(11, 20), new Due(300.00));
 
-    Map<Range, BigDecimal> third = new LinkedHashMap<>();
-    third.put(new Range(1, 1), BigDecimal.valueOf(150.00));
-    third.put(new Range(1, 5), BigDecimal.valueOf(230.00));
-    third.put(new Range(6, 10), BigDecimal.valueOf(300.00));
-    third.put(new Range(11, 20), BigDecimal.valueOf(350.00));
+    Map<Range, Due> third = new LinkedHashMap<>();
+    third.put(new Range(1, 1), new Due(150.00));
+    third.put(new Range(1, 5), new Due(230.00));
+    third.put(new Range(6, 10), new Due(300.00));
+    third.put(new Range(11, 20), new Due(350.00));
 
     carsDueByGrossTonnageAndAlongsideDaysExpected.put(new Range(150, 5999), first);
     carsDueByGrossTonnageAndAlongsideDaysExpected.put(new Range(6000, 14999), second);

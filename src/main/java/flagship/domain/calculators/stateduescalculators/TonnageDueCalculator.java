@@ -1,8 +1,9 @@
 package flagship.domain.calculators.stateduescalculators;
 
+import flagship.domain.calculators.StateDueCalculator;
+import flagship.domain.cases.dto.PdaCase;
 import flagship.domain.tariffs.Tariff;
 import flagship.domain.tariffs.stateduestariffs.TonnageDueTariff;
-import flagship.domain.cases.dto.PdaCase;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
@@ -26,11 +27,11 @@ public class TonnageDueCalculator extends StateDueCalculator<PdaCase, Tariff> {
 
   @Override
   public BigDecimal calculate() {
-    return calculateDueAfterDiscount(calculateBaseDue(), evaluateDiscountCoefficient());
+    return getDueAfterDiscount(getBaseDue(), getDiscountCoefficient());
   }
 
   @Override
-  protected BigDecimal calculateBaseDue() {
+  protected BigDecimal getBaseDue() {
 
     BigDecimal baseDue = source.getShip().getGrossTonnage().multiply(getTonnageDuePerTon());
 
@@ -42,11 +43,11 @@ public class TonnageDueCalculator extends StateDueCalculator<PdaCase, Tariff> {
 
   private BigDecimal getTonnageDuePerTon() {
     if (dueIsDependantOnCallPurpose()) {
-      return tariff.getTonnageDuesByCallPurpose().get(source.getCallPurpose());
+      return tariff.getTonnageDuesByCallPurpose().get(source.getCallPurpose()).getBase();
     } else if (dueIsDependantOnShipType()) {
-      return tariff.getTonnageDuesByShipType().get(source.getShip().getType());
+      return tariff.getTonnageDuesByShipType().get(source.getShip().getType()).getBase();
     } else {
-      return tariff.getTonnageDuesByPortArea().get(source.getPort().getPortArea());
+      return tariff.getTonnageDuesByPortArea().get(source.getPort().getPortArea()).getBase();
     }
   }
 
@@ -64,10 +65,10 @@ public class TonnageDueCalculator extends StateDueCalculator<PdaCase, Tariff> {
 
       if (expectedAlongsideDaysExceedCurrentMonth()) {
         final long multiplier =
-                ChronoUnit.MONTHS.between(
-                        YearMonth.from(source.getEstimatedDateOfArrival()),
-                        YearMonth.from(source.getEstimatedDateOfDeparture()))
-                        + 1;
+            ChronoUnit.MONTHS.between(
+                    YearMonth.from(source.getEstimatedDateOfArrival()),
+                    YearMonth.from(source.getEstimatedDateOfDeparture()))
+                + 1;
         return baseDue.multiply(BigDecimal.valueOf(multiplier));
       }
     }
@@ -76,16 +77,16 @@ public class TonnageDueCalculator extends StateDueCalculator<PdaCase, Tariff> {
 
   private boolean expectedAlongsideDaysAreProvided() {
     return Optional.ofNullable(source.getEstimatedDateOfArrival()).isPresent()
-            && Optional.ofNullable(source.getEstimatedDateOfDeparture()).isPresent();
+        && Optional.ofNullable(source.getEstimatedDateOfDeparture()).isPresent();
   }
 
   private boolean expectedAlongsideDaysExceedCurrentMonth() {
     return source.getEstimatedDateOfArrival().getMonthValue()
-            != source.getEstimatedDateOfDeparture().getMonthValue();
+        != source.getEstimatedDateOfDeparture().getMonthValue();
   }
 
   @Override
-  protected BigDecimal evaluateDiscountCoefficient() {
+  protected BigDecimal getDiscountCoefficient() {
 
     BigDecimal discountCoefficient =
         source.getArrivesFromBulgarianPort()
@@ -128,6 +129,4 @@ public class TonnageDueCalculator extends StateDueCalculator<PdaCase, Tariff> {
   private boolean isEligibleForShipTypeDiscount() {
     return tariff.getDiscountCoefficientsByShipType().containsKey(source.getShip().getType());
   }
-
-
 }

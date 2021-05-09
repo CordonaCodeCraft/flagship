@@ -1,8 +1,8 @@
 package flagship.domain.resolvers;
 
+import flagship.domain.cases.dto.PdaCase;
 import flagship.domain.tariffs.serviceduestariffs.PilotageDueTariff;
 import flagship.domain.tariffs.serviceduestariffs.PilotageDueTariff.PilotageArea;
-import flagship.domain.cases.dto.PdaCase;
 
 import java.util.Map;
 

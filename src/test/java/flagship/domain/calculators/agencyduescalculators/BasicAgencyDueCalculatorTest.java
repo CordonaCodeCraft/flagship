@@ -4,15 +4,12 @@ import flagship.domain.calculators.BaseCalculatorTest;
 import flagship.domain.cases.dto.PdaCase;
 import flagship.domain.cases.dto.PdaShip;
 import flagship.domain.cases.entities.enums.CallPurpose;
-import flagship.domain.tariffs.agencyduestariffs.AgencyDuesTariff;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
-import java.io.File;
-import java.io.IOException;
 import java.math.BigDecimal;
 
 import static flagship.domain.cases.entities.enums.CallPurpose.LOADING;
@@ -21,21 +18,16 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @DisplayName("Basic agency due calculator tests")
 class BasicAgencyDueCalculatorTest extends BaseCalculatorTest {
 
-  BasicAgencyDueCalculatorTest() throws IOException {}
-
-  private final AgencyDuesTariff tariff =
-      mapper.readValue(new File(TARIFFS_PATH + "agencyDuesTariff.json"), AgencyDuesTariff.class);
-
   private final BasicAgencyDueCalculator calculator = new BasicAgencyDueCalculator();
-  private final int grossTonnageThreshold =
-      tariff.getBasicAgencyDueGrossTonnageThreshold().intValue();
+  private BigDecimal grossTonnageThreshold;
 
   @BeforeEach
   void setUp() {
     testCase = PdaCase.builder().callPurpose(LOADING).ship(new PdaShip()).build();
+    grossTonnageThreshold = agencyDuesTariff.getBasicAgencyDueGrossTonnageThreshold();
   }
 
-  @DisplayName("Should return basic agency due within threshold")
+  @DisplayName("Should return basic agency due")
   @Test
   void testReturnsBasicAgencyDueWithinThreshold() {
 
@@ -43,11 +35,11 @@ class BasicAgencyDueCalculatorTest extends BaseCalculatorTest {
         .getShip()
         .setGrossTonnage(
             getRandomGrossTonnage(
-                MIN_GT, tariff.getBasicAgencyDueGrossTonnageThreshold().intValue()));
+                MIN_GT, agencyDuesTariff.getBasicAgencyDueGrossTonnageThreshold().intValue()));
 
-    calculator.set(testCase, tariff);
+    calculator.set(testCase, agencyDuesTariff);
 
-    final BigDecimal expected = getFixedDue(tariff.getBasicAgencyDuePerGrossTonnage());
+    final BigDecimal expected = getDueByRange(agencyDuesTariff.getBasicAgencyDuePerGrossTonnage());
 
     final BigDecimal result = calculator.calculate();
 
@@ -58,20 +50,20 @@ class BasicAgencyDueCalculatorTest extends BaseCalculatorTest {
   @Test
   void testReturnsIncreasedAgencyDue() {
 
-    testCase.getShip().setGrossTonnage(getRandomGrossTonnage(grossTonnageThreshold + 1, MAX_GT));
+    testCase
+        .getShip()
+        .setGrossTonnage(getRandomGrossTonnage(grossTonnageThreshold.intValue() + 1, MAX_GT));
 
-    calculator.set(testCase, tariff);
+    calculator.set(testCase, agencyDuesTariff);
 
-    final BigDecimal baseDue = getFixedDue(tariff.getBasicAgencyDuePerGrossTonnage());
-    final BigDecimal addition = getAddition(tariff.getBasicAgencyDuePerGrossTonnage());
+    final BigDecimal baseDue = getDueByRange(agencyDuesTariff.getBasicAgencyDuePerGrossTonnage());
+    final BigDecimal addition = getAddition(agencyDuesTariff.getBasicAgencyDuePerGrossTonnage());
     final BigDecimal multiplier = getMultiplier(grossTonnageThreshold);
-
-    System.out.println(multiplier);
 
     final BigDecimal expected = baseDue.add(addition.multiply(multiplier));
     final BigDecimal result = calculator.calculate();
 
-    //    assertThat(result).isEqualByComparingTo(expected);
+    assertThat(result).isEqualByComparingTo(expected);
   }
 
   @DisplayName("Should return reduced due if call purpose is eligible for discount")
@@ -83,13 +75,15 @@ class BasicAgencyDueCalculatorTest extends BaseCalculatorTest {
   void testReturnsReducedDueIfEligibleForDiscount(CallPurpose callPurpose) {
 
     testCase.setCallPurpose(callPurpose);
-    testCase.getShip().setGrossTonnage(getRandomGrossTonnage(MIN_GT, grossTonnageThreshold));
+    testCase
+        .getShip()
+        .setGrossTonnage(getRandomGrossTonnage(MIN_GT, grossTonnageThreshold.intValue()));
 
-    calculator.set(testCase, tariff);
+    calculator.set(testCase, agencyDuesTariff);
 
-    final BigDecimal baseDue = getFixedDue(tariff.getBasicAgencyDuePerGrossTonnage());
+    final BigDecimal baseDue = getDueByRange(agencyDuesTariff.getBasicAgencyDuePerGrossTonnage());
     final BigDecimal discount =
-        baseDue.multiply(tariff.getBasicAgencyDueDiscountCoefficientByCallPurpose());
+        baseDue.multiply(agencyDuesTariff.getBasicAgencyDueDiscountCoefficientByCallPurpose());
 
     final BigDecimal expected = baseDue.subtract(discount);
     final BigDecimal result = calculator.calculate();

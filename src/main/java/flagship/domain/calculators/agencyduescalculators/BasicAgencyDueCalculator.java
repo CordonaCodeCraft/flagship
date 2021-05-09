@@ -1,37 +1,35 @@
 package flagship.domain.calculators.agencyduescalculators;
 
-import flagship.domain.calculators.DueCalculator;
+import flagship.domain.calculators.PrivateDueCalculator;
 import flagship.domain.cases.dto.PdaCase;
-import flagship.domain.tariffs.Due;
-import flagship.domain.tariffs.Range;
 import flagship.domain.tariffs.Tariff;
 import flagship.domain.tariffs.agencyduestariffs.AgencyDuesTariff;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.Map;
 
 import static flagship.domain.cases.entities.enums.CallPurpose.*;
 
 @NoArgsConstructor
-public class BasicAgencyDueCalculator implements DueCalculator<PdaCase, Tariff> {
+public class BasicAgencyDueCalculator extends PrivateDueCalculator<PdaCase, Tariff> {
 
-  private PdaCase source;
   private AgencyDuesTariff tariff;
 
   @Override
   public void set(final PdaCase source, final Tariff tariff) {
-    this.source = source;
+    super.source = source;
     this.tariff = (AgencyDuesTariff) tariff;
   }
 
   @Override
   public BigDecimal calculate() {
 
-    BigDecimal basicAgencyDue = getBaseDue();
+    BigDecimal basicAgencyDue = getBaseDue(tariff.getBasicAgencyDuePerGrossTonnage());
 
-    if (grossTonnageExceedsThreshold()) {
-      basicAgencyDue = basicAgencyDue.add(getAddition().multiply(getMultiplier()));
+    if (grossTonnageExceedsThreshold(tariff.getBasicAgencyDueGrossTonnageThreshold())) {
+      final BigDecimal addition = getAddition(tariff.getBasicAgencyDuePerGrossTonnage());
+      final BigDecimal multiplier = getMultiplier(tariff.getBasicAgencyDueGrossTonnageThreshold());
+      basicAgencyDue = basicAgencyDue.add(addition.multiply(multiplier));
     }
 
     if (callPurposeIsEligibleForDiscount()) {
@@ -41,48 +39,13 @@ public class BasicAgencyDueCalculator implements DueCalculator<PdaCase, Tariff> 
     return basicAgencyDue;
   }
 
-  private BigDecimal getBaseDue() {
-    return tariff.getBasicAgencyDuePerGrossTonnage().entrySet().stream()
-        .filter(this::shipGrossTonnageIsInRange)
-        .map(e -> e.getValue().getBase())
-        .findFirst()
-        .get();
-  }
-
-  private boolean grossTonnageExceedsThreshold() {
-    return source.getShip().getGrossTonnage().intValue()
-        > tariff.getBasicAgencyDueGrossTonnageThreshold().intValue();
-  }
-
-  private BigDecimal getAddition() {
-    return tariff.getBasicAgencyDuePerGrossTonnage().entrySet().stream()
-        .filter(this::shipGrossTonnageIsInRange)
-        .map(e -> e.getValue().getAddition())
-        .findFirst()
-        .get();
-  }
-
-  private BigDecimal getMultiplier() {
-    final double a =
-        (source.getShip().getGrossTonnage().doubleValue()
-                - tariff.getBasicAgencyDueGrossTonnageThreshold().doubleValue())
-            / 1000;
-    final double b = a - Math.floor(a) > 0 ? 1 : 0;
-    return BigDecimal.valueOf((int) a + b);
-  }
-
-  private boolean shipGrossTonnageIsInRange(final Map.Entry<Range, Due> entry) {
-    return source.getShip().getGrossTonnage().intValue() >= entry.getKey().getMin()
-        && source.getShip().getGrossTonnage().intValue() <= entry.getKey().getMax();
-  }
-
   private boolean callPurposeIsEligibleForDiscount() {
     return source.getCallPurpose() != LOADING
         && source.getCallPurpose() != UNLOADING
         && source.getCallPurpose() != LOADING_AND_UNLOADING;
   }
 
-  private BigDecimal getDiscount(final BigDecimal baseDue) {
-    return baseDue.multiply(tariff.getBasicAgencyDueDiscountCoefficientByCallPurpose());
+  private BigDecimal getDiscount(final BigDecimal basicAgencyDue) {
+    return basicAgencyDue.multiply(tariff.getBasicAgencyDueDiscountCoefficientByCallPurpose());
   }
 }

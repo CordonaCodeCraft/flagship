@@ -1,16 +1,14 @@
-package flagship.domain.calculators.stateduescalculators;
-
-import flagship.domain.calculators.DueCalculator;
+package flagship.domain.calculators;
 
 import java.math.BigDecimal;
 
 public abstract class StateDueCalculator<S, T> implements DueCalculator<S, T> {
 
-  protected abstract BigDecimal calculateBaseDue();
+  protected abstract BigDecimal getBaseDue();
 
-  protected abstract BigDecimal evaluateDiscountCoefficient();
+  protected abstract BigDecimal getDiscountCoefficient();
 
-  protected BigDecimal calculateDueAfterDiscount(
+  protected BigDecimal getDueAfterDiscount(
       final BigDecimal due, final BigDecimal discountCoefficient) {
     if (discountCoefficient.doubleValue() > 0) {
       return due.subtract(due.multiply(discountCoefficient));

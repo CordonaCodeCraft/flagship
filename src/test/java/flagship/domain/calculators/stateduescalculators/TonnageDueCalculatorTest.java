@@ -1,15 +1,12 @@
 package flagship.domain.calculators.stateduescalculators;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import flagship.domain.calculators.DueCalculatorTest;
-import flagship.domain.tariffs.stateduestariffs.PortArea;
-import flagship.domain.tariffs.stateduestariffs.TonnageDueTariff;
+import flagship.domain.calculators.TariffsInitializer;
 import flagship.domain.cases.dto.PdaCase;
 import flagship.domain.cases.dto.PdaPort;
 import flagship.domain.cases.dto.PdaShip;
 import flagship.domain.cases.entities.enums.CallPurpose;
 import flagship.domain.cases.entities.enums.ShipType;
-import org.junit.jupiter.api.BeforeAll;
+import flagship.domain.tariffs.stateduestariffs.PortArea;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,8 +15,6 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.io.File;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.YearMonth;
@@ -30,55 +25,24 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Stream;
 
-import static flagship.domain.tariffs.stateduestariffs.PortArea.FIRST;
+import static flagship.domain.calculators.BaseCalculatorTest.MAX_GT;
+import static flagship.domain.calculators.BaseCalculatorTest.MIN_GT;
 import static flagship.domain.cases.entities.enums.CallPurpose.LOADING;
 import static flagship.domain.cases.entities.enums.ShipType.GENERAL;
 import static flagship.domain.cases.entities.enums.ShipType.SPECIAL;
+import static flagship.domain.tariffs.stateduestariffs.PortArea.FIRST;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DisplayName("Tonnage due calculator tests")
-class TonnageDueCalculatorTest implements DueCalculatorTest {
+class TonnageDueCalculatorTest extends TariffsInitializer {
 
-  private static TonnageDueTariff tariff;
   private final TonnageDueCalculator calculator = new TonnageDueCalculator();
   private PdaCase testCase;
   private BigDecimal grossTonnage;
 
-  @BeforeAll
-  public static void beforeClass() throws IOException {
-    ObjectMapper mapper = new ObjectMapper();
-    tariff =
-        mapper.readValue(
-            new File("src/main/resources/tonnageDueTariff.json"), TonnageDueTariff.class);
-  }
-
-  private static Stream<Arguments> getShipTypesAffectingTonnageDue() {
-    return tariff.getTonnageDuesByShipType().keySet().stream().map(Arguments::of);
-  }
-
-  private static Stream<Arguments> getCallPurposesAffectingTonnageDue() {
-    return tariff.getTonnageDuesByCallPurpose().keySet().stream().map(Arguments::of);
-  }
-
-  private static Stream<Arguments> getCallPurposesEligibleForDiscount() {
-    return tariff.getDiscountCoefficientsByCallPurpose().keySet().stream().map(Arguments::of);
-  }
-
-  private static Stream<Arguments> getShipTypesEligibleForDiscount() {
-    return tariff.getDiscountCoefficientsByShipType().keySet().stream().map(Arguments::of);
-  }
-
-  private static Stream<Arguments> getShipTypesNotEligibleForDiscount() {
-    return tariff.getShipTypesNotEligibleForDiscount().stream().map(Arguments::of);
-  }
-
-  private static Stream<Arguments> getCallPurposesNotEligibleForDiscount() {
-    return tariff.getCallPurposesNotEligibleForDiscount().stream().map(Arguments::of);
-  }
-
   @BeforeEach
   void setUp() {
-    BigDecimal randomGrossTonnage = getRandomGrossTonnage();
+    BigDecimal randomGrossTonnage = getRandomGrossTonnage(MIN_GT, MAX_GT);
     PdaPort testPort = PdaPort.builder().portArea(FIRST).build();
     PdaShip testShip = PdaShip.builder().grossTonnage(randomGrossTonnage).type(GENERAL).build();
     testCase =
@@ -92,70 +56,70 @@ class TonnageDueCalculatorTest implements DueCalculatorTest {
     grossTonnage = testShip.getGrossTonnage();
   }
 
-  @DisplayName("Tonnage due by port area")
+  @DisplayName("Should return tonnage due by port area")
   @ParameterizedTest(name = "port area : {arguments}")
   @EnumSource(PortArea.class)
-  void testTonnageDueByPortArea(PortArea portArea) {
+  void testReturnsTonnageDueByPortArea(final PortArea portArea) {
 
-    ShipType shipTypeTaxedByPortArea =
+    final ShipType shipType =
         Arrays.stream(ShipType.values())
-            .filter(type -> !tariff.getTonnageDuesByShipType().containsKey(type))
+            .filter(type -> !tonnageDueTariff.getTonnageDuesByShipType().containsKey(type))
             .findAny()
             .orElse(GENERAL);
 
-    CallPurpose callPurposeTaxedByPortArea =
+    final CallPurpose callPurpose =
         Arrays.stream(CallPurpose.values())
-            .filter(purpose -> !tariff.getTonnageDuesByCallPurpose().containsKey(purpose))
+            .filter(purpose -> !tonnageDueTariff.getTonnageDuesByCallPurpose().containsKey(purpose))
             .findAny()
             .orElse(LOADING);
 
-    testCase.getShip().setType(shipTypeTaxedByPortArea);
-    testCase.setCallPurpose(callPurposeTaxedByPortArea);
+    testCase.getShip().setType(shipType);
+    testCase.setCallPurpose(callPurpose);
     testCase.getPort().setPortArea(portArea);
 
-    calculator.set(testCase, tariff);
+    calculator.set(testCase, tonnageDueTariff);
 
-    BigDecimal duePerTon = tariff.getTonnageDuesByPortArea().get(testCase.getPort().getPortArea());
+    final BigDecimal baseDue = tonnageDueTariff.getTonnageDuesByPortArea().get(portArea).getBase();
 
-    BigDecimal expected = grossTonnage.multiply(duePerTon);
-    BigDecimal result = calculator.calculate();
+    final BigDecimal expected = grossTonnage.multiply(baseDue);
+    final BigDecimal result = calculator.calculate();
 
     assertThat(result).isEqualByComparingTo(expected);
   }
 
-  @DisplayName("Tonnage due by ship type")
+  @DisplayName("Should return tonnage due by ship type")
   @ParameterizedTest(name = "ship type : {arguments}")
   @MethodSource(value = "getShipTypesAffectingTonnageDue")
-  void testTonnageDueByShipType(ShipType shipType) {
+  void testReturnsTonnageDueByShipType(final ShipType shipType) {
 
     testCase.getShip().setType(shipType);
 
-    calculator.set(testCase, tariff);
+    calculator.set(testCase, tonnageDueTariff);
 
-    BigDecimal duePerTon = tariff.getTonnageDuesByShipType().get(testCase.getShip().getType());
+    final BigDecimal baseDue = tonnageDueTariff.getTonnageDuesByShipType().get(shipType).getBase();
 
-    BigDecimal expected = grossTonnage.multiply(duePerTon);
-    BigDecimal result = calculator.calculate();
+    final BigDecimal expected = grossTonnage.multiply(baseDue);
+    final BigDecimal result = calculator.calculate();
 
     assertThat(result).isEqualByComparingTo(expected);
   }
 
-  @DisplayName("Tonnage due for ship type 'Special'")
+  @DisplayName("Should return tonnage due for ship type 'Special'")
   @Test
-  void shouldIncreaseTonnageDueByExpectedMonthCount() {
+  void testIncreasesTonnageDueByExpectedMonthCount() {
 
     testCase.getShip().setType(SPECIAL);
     testCase.setEstimatedDateOfArrival(LocalDate.of(2021, 1, 10));
     testCase.setEstimatedDateOfDeparture(LocalDate.of(2021, 1, 10));
 
-    calculator.set(testCase, tariff);
+    calculator.set(testCase, tonnageDueTariff);
 
-    BigDecimal duePerTon = tariff.getTonnageDuesByShipType().get(SPECIAL);
-    BigDecimal expected = grossTonnage.multiply(duePerTon);
+    final BigDecimal baseDue = tonnageDueTariff.getTonnageDuesByShipType().get(SPECIAL).getBase();
+    BigDecimal expected = grossTonnage.multiply(baseDue);
 
     if (testCase.getEstimatedDateOfArrival().getMonthValue()
         != testCase.getEstimatedDateOfDeparture().getMonthValue()) {
-      long multiplier =
+      final long multiplier =
           ChronoUnit.MONTHS.between(
                   YearMonth.from(testCase.getEstimatedDateOfArrival()),
                   YearMonth.from(testCase.getEstimatedDateOfDeparture()))
@@ -163,190 +127,228 @@ class TonnageDueCalculatorTest implements DueCalculatorTest {
       expected = expected.multiply(BigDecimal.valueOf(multiplier));
     }
 
-    BigDecimal result = calculator.calculate();
+    final BigDecimal result = calculator.calculate();
     assertThat(result).isEqualByComparingTo(expected);
   }
 
-  @DisplayName("Tonnage due by call purpose")
+  @DisplayName("Should return tonnage due by call purpose")
   @ParameterizedTest(name = "call purpose : {arguments}")
   @MethodSource(value = "getCallPurposesAffectingTonnageDue")
-  void testTonnageDueByCallPurpose(CallPurpose callPurpose) {
+  void testReturnsTonnageDueByCallPurpose(final CallPurpose callPurpose) {
 
     testCase.setCallPurpose(callPurpose);
 
-    calculator.set(testCase, tariff);
+    calculator.set(testCase, tonnageDueTariff);
 
-    BigDecimal duePerTon = tariff.getTonnageDuesByCallPurpose().get(testCase.getCallPurpose());
+    final BigDecimal baseDue =
+        tonnageDueTariff.getTonnageDuesByCallPurpose().get(testCase.getCallPurpose()).getBase();
 
-    BigDecimal expected = grossTonnage.multiply(duePerTon);
-    BigDecimal result = calculator.calculate();
+    final BigDecimal expected = grossTonnage.multiply(baseDue);
+    final BigDecimal result = calculator.calculate();
 
     assertThat(result).isEqualByComparingTo(expected);
   }
 
-  @DisplayName("Tonnage due with discount by port of arrival")
+  @DisplayName("Should return tonnage due with discount by port of arrival")
   @Test
-  void testTonnageDueWithDiscountByPortOfArrival() {
+  void testReturnsTonnageDueWithDiscountByPortOfArrival() {
 
     testCase.setArrivesFromBulgarianPort(true);
 
-    calculator.set(testCase, tariff);
+    calculator.set(testCase, tonnageDueTariff);
 
-    BigDecimal discountCoefficient = tariff.getDiscountCoefficientForPortOfArrival();
+    final BigDecimal discountCoefficient =
+        tonnageDueTariff.getDiscountCoefficientForPortOfArrival();
 
-    BigDecimal expected = calculateDueAfterDiscount(discountCoefficient);
-    BigDecimal result = calculator.calculate();
+    final BigDecimal expected = calculateDueAfterDiscount(discountCoefficient);
+    final BigDecimal result = calculator.calculate();
 
     assertThat(result).isEqualByComparingTo(expected);
   }
 
-  @DisplayName("Tonnage due with discount by call count")
+  @DisplayName("Should return tonnage due with discount by call count")
   @Test
-  void testTonnageDueWithDiscountByCallCount() {
+  void testReturnsTonnageDueWithDiscountByCallCount() {
 
-    testCase.setCallCount(tariff.getCallCountThreshold());
+    testCase.setCallCount(tonnageDueTariff.getCallCountThreshold());
 
-    calculator.set(testCase, tariff);
+    calculator.set(testCase, tonnageDueTariff);
 
-    BigDecimal discountCoefficient = tariff.getCallCountDiscountCoefficient();
+    final BigDecimal discountCoefficient = tonnageDueTariff.getCallCountDiscountCoefficient();
 
-    BigDecimal expected = calculateDueAfterDiscount(discountCoefficient);
-    BigDecimal result = calculator.calculate();
+    final BigDecimal expected = calculateDueAfterDiscount(discountCoefficient);
+    final BigDecimal result = calculator.calculate();
 
     assertThat(result).isEqualByComparingTo(expected);
   }
 
-  @DisplayName("Tonnage due with discount by call purpose")
+  @DisplayName("Should return due with discount by call purpose")
   @ParameterizedTest(name = "call purpose : {arguments}")
   @MethodSource(value = "getCallPurposesEligibleForDiscount")
-  void testTonnageDueWithDiscountByCallPurpose(CallPurpose callPurpose) {
+  void testReturnsTonnageDueWithDiscountByCallPurpose(CallPurpose callPurpose) {
 
     testCase.setCallPurpose(callPurpose);
 
-    calculator.set(testCase, tariff);
+    calculator.set(testCase, tonnageDueTariff);
 
-    BigDecimal discountCoefficient = tariff.getDiscountCoefficientsByCallPurpose().get(callPurpose);
+    final BigDecimal discountCoefficient =
+        tonnageDueTariff.getDiscountCoefficientsByCallPurpose().get(callPurpose);
 
-    BigDecimal expected = calculateDueAfterDiscount(discountCoefficient);
-    BigDecimal result = calculator.calculate();
+    final BigDecimal expected = calculateDueAfterDiscount(discountCoefficient);
+    final BigDecimal result = calculator.calculate();
 
     assertThat(result).isEqualByComparingTo(expected);
   }
 
-  @DisplayName("Tonnage due with discount by ship type")
+  @DisplayName("Should return tonnage due with discount by ship type")
   @ParameterizedTest(name = "ship type : {arguments}")
   @MethodSource(value = "getShipTypesEligibleForDiscount")
-  void testTonnageDueWithDiscountByShipType(ShipType shipType) {
+  void testReturnsTonnageDueWithDiscountByShipType(final ShipType shipType) {
 
     testCase.getShip().setType(shipType);
 
-    calculator.set(testCase, tariff);
+    calculator.set(testCase, tonnageDueTariff);
 
-    BigDecimal discountCoefficient =
-        tariff.getDiscountCoefficientsByShipType().get(testCase.getShip().getType());
+    final BigDecimal discountCoefficient =
+        tonnageDueTariff.getDiscountCoefficientsByShipType().get(testCase.getShip().getType());
 
-    BigDecimal expected = calculateDueAfterDiscount(discountCoefficient);
-    BigDecimal result = calculator.calculate();
+    final BigDecimal expected = calculateDueAfterDiscount(discountCoefficient);
+    final BigDecimal result = calculator.calculate();
 
     assertThat(result).isEqualByComparingTo(expected);
   }
 
-  @DisplayName("Tonnage due with biggest discount")
+  @DisplayName("Should return tonnage due with biggest discount")
   @Test
-  void testTonnageDueWithBiggestDiscount() {
+  void testReturnsTonnageDueWithBiggestDiscount() {
 
     testCase.getShip().setType(getShipTypeEligibleForDiscount());
     testCase.setCallPurpose(getCallPurposeEligibleForDiscount());
-    testCase.setCallCount(tariff.getCallCountThreshold());
+    testCase.setCallCount(tonnageDueTariff.getCallCountThreshold());
 
-    calculator.set(testCase, tariff);
+    calculator.set(testCase, tonnageDueTariff);
 
-    List<BigDecimal> discountCoefficients =
+    final List<BigDecimal> discountCoefficients =
         Arrays.asList(
-            tariff.getDiscountCoefficientsByShipType().get(testCase.getShip().getType()),
-            tariff.getDiscountCoefficientsByCallPurpose().get(testCase.getCallPurpose()),
-            tariff.getCallCountDiscountCoefficient());
+            tonnageDueTariff.getDiscountCoefficientsByShipType().get(testCase.getShip().getType()),
+            tonnageDueTariff.getDiscountCoefficientsByCallPurpose().get(testCase.getCallPurpose()),
+            tonnageDueTariff.getCallCountDiscountCoefficient());
 
-    BigDecimal discountCoefficient =
+    final BigDecimal discountCoefficient =
         discountCoefficients.stream().max(Comparator.naturalOrder()).get();
 
-    BigDecimal expected = calculateDueAfterDiscount(discountCoefficient);
-    BigDecimal result = calculator.calculate();
+    final BigDecimal expected = calculateDueAfterDiscount(discountCoefficient);
+    final BigDecimal result = calculator.calculate();
 
     assertThat(result).isEqualByComparingTo(expected);
   }
 
-  @DisplayName("Tonnage due without discount when ship type is not eligible for discount")
+  @DisplayName(
+      "Should return tonnage due without discount when ship type is not eligible for discount")
   @ParameterizedTest(name = "ship type : {arguments}")
   @MethodSource(value = "getShipTypesNotEligibleForDiscount")
-  void testTonnageDueWithZeroDiscountByShipType(ShipType shipType) {
+  void testReturnsTonnageDueWithoutDiscountByShipType(final ShipType shipType) {
 
     testCase.getShip().setType(shipType);
     testCase.setCallPurpose(getCallPurposeEligibleForDiscount());
-    testCase.setCallCount(tariff.getCallCountThreshold());
+    testCase.setCallCount(tonnageDueTariff.getCallCountThreshold());
 
-    calculator.set(testCase, tariff);
+    calculator.set(testCase, tonnageDueTariff);
 
-    BigDecimal discountCoefficient = BigDecimal.ZERO;
+    final BigDecimal discountCoefficient = BigDecimal.ZERO;
 
-    BigDecimal expected = calculateDueAfterDiscount(discountCoefficient);
-    BigDecimal result = calculator.calculate();
+    final BigDecimal expected = calculateDueAfterDiscount(discountCoefficient);
+    final BigDecimal result = calculator.calculate();
 
     assertThat(result).isEqualByComparingTo(expected);
   }
 
-  @DisplayName("Tonnage due without discount when call purpose is not eligible for discount")
+  @DisplayName(
+      "Should return tonnage due without discount when call purpose is not eligible for discount")
   @ParameterizedTest(name = "call purpose : {arguments}")
   @MethodSource(value = "getCallPurposesNotEligibleForDiscount")
-  void testTonnageDueWithZeroDiscountByCallPurpose(CallPurpose callPurpose) {
+  void testReturnsTonnageDueWithoutDiscountByCallPurpose(final CallPurpose callPurpose) {
 
     testCase.getShip().setType(getShipTypeEligibleForDiscount());
     testCase.setCallPurpose(callPurpose);
-    testCase.setCallCount(tariff.getCallCountThreshold());
+    testCase.setCallCount(tonnageDueTariff.getCallCountThreshold());
 
-    calculator.set(testCase, tariff);
+    calculator.set(testCase, tonnageDueTariff);
 
-    BigDecimal discountCoefficient = BigDecimal.ZERO;
+    final BigDecimal discountCoefficient = BigDecimal.ZERO;
 
-    BigDecimal expected = calculateDueAfterDiscount(discountCoefficient);
-    BigDecimal result = calculator.calculate();
+    final BigDecimal expected = calculateDueAfterDiscount(discountCoefficient);
+    final BigDecimal result = calculator.calculate();
 
     assertThat(result).isEqualByComparingTo(expected);
   }
 
   private ShipType getShipTypeEligibleForDiscount() {
-    return tariff.getDiscountCoefficientsByShipType().keySet().stream().findAny().get();
+    return tonnageDueTariff.getDiscountCoefficientsByShipType().keySet().stream().findAny().get();
   }
 
   private CallPurpose getCallPurposeEligibleForDiscount() {
-    return tariff.getDiscountCoefficientsByCallPurpose().keySet().stream().findAny().get();
+    return tonnageDueTariff.getDiscountCoefficientsByCallPurpose().keySet().stream()
+        .findAny()
+        .get();
   }
 
-  BigDecimal calculateDueAfterDiscount(BigDecimal discountCoefficient) {
+  BigDecimal calculateDueAfterDiscount(final BigDecimal discountCoefficient) {
 
     BigDecimal duePerGrossTon;
 
     final boolean dueIsDependentOnShipType =
-        tariff.getTonnageDuesByShipType().containsKey(testCase.getShip().getType());
+        tonnageDueTariff.getTonnageDuesByShipType().containsKey(testCase.getShip().getType());
     final boolean dueIsDependantOnCallPurpose =
-        tariff.getTonnageDuesByCallPurpose().containsKey(testCase.getCallPurpose());
+        tonnageDueTariff.getTonnageDuesByCallPurpose().containsKey(testCase.getCallPurpose());
 
     if (dueIsDependentOnShipType) {
-      duePerGrossTon = tariff.getTonnageDuesByShipType().get(testCase.getShip().getType());
+      duePerGrossTon =
+          tonnageDueTariff.getTonnageDuesByShipType().get(testCase.getShip().getType()).getBase();
     } else if (dueIsDependantOnCallPurpose) {
-      duePerGrossTon = tariff.getTonnageDuesByCallPurpose().get(testCase.getCallPurpose());
+      duePerGrossTon =
+          tonnageDueTariff.getTonnageDuesByCallPurpose().get(testCase.getCallPurpose()).getBase();
     } else {
-      duePerGrossTon = tariff.getTonnageDuesByPortArea().get(testCase.getPort().getPortArea());
+      duePerGrossTon =
+          tonnageDueTariff
+              .getTonnageDuesByPortArea()
+              .get(testCase.getPort().getPortArea())
+              .getBase();
     }
 
     BigDecimal dueTotal = grossTonnage.multiply(duePerGrossTon);
-    BigDecimal discount = dueTotal.multiply(discountCoefficient);
 
-    return dueTotal.subtract(discount);
+    return dueTotal.subtract(dueTotal.multiply(discountCoefficient));
   }
 
-  private BigDecimal getRandomGrossTonnage() {
-    Random random = new Random();
-    return BigDecimal.valueOf(random.ints(500, 200000).findFirst().getAsInt());
+  protected BigDecimal getRandomGrossTonnage(final int min, final int max) {
+    final Random random = new Random();
+    return BigDecimal.valueOf(random.ints(min, max).findFirst().getAsInt());
+  }
+
+  private static Stream<Arguments> getShipTypesAffectingTonnageDue() {
+    return tonnageDueTariff.getTonnageDuesByShipType().keySet().stream().map(Arguments::of);
+  }
+
+  private static Stream<Arguments> getCallPurposesAffectingTonnageDue() {
+    return tonnageDueTariff.getTonnageDuesByCallPurpose().keySet().stream().map(Arguments::of);
+  }
+
+  private static Stream<Arguments> getCallPurposesEligibleForDiscount() {
+    return tonnageDueTariff.getDiscountCoefficientsByCallPurpose().keySet().stream()
+            .map(Arguments::of);
+  }
+
+  private static Stream<Arguments> getShipTypesEligibleForDiscount() {
+    return tonnageDueTariff.getDiscountCoefficientsByShipType().keySet().stream()
+            .map(Arguments::of);
+  }
+
+  private static Stream<Arguments> getShipTypesNotEligibleForDiscount() {
+    return tonnageDueTariff.getShipTypesNotEligibleForDiscount().stream().map(Arguments::of);
+  }
+
+  private static Stream<Arguments> getCallPurposesNotEligibleForDiscount() {
+    return tonnageDueTariff.getCallPurposesNotEligibleForDiscount().stream().map(Arguments::of);
   }
 }

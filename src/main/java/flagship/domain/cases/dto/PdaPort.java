@@ -1,10 +1,10 @@
 package flagship.domain.cases.dto;
 
-import flagship.domain.tariffs.stateduestariffs.PortArea;
 import flagship.domain.tariffs.serviceduestariffs.PilotageDueTariff;
+import flagship.domain.tariffs.stateduestariffs.PortArea;
 import lombok.*;
 
-import static flagship.domain.tariffs.serviceduestariffs.MooringDueTariff.*;
+import static flagship.domain.tariffs.serviceduestariffs.MooringDueTariff.MooringServiceProvider;
 import static flagship.domain.tariffs.serviceduestariffs.TugDueTariff.TugArea;
 import static flagship.domain.tariffs.serviceduestariffs.TugDueTariff.TugServiceProvider;
 

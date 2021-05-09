@@ -2,6 +2,7 @@ package flagship.bootstrap;
 
 import flagship.domain.cases.entities.enums.CallPurpose;
 import flagship.domain.cases.entities.enums.ShipType;
+import flagship.domain.tariffs.Due;
 import flagship.domain.tariffs.Range;
 import flagship.domain.tariffs.stateduestariffs.*;
 import org.springframework.stereotype.Component;
@@ -11,6 +12,8 @@ import java.util.*;
 
 import static flagship.domain.cases.entities.enums.CallPurpose.*;
 import static flagship.domain.cases.entities.enums.ShipType.*;
+import static flagship.domain.tariffs.Tariff.MAX_GT;
+import static flagship.domain.tariffs.Tariff.MIN_GT;
 import static flagship.domain.tariffs.stateduestariffs.PortArea.*;
 
 @Component
@@ -33,22 +36,22 @@ public class StateDuesTariffsInitializer {
 
   private static void initializeTonnageDueTariff(final TonnageDueTariff tonnageDueTariff) {
 
-    final Map<PortArea, BigDecimal> tonnageDuesByPortArea = new EnumMap<>(PortArea.class);
-    tonnageDuesByPortArea.put(FIRST, BigDecimal.valueOf(0.55));
-    tonnageDuesByPortArea.put(SECOND, BigDecimal.valueOf(0.40));
-    tonnageDuesByPortArea.put(THIRD, BigDecimal.valueOf(0.55));
-    tonnageDuesByPortArea.put(FOURTH, BigDecimal.valueOf(0.55));
+    final Map<PortArea, Due> tonnageDuesByPortArea = new EnumMap<>(PortArea.class);
+    tonnageDuesByPortArea.put(FIRST, new Due(0.55));
+    tonnageDuesByPortArea.put(SECOND, new Due(0.40));
+    tonnageDuesByPortArea.put(THIRD, new Due(0.55));
+    tonnageDuesByPortArea.put(FOURTH, new Due(0.55));
     tonnageDueTariff.setTonnageDuesByPortArea(Collections.unmodifiableMap(tonnageDuesByPortArea));
 
-    final Map<ShipType, BigDecimal> tonnageDuesByShipType = new EnumMap<>(ShipType.class);
-    tonnageDuesByShipType.put(OIL_TANKER, BigDecimal.valueOf(0.50));
-    tonnageDuesByShipType.put(RECREATIONAL, BigDecimal.valueOf(0.10));
-    tonnageDuesByShipType.put(MILITARY, BigDecimal.valueOf(0.25));
-    tonnageDuesByShipType.put(SPECIAL, BigDecimal.valueOf(0.50));
+    final Map<ShipType, Due> tonnageDuesByShipType = new EnumMap<>(ShipType.class);
+    tonnageDuesByShipType.put(OIL_TANKER, new Due(0.50));
+    tonnageDuesByShipType.put(RECREATIONAL, new Due(0.10));
+    tonnageDuesByShipType.put(MILITARY, new Due(0.25));
+    tonnageDuesByShipType.put(SPECIAL, new Due(0.50));
     tonnageDueTariff.setTonnageDuesByShipType(Collections.unmodifiableMap(tonnageDuesByShipType));
 
-    final Map<CallPurpose, BigDecimal> tonnageDuesByCallPurpose = new EnumMap<>(CallPurpose.class);
-    tonnageDuesByCallPurpose.put(SPECIAL_PURPOSE_PORT_VISIT, BigDecimal.valueOf(0.05));
+    final Map<CallPurpose, Due> tonnageDuesByCallPurpose = new EnumMap<>(CallPurpose.class);
+    tonnageDuesByCallPurpose.put(SPECIAL_PURPOSE_PORT_VISIT, new Due(0.05));
     tonnageDueTariff.setTonnageDuesByCallPurpose(
         Collections.unmodifiableMap(tonnageDuesByCallPurpose));
 
@@ -85,8 +88,8 @@ public class StateDuesTariffsInitializer {
 
   private static void initializeWharfDueTariff(final WharfDueTariff wharfDueTariff) {
 
-    final Map<ShipType, BigDecimal> wharfDuesByShipType = new EnumMap<>(ShipType.class);
-    wharfDuesByShipType.put(MILITARY, BigDecimal.valueOf(0.5));
+    final Map<ShipType, Due> wharfDuesByShipType = new EnumMap<>(ShipType.class);
+    wharfDuesByShipType.put(MILITARY, new Due(0.5));
     wharfDueTariff.setWharfDuesByShipType(Collections.unmodifiableMap(wharfDuesByShipType));
 
     final Map<CallPurpose, BigDecimal> discountCoefficientsByCallPurpose =
@@ -102,16 +105,16 @@ public class StateDuesTariffsInitializer {
     wharfDueTariff.setShipTypesNotEligibleForDiscount(
         Collections.unmodifiableSet(shipTypesNotEligibleForDiscount));
 
-    wharfDueTariff.setDefaultWharfDue(BigDecimal.valueOf(0.10));
+    wharfDueTariff.setDefaultWharfDue(new Due(0.10));
   }
 
   private static void initializeCanalDueTariff(final CanalDueTariff canalDueTariff) {
 
-    final Map<PortArea, BigDecimal> canalDuesByPortArea = new EnumMap<>(PortArea.class);
-    canalDuesByPortArea.put(FIRST, BigDecimal.valueOf(0.04));
-    canalDuesByPortArea.put(SECOND, BigDecimal.valueOf(0.13));
-    canalDuesByPortArea.put(THIRD, BigDecimal.valueOf(0.04));
-    canalDuesByPortArea.put(FOURTH, BigDecimal.valueOf(0.07));
+    final Map<PortArea, Due> canalDuesByPortArea = new EnumMap<>(PortArea.class);
+    canalDuesByPortArea.put(FIRST, new Due(0.04));
+    canalDuesByPortArea.put(SECOND, new Due(0.13));
+    canalDuesByPortArea.put(THIRD, new Due(0.04));
+    canalDuesByPortArea.put(FOURTH, new Due(0.07));
     canalDueTariff.setCanalDuesByPortArea(Collections.unmodifiableMap(canalDuesByPortArea));
 
     final Map<ShipType, BigDecimal> discountCoefficientByShipType = new EnumMap<>(ShipType.class);
@@ -147,98 +150,77 @@ public class StateDuesTariffsInitializer {
 
   private static void initializeLightDueTariff(final LightDueTariff lightDueTariff) {
 
-    final Map<BigDecimal, Integer[]> lightDuesByGrossTonnage = new TreeMap<>();
+    final Map<Range, Due> lightDuesByGrossTonnage = new LinkedHashMap<>();
+    lightDuesByGrossTonnage.put(new Range(41, 500), new Due(15.00));
+    lightDuesByGrossTonnage.put(new Range(501, 1000), new Due(40.00));
+    lightDuesByGrossTonnage.put(new Range(1001, 5000), new Due(70.00));
+    lightDuesByGrossTonnage.put(new Range(5001, 10000), new Due(110.00));
+    lightDuesByGrossTonnage.put(new Range(10001, MAX_GT), new Due(150.00));
 
-    lightDuesByGrossTonnage.put(BigDecimal.valueOf(15.00), new Integer[] {41, 500});
-    lightDuesByGrossTonnage.put(BigDecimal.valueOf(40.00), new Integer[] {501, 1000});
-    lightDuesByGrossTonnage.put(BigDecimal.valueOf(70.00), new Integer[] {1001, 5000});
-    lightDuesByGrossTonnage.put(BigDecimal.valueOf(110.00), new Integer[] {5001, 10000});
-
-    lightDueTariff.setLightDuesByGrossTonnage(Collections.unmodifiableMap(lightDuesByGrossTonnage));
-
-    final Map<ShipType, BigDecimal> lightDuesByShipType = new EnumMap<>(ShipType.class);
-    lightDuesByShipType.put(MILITARY, BigDecimal.valueOf(0.15));
-    lightDueTariff.setLightDuesPerTonByShipType(Collections.unmodifiableMap(lightDuesByShipType));
+    final Map<ShipType, Due> lightDuesByShipType = new EnumMap<>(ShipType.class);
+    lightDuesByShipType.put(MILITARY, new Due(0.15));
 
     final Map<ShipType, BigDecimal> discountCoefficientsByShipType = new EnumMap<>(ShipType.class);
     discountCoefficientsByShipType.put(PASSENGER, BigDecimal.valueOf(0.5));
-    lightDueTariff.setDiscountCoefficientsByShipType(
-        Collections.unmodifiableMap(discountCoefficientsByShipType));
 
     final Set<ShipType> shipTypesNotEligibleForDiscount = EnumSet.of(MILITARY);
     lightDueTariff.setShipTypesNotEligibleForDiscount(
         Collections.unmodifiableSet(shipTypesNotEligibleForDiscount));
 
-    lightDueTariff.setLightDueMaximumValue(BigDecimal.valueOf(150.00));
+    lightDueTariff.setLightDuesByGrossTonnage(Collections.unmodifiableMap(lightDuesByGrossTonnage));
+    lightDueTariff.setLightDuesPerTonByShipType(Collections.unmodifiableMap(lightDuesByShipType));
+    lightDueTariff.setDiscountCoefficientsByShipType(
+        Collections.unmodifiableMap(discountCoefficientsByShipType));
     lightDueTariff.setCallCountThreshold(4);
     lightDueTariff.setCallCountDiscountCoefficient(BigDecimal.valueOf(0.7));
+    lightDueTariff.setLightDueMaximumValue(BigDecimal.valueOf(150.00));
   }
 
   private static void initializeMarpolDueTariff(MarpolDueTariff marpolDueTariff) {
 
-    Map<Range, BigDecimal> freeSewageDisposalQuantitiesPerGT = new LinkedHashMap<>();
+    Map<Range, Due> freeSewageDisposalQuantitiesPerGT = new LinkedHashMap<>();
 
-    freeSewageDisposalQuantitiesPerGT.put(new Range(150, 2000), BigDecimal.valueOf(8.6508));
-    freeSewageDisposalQuantitiesPerGT.put(new Range(2001, 3000), BigDecimal.valueOf(10.5314));
-    freeSewageDisposalQuantitiesPerGT.put(new Range(3001, 6000), BigDecimal.valueOf(10.5315));
-    freeSewageDisposalQuantitiesPerGT.put(new Range(6001, 10000), BigDecimal.valueOf(15.0448));
-    freeSewageDisposalQuantitiesPerGT.put(new Range(10001, 20000), BigDecimal.valueOf(19.5583));
-    freeSewageDisposalQuantitiesPerGT.put(new Range(20001, 30000), BigDecimal.valueOf(21.0628));
-    freeSewageDisposalQuantitiesPerGT.put(new Range(30001, 40000), BigDecimal.valueOf(27.0807));
-    freeSewageDisposalQuantitiesPerGT.put(new Range(40001, 50000), BigDecimal.valueOf(28.5852));
+    freeSewageDisposalQuantitiesPerGT.put(new Range(MIN_GT, 2000), new Due(8.6508));
+    freeSewageDisposalQuantitiesPerGT.put(new Range(2001, 3000), new Due(10.5314));
+    freeSewageDisposalQuantitiesPerGT.put(new Range(3001, 6000), new Due(10.5315));
+    freeSewageDisposalQuantitiesPerGT.put(new Range(6001, 10000), new Due(15.0448));
+    freeSewageDisposalQuantitiesPerGT.put(new Range(10001, 20000), new Due(19.5583));
+    freeSewageDisposalQuantitiesPerGT.put(new Range(20001, 30000), new Due(21.0628));
+    freeSewageDisposalQuantitiesPerGT.put(new Range(30001, 40000), new Due(27.0807));
+    freeSewageDisposalQuantitiesPerGT.put(new Range(40001, 50000), new Due(28.5852));
+    freeSewageDisposalQuantitiesPerGT.put(new Range(50001, MAX_GT), new Due(30.0897));
 
-    Map<Range, BigDecimal> freeGarbageDisposalQuantitiesPerGT = new LinkedHashMap<>();
+    Map<Range, Due> freeGarbageDisposalQuantitiesPerGT = new LinkedHashMap<>();
 
-    freeGarbageDisposalQuantitiesPerGT.put(new Range(150, 2000), BigDecimal.valueOf(10.72));
-    freeGarbageDisposalQuantitiesPerGT.put(new Range(2001, 3000), BigDecimal.valueOf(11.43));
-    freeGarbageDisposalQuantitiesPerGT.put(new Range(3001, 6000), BigDecimal.valueOf(12.86));
-    freeGarbageDisposalQuantitiesPerGT.put(new Range(6001, 10000), BigDecimal.valueOf(23.58));
-    freeGarbageDisposalQuantitiesPerGT.put(new Range(10001, 20000), BigDecimal.valueOf(26.43));
-    freeGarbageDisposalQuantitiesPerGT.put(new Range(20001, 30000), BigDecimal.valueOf(32.15));
-    freeGarbageDisposalQuantitiesPerGT.put(new Range(30001, 40000), BigDecimal.valueOf(50.01));
-    freeGarbageDisposalQuantitiesPerGT.put(new Range(40001, 50000), BigDecimal.valueOf(71.45));
+    freeGarbageDisposalQuantitiesPerGT.put(new Range(MIN_GT, 2000), new Due(10.72));
+    freeGarbageDisposalQuantitiesPerGT.put(new Range(2001, 3000), new Due(11.43));
+    freeGarbageDisposalQuantitiesPerGT.put(new Range(3001, 6000), new Due(12.86));
+    freeGarbageDisposalQuantitiesPerGT.put(new Range(6001, 10000), new Due(23.58));
+    freeGarbageDisposalQuantitiesPerGT.put(new Range(10001, 20000), new Due(26.43));
+    freeGarbageDisposalQuantitiesPerGT.put(new Range(20001, 30000), new Due(32.15));
+    freeGarbageDisposalQuantitiesPerGT.put(new Range(30001, 40000), new Due(50.01));
+    freeGarbageDisposalQuantitiesPerGT.put(new Range(40001, 50000), new Due(71.45));
+    freeGarbageDisposalQuantitiesPerGT.put(new Range(50001, MAX_GT), new Due(107.17));
 
-    Map<Range, BigDecimal[]> marpolDuePerGrossTonnage = new LinkedHashMap<>();
+    Map<Range, Due[]> marpolDuePerGrossTonnage = new LinkedHashMap<>();
     marpolDuePerGrossTonnage.put(
-        new Range(150, 2000),
-        new BigDecimal[] {
-          BigDecimal.valueOf(35.00), BigDecimal.valueOf(5.00), BigDecimal.valueOf(25.00)
-        });
+        new Range(MIN_GT, 2000), new Due[] {new Due(35.00), new Due(5.00), new Due(25.00)});
     marpolDuePerGrossTonnage.put(
-        new Range(2001, 3000),
-        new BigDecimal[] {
-          BigDecimal.valueOf(100.00), BigDecimal.valueOf(10.00), BigDecimal.valueOf(50.00)
-        });
+        new Range(2001, 3000), new Due[] {new Due(100.00), new Due(10.00), new Due(50.00)});
     marpolDuePerGrossTonnage.put(
-        new Range(3001, 6000),
-        new BigDecimal[] {
-          BigDecimal.valueOf(130.00), BigDecimal.valueOf(15.00), BigDecimal.valueOf(65.00)
-        });
+        new Range(3001, 6000), new Due[] {new Due(130.00), new Due(15.00), new Due(65.00)});
     marpolDuePerGrossTonnage.put(
-        new Range(6001, 10000),
-        new BigDecimal[] {
-          BigDecimal.valueOf(200.00), BigDecimal.valueOf(20.00), BigDecimal.valueOf(85.00)
-        });
+        new Range(6001, 10000), new Due[] {new Due(200.00), new Due(20.00), new Due(85.00)});
     marpolDuePerGrossTonnage.put(
-        new Range(10001, 20000),
-        new BigDecimal[] {
-          BigDecimal.valueOf(220.00), BigDecimal.valueOf(25.00), BigDecimal.valueOf(120.00)
-        });
+        new Range(10001, 20000), new Due[] {new Due(220.00), new Due(25.00), new Due(120.00)});
     marpolDuePerGrossTonnage.put(
-        new Range(20001, 30000),
-        new BigDecimal[] {
-          BigDecimal.valueOf(250.00), BigDecimal.valueOf(30.00), BigDecimal.valueOf(180.00)
-        });
+        new Range(20001, 30000), new Due[] {new Due(250.00), new Due(30.00), new Due(180.00)});
     marpolDuePerGrossTonnage.put(
-        new Range(30001, 40000),
-        new BigDecimal[] {
-          BigDecimal.valueOf(450.00), BigDecimal.valueOf(35.00), BigDecimal.valueOf(250.00)
-        });
+        new Range(30001, 40000), new Due[] {new Due(450.00), new Due(35.00), new Due(250.00)});
     marpolDuePerGrossTonnage.put(
-        new Range(40001, 50000),
-        new BigDecimal[] {
-          BigDecimal.valueOf(700.00), BigDecimal.valueOf(40.00), BigDecimal.valueOf(400.00)
-        });
+        new Range(40001, 50000), new Due[] {new Due(700.00), new Due(40.00), new Due(400.00)});
+    marpolDuePerGrossTonnage.put(
+        new Range(50001, MAX_GT), new Due[] {new Due(900.00), new Due(50.00), new Due(550.00)});
 
     marpolDueTariff.setFreeSewageDisposalQuantitiesPerGrossTonnage(
         Collections.unmodifiableMap(freeSewageDisposalQuantitiesPerGT));
@@ -247,12 +229,6 @@ public class StateDuesTariffsInitializer {
     marpolDueTariff.setMarpolDuePerGrossTonnage(
         Collections.unmodifiableMap(marpolDuePerGrossTonnage));
 
-    marpolDueTariff.setMaximumFreeSewageDisposalQuantity(BigDecimal.valueOf(30.0897));
-    marpolDueTariff.setMaximumFreeGarbageDisposalQuantity(BigDecimal.valueOf(107.17));
-    marpolDueTariff.setMaximumMarpolDueValues(
-        new BigDecimal[] {
-          BigDecimal.valueOf(900.00), BigDecimal.valueOf(50.00), BigDecimal.valueOf(550.00)
-        });
     marpolDueTariff.setOdessosFixedMarpolDue(BigDecimal.valueOf(120.00));
     marpolDueTariff.setOdessosFreeGarbageDisposalQuantity(BigDecimal.valueOf(10.00));
     marpolDueTariff.setOdessosFreeSewageDisposalQuantity(BigDecimal.valueOf(1.00));
@@ -260,14 +236,14 @@ public class StateDuesTariffsInitializer {
 
   private static void initializeBoomContainmentTariff(BoomContainmentTariff boomContainmentTariff) {
 
-    Map<Range, BigDecimal> boomContainmentDuePerGrossTonnage = new LinkedHashMap<>();
-    boomContainmentDuePerGrossTonnage.put(new Range(150, 3000), BigDecimal.valueOf(700.00));
-    boomContainmentDuePerGrossTonnage.put(new Range(3001, 5000), BigDecimal.valueOf(1000.00));
-    boomContainmentDuePerGrossTonnage.put(new Range(5001, 10000), BigDecimal.valueOf(1500.00));
-    boomContainmentDuePerGrossTonnage.put(new Range(10001, 20000), BigDecimal.valueOf(1800.00));
+    Map<Range, Due> boomContainmentDuePerGrossTonnage = new LinkedHashMap<>();
+    boomContainmentDuePerGrossTonnage.put(new Range(MIN_GT, 3000), new Due(700.00));
+    boomContainmentDuePerGrossTonnage.put(new Range(3001, 5000), new Due(1000.00));
+    boomContainmentDuePerGrossTonnage.put(new Range(5001, 10000), new Due(1500.00));
+    boomContainmentDuePerGrossTonnage.put(new Range(10001, 20000), new Due(1800.00));
+    boomContainmentDuePerGrossTonnage.put(new Range(20001, MAX_GT), new Due(2500.00));
 
     boomContainmentTariff.setBoomContainmentDuePerGrossTonnage(
         Collections.unmodifiableMap(boomContainmentDuePerGrossTonnage));
-    boomContainmentTariff.setMaximumBoomContainmentDueValue(BigDecimal.valueOf(2500.00));
   }
 }

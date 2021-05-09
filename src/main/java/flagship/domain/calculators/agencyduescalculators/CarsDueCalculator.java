@@ -2,6 +2,7 @@ package flagship.domain.calculators.agencyduescalculators;
 
 import flagship.domain.calculators.DueCalculator;
 import flagship.domain.cases.dto.PdaCase;
+import flagship.domain.tariffs.Due;
 import flagship.domain.tariffs.PortName;
 import flagship.domain.tariffs.Range;
 import flagship.domain.tariffs.Tariff;
@@ -38,6 +39,32 @@ public class CarsDueCalculator implements DueCalculator<PdaCase, Tariff> {
     return carsDue;
   }
 
+  private BigDecimal getCarsDue() {
+    return tariff.getCarsDueByGrossTonnageAndAlongsideDaysExpected().entrySet().stream()
+        .filter(this::grossTonnageIsInRange)
+        .map(this::getDue)
+        .findFirst()
+        .get();
+  }
+
+  private boolean grossTonnageIsInRange(final Map.Entry<Range, Map<Range, Due>> entry) {
+    return source.getShip().getGrossTonnage().intValue() >= entry.getKey().getMin()
+        && source.getShip().getGrossTonnage().intValue() <= entry.getKey().getMax();
+  }
+
+  private BigDecimal getDue(final Map.Entry<Range, Map<Range, Due>> entry) {
+    return entry.getValue().entrySet().stream()
+        .filter(this::daysAreInRange)
+        .map(e -> e.getValue().getBase())
+        .findFirst()
+        .get();
+  }
+
+  private boolean daysAreInRange(final Map.Entry<Range, Due> entry) {
+    return source.getAlongsideDaysExpected() >= entry.getKey().getMin()
+        && source.getAlongsideDaysExpected() <= entry.getKey().getMax();
+  }
+
   private BigDecimal getIncreaseCoefficient() {
 
     final PortName portName =
@@ -49,27 +76,5 @@ public class CarsDueCalculator implements DueCalculator<PdaCase, Tariff> {
     return tariff
         .getCarsDuesIncreaseCoefficientByPortName()
         .getOrDefault(portName, BigDecimal.ZERO);
-  }
-
-  private BigDecimal getCarsDue() {
-    return tariff.getCarsDueByGrossTonnageAndAlongsideDaysExpected().entrySet().stream()
-        .filter(
-            entry ->
-                source.getShip().getGrossTonnage().intValue() >= entry.getKey().getMin()
-                    && source.getShip().getGrossTonnage().intValue() <= entry.getKey().getMax())
-        .map(this::getDue)
-        .findFirst()
-        .get();
-  }
-
-  private BigDecimal getDue(final Map.Entry<Range, Map<Range, BigDecimal>> entry) {
-    return entry.getValue().entrySet().stream()
-        .filter(
-            e ->
-                source.getAlongsideDaysExpected() >= e.getKey().getMin()
-                    && source.getAlongsideDaysExpected() <= e.getKey().getMax())
-        .map(Map.Entry::getValue)
-        .findFirst()
-        .get();
   }
 }

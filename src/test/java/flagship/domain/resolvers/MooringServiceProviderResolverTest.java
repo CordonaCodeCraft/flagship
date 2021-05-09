@@ -23,7 +23,7 @@ class MooringServiceProviderResolverTest {
   void testResolveMooringServiceProviderToOdessos() {
     String portName = "Odessos PBM";
     MooringServiceProvider result =
-            MooringServiceProviderResolver.resolveMooringServiceProvider(portName);
+        MooringServiceProviderResolver.resolveMooringServiceProvider(portName);
     assertThat(result.name()).isEqualTo(ODESSOS.name());
   }
 
@@ -32,7 +32,7 @@ class MooringServiceProviderResolverTest {
   void testResolveMooringServiceProviderToBalchik() {
     String portName = "Balchik port";
     MooringServiceProvider result =
-            MooringServiceProviderResolver.resolveMooringServiceProvider(portName);
+        MooringServiceProviderResolver.resolveMooringServiceProvider(portName);
     assertThat(result.name()).isEqualTo(BALCHIK.name());
   }
 
@@ -41,10 +41,7 @@ class MooringServiceProviderResolverTest {
   void testResolveMooringServiceProviderToDefault() {
     String portName = "Varna West";
     MooringServiceProvider result =
-            MooringServiceProviderResolver.resolveMooringServiceProvider(portName);
+        MooringServiceProviderResolver.resolveMooringServiceProvider(portName);
     assertThat(result.name()).isEqualTo(VTC.name());
   }
-
-
-
 }

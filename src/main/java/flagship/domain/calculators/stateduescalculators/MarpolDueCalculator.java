@@ -1,7 +1,8 @@
 package flagship.domain.calculators.stateduescalculators;
 
-import flagship.domain.calculators.DueCalculator;
+import flagship.domain.calculators.PrivateDueCalculator;
 import flagship.domain.cases.dto.PdaCase;
+import flagship.domain.tariffs.Due;
 import flagship.domain.tariffs.PortName;
 import flagship.domain.tariffs.Range;
 import flagship.domain.tariffs.Tariff;
@@ -11,14 +12,13 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Map;
 
-public class MarpolDueCalculator implements DueCalculator<PdaCase, Tariff> {
+public class MarpolDueCalculator extends PrivateDueCalculator<PdaCase, Tariff> {
 
-  private PdaCase source;
   private MarpolDueTariff tariff;
 
   @Override
   public void set(final PdaCase source, final Tariff tariff) {
-    this.source = source;
+    super.source = source;
     this.tariff = (MarpolDueTariff) tariff;
   }
 
@@ -29,42 +29,31 @@ public class MarpolDueCalculator implements DueCalculator<PdaCase, Tariff> {
       return tariff.getOdessosFixedMarpolDue();
     }
 
-    if (grossTonnageOverThreshold()) {
-      return Arrays.stream(tariff.getMaximumMarpolDueValues())
-          .reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
-
     return tariff.getMarpolDuePerGrossTonnage().entrySet().stream()
         .filter(this::grossTonnageIsWithinRange)
-        .flatMap(entry -> Arrays.stream(entry.getValue()))
+        .flatMap(e -> Arrays.stream(e.getValue()))
+        .map(Due::getBase)
         .reduce(BigDecimal.ZERO, BigDecimal::add);
   }
 
   private boolean isOdessosPort() {
     return source.getPort().getName().equals(PortName.ODESSOS_PBM.name);
   }
+
   public BigDecimal getFreeSewageDisposalQuantity() {
-    return new FreeWasteAdvisor().getFreeSewageDisposalQuantity();
+    return new FreeWasteDisposalQuantityAdvisor().getFreeSewageDisposalQuantity();
   }
 
   public BigDecimal getFreeGarbageDisposalQuantity() {
-    return new FreeWasteAdvisor().getFreeGarbageDisposalQuantity();
+    return new FreeWasteDisposalQuantityAdvisor().getFreeGarbageDisposalQuantity();
   }
 
-  private boolean grossTonnageOverThreshold() {
-    return source.getShip().getGrossTonnage().intValue()
-        > tariff.getMarpolDuePerGrossTonnage().keySet().stream()
-            .mapToInt(Range::getMax)
-            .max()
-            .getAsInt();
-  }
-
-  private boolean grossTonnageIsWithinRange(final Map.Entry<Range, BigDecimal[]> entry) {
+  private boolean grossTonnageIsWithinRange(final Map.Entry<Range, Due[]> entry) {
     return source.getShip().getGrossTonnage().intValue() >= entry.getKey().getMin()
         && source.getShip().getGrossTonnage().intValue() <= entry.getKey().getMax();
   }
 
-  private class FreeWasteAdvisor {
+  private class FreeWasteDisposalQuantityAdvisor {
 
     public BigDecimal getFreeSewageDisposalQuantity() {
 
@@ -72,11 +61,7 @@ public class MarpolDueCalculator implements DueCalculator<PdaCase, Tariff> {
         return tariff.getOdessosFreeSewageDisposalQuantity();
       }
 
-      return tariff.getFreeSewageDisposalQuantitiesPerGrossTonnage().entrySet().stream()
-          .filter(this::grossTonnageIsWithinFreeWasteRange)
-          .map(Map.Entry::getValue)
-          .findFirst()
-          .orElse(tariff.getMaximumFreeSewageDisposalQuantity());
+      return getBaseDue(tariff.getFreeSewageDisposalQuantitiesPerGrossTonnage());
     }
 
     public BigDecimal getFreeGarbageDisposalQuantity() {
@@ -85,16 +70,7 @@ public class MarpolDueCalculator implements DueCalculator<PdaCase, Tariff> {
         return tariff.getOdessosFreeGarbageDisposalQuantity();
       }
 
-      return tariff.getFreeGarbageDisposalQuantitiesPerGrossTonnage().entrySet().stream()
-          .filter(this::grossTonnageIsWithinFreeWasteRange)
-          .map(Map.Entry::getValue)
-          .findFirst()
-          .orElse(tariff.getMaximumFreeGarbageDisposalQuantity());
-    }
-
-    private boolean grossTonnageIsWithinFreeWasteRange(Map.Entry<Range, BigDecimal> entry) {
-      return source.getShip().getGrossTonnage().intValue() >= entry.getKey().getMin()
-          && source.getShip().getGrossTonnage().intValue() <= entry.getKey().getMax();
+      return getBaseDue(tariff.getFreeGarbageDisposalQuantitiesPerGrossTonnage());
     }
   }
 }

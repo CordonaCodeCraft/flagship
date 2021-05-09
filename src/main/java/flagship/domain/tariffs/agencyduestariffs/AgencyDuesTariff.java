@@ -18,11 +18,11 @@ import java.util.Map;
 @Component
 public class AgencyDuesTariff extends Tariff {
 
-  private Map<Range, Due> basicAgencyDuePerGrossTonnage;
-  private Map<Range, Map<Range, BigDecimal>> carsDueByGrossTonnageAndAlongsideDaysExpected;
-  private Map<PortName, BigDecimal> carsDuesIncreaseCoefficientByPortName;
   BigDecimal basicAgencyDueDiscountCoefficientByCallPurpose;
   BigDecimal basicAgencyDueGrossTonnageThreshold;
+  private Map<Range, Due> basicAgencyDuePerGrossTonnage;
+  private Map<Range, Map<Range, Due>> carsDueByGrossTonnageAndAlongsideDaysExpected;
+  private Map<PortName, BigDecimal> carsDuesIncreaseCoefficientByPortName;
   private BigDecimal clearanceIn;
   private BigDecimal clearanceOut;
   private BigDecimal baseCommunicationsDue;

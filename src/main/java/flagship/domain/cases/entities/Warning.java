@@ -47,5 +47,4 @@ public class Warning extends BaseEntity {
     if (!Objects.equals(warningDate, warning.warningDate)) return false;
     return warningFactor.equals(warning.warningFactor);
   }
-
 }

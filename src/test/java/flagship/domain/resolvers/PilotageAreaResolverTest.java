@@ -1,38 +1,24 @@
 package flagship.domain.resolvers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import flagship.domain.tariffs.serviceduestariffs.PilotageDueTariff;
+import flagship.domain.calculators.TariffsInitializer;
 import flagship.domain.cases.dto.PdaCase;
 import flagship.domain.cases.dto.PdaPort;
-import org.junit.jupiter.api.BeforeAll;
+import flagship.domain.tariffs.serviceduestariffs.PilotageDueTariff;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.stream.Stream;
 
 import static flagship.domain.tariffs.serviceduestariffs.PilotageDueTariff.PilotageArea.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DisplayName("Pilotage area resolver tests")
-class PilotageAreaResolverTest {
+class PilotageAreaResolverTest extends TariffsInitializer {
 
-  private static PilotageDueTariff tariff;
   private PdaCase testCase;
-
-  @BeforeAll
-  public static void BeforeClass() throws IOException {
-    ObjectMapper mapper = new ObjectMapper();
-    mapper.registerModule(new JavaTimeModule());
-    tariff =
-        mapper.readValue(
-            new File("src/main/resources/pilotageDueTariff.json"), PilotageDueTariff.class);
-  }
 
   private static Stream<Arguments> getPortsInVarnaFirstPilotageArea() {
     return getStreamOfPortNamesForPilotageArea(VARNA_FIRST);
@@ -52,7 +38,7 @@ class PilotageAreaResolverTest {
 
   private static Stream<Arguments> getStreamOfPortNamesForPilotageArea(
       PilotageDueTariff.PilotageArea pilotageArea) {
-    return tariff.getPortNamesInPilotageAreas().get(pilotageArea).stream()
+    return pilotageDueTariff.getPortNamesInPilotageAreas().get(pilotageArea).stream()
         .map(e -> e.name)
         .map(Arguments::of);
   }
@@ -69,7 +55,7 @@ class PilotageAreaResolverTest {
   void shouldResolvePilotageAreaToVarnaFirst(String portName) {
     testCase.getPort().setName(portName);
     PilotageDueTariff.PilotageArea result =
-        PilotageAreaResolver.resolvePilotageArea(testCase, tariff);
+        PilotageAreaResolver.resolvePilotageArea(testCase, pilotageDueTariff);
     assertThat(result.name()).isEqualTo(VARNA_FIRST.name());
   }
 
@@ -79,7 +65,7 @@ class PilotageAreaResolverTest {
   void shouldResolvePilotageAreaToVarnaSecond(String portName) {
     testCase.getPort().setName(portName);
     PilotageDueTariff.PilotageArea result =
-        PilotageAreaResolver.resolvePilotageArea(testCase, tariff);
+        PilotageAreaResolver.resolvePilotageArea(testCase, pilotageDueTariff);
     assertThat(result.name()).isEqualTo(VARNA_SECOND.name());
   }
 
@@ -89,7 +75,7 @@ class PilotageAreaResolverTest {
   void shouldResolvePilotageAreaToVarnaThird(String portName) {
     testCase.getPort().setName(portName);
     PilotageDueTariff.PilotageArea result =
-        PilotageAreaResolver.resolvePilotageArea(testCase, tariff);
+        PilotageAreaResolver.resolvePilotageArea(testCase, pilotageDueTariff);
     assertThat(result.name()).isEqualTo(VARNA_THIRD.name());
   }
 
@@ -99,7 +85,7 @@ class PilotageAreaResolverTest {
   void shouldResolvePilotageAreaToBourgasFirst(String portName) {
     testCase.getPort().setName(portName);
     PilotageDueTariff.PilotageArea result =
-        PilotageAreaResolver.resolvePilotageArea(testCase, tariff);
+        PilotageAreaResolver.resolvePilotageArea(testCase, pilotageDueTariff);
     assertThat(result.name()).isEqualTo(BOURGAS_FIRST.name());
   }
 }

@@ -1,62 +1,60 @@
 package flagship.domain.calculators.stateduescalculators;
 
+import flagship.domain.calculators.PrivateDueCalculator;
+import flagship.domain.cases.dto.PdaCase;
 import flagship.domain.tariffs.Tariff;
 import flagship.domain.tariffs.stateduestariffs.LightDueTariff;
-import flagship.domain.cases.dto.PdaCase;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.Map;
 
 // todo: Validate that gross tonnage is no less than 41, otherwise fixed due per year should be
 // applied
 
 @NoArgsConstructor
-public class LightDueCalculator extends StateDueCalculator<PdaCase, Tariff> {
+public class LightDueCalculator extends PrivateDueCalculator<PdaCase, Tariff> {
 
-  private PdaCase source;
   private LightDueTariff tariff;
 
   @Override
   public void set(final PdaCase source, final Tariff tariff) {
-    this.source = source;
+    super.source = source;
     this.tariff = (LightDueTariff) tariff;
   }
 
   @Override
   public BigDecimal calculate() {
-    return calculateDueAfterDiscount(calculateBaseDue(), evaluateDiscountCoefficient());
-  }
-
-  @Override
-  protected BigDecimal calculateBaseDue() {
 
     BigDecimal lightDue;
 
     if (lightDueIsDependantOnShipType()) {
+      final BigDecimal due =
+          tariff
+              .getLightDuesPerTonByShipType()
+              .get(source.getShip().getType())
+              .getBase()
+              .multiply(source.getShip().getGrossTonnage());
       lightDue =
-          source
-              .getShip()
-              .getGrossTonnage()
-              .multiply(tariff.getLightDuesPerTonByShipType().get(source.getShip().getType()));
+          due.doubleValue() <= tariff.getLightDueMaximumValue().doubleValue()
+              ? due
+              : tariff.getLightDueMaximumValue();
     } else {
-      lightDue =
-          tariff.getLightDuesByGrossTonnage().entrySet().stream()
-              .filter(this::shipGrossTonnageInRange)
-              .findFirst()
-              .map(Map.Entry::getKey)
-              .orElse(tariff.getLightDueMaximumValue());
+      lightDue = getBaseDue(tariff.getLightDuesByGrossTonnage());
     }
-    return lightDue.doubleValue() <= tariff.getLightDueMaximumValue().doubleValue()
-        ? lightDue
-        : tariff.getLightDueMaximumValue();
+
+    final BigDecimal discountCoefficient = evaluateDiscountCoefficient();
+
+    if (discountCoefficient.doubleValue() > 0) {
+      lightDue = lightDue.subtract(lightDue.multiply(discountCoefficient));
+    }
+
+    return lightDue;
   }
 
   private boolean lightDueIsDependantOnShipType() {
     return tariff.getLightDuesPerTonByShipType().containsKey(source.getShip().getType());
   }
 
-  @Override
   protected BigDecimal evaluateDiscountCoefficient() {
 
     BigDecimal discountCoefficient = BigDecimal.ZERO;
@@ -85,10 +83,5 @@ public class LightDueCalculator extends StateDueCalculator<PdaCase, Tariff> {
 
   private boolean isEligibleForShipTypeDiscount() {
     return tariff.getDiscountCoefficientsByShipType().containsKey(source.getShip().getType());
-  }
-
-  private boolean shipGrossTonnageInRange(final Map.Entry<BigDecimal, Integer[]> entry) {
-    return source.getShip().getGrossTonnage().intValue() >= entry.getValue()[0]
-        && source.getShip().getGrossTonnage().intValue() <= entry.getValue()[1];
   }
 }

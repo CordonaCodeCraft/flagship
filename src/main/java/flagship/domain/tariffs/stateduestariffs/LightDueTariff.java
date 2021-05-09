@@ -1,7 +1,9 @@
 package flagship.domain.tariffs.stateduestariffs;
 
-import flagship.domain.tariffs.Tariff;
 import flagship.domain.cases.entities.enums.ShipType;
+import flagship.domain.tariffs.Due;
+import flagship.domain.tariffs.Range;
+import flagship.domain.tariffs.Tariff;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,8 +19,8 @@ import java.util.Set;
 @NoArgsConstructor
 public class LightDueTariff extends Tariff {
 
-  private Map<BigDecimal, Integer[]> lightDuesByGrossTonnage;
-  private Map<ShipType, BigDecimal> lightDuesPerTonByShipType;
+  private Map<Range, Due> lightDuesByGrossTonnage;
+  private Map<ShipType, Due> lightDuesPerTonByShipType;
   private Map<ShipType, BigDecimal> discountCoefficientsByShipType;
   private Set<ShipType> shipTypesNotEligibleForDiscount;
   private BigDecimal lightDueMaximumValue;

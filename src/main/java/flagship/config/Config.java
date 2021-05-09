@@ -3,9 +3,9 @@ package flagship.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import flagship.config.serialization.DueDeserializer;
+import flagship.config.serialization.RangeDeserializer;
 import flagship.domain.tariffs.Due;
 import flagship.domain.tariffs.Range;
-import flagship.config.serialization.RangeDeserializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

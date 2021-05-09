@@ -7,6 +7,7 @@ import java.io.Serializable;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
 public class Range implements Serializable {
@@ -19,6 +20,6 @@ public class Range implements Serializable {
   @Override
   @JsonValue
   public String toString() {
-    return String.format("%s - %s", min, max);
+    return min + " - " + max;
   }
 }

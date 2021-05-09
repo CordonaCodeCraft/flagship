@@ -17,8 +17,10 @@ public class AgencyAccount {
   private BigDecimal clearanceDue;
   private BigDecimal carsDue;
   private BigDecimal communicationsDue;
-  //todo: expecting the business logic for calculation of the bank expenses.This is percentage of something
+  // todo: expecting the business logic for calculation of the bank expenses.This is percentage of
+  // something
   private BigDecimal bankExpensesDue;
-  //todo: expecting the business logic for calculation of the overtime.This is percentage of the basic agency fee
+  // todo: expecting the business logic for calculation of the overtime.This is percentage of the
+  // basic agency fee
   private BigDecimal agencyOvertimeDue;
 }

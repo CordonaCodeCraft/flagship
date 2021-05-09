@@ -11,15 +11,15 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class ClearanceDueCalculator implements DueCalculator<PdaCase, Tariff> {
 
-    private AgencyDuesTariff tariff;
+  private AgencyDuesTariff tariff;
 
-    @Override
-    public void set(final PdaCase source, final Tariff tariff) {
-        this.tariff = (AgencyDuesTariff) tariff;
-    }
+  @Override
+  public void set(final PdaCase source, final Tariff tariff) {
+    this.tariff = (AgencyDuesTariff) tariff;
+  }
 
-    @Override
-    public BigDecimal calculate() {
-        return tariff.getClearanceIn().add(tariff.getClearanceOut());
-    }
+  @Override
+  public BigDecimal calculate() {
+    return tariff.getClearanceIn().add(tariff.getClearanceOut());
+  }
 }

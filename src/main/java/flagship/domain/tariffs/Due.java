@@ -21,10 +21,12 @@ public class Due implements Serializable {
 
   public Due(BigDecimal base) {
     this.base = base;
+    this.addition = BigDecimal.ZERO;
   }
 
   public Due(double base) {
     this.base = BigDecimal.valueOf(base);
+    this.addition = BigDecimal.ZERO;
   }
 
   public Due(double base, double addition) {

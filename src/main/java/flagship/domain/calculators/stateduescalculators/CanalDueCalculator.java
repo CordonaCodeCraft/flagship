@@ -1,8 +1,9 @@
 package flagship.domain.calculators.stateduescalculators;
 
+import flagship.domain.calculators.StateDueCalculator;
+import flagship.domain.cases.dto.PdaCase;
 import flagship.domain.tariffs.Tariff;
 import flagship.domain.tariffs.stateduestariffs.CanalDueTariff;
-import flagship.domain.cases.dto.PdaCase;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
@@ -23,19 +24,19 @@ public class CanalDueCalculator extends StateDueCalculator<PdaCase, Tariff> {
 
   @Override
   public BigDecimal calculate() {
-    return calculateDueAfterDiscount(calculateBaseDue(), evaluateDiscountCoefficient());
+    return getDueAfterDiscount(getBaseDue(), getDiscountCoefficient());
   }
 
   @Override
-  protected BigDecimal calculateBaseDue() {
+  protected BigDecimal getBaseDue() {
     return source
         .getShip()
         .getGrossTonnage()
-        .multiply(tariff.getCanalDuesByPortArea().get(source.getPort().getPortArea()));
+        .multiply(tariff.getCanalDuesByPortArea().get(source.getPort().getPortArea()).getBase());
   }
 
   @Override
-  protected BigDecimal evaluateDiscountCoefficient() {
+  protected BigDecimal getDiscountCoefficient() {
 
     BigDecimal discountCoefficient = BigDecimal.ZERO;
 

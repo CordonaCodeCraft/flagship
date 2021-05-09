@@ -3,13 +3,10 @@ package flagship.domain.calculators.agencyduescalculators;
 import flagship.domain.calculators.BaseCalculatorTest;
 import flagship.domain.cases.dto.PdaCase;
 import flagship.domain.cases.dto.PdaShip;
-import flagship.domain.tariffs.agencyduestariffs.AgencyDuesTariff;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
-import java.io.IOException;
 import java.math.BigDecimal;
 
 import static flagship.domain.cases.entities.enums.CallPurpose.LOADING;
@@ -18,18 +15,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @DisplayName("Bank overtime due calculator tests")
 class OvertimeDueCalculatorTest extends BaseCalculatorTest {
 
-  private AgencyDuesTariff tariff = new AgencyDuesTariff();
   private final OvertimeDueCalculator calculator = new OvertimeDueCalculator();
-
-  {
-    try {
-      tariff =
-          mapper.readValue(
-              new File(TARIFFS_PATH + "agencyDuesTariff.json"), AgencyDuesTariff.class);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-  }
 
   @BeforeEach
   void setUp() {
@@ -43,15 +29,15 @@ class OvertimeDueCalculatorTest extends BaseCalculatorTest {
     testCase
         .getShip()
         .setGrossTonnage(
-            getRandomGrossTonnage(MIN_GT, tariff.getBasicAgencyDueGrossTonnageThreshold().intValue()));
+            getRandomGrossTonnage(
+                MIN_GT, agencyDuesTariff.getBasicAgencyDueGrossTonnageThreshold().intValue()));
 
-    calculator.set(testCase, tariff);
+    calculator.set(testCase, agencyDuesTariff);
 
-    final BigDecimal baseDue = getFixedDue(tariff.getBasicAgencyDuePerGrossTonnage());
-    final BigDecimal expected = baseDue.multiply(tariff.getOvertimeCoefficient());
+    final BigDecimal baseDue = getDueByRange(agencyDuesTariff.getBasicAgencyDuePerGrossTonnage());
+    final BigDecimal expected = baseDue.multiply(agencyDuesTariff.getOvertimeCoefficient());
     final BigDecimal result = calculator.calculate();
 
     assertThat(result).isEqualByComparingTo(expected);
-
   }
 }

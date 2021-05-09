@@ -9,11 +9,13 @@ import flagship.domain.tariffs.stateduestariffs.WharfDueTariff;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.*;
 
-import static flagship.domain.tariffs.PdaWarningsGenerator.DueType.PILOTAGE_DUE;
-import static flagship.domain.tariffs.PdaWarningsGenerator.PdaWarning.HOLIDAY;
+import static flagship.domain.tariffs.PdaWarningsGenerator.PdaWarning.*;
 
 // todo: Confirm, that predefining UUID id is not a problem for Hibernate
 
@@ -31,45 +33,116 @@ import static flagship.domain.tariffs.PdaWarningsGenerator.PdaWarning.HOLIDAY;
 // than the end of the month
 // the exact increase can not be evaluated
 
+// todo: generate warnings for mooring due
+
+// If alongsideDays not provided - the agent will enter value based on his experiences.
+
 @Component
 @RequiredArgsConstructor
 public class PdaWarningsGenerator {
 
+  private final PdaCase source;
   private final WharfDueTariff wharfDueTariff;
   private final PilotageDueTariff pilotageDueTariff;
   private final TugDueTariff tugDueTariff;
   private final MooringDueTariff mooringDueTariff;
   private String warningReport;
 
-  public String generateWarningReport(final PdaCase source) {
-    return warningReport;
-  }
+  public Set<Warning> generateWarnings() {
 
-  public Set<Warning> generateWarnings(final PdaCase source) {
+    final Set<Warning> warnings = new LinkedHashSet<>();
 
-    final Set<Warning> warnings = new HashSet<>();
+    final LocalDate eta = source.getEstimatedDateOfArrival();
+    final LocalDate etd = source.getEstimatedDateOfDeparture();
 
-    warnings.add(pilotageDueEtaDetected(source));
+    if (isHoliday(eta)) {
+      warnings.addAll(generateHolidayDetectedWarnings(eta, ETA_IS_HOLIDAY));
+    } else {
+      warnings.addAll(generateDateNotProvidedWarning(ETA_NOT_PROVIDED));
+    }
+
+    if (isHoliday(etd)) {
+      warnings.addAll(generateHolidayDetectedWarnings(etd, ETD_IS_HOLIDAY));
+    } else {
+      warnings.addAll(generateDateNotProvidedWarning(ETD_NOT_PROVIDED));
+    }
 
     return warnings;
   }
 
-  private Warning pilotageDueEtaDetected(PdaCase source) {
+  private boolean isHoliday(final LocalDate date) {
+    return Optional.ofNullable(date).isPresent()
+        && pilotageDueTariff.getHolidayCalendar().contains(date);
+  }
 
-    Warning warning =
-        Warning.builder()
-            .dueType(PILOTAGE_DUE)
-            .warningType(HOLIDAY)
-            .warningDate(source.getEstimatedDateOfArrival())
-            .warningCoefficient(
-                pilotageDueTariff.getIncreaseCoefficientsByPdaWarning().get(HOLIDAY))
-            .build();
+  private Set<Warning> generateHolidayDetectedWarnings(
+      final LocalDate date, final PdaWarning warning) {
 
-    return null;
+    final Set<Warning> warnings = new HashSet<>();
+
+    Arrays.stream(DueType.values())
+        .forEach(
+            due ->
+                warnings.add(
+                    Warning.builder()
+                        .id(UUID.randomUUID())
+                        .dueType(due)
+                        .warningType(warning)
+                        .warningDate(date)
+                        .warningFactor(getIncreaseCoefficient(due))
+                        .dateCreated(Timestamp.valueOf(LocalDateTime.now()))
+                        .build()));
+
+    return warnings;
+  }
+
+  private Set<Warning> generateDateNotProvidedWarning(final PdaWarning warning) {
+
+    final Set<Warning> warnings = new HashSet<>();
+
+    Arrays.stream(DueType.values())
+        .forEach(
+            due ->
+                warnings.add(
+                    Warning.builder()
+                        .id(UUID.randomUUID())
+                        .dueType(due)
+                        .warningType(warning)
+                        .dateCreated(Timestamp.valueOf(LocalDateTime.now()))
+                        .build()));
+
+    return warnings;
+  }
+
+  private BigDecimal getIncreaseCoefficient(final DueType due) {
+
+    BigDecimal increaseCoefficient;
+
+    switch (due) {
+      case TUG_DUE:
+        increaseCoefficient = tugDueTariff.getIncreaseCoefficientsByWarningType().get(HOLIDAY);
+        break;
+      case WHARF_DUE:
+        increaseCoefficient = BigDecimal.valueOf(1.00);
+        break;
+      case MOORING_DUE:
+        increaseCoefficient = mooringDueTariff.getIncreaseCoefficientsByWarningType().get(HOLIDAY);
+        break;
+      case PILOTAGE_DUE:
+        increaseCoefficient = pilotageDueTariff.getIncreaseCoefficientsByWarningType().get(HOLIDAY);
+        break;
+      default:
+        increaseCoefficient = BigDecimal.ZERO;
+    }
+    return increaseCoefficient;
   }
 
   public enum PdaWarning {
     HOLIDAY,
+    ETA_NOT_PROVIDED,
+    ETD_NOT_PROVIDED,
+    ETA_IS_HOLIDAY,
+    ETD_IS_HOLIDAY,
     SPECIAL_PILOT,
     HAZARDOUS_PILOTAGE_CARGO,
     SPECIAL_PILOTAGE_CARGO,
@@ -89,5 +162,3 @@ public class PdaWarningsGenerator {
     }
   }
 }
-
-// todo: generate warnings for mooring due
