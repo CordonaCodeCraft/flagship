@@ -2,14 +2,14 @@ package flagship.domain.calculators.agencyduescalculators;
 
 import flagship.domain.calculators.PrivateDueCalculator;
 import flagship.domain.cases.dto.PdaCase;
+import flagship.domain.tariffs.AgencyDuesTariff;
 import flagship.domain.tariffs.Tariff;
-import flagship.domain.tariffs.agencyduestariffs.AgencyDuesTariff;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
 @NoArgsConstructor
-public class CommunicationsDueCalculator extends PrivateDueCalculator<PdaCase, Tariff> {
+public class CommunicationsDueCalculator extends PrivateDueCalculator {
 
   private AgencyDuesTariff tariff;
 

@@ -1,4 +1,4 @@
-package flagship.domain.tariffs;
+package flagship.domain.tariffs.mix;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.*;

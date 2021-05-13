@@ -14,9 +14,9 @@ import org.junit.jupiter.params.provider.EnumSource;
 import java.math.BigDecimal;
 import java.util.HashSet;
 
-import static flagship.domain.tariffs.PdaWarningsGenerator.PdaWarning.*;
-import static flagship.domain.tariffs.serviceduestariffs.PilotageDueTariff.PilotageArea;
-import static flagship.domain.tariffs.serviceduestariffs.PilotageDueTariff.PilotageArea.VARNA_FIRST;
+import static flagship.domain.PdaWarningsGenerator.PdaWarning.*;
+import static flagship.domain.tariffs.PilotageDueTariff.PilotageArea;
+import static flagship.domain.tariffs.PilotageDueTariff.PilotageArea.VARNA_FIRST;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DisplayName("Pilotage due calculator tests")

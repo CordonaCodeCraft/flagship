@@ -1,9 +1,8 @@
-package flagship.domain.tariffs.serviceduestariffs;
+package flagship.domain.tariffs;
 
-import flagship.domain.tariffs.Due;
-import flagship.domain.tariffs.PdaWarningsGenerator.PdaWarning;
-import flagship.domain.tariffs.Range;
-import flagship.domain.tariffs.Tariff;
+import flagship.domain.PdaWarningsGenerator.PdaWarning;
+import flagship.domain.tariffs.mix.Due;
+import flagship.domain.tariffs.mix.Range;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

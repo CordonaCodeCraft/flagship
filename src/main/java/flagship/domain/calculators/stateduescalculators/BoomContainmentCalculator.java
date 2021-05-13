@@ -2,14 +2,14 @@ package flagship.domain.calculators.stateduescalculators;
 
 import flagship.domain.calculators.PrivateDueCalculator;
 import flagship.domain.cases.dto.PdaCase;
+import flagship.domain.tariffs.BoomContainmentTariff;
 import flagship.domain.tariffs.Tariff;
-import flagship.domain.tariffs.stateduestariffs.BoomContainmentTariff;
 
 import java.math.BigDecimal;
 
 import static flagship.domain.cases.entities.enums.ShipType.OIL_TANKER;
 
-public class BoomContainmentCalculator extends PrivateDueCalculator<PdaCase, Tariff> {
+public class BoomContainmentCalculator extends PrivateDueCalculator {
 
   private BoomContainmentTariff tariff;
 

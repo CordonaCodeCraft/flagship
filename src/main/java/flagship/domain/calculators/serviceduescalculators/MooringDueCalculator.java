@@ -2,17 +2,17 @@ package flagship.domain.calculators.serviceduescalculators;
 
 import flagship.domain.calculators.PrivateDueCalculator;
 import flagship.domain.cases.dto.PdaCase;
+import flagship.domain.tariffs.MooringDueTariff;
+import flagship.domain.tariffs.MooringDueTariff.MooringServiceProvider;
 import flagship.domain.tariffs.Tariff;
-import flagship.domain.tariffs.serviceduestariffs.MooringDueTariff;
-import flagship.domain.tariffs.serviceduestariffs.MooringDueTariff.MooringServiceProvider;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
-import static flagship.domain.tariffs.serviceduestariffs.MooringDueTariff.MooringServiceProvider.*;
+import static flagship.domain.tariffs.MooringDueTariff.MooringServiceProvider.*;
 
 @NoArgsConstructor
-public class MooringDueCalculator extends PrivateDueCalculator<PdaCase, Tariff> {
+public class MooringDueCalculator extends PrivateDueCalculator {
 
   private MooringDueTariff tariff;
 

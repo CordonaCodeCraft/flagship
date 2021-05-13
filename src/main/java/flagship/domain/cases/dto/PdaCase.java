@@ -1,5 +1,6 @@
 package flagship.domain.cases.dto;
 
+import flagship.domain.cases.entities.ProformaDisbursementAccount;
 import flagship.domain.cases.entities.enums.CallPurpose;
 import lombok.*;
 import org.springframework.stereotype.Component;
@@ -7,7 +8,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.util.Set;
 
-import static flagship.domain.tariffs.PdaWarningsGenerator.PdaWarning;
+import static flagship.domain.PdaWarningsGenerator.PdaWarning;
 
 @Getter
 @Setter
@@ -26,4 +27,5 @@ public class PdaCase {
   private LocalDate estimatedDateOfArrival;
   private LocalDate estimatedDateOfDeparture;
   private Boolean arrivesFromBulgarianPort;
+  private ProformaDisbursementAccount proformaDisbursementAccount;
 }

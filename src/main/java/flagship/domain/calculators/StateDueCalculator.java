@@ -2,7 +2,7 @@ package flagship.domain.calculators;
 
 import java.math.BigDecimal;
 
-public abstract class StateDueCalculator<S, T> implements DueCalculator<S, T> {
+public abstract class StateDueCalculator implements DueCalculator {
 
   protected abstract BigDecimal getBaseDue();
 

@@ -1,4 +1,4 @@
-package flagship.domain.tariffs.stateduestariffs;
+package flagship.domain.tariffs;
 
 public enum PortArea {
   FIRST,

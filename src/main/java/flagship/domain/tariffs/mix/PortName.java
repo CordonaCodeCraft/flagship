@@ -1,4 +1,4 @@
-package flagship.domain.tariffs;
+package flagship.domain.tariffs.mix;
 
 public enum PortName {
   VARNA_EAST("Varna East"),

@@ -25,6 +25,19 @@ class WharfDueCalculatorTest extends TariffsInitializer {
   private final WharfDueCalculator calculator = new WharfDueCalculator();
   private PdaCase testCase;
 
+  private static Stream<Arguments> getShipTypesAffectingWharfDue() {
+    return wharfDueTariff.getWharfDuesByShipType().keySet().stream().map(Arguments::of);
+  }
+
+  private static Stream<Arguments> getCallPurposesEligibleForDiscount() {
+    return wharfDueTariff.getDiscountCoefficientsByCallPurpose().keySet().stream()
+        .map(Arguments::of);
+  }
+
+  private static Stream<Arguments> getShipTypesNotEligibleForDiscount() {
+    return wharfDueTariff.getShipTypesNotEligibleForDiscount().stream().map(Arguments::of);
+  }
+
   @BeforeEach
   void setUp() {
     PdaShip testShip =
@@ -126,18 +139,5 @@ class WharfDueCalculatorTest extends TariffsInitializer {
         BigDecimal.valueOf(testCase.getAlongsideDaysExpected() * 24);
 
     return alongsideHoursExpected.multiply(wharfDuePerLengthOverall);
-  }
-
-  private static Stream<Arguments> getShipTypesAffectingWharfDue() {
-    return wharfDueTariff.getWharfDuesByShipType().keySet().stream().map(Arguments::of);
-  }
-
-  private static Stream<Arguments> getCallPurposesEligibleForDiscount() {
-    return wharfDueTariff.getDiscountCoefficientsByCallPurpose().keySet().stream()
-            .map(Arguments::of);
-  }
-
-  private static Stream<Arguments> getShipTypesNotEligibleForDiscount() {
-    return wharfDueTariff.getShipTypesNotEligibleForDiscount().stream().map(Arguments::of);
   }
 }

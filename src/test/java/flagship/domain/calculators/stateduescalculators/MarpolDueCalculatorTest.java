@@ -4,8 +4,8 @@ import flagship.domain.calculators.BaseCalculatorTest;
 import flagship.domain.cases.dto.PdaCase;
 import flagship.domain.cases.dto.PdaPort;
 import flagship.domain.cases.dto.PdaShip;
-import flagship.domain.tariffs.Due;
-import flagship.domain.tariffs.Range;
+import flagship.domain.tariffs.mix.Due;
+import flagship.domain.tariffs.mix.Range;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,8 +14,8 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Map;
 
-import static flagship.domain.tariffs.PortName.ODESSOS_PBM;
-import static flagship.domain.tariffs.PortName.VARNA_WEST;
+import static flagship.domain.tariffs.mix.PortName.ODESSOS_PBM;
+import static flagship.domain.tariffs.mix.PortName.VARNA_WEST;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DisplayName("Marpol due calculator tests")

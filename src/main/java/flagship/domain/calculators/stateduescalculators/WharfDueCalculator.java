@@ -3,13 +3,13 @@ package flagship.domain.calculators.stateduescalculators;
 import flagship.domain.calculators.StateDueCalculator;
 import flagship.domain.cases.dto.PdaCase;
 import flagship.domain.tariffs.Tariff;
-import flagship.domain.tariffs.stateduestariffs.WharfDueTariff;
+import flagship.domain.tariffs.WharfDueTariff;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
 @NoArgsConstructor
-public class WharfDueCalculator extends StateDueCalculator<PdaCase, Tariff> {
+public class WharfDueCalculator extends StateDueCalculator {
 
   private PdaCase source;
   private WharfDueTariff tariff;

@@ -2,7 +2,7 @@ package flagship.config.serialization;
 
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.KeyDeserializer;
-import flagship.domain.tariffs.Range;
+import flagship.domain.tariffs.mix.Range;
 
 public class RangeDeserializer extends KeyDeserializer {
 

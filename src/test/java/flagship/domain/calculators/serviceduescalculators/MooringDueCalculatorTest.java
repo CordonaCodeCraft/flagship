@@ -4,7 +4,7 @@ import flagship.domain.calculators.BaseCalculatorTest;
 import flagship.domain.cases.dto.PdaCase;
 import flagship.domain.cases.dto.PdaPort;
 import flagship.domain.cases.dto.PdaShip;
-import flagship.domain.tariffs.serviceduestariffs.MooringDueTariff.MooringServiceProvider;
+import flagship.domain.tariffs.MooringDueTariff.MooringServiceProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,7 +13,7 @@ import org.junit.jupiter.params.provider.EnumSource;
 
 import java.math.BigDecimal;
 
-import static flagship.domain.tariffs.serviceduestariffs.MooringDueTariff.MooringServiceProvider.*;
+import static flagship.domain.tariffs.MooringDueTariff.MooringServiceProvider.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DisplayName("Mooring due calculator tests")

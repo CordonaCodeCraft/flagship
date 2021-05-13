@@ -13,6 +13,6 @@ import java.math.BigDecimal;
 @Embeddable
 public class ServiceAccount {
 
-  private BigDecimal pilotageServiceDue;
-  private BigDecimal tugServiceDue;
+  private BigDecimal pilotageDue;
+  private BigDecimal tugDue;
 }

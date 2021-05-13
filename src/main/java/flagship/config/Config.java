@@ -2,12 +2,21 @@ package flagship.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import flagship.bootstrap.StateDuesTariffsInitializer;
 import flagship.config.serialization.DueDeserializer;
 import flagship.config.serialization.RangeDeserializer;
-import flagship.domain.tariffs.Due;
-import flagship.domain.tariffs.Range;
+import flagship.domain.TariffsFactory;
+import flagship.domain.tariffs.Tariff;
+import flagship.domain.tariffs.mix.Due;
+import flagship.domain.tariffs.mix.Range;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.EnumMap;
+import java.util.Map;
+
+import static flagship.domain.calculators.DueCalculator.CalculatorType;
+import static flagship.domain.calculators.DueCalculator.CalculatorType.TONNAGE_DUE_CALCULATOR;
 
 @Configuration
 public class Config {

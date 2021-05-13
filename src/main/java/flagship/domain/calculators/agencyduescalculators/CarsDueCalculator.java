@@ -2,11 +2,11 @@ package flagship.domain.calculators.agencyduescalculators;
 
 import flagship.domain.calculators.DueCalculator;
 import flagship.domain.cases.dto.PdaCase;
-import flagship.domain.tariffs.Due;
-import flagship.domain.tariffs.PortName;
-import flagship.domain.tariffs.Range;
+import flagship.domain.tariffs.AgencyDuesTariff;
 import flagship.domain.tariffs.Tariff;
-import flagship.domain.tariffs.agencyduestariffs.AgencyDuesTariff;
+import flagship.domain.tariffs.mix.Due;
+import flagship.domain.tariffs.mix.PortName;
+import flagship.domain.tariffs.mix.Range;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.Map;
 
 @NoArgsConstructor
-public class CarsDueCalculator implements DueCalculator<PdaCase, Tariff> {
+public class CarsDueCalculator implements DueCalculator {
 
   private PdaCase source;
   private AgencyDuesTariff tariff;

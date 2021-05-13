@@ -3,7 +3,7 @@ package flagship.domain.calculators.stateduescalculators;
 import flagship.domain.calculators.StateDueCalculator;
 import flagship.domain.cases.dto.PdaCase;
 import flagship.domain.tariffs.Tariff;
-import flagship.domain.tariffs.stateduestariffs.TonnageDueTariff;
+import flagship.domain.tariffs.TonnageDueTariff;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
@@ -14,7 +14,7 @@ import java.util.Optional;
 import static flagship.domain.cases.entities.enums.ShipType.SPECIAL;
 
 @NoArgsConstructor
-public class TonnageDueCalculator extends StateDueCalculator<PdaCase, Tariff> {
+public class TonnageDueCalculator extends StateDueCalculator {
 
   private PdaCase source;
   private TonnageDueTariff tariff;

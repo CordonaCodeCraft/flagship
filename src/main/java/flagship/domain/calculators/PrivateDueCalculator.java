@@ -1,13 +1,13 @@
 package flagship.domain.calculators;
 
 import flagship.domain.cases.dto.PdaCase;
-import flagship.domain.tariffs.Due;
-import flagship.domain.tariffs.Range;
+import flagship.domain.tariffs.mix.Due;
+import flagship.domain.tariffs.mix.Range;
 
 import java.math.BigDecimal;
 import java.util.Map;
 
-public abstract class PrivateDueCalculator<S, T> implements DueCalculator<S, T> {
+public abstract class PrivateDueCalculator implements DueCalculator {
 
   protected PdaCase source;
 

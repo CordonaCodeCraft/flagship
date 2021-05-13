@@ -2,19 +2,19 @@ package flagship.domain.calculators.serviceduescalculators;
 
 import flagship.domain.calculators.PrivateDueCalculator;
 import flagship.domain.cases.dto.PdaCase;
-import flagship.domain.tariffs.Due;
-import flagship.domain.tariffs.Range;
 import flagship.domain.tariffs.Tariff;
-import flagship.domain.tariffs.serviceduestariffs.TugDueTariff;
+import flagship.domain.tariffs.TugDueTariff;
+import flagship.domain.tariffs.mix.Due;
+import flagship.domain.tariffs.mix.Range;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.Map;
 
-import static flagship.domain.tariffs.PdaWarningsGenerator.PdaWarning.DANGEROUS_TUG_CARGO;
+import static flagship.domain.PdaWarningsGenerator.PdaWarning.DANGEROUS_TUG_CARGO;
 
 @NoArgsConstructor
-public class TugDueCalculator extends PrivateDueCalculator<PdaCase, Tariff> {
+public class TugDueCalculator extends PrivateDueCalculator {
   private TugDueTariff tariff;
 
   @Override

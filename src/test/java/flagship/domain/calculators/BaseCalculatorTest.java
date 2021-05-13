@@ -1,8 +1,8 @@
 package flagship.domain.calculators;
 
 import flagship.domain.cases.dto.PdaCase;
-import flagship.domain.tariffs.Due;
-import flagship.domain.tariffs.Range;
+import flagship.domain.tariffs.mix.Due;
+import flagship.domain.tariffs.mix.Range;
 import org.junit.jupiter.api.Tag;
 
 import java.math.BigDecimal;

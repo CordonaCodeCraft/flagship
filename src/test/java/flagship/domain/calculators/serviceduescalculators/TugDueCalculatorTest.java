@@ -4,8 +4,8 @@ import flagship.domain.calculators.BaseCalculatorTest;
 import flagship.domain.cases.dto.PdaCase;
 import flagship.domain.cases.dto.PdaPort;
 import flagship.domain.cases.dto.PdaShip;
-import flagship.domain.tariffs.Range;
 import flagship.domain.tariffs.Tariff;
+import flagship.domain.tariffs.mix.Range;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,9 +16,9 @@ import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Map;
 
-import static flagship.domain.tariffs.PdaWarningsGenerator.PdaWarning.DANGEROUS_TUG_CARGO;
-import static flagship.domain.tariffs.serviceduestariffs.TugDueTariff.TugArea;
-import static flagship.domain.tariffs.serviceduestariffs.TugDueTariff.TugArea.VTC_FIRST;
+import static flagship.domain.PdaWarningsGenerator.PdaWarning.DANGEROUS_TUG_CARGO;
+import static flagship.domain.tariffs.TugDueTariff.TugArea;
+import static flagship.domain.tariffs.TugDueTariff.TugArea.VTC_FIRST;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DisplayName("Tug due calculator tests")

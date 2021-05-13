@@ -10,8 +10,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
 
-import static flagship.domain.tariffs.PdaWarningsGenerator.DueType;
-import static flagship.domain.tariffs.PdaWarningsGenerator.PdaWarning;
+import static flagship.domain.PdaWarningsGenerator.DueType;
+import static flagship.domain.PdaWarningsGenerator.PdaWarning;
 import static javax.persistence.EnumType.STRING;
 
 @Getter

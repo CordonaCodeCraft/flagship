@@ -1,9 +1,8 @@
-package flagship.domain.tariffs.serviceduestariffs;
+package flagship.domain.tariffs;
 
-import flagship.domain.tariffs.Due;
-import flagship.domain.tariffs.PortName;
-import flagship.domain.tariffs.Range;
-import flagship.domain.tariffs.Tariff;
+import flagship.domain.tariffs.mix.Due;
+import flagship.domain.tariffs.mix.PortName;
+import flagship.domain.tariffs.mix.Range;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,7 +13,7 @@ import java.time.LocalDate;
 import java.util.Map;
 import java.util.Set;
 
-import static flagship.domain.tariffs.PdaWarningsGenerator.PdaWarning;
+import static flagship.domain.PdaWarningsGenerator.PdaWarning;
 
 @Getter
 @Setter

@@ -1,31 +1,31 @@
 package flagship.bootstrap;
 
 import flagship.domain.resolvers.HolidayCalendarResolver;
-import flagship.domain.tariffs.Due;
-import flagship.domain.tariffs.HolidayCalendar;
-import flagship.domain.tariffs.PortName;
-import flagship.domain.tariffs.Range;
-import flagship.domain.tariffs.serviceduestariffs.MooringDueTariff;
-import flagship.domain.tariffs.serviceduestariffs.PilotageDueTariff;
-import flagship.domain.tariffs.serviceduestariffs.PilotageDueTariff.PilotageArea;
-import flagship.domain.tariffs.serviceduestariffs.TugDueTariff;
+import flagship.domain.tariffs.MooringDueTariff;
+import flagship.domain.tariffs.PilotageDueTariff;
+import flagship.domain.tariffs.PilotageDueTariff.PilotageArea;
+import flagship.domain.tariffs.TugDueTariff;
+import flagship.domain.tariffs.mix.Due;
+import flagship.domain.tariffs.mix.HolidayCalendar;
+import flagship.domain.tariffs.mix.PortName;
+import flagship.domain.tariffs.mix.Range;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
 
-import static flagship.domain.tariffs.PdaWarningsGenerator.PdaWarning;
-import static flagship.domain.tariffs.PdaWarningsGenerator.PdaWarning.*;
+import static flagship.domain.tariffs.MooringDueTariff.MooringServiceProvider;
+import static flagship.domain.PdaWarningsGenerator.PdaWarning;
+import static flagship.domain.PdaWarningsGenerator.PdaWarning.*;
+import static flagship.domain.tariffs.PilotageDueTariff.PilotageArea.*;
 import static flagship.domain.tariffs.Tariff.MAX_GT;
 import static flagship.domain.tariffs.Tariff.MIN_GT;
-import static flagship.domain.tariffs.serviceduestariffs.MooringDueTariff.MooringServiceProvider;
-import static flagship.domain.tariffs.serviceduestariffs.PilotageDueTariff.PilotageArea.*;
-import static flagship.domain.tariffs.serviceduestariffs.TugDueTariff.TugArea;
-import static flagship.domain.tariffs.serviceduestariffs.TugDueTariff.TugArea.*;
-import static flagship.domain.tariffs.serviceduestariffs.TugDueTariff.TugServiceProvider;
-import static flagship.domain.tariffs.serviceduestariffs.TugDueTariff.TugServiceProvider.PORTFLEET;
-import static flagship.domain.tariffs.serviceduestariffs.TugDueTariff.TugServiceProvider.VTC;
+import static flagship.domain.tariffs.TugDueTariff.TugArea;
+import static flagship.domain.tariffs.TugDueTariff.TugArea.*;
+import static flagship.domain.tariffs.TugDueTariff.TugServiceProvider;
+import static flagship.domain.tariffs.TugDueTariff.TugServiceProvider.PORTFLEET;
+import static flagship.domain.tariffs.TugDueTariff.TugServiceProvider.VTC;
 import static java.time.Month.*;
 
 @Component

@@ -17,7 +17,8 @@ public class StateAccount {
   private BigDecimal wharfDue;
   private BigDecimal canalDue;
   private BigDecimal lightDue;
-  private BigDecimal sailingPermissionDue;
-  private BigDecimal mooringAndUnmooringDue;
   private BigDecimal marpolDue;
+  private BigDecimal mooringDue;
+  private BigDecimal boomContainmentDue;
+  private BigDecimal sailingPermissionDue;
 }

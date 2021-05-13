@@ -1,9 +1,9 @@
 package flagship.bootstrap;
 
-import flagship.domain.tariffs.Due;
-import flagship.domain.tariffs.PortName;
-import flagship.domain.tariffs.Range;
-import flagship.domain.tariffs.agencyduestariffs.AgencyDuesTariff;
+import flagship.domain.tariffs.AgencyDuesTariff;
+import flagship.domain.tariffs.mix.Due;
+import flagship.domain.tariffs.mix.PortName;
+import flagship.domain.tariffs.mix.Range;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -12,7 +12,7 @@ import java.util.EnumMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static flagship.domain.tariffs.PortName.*;
+import static flagship.domain.tariffs.mix.PortName.*;
 
 @Component
 public class AgencyDueTariffsInitializer {

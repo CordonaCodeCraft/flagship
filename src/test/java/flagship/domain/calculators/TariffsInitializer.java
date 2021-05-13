@@ -5,13 +5,9 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import flagship.config.serialization.DueDeserializer;
 import flagship.config.serialization.RangeDeserializer;
-import flagship.domain.tariffs.Due;
-import flagship.domain.tariffs.Range;
-import flagship.domain.tariffs.agencyduestariffs.AgencyDuesTariff;
-import flagship.domain.tariffs.serviceduestariffs.MooringDueTariff;
-import flagship.domain.tariffs.serviceduestariffs.PilotageDueTariff;
-import flagship.domain.tariffs.serviceduestariffs.TugDueTariff;
-import flagship.domain.tariffs.stateduestariffs.*;
+import flagship.domain.tariffs.*;
+import flagship.domain.tariffs.mix.Due;
+import flagship.domain.tariffs.mix.Range;
 import org.junit.jupiter.api.BeforeAll;
 
 import java.io.File;
@@ -30,6 +26,7 @@ public abstract class TariffsInitializer {
   protected static MooringDueTariff mooringDueTariff;
   protected static MarpolDueTariff marpolDueTariff;
   protected static BoomContainmentTariff boomContainmentTariff;
+  protected static SailingPermissionTariff sailingPermissionTariff;
   protected static LightDueTariff lightDueTariff;
   protected static TonnageDueTariff tonnageDueTariff;
   protected static CanalDueTariff canalDueTariff;
@@ -67,6 +64,11 @@ public abstract class TariffsInitializer {
         mapper.readValue(
             new File("src/main/resources/boomContainmentDueTariff.json"),
             BoomContainmentTariff.class);
+
+    sailingPermissionTariff =
+        mapper.readValue(
+            new File("src/main/resources/sailingPermissionDueTariff.json"),
+            SailingPermissionTariff.class);
 
     lightDueTariff =
         mapper.readValue(new File("src/main/resources/lightDueTariff.json"), LightDueTariff.class);

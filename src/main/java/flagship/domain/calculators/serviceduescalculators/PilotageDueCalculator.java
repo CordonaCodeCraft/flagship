@@ -2,10 +2,10 @@ package flagship.domain.calculators.serviceduescalculators;
 
 import flagship.domain.calculators.PrivateDueCalculator;
 import flagship.domain.cases.dto.PdaCase;
-import flagship.domain.tariffs.Due;
-import flagship.domain.tariffs.Range;
+import flagship.domain.tariffs.PilotageDueTariff;
 import flagship.domain.tariffs.Tariff;
-import flagship.domain.tariffs.serviceduestariffs.PilotageDueTariff;
+import flagship.domain.tariffs.mix.Due;
+import flagship.domain.tariffs.mix.Range;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
@@ -13,10 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static flagship.domain.tariffs.PdaWarningsGenerator.PdaWarning.*;
+import static flagship.domain.PdaWarningsGenerator.PdaWarning.*;
 
 @NoArgsConstructor
-public class PilotageDueCalculator extends PrivateDueCalculator<PdaCase, Tariff> {
+public class PilotageDueCalculator extends PrivateDueCalculator {
 
   private PilotageDueTariff tariff;
 

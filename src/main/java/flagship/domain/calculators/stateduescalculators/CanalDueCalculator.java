@@ -2,8 +2,8 @@ package flagship.domain.calculators.stateduescalculators;
 
 import flagship.domain.calculators.StateDueCalculator;
 import flagship.domain.cases.dto.PdaCase;
+import flagship.domain.tariffs.CanalDueTariff;
 import flagship.domain.tariffs.Tariff;
-import flagship.domain.tariffs.stateduestariffs.CanalDueTariff;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 import static flagship.domain.cases.entities.enums.ShipType.CONTAINER;
 
 @NoArgsConstructor
-public class CanalDueCalculator extends StateDueCalculator<PdaCase, Tariff> {
+public class CanalDueCalculator extends StateDueCalculator {
 
   private PdaCase source;
   private CanalDueTariff tariff;

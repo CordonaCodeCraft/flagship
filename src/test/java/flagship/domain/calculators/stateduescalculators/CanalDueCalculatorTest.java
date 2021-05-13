@@ -5,7 +5,7 @@ import flagship.domain.cases.dto.PdaCase;
 import flagship.domain.cases.dto.PdaPort;
 import flagship.domain.cases.dto.PdaShip;
 import flagship.domain.cases.entities.enums.ShipType;
-import flagship.domain.tariffs.stateduestariffs.PortArea;
+import flagship.domain.tariffs.PortArea;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,7 +20,7 @@ import java.util.stream.Stream;
 
 import static flagship.domain.cases.entities.enums.ShipType.CONTAINER;
 import static flagship.domain.cases.entities.enums.ShipType.GENERAL;
-import static flagship.domain.tariffs.stateduestariffs.PortArea.FIRST;
+import static flagship.domain.tariffs.PortArea.FIRST;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DisplayName("Canal due calculator tests")
@@ -29,6 +29,14 @@ class CanalDueCalculatorTest extends TariffsInitializer {
   private final CanalDueCalculator calculator = new CanalDueCalculator();
   private PdaCase testCase;
   private BigDecimal grossTonnage;
+
+  private static Stream<Arguments> getShipTypesEligibleForDiscount() {
+    return canalDueTariff.getDiscountCoefficientByShipType().keySet().stream().map(Arguments::of);
+  }
+
+  private static Stream<Arguments> getShipTypesNotEligibleForDiscount() {
+    return canalDueTariff.getShipTypesNotEligibleForDiscount().stream().map(Arguments::of);
+  }
 
   @BeforeEach
   void setUp() {
@@ -191,13 +199,5 @@ class CanalDueCalculatorTest extends TariffsInitializer {
   private BigDecimal getRandomGrossTonnage() {
     Random random = new Random();
     return BigDecimal.valueOf(random.ints(500, 200000).findFirst().getAsInt());
-  }
-
-  private static Stream<Arguments> getShipTypesEligibleForDiscount() {
-    return canalDueTariff.getDiscountCoefficientByShipType().keySet().stream().map(Arguments::of);
-  }
-
-  private static Stream<Arguments> getShipTypesNotEligibleForDiscount() {
-    return canalDueTariff.getShipTypesNotEligibleForDiscount().stream().map(Arguments::of);
   }
 }

@@ -5,14 +5,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
-import java.util.Set;
+import java.math.BigDecimal;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @Component
-public class HolidayCalendar {
-
-  private Set<LocalDate> holidayCalendar;
+@NoArgsConstructor
+public class SailingPermissionTariff extends Tariff {
+  private BigDecimal sailingPermissionDue;
 }

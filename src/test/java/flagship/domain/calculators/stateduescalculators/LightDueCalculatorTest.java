@@ -23,6 +23,18 @@ public class LightDueCalculatorTest extends BaseCalculatorTest {
 
   private final LightDueCalculator calculator = new LightDueCalculator();
 
+  private static Stream<Arguments> getShipTypesAffectingLightDue() {
+    return lightDueTariff.getLightDuesPerTonByShipType().keySet().stream().map(Arguments::of);
+  }
+
+  private static Stream<Arguments> getShipTypesEligibleForDiscount() {
+    return lightDueTariff.getDiscountCoefficientsByShipType().keySet().stream().map(Arguments::of);
+  }
+
+  private static Stream<Arguments> GetShipTypesNotEligibleForDiscount() {
+    return lightDueTariff.getShipTypesNotEligibleForDiscount().stream().map(Arguments::of);
+  }
+
   @BeforeEach
   void setUp() {
     PdaShip testShip =
@@ -148,17 +160,5 @@ public class LightDueCalculatorTest extends BaseCalculatorTest {
     final BigDecimal result = calculator.calculate();
 
     assertThat(result).isEqualByComparingTo(expected);
-  }
-
-  private static Stream<Arguments> getShipTypesAffectingLightDue() {
-    return lightDueTariff.getLightDuesPerTonByShipType().keySet().stream().map(Arguments::of);
-  }
-
-  private static Stream<Arguments> getShipTypesEligibleForDiscount() {
-    return lightDueTariff.getDiscountCoefficientsByShipType().keySet().stream().map(Arguments::of);
-  }
-
-  private static Stream<Arguments> GetShipTypesNotEligibleForDiscount() {
-    return lightDueTariff.getShipTypesNotEligibleForDiscount().stream().map(Arguments::of);
   }
 }

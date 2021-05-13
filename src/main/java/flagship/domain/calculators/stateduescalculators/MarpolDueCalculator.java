@@ -2,17 +2,17 @@ package flagship.domain.calculators.stateduescalculators;
 
 import flagship.domain.calculators.PrivateDueCalculator;
 import flagship.domain.cases.dto.PdaCase;
-import flagship.domain.tariffs.Due;
-import flagship.domain.tariffs.PortName;
-import flagship.domain.tariffs.Range;
+import flagship.domain.tariffs.MarpolDueTariff;
 import flagship.domain.tariffs.Tariff;
-import flagship.domain.tariffs.stateduestariffs.MarpolDueTariff;
+import flagship.domain.tariffs.mix.Due;
+import flagship.domain.tariffs.mix.PortName;
+import flagship.domain.tariffs.mix.Range;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Map;
 
-public class MarpolDueCalculator extends PrivateDueCalculator<PdaCase, Tariff> {
+public class MarpolDueCalculator extends PrivateDueCalculator {
 
   private MarpolDueTariff tariff;
 

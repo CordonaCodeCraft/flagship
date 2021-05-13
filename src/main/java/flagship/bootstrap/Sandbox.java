@@ -3,9 +3,9 @@ package flagship.bootstrap;
 import flagship.domain.cases.dto.PdaCase;
 import flagship.domain.cases.dto.PdaPort;
 import flagship.domain.cases.dto.PdaShip;
+import flagship.domain.tariffs.PilotageDueTariff;
 import flagship.domain.tariffs.Tariff;
-import flagship.domain.tariffs.serviceduestariffs.PilotageDueTariff;
-import flagship.domain.tariffs.serviceduestariffs.TugDueTariff;
+import flagship.domain.tariffs.TugDueTariff;
 import org.json.JSONException;
 
 import java.io.IOException;
@@ -14,8 +14,8 @@ import java.time.LocalDate;
 
 import static flagship.domain.cases.entities.enums.CallPurpose.LOADING;
 import static flagship.domain.cases.entities.enums.ShipType.GENERAL;
-import static flagship.domain.tariffs.serviceduestariffs.PilotageDueTariff.PilotageArea.VARNA_FIRST;
-import static flagship.domain.tariffs.stateduestariffs.PortArea.FIRST;
+import static flagship.domain.tariffs.PilotageDueTariff.PilotageArea.VARNA_FIRST;
+import static flagship.domain.tariffs.PortArea.FIRST;
 
 public class Sandbox {
 

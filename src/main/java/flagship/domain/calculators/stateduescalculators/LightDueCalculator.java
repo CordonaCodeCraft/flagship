@@ -2,8 +2,8 @@ package flagship.domain.calculators.stateduescalculators;
 
 import flagship.domain.calculators.PrivateDueCalculator;
 import flagship.domain.cases.dto.PdaCase;
+import flagship.domain.tariffs.LightDueTariff;
 import flagship.domain.tariffs.Tariff;
-import flagship.domain.tariffs.stateduestariffs.LightDueTariff;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 // applied
 
 @NoArgsConstructor
-public class LightDueCalculator extends PrivateDueCalculator<PdaCase, Tariff> {
+public class LightDueCalculator extends PrivateDueCalculator {
 
   private LightDueTariff tariff;
 
