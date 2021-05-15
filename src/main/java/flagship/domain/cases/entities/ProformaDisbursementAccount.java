@@ -36,11 +36,8 @@ public class ProformaDisbursementAccount extends BaseEntity {
   private BigDecimal communicationsDue;
   private BigDecimal bankExpensesDue;
   private BigDecimal overtimeDue;
-  private BigDecimal discount;
+  private BigDecimal clientDiscount;
+  private BigDecimal payableTotal;
+  private BigDecimal totalAfterDiscount;
   private BigDecimal profitExpected;
-
-  @Value("${flagship.commission}")
-  private BigDecimal commission;
-
-  @OneToMany private Set<Warning> warnings;
 }
