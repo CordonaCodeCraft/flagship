@@ -1,16 +1,8 @@
 package flagship.config;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.ConstructorBinding;
+import org.springframework.context.annotation.Configuration;
 
-import java.math.BigDecimal;
-
-@ConstructorBinding
-@ConfigurationProperties("flagship")
-@Getter
-@RequiredArgsConstructor
-public class FlagshipConfiguration {
-  private final BigDecimal commissionCoefficient;
-}
+@Configuration
+@ConfigurationProperties(prefix = "flagship")
+public class FlagshipConfiguration {}
