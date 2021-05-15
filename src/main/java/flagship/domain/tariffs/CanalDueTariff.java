@@ -13,7 +13,6 @@ import java.util.Set;
 
 @Getter
 @Setter
-@Component
 @NoArgsConstructor
 public class CanalDueTariff extends Tariff {
 

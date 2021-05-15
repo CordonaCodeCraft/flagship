@@ -12,7 +12,6 @@ import java.util.Map;
 
 @Getter
 @Setter
-@Component
 @NoArgsConstructor
 public class MarpolDueTariff extends Tariff {
 

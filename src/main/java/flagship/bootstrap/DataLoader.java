@@ -1,20 +1,15 @@
 package flagship.bootstrap;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import flagship.domain.PdaComposer;
 import flagship.domain.TariffsFactory;
 import flagship.domain.tariffs.*;
-import flagship.domain.tariffs.mix.HolidayCalendar;
+import flagship.domain.tariffs.AgencyDuesTariff;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -25,9 +20,9 @@ import static flagship.domain.calculators.DueCalculator.CalculatorType.*;
 @Component
 @Slf4j
 @RequiredArgsConstructor
+@Order(2)
 public class DataLoader implements ApplicationRunner {
 
-  private final ObjectMapper objectMapper;
   private final TonnageDueTariff tonnageDueTariff;
   private final WharfDueTariff wharfDueTariff;
   private final CanalDueTariff canalDueTariff;
@@ -38,28 +33,11 @@ public class DataLoader implements ApplicationRunner {
   private final PilotageDueTariff pilotageDueTariff;
   private final TugDueTariff tugDueTariff;
   private final MooringDueTariff mooringDueTariff;
-  private final HolidayCalendar holidayCalendar;
   private final AgencyDuesTariff agencyDuesTariff;
   private final TariffsFactory tariffsFactory;
-  private final PdaComposer pdaComposer;
-
 
   @Override
   public void run(ApplicationArguments args) throws Exception {
-//    System.out.println(pdaComposer.getCommission());
-
-    StateDuesTariffsInitializer.initializeTariffs(
-            tonnageDueTariff,
-            wharfDueTariff,
-            canalDueTariff,
-            lightDueTariff,
-            marpolDueTariff,
-            boomContainmentTariff,
-            sailingPermissionTariff);
-    ServiceDuesTariffsInitializer.initializeTariffs(
-            pilotageDueTariff, tugDueTariff, mooringDueTariff, holidayCalendar);
-
-    AgencyDueTariffsInitializer.initializeTariffs(agencyDuesTariff);
 
     Map<CalculatorType, Tariff> tariffs = new EnumMap<>(CalculatorType.class);
     tariffs.put(TONNAGE_DUE_CALCULATOR, tonnageDueTariff);
@@ -81,77 +59,8 @@ public class DataLoader implements ApplicationRunner {
 
     tariffsFactory.setTariffs(tariffs);
 
-    System.out.println();
 
-    produceStateDuesJsonFiles();
-    produceServiceDuesJsonFiles();
-    produceAgencyDuesJsonFile();
   }
 
-  private void produceStateDuesJsonFiles() throws IOException {
 
-    objectMapper
-            .writerWithDefaultPrettyPrinter()
-            .writeValue(
-                    Paths.get("src/main/resources/tonnageDueTariff.json").toFile(), tonnageDueTariff);
-
-    objectMapper
-            .writerWithDefaultPrettyPrinter()
-            .writeValue(Paths.get("src/main/resources/wharfDueTariff.json").toFile(), wharfDueTariff);
-
-    objectMapper
-            .writerWithDefaultPrettyPrinter()
-            .writeValue(Paths.get("src/main/resources/lightDueTariff.json").toFile(), lightDueTariff);
-
-    objectMapper
-            .writerWithDefaultPrettyPrinter()
-            .writeValue(Paths.get("src/main/resources/canalDueTariff.json").toFile(), canalDueTariff);
-
-    objectMapper
-            .writerWithDefaultPrettyPrinter()
-            .writeValue(Paths.get("src/main/resources/marpolDueTariff.json").toFile(), marpolDueTariff);
-
-    objectMapper
-            .writerWithDefaultPrettyPrinter()
-            .writeValue(
-                    Paths.get("src/main/resources/boomContainmentDueTariff.json").toFile(),
-                    boomContainmentTariff);
-
-    objectMapper
-            .writerWithDefaultPrettyPrinter()
-            .writeValue(
-                    Paths.get("src/main/resources/sailingPermissionDueTariff.json").toFile(),
-                    sailingPermissionTariff);
-  }
-
-  private void produceServiceDuesJsonFiles() throws IOException {
-
-    objectMapper
-            .registerModule(new JavaTimeModule())
-            .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
-            .configure(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS, false)
-            .writerWithDefaultPrettyPrinter()
-            .writeValue(
-                    Paths.get("src/main/resources/pilotageDueTariff.json").toFile(), pilotageDueTariff);
-
-    objectMapper
-            .writerWithDefaultPrettyPrinter()
-            .writeValue(Paths.get("src/main/resources/tugDueTariff.json").toFile(), tugDueTariff);
-
-    objectMapper
-            .writerWithDefaultPrettyPrinter()
-            .writeValue(
-                    Paths.get("src/main/resources/mooringDueTariff.json").toFile(), mooringDueTariff);
-
-    objectMapper
-            .writerWithDefaultPrettyPrinter()
-            .writeValue(Paths.get("src/main/resources/holidayCalendar.json").toFile(), holidayCalendar);
-  }
-
-  private void produceAgencyDuesJsonFile() throws IOException {
-    objectMapper
-            .writerWithDefaultPrettyPrinter()
-            .writeValue(
-                    Paths.get("src/main/resources/agencyDuesTariff.json").toFile(), agencyDuesTariff);
-  }
 }

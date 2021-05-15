@@ -1,4 +1,4 @@
-package flagship.bootstrap;
+package flagship.bootstrap.newinstalation;
 
 import flagship.domain.resolvers.HolidayCalendarResolver;
 import flagship.domain.tariffs.MooringDueTariff;

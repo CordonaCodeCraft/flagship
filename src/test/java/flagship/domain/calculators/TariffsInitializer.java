@@ -6,6 +6,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import flagship.config.serialization.DueDeserializer;
 import flagship.config.serialization.RangeDeserializer;
 import flagship.domain.tariffs.*;
+import flagship.domain.tariffs.AgencyDuesTariff;
 import flagship.domain.tariffs.mix.Due;
 import flagship.domain.tariffs.mix.Range;
 import org.junit.jupiter.api.BeforeAll;
@@ -19,17 +20,17 @@ public abstract class TariffsInitializer {
 
   protected static final String TARIFFS_PATH = "src/main/resources/";
 
-  protected static PilotageDueTariff pilotageDueTariff = new PilotageDueTariff();
-  protected static AgencyDuesTariff agencyDuesTariff = new AgencyDuesTariff();
-  protected static TugDueTariff tugDueTariff = new TugDueTariff();
+  protected static TonnageDueTariff tonnageDueTariff;
   protected static WharfDueTariff wharfDueTariff;
-  protected static MooringDueTariff mooringDueTariff;
+  protected static CanalDueTariff canalDueTariff;
+  protected static LightDueTariff lightDueTariff;
   protected static MarpolDueTariff marpolDueTariff;
+  protected static MooringDueTariff mooringDueTariff;
   protected static BoomContainmentTariff boomContainmentTariff;
   protected static SailingPermissionTariff sailingPermissionTariff;
-  protected static LightDueTariff lightDueTariff;
-  protected static TonnageDueTariff tonnageDueTariff;
-  protected static CanalDueTariff canalDueTariff;
+  protected static PilotageDueTariff pilotageDueTariff = new PilotageDueTariff();
+  protected static TugDueTariff tugDueTariff = new TugDueTariff();
+  protected static AgencyDuesTariff agencyDuesTariff = new AgencyDuesTariff();
 
   @BeforeAll
   public static void initializeTariffs() throws IOException {
@@ -39,45 +40,41 @@ public abstract class TariffsInitializer {
     mapper.registerModule(simpleModule);
     mapper.registerModule(new JavaTimeModule());
 
+    tonnageDueTariff =
+        mapper.readValue(new File(TARIFFS_PATH + "tonnageDueTariff.json"), TonnageDueTariff.class);
+
+    wharfDueTariff =
+        mapper.readValue(new File(TARIFFS_PATH + "wharfDueTariff.json"), WharfDueTariff.class);
+
+    canalDueTariff =
+        mapper.readValue(new File(TARIFFS_PATH + "canalDueTariff.json"), CanalDueTariff.class);
+
+    lightDueTariff =
+        mapper.readValue(new File(TARIFFS_PATH + "/lightDueTariff.json"), LightDueTariff.class);
+
+    marpolDueTariff =
+        mapper.readValue(new File(TARIFFS_PATH + "marpolDueTariff.json"), MarpolDueTariff.class);
+
+    mooringDueTariff =
+        mapper.readValue(new File(TARIFFS_PATH + "mooringDueTariff.json"), MooringDueTariff.class);
+
+    boomContainmentTariff =
+        mapper.readValue(
+            new File(TARIFFS_PATH + "boomContainmentDueTariff.json"), BoomContainmentTariff.class);
+
+    sailingPermissionTariff =
+        mapper.readValue(
+            new File(TARIFFS_PATH + "sailingPermissionDueTariff.json"),
+            SailingPermissionTariff.class);
+
     pilotageDueTariff =
         mapper.readValue(
             new File(TARIFFS_PATH + "pilotageDueTariff.json"), PilotageDueTariff.class);
 
-    agencyDuesTariff =
-        mapper.readValue(new File(TARIFFS_PATH + "agencyDuesTariff.json"), AgencyDuesTariff.class);
-
     tugDueTariff =
         mapper.readValue(new File(TARIFFS_PATH + "tugDueTariff.json"), TugDueTariff.class);
 
-    wharfDueTariff =
-        mapper.readValue(new File("src/main/resources/wharfDueTariff.json"), WharfDueTariff.class);
-
-    mooringDueTariff =
-        mapper.readValue(
-            new File("src/main/resources/mooringDueTariff.json"), MooringDueTariff.class);
-
-    marpolDueTariff =
-        mapper.readValue(
-            new File("src/main/resources/marpolDueTariff.json"), MarpolDueTariff.class);
-
-    boomContainmentTariff =
-        mapper.readValue(
-            new File("src/main/resources/boomContainmentDueTariff.json"),
-            BoomContainmentTariff.class);
-
-    sailingPermissionTariff =
-        mapper.readValue(
-            new File("src/main/resources/sailingPermissionDueTariff.json"),
-            SailingPermissionTariff.class);
-
-    lightDueTariff =
-        mapper.readValue(new File("src/main/resources/lightDueTariff.json"), LightDueTariff.class);
-
-    tonnageDueTariff =
-        mapper.readValue(
-            new File("src/main/resources/tonnageDueTariff.json"), TonnageDueTariff.class);
-
-    canalDueTariff =
-        mapper.readValue(new File("src/main/resources/canalDueTariff.json"), CanalDueTariff.class);
+    agencyDuesTariff =
+        mapper.readValue(new File(TARIFFS_PATH + "agencyDuesTariff.json"), AgencyDuesTariff.class);
   }
 }

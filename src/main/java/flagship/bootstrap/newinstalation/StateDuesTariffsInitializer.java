@@ -1,4 +1,4 @@
-package flagship.bootstrap;
+package flagship.bootstrap.newinstalation;
 
 import flagship.domain.cases.entities.enums.CallPurpose;
 import flagship.domain.cases.entities.enums.ShipType;

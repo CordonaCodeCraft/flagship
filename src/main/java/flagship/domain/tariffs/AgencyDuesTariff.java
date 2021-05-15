@@ -1,5 +1,6 @@
 package flagship.domain.tariffs;
 
+import flagship.domain.tariffs.Tariff;
 import flagship.domain.tariffs.mix.Due;
 import flagship.domain.tariffs.mix.PortName;
 import flagship.domain.tariffs.mix.Range;
@@ -14,7 +15,6 @@ import java.util.Map;
 @Getter
 @Setter
 @NoArgsConstructor
-@Component
 public class AgencyDuesTariff extends Tariff {
 
   BigDecimal basicAgencyDueDiscountCoefficientByCallPurpose;

@@ -17,7 +17,6 @@ import static flagship.domain.PdaWarningsGenerator.WarningType;
 
 @Getter
 @Setter
-@Component
 @NoArgsConstructor
 public class PilotageDueTariff extends Tariff {
 

@@ -9,7 +9,6 @@ import java.math.BigDecimal;
 
 @Getter
 @Setter
-@Component
 @NoArgsConstructor
 public class SailingPermissionTariff extends Tariff {
   private BigDecimal sailingPermissionDue;

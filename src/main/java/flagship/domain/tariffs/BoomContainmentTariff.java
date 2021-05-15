@@ -11,7 +11,6 @@ import java.util.Map;
 
 @Getter
 @Setter
-@Component
 @NoArgsConstructor
 public class BoomContainmentTariff extends Tariff {
 

@@ -1,4 +1,4 @@
-package flagship.bootstrap;
+package flagship.bootstrap.newinstalation;
 
 import flagship.domain.tariffs.AgencyDuesTariff;
 import flagship.domain.tariffs.mix.Due;

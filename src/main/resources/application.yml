@@ -11,4 +11,8 @@ spring:
       enabled: true
 server:
   port: 8081
+flagship:
+    new-installation: false
+    commission-coefficient: 0.3
+    test: 5.0
 
