@@ -24,7 +24,7 @@ import static flagship.domain.calculators.DueCalculator.CalculatorType.values;
 @Getter
 @Setter
 @RequiredArgsConstructor
-@PropertySource("classpath:flagship.yml")
+@PropertySource("classpath:application.yml")
 public class PdaComposer {
 
   @Value("${flagship.commission-coefficient}")
@@ -98,7 +98,6 @@ public class PdaComposer {
                 pda.getMarpolDue(),
                 pda.getMooringDue(),
                 pda.getBoomContainmentDue(),
-                pda.getClearanceDue(),
                 pda.getSailingPermissionDue(),
                 pda.getPilotageDue(),
                 pda.getTugDue())
@@ -122,6 +121,7 @@ public class PdaComposer {
             pda.getCarsDue(),
             pda.getCommunicationsDue(),
             pda.getBankExpensesDue(),
+            pda.getClearanceDue(),
             pda.getOvertimeDue())
         .reduce(BigDecimal.ZERO, BigDecimal::add);
   }

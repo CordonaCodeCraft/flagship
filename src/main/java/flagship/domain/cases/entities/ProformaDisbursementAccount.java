@@ -27,12 +27,12 @@ public class ProformaDisbursementAccount extends BaseEntity {
   private BigDecimal marpolDue;
   private BigDecimal mooringDue;
   private BigDecimal boomContainmentDue;
-  private BigDecimal clearanceDue;
   private BigDecimal sailingPermissionDue;
   private BigDecimal pilotageDue;
   private BigDecimal tugDue;
   private BigDecimal basicAgencyDue;
   private BigDecimal carsDue;
+  private BigDecimal clearanceDue;
   private BigDecimal communicationsDue;
   private BigDecimal bankExpensesDue;
   private BigDecimal overtimeDue;

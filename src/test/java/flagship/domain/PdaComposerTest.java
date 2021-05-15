@@ -51,12 +51,12 @@ public class PdaComposerTest extends TariffsInitializer {
   static final MarpolDueCalculator marpolCalculator = new MarpolDueCalculator();
   static final MooringDueCalculator mooringCalculator = new MooringDueCalculator();
   static final BoomContainmentCalculator boomCalculator = new BoomContainmentCalculator();
-  static final ClearanceDueCalculator clearanceCalculator = new ClearanceDueCalculator();
   static final SailingPermissionCalculator sailingCalculator = new SailingPermissionCalculator();
   static final PilotageDueCalculator pilotageCalculator = new PilotageDueCalculator();
   static final TugDueCalculator tugCalculator = new TugDueCalculator();
   static final BasicAgencyDueCalculator basicAgencyCalculator = new BasicAgencyDueCalculator();
   static final CarsDueCalculator carsCalculator = new CarsDueCalculator();
+  static final ClearanceDueCalculator clearanceCalculator = new ClearanceDueCalculator();
   static final CommunicationsDueCalculator commCalculator = new CommunicationsDueCalculator();
   static final BankExpensesDueCalculator bankExpensesCalculator = new BankExpensesDueCalculator();
   static final OvertimeDueCalculator overtimeCalculator = new OvertimeDueCalculator();
@@ -68,12 +68,12 @@ public class PdaComposerTest extends TariffsInitializer {
   private static BigDecimal marpolDue;
   private static BigDecimal mooringDue;
   private static BigDecimal boomContainmentDue;
-  private static BigDecimal clearanceDue;
   private static BigDecimal sailingPermissionDue;
   private static BigDecimal pilotageDue;
   private static BigDecimal tugDue;
   private static BigDecimal basicAgencyDue;
   private static BigDecimal carsDue;
+  private static BigDecimal clearanceDue;
   private static BigDecimal communicationsDue;
   private static BigDecimal bankExpensesDue;
   private static BigDecimal overTimeDue;
@@ -120,12 +120,12 @@ public class PdaComposerTest extends TariffsInitializer {
     marpolCalculator.set(testCase, marpolDueTariff);
     mooringCalculator.set(testCase, mooringDueTariff);
     boomCalculator.set(testCase, boomContainmentTariff);
-    clearanceCalculator.set(testCase, agencyDuesTariff);
     sailingCalculator.set(testCase, sailingPermissionTariff);
     pilotageCalculator.set(testCase, pilotageDueTariff);
     tugCalculator.set(testCase, tugDueTariff);
     basicAgencyCalculator.set(testCase, agencyDuesTariff);
     carsCalculator.set(testCase, agencyDuesTariff);
+    clearanceCalculator.set(testCase, agencyDuesTariff);
     commCalculator.set(testCase, agencyDuesTariff);
     bankExpensesCalculator.set(testCase, agencyDuesTariff);
     overtimeCalculator.set(testCase, agencyDuesTariff);
@@ -137,12 +137,12 @@ public class PdaComposerTest extends TariffsInitializer {
     marpolDue = marpolCalculator.calculate();
     mooringDue = mooringCalculator.calculate();
     boomContainmentDue = boomCalculator.calculate();
-    clearanceDue = clearanceCalculator.calculate();
     sailingPermissionDue = sailingCalculator.calculate();
     pilotageDue = pilotageCalculator.calculate();
     tugDue = tugCalculator.calculate();
     basicAgencyDue = basicAgencyCalculator.calculate();
     carsDue = carsCalculator.calculate();
+    clearanceDue = clearanceCalculator.calculate();
     communicationsDue = commCalculator.calculate();
     bankExpensesDue = bankExpensesCalculator.calculate();
     overTimeDue = overtimeCalculator.calculate();
@@ -211,7 +211,7 @@ public class PdaComposerTest extends TariffsInitializer {
     testCase.setClientDiscountCoefficient(BigDecimal.valueOf(0.5));
 
     final BigDecimal agencyDuesTotal =
-        Stream.of(basicAgencyDue, carsDue, communicationsDue, bankExpensesDue, overTimeDue)
+        Stream.of(basicAgencyDue, carsDue, clearanceDue, communicationsDue, bankExpensesDue, overTimeDue)
             .reduce(BigDecimal.ZERO, BigDecimal::add);
 
     final BigDecimal expected = agencyDuesTotal.multiply(testCase.getClientDiscountCoefficient());
@@ -245,12 +245,12 @@ public class PdaComposerTest extends TariffsInitializer {
                 marpolDue,
                 mooringDue,
                 boomContainmentDue,
-                clearanceDue,
                 sailingPermissionDue,
                 pilotageDue,
                 tugDue,
                 basicAgencyDue,
                 carsDue,
+                clearanceDue,
                 communicationsDue,
                 bankExpensesDue,
                 overTimeDue)
@@ -266,7 +266,7 @@ public class PdaComposerTest extends TariffsInitializer {
   void testSetsProfitExpected() {
 
     final BigDecimal agencyDuesTotal =
-        Stream.of(basicAgencyDue, carsDue, communicationsDue, bankExpensesDue, overTimeDue)
+        Stream.of(basicAgencyDue, carsDue, clearanceDue, communicationsDue, bankExpensesDue, overTimeDue)
             .reduce(BigDecimal.ZERO, BigDecimal::add);
 
     final BigDecimal expected =
