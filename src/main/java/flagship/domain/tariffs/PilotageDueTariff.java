@@ -13,7 +13,7 @@ import java.time.LocalDate;
 import java.util.Map;
 import java.util.Set;
 
-import static flagship.domain.PdaWarningsGenerator.PdaWarning;
+import static flagship.domain.PdaWarningsGenerator.WarningType;
 
 @Getter
 @Setter
@@ -23,7 +23,7 @@ public class PilotageDueTariff extends Tariff {
 
   private Map<PilotageArea, Set<PortName>> portNamesInPilotageAreas;
   private Map<PilotageArea, Map<Range, Due>> pilotageDuesByArea;
-  private Map<PdaWarning, BigDecimal> increaseCoefficientsByWarningType;
+  private Map<WarningType, BigDecimal> increaseCoefficientsByWarningType;
   private Set<LocalDate> holidayCalendar;
   private BigDecimal grossTonnageThreshold;
 

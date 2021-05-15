@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Map;
 
-import static flagship.domain.PdaWarningsGenerator.PdaWarning.DANGEROUS_TUG_CARGO;
+import static flagship.domain.PdaWarningsGenerator.WarningType.DANGEROUS_TUG_CARGO;
 import static flagship.domain.tariffs.TugDueTariff.TugArea;
 import static flagship.domain.tariffs.TugDueTariff.TugArea.VTC_FIRST;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -34,7 +34,7 @@ class TugDueCalculatorTest extends BaseCalculatorTest {
             .hasIncreasedManeuverability(false)
             .build();
     PdaPort testPort = PdaPort.builder().tugArea(VTC_FIRST).build();
-    testCase = PdaCase.builder().ship(testShip).port(testPort).warnings(new HashSet<>()).build();
+    testCase = PdaCase.builder().ship(testShip).port(testPort).warningTypes(new HashSet<>()).build();
   }
 
   @DisplayName("Should return fixed tug due")
@@ -114,7 +114,7 @@ class TugDueCalculatorTest extends BaseCalculatorTest {
             BigDecimal.valueOf(
                 tugDueTariff.getGrossTonnageThresholdForTugCountReduce().intValue() + 1));
 
-    testCase.getWarnings().add(DANGEROUS_TUG_CARGO);
+    testCase.getWarningTypes().add(DANGEROUS_TUG_CARGO);
     testCase.getShip().setHasIncreasedManeuverability(true);
 
     calculator.set(testCase, tugDueTariff);
@@ -140,7 +140,7 @@ class TugDueCalculatorTest extends BaseCalculatorTest {
             BigDecimal.valueOf(
                 tugDueTariff.getGrossTonnageThresholdForTugCountReduce().intValue() - 1));
 
-    testCase.getWarnings().add(DANGEROUS_TUG_CARGO);
+    testCase.getWarningTypes().add(DANGEROUS_TUG_CARGO);
     testCase.getShip().setHasIncreasedManeuverability(true);
 
     calculator.set(testCase, tugDueTariff);

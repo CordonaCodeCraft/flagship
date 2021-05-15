@@ -16,8 +16,8 @@ import java.time.LocalDate;
 import java.util.*;
 
 import static flagship.domain.tariffs.MooringDueTariff.MooringServiceProvider;
-import static flagship.domain.PdaWarningsGenerator.PdaWarning;
-import static flagship.domain.PdaWarningsGenerator.PdaWarning.*;
+import static flagship.domain.PdaWarningsGenerator.WarningType;
+import static flagship.domain.PdaWarningsGenerator.WarningType.*;
 import static flagship.domain.tariffs.PilotageDueTariff.PilotageArea.*;
 import static flagship.domain.tariffs.Tariff.MAX_GT;
 import static flagship.domain.tariffs.Tariff.MIN_GT;
@@ -162,7 +162,7 @@ public class ServiceDuesTariffsInitializer {
 
     pilotageDueTariff.setPilotageDuesByArea(Collections.unmodifiableMap(pilotageDuesByArea));
 
-    Map<PdaWarning, BigDecimal> increaseCoefficientsByWarningType = new EnumMap<>(PdaWarning.class);
+    Map<WarningType, BigDecimal> increaseCoefficientsByWarningType = new EnumMap<>(WarningType.class);
 
     increaseCoefficientsByWarningType.put(HOLIDAY, BigDecimal.valueOf(0.5));
     increaseCoefficientsByWarningType.put(SPECIAL_PILOT, BigDecimal.valueOf(0.5));
@@ -434,7 +434,7 @@ public class ServiceDuesTariffsInitializer {
     tugCountByGrossTonnage.put(new Range(4500, 17999), BigDecimal.valueOf(2.00));
     tugCountByGrossTonnage.put(new Range(18000, MAX_GT), BigDecimal.valueOf(3.00));
 
-    Map<PdaWarning, BigDecimal> increaseCoefficientsByWarningType = new EnumMap<>(PdaWarning.class);
+    Map<WarningType, BigDecimal> increaseCoefficientsByWarningType = new EnumMap<>(WarningType.class);
     increaseCoefficientsByWarningType.put(HOLIDAY, BigDecimal.valueOf(1.0));
 
     tugDueTariff.setPortNamesInTugAreas(Collections.unmodifiableMap(portNamesInTugAreas));
@@ -518,7 +518,7 @@ public class ServiceDuesTariffsInitializer {
     mooringDuesByProvider.put(MooringServiceProvider.VTC, vtcMooringDues);
     mooringDuesByProvider.put(MooringServiceProvider.PORTFLEET, portfleetMooringDues);
 
-    Map<PdaWarning, BigDecimal> increaseCoefficientsByWarningType = new EnumMap<>(PdaWarning.class);
+    Map<WarningType, BigDecimal> increaseCoefficientsByWarningType = new EnumMap<>(WarningType.class);
     increaseCoefficientsByWarningType.put(HOLIDAY, BigDecimal.valueOf(1.0));
 
     mooringDueTariff.setMooringDuesByProvider(Collections.unmodifiableMap(mooringDuesByProvider));

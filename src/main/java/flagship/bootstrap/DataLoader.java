@@ -3,6 +3,7 @@ package flagship.bootstrap;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import flagship.domain.PdaComposer;
 import flagship.domain.TariffsFactory;
 import flagship.domain.tariffs.*;
 import flagship.domain.tariffs.mix.HolidayCalendar;
@@ -40,10 +41,12 @@ public class DataLoader implements ApplicationRunner {
   private final HolidayCalendar holidayCalendar;
   private final AgencyDuesTariff agencyDuesTariff;
   private final TariffsFactory tariffsFactory;
+  private final PdaComposer pdaComposer;
 
 
   @Override
   public void run(ApplicationArguments args) throws Exception {
+//    System.out.println(pdaComposer.getCommission());
 
     StateDuesTariffsInitializer.initializeTariffs(
             tonnageDueTariff,

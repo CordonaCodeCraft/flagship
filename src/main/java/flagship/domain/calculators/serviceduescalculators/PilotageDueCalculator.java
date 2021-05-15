@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static flagship.domain.PdaWarningsGenerator.PdaWarning.*;
+import static flagship.domain.PdaWarningsGenerator.WarningType.*;
 
 @NoArgsConstructor
 public class PilotageDueCalculator extends PrivateDueCalculator {
@@ -63,12 +63,12 @@ public class PilotageDueCalculator extends PrivateDueCalculator {
     List<BigDecimal> increaseCoefficients = new ArrayList<>();
 
     final BigDecimal increaseCoefficientForHazardousCargo =
-        source.getWarnings().contains(HAZARDOUS_PILOTAGE_CARGO)
+        source.getWarningTypes().contains(HAZARDOUS_PILOTAGE_CARGO)
             ? tariff.getIncreaseCoefficientsByWarningType().get(HAZARDOUS_PILOTAGE_CARGO)
             : BigDecimal.ZERO;
 
     final BigDecimal increaseCoefficientForSpecialCargo =
-        source.getWarnings().contains(SPECIAL_PILOTAGE_CARGO)
+            source.getWarningTypes().contains(SPECIAL_PILOTAGE_CARGO)
             ? tariff.getIncreaseCoefficientsByWarningType().get(SPECIAL_PILOTAGE_CARGO)
             : BigDecimal.ZERO;
 
@@ -76,7 +76,7 @@ public class PilotageDueCalculator extends PrivateDueCalculator {
         increaseCoefficientForHazardousCargo.max(increaseCoefficientForSpecialCargo));
 
     final BigDecimal increaseCoefficientByPilot =
-        source.getWarnings().contains(SPECIAL_PILOT)
+            source.getWarningTypes().contains(SPECIAL_PILOT)
             ? tariff.getIncreaseCoefficientsByWarningType().get(SPECIAL_PILOT)
             : BigDecimal.ZERO;
 

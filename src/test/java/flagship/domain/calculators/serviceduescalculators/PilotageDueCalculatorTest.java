@@ -14,7 +14,7 @@ import org.junit.jupiter.params.provider.EnumSource;
 import java.math.BigDecimal;
 import java.util.HashSet;
 
-import static flagship.domain.PdaWarningsGenerator.PdaWarning.*;
+import static flagship.domain.PdaWarningsGenerator.WarningType.*;
 import static flagship.domain.tariffs.PilotageDueTariff.PilotageArea;
 import static flagship.domain.tariffs.PilotageDueTariff.PilotageArea.VARNA_FIRST;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -28,7 +28,7 @@ public class PilotageDueCalculatorTest extends BaseCalculatorTest {
   void setUp() {
     PdaPort testPort = PdaPort.builder().pilotageArea(VARNA_FIRST).build();
     PdaShip testShip = PdaShip.builder().grossTonnage(BigDecimal.valueOf(MIN_GT)).build();
-    testCase = PdaCase.builder().port(testPort).ship(testShip).warnings(new HashSet<>()).build();
+    testCase = PdaCase.builder().port(testPort).ship(testShip).warningTypes(new HashSet<>()).build();
   }
 
   @DisplayName("Should return fixed pilotage due by pilotage area")
@@ -84,7 +84,7 @@ public class PilotageDueCalculatorTest extends BaseCalculatorTest {
   @Test
   void testIncreasesTotalPilotageDueBy20Percent() {
 
-    testCase.getWarnings().add(HAZARDOUS_PILOTAGE_CARGO);
+    testCase.getWarningTypes().add(HAZARDOUS_PILOTAGE_CARGO);
 
     calculator.set(testCase, pilotageDueTariff);
 
@@ -103,7 +103,7 @@ public class PilotageDueCalculatorTest extends BaseCalculatorTest {
   @Test
   void testIncreasesTotalPilotageDueBy100Percent() {
 
-    testCase.getWarnings().add(SPECIAL_PILOTAGE_CARGO);
+    testCase.getWarningTypes().add(SPECIAL_PILOTAGE_CARGO);
 
     calculator.set(testCase, pilotageDueTariff);
 
@@ -122,7 +122,7 @@ public class PilotageDueCalculatorTest extends BaseCalculatorTest {
   @Test
   void testIncreasesTotalPilotageDueBy50PercentIfRequiresSpecialPilot() {
 
-    testCase.getWarnings().add(SPECIAL_PILOT);
+    testCase.getWarningTypes().add(SPECIAL_PILOT);
 
     calculator.set(testCase, pilotageDueTariff);
 
@@ -141,8 +141,8 @@ public class PilotageDueCalculatorTest extends BaseCalculatorTest {
   @Test
   void testIncreasesTotalPilotageDueBy150Percent() {
 
-    testCase.getWarnings().add(SPECIAL_PILOTAGE_CARGO);
-    testCase.getWarnings().add(SPECIAL_PILOT);
+    testCase.getWarningTypes().add(SPECIAL_PILOTAGE_CARGO);
+    testCase.getWarningTypes().add(SPECIAL_PILOT);
 
     calculator.set(testCase, pilotageDueTariff);
 

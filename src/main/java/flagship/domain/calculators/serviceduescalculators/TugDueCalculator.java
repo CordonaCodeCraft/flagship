@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.util.Map;
 
-import static flagship.domain.PdaWarningsGenerator.PdaWarning.DANGEROUS_TUG_CARGO;
+import static flagship.domain.PdaWarningsGenerator.WarningType.DANGEROUS_TUG_CARGO;
 
 @NoArgsConstructor
 public class TugDueCalculator extends PrivateDueCalculator {
@@ -64,7 +64,7 @@ public class TugDueCalculator extends PrivateDueCalculator {
 
   private boolean isNotEligibleForTugCountReduce() {
     return !source.getShip().getHasIncreasedManeuverability()
-        || (source.getWarnings().contains(DANGEROUS_TUG_CARGO)
+        || (source.getWarningTypes().contains(DANGEROUS_TUG_CARGO)
             && source.getShip().getGrossTonnage().intValue()
                 < tariff.getGrossTonnageThresholdForTugCountReduce().intValue());
   }

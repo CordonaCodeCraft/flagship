@@ -32,6 +32,11 @@ public class StateDuesTariffsInitializer {
     initializeLightDueTariff(lightDueTariff);
     initializeMarpolDueTariff(marpolDueTariff);
     initializeBoomContainmentTariff(boomContainmentTariff);
+    initializeSailingPermissionTariff(sailingPermissionTariff);
+  }
+
+  private static void initializeSailingPermissionTariff(final SailingPermissionTariff sailingPermissionTariff) {
+    sailingPermissionTariff.setSailingPermissionDue(BigDecimal.valueOf(50.00));
   }
 
   private static void initializeTonnageDueTariff(final TonnageDueTariff tonnageDueTariff) {

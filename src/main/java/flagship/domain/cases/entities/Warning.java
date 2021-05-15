@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 import static flagship.domain.PdaWarningsGenerator.DueType;
-import static flagship.domain.PdaWarningsGenerator.PdaWarning;
+import static flagship.domain.PdaWarningsGenerator.WarningType;
 import static javax.persistence.EnumType.STRING;
 
 @Getter
@@ -28,7 +28,7 @@ public class Warning extends BaseEntity {
   private DueType dueType;
 
   @Enumerated(value = STRING)
-  private PdaWarning warningType;
+  private WarningType warningType;
 
   private LocalDate warningDate;
 

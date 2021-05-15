@@ -3,6 +3,9 @@ package flagship.bootstrap;
 import flagship.domain.cases.dto.PdaCase;
 import flagship.domain.cases.dto.PdaPort;
 import flagship.domain.cases.dto.PdaShip;
+import flagship.domain.cases.dto.mappers.CaseMapper;
+import flagship.domain.cases.entities.Case;
+import flagship.domain.cases.entities.Ship;
 import flagship.domain.tariffs.PilotageDueTariff;
 import flagship.domain.tariffs.Tariff;
 import flagship.domain.tariffs.TugDueTariff;
@@ -21,7 +24,7 @@ public class Sandbox {
 
   public static void main(String[] args) throws JSONException, IOException {
 
-    //    dtoConversions();
+//        dtoConversions();
   }
 
   private static void dtoConversions() {
@@ -53,37 +56,9 @@ public class Sandbox {
             .estimatedDateOfDeparture(LocalDate.of(2021, 6, 15))
             .build();
 
-    //    List<ECalculator<PdaCase, Tariff>> calculators = new ArrayList<>();
-    //    calculators.add(new PilotageTestCalculator());
-    //    calculators.add(new TugTestCalculator());
-    //
-    //    for (ECalculator<PdaCase, Tariff> calculator : calculators) {
-    //
-    //      String simpleName = calculator.getClass().getSimpleName();
-    //
-    //      Tariff tariff = returnCalculator(simpleName);
-    //
-    //      calculator.setFor(pdaCase, tariff);
-    //
-    //    }
+    Case newCase = CaseMapper.INSTANCE.pdaCaseToCase(pdaCase);
 
-    //    Case entity = CaseMapper.INSTANCE.pdaCaseToCase(pdaCase);
-    //
-    //    PdaCase dto = CaseMapper.INSTANCE.caseToPdaCase(entity);
-    //
-    //    System.out.println();
+    System.out.println();
   }
 
-  private static Tariff returnCalculator(String simpleName) {
-
-    if (simpleName.contains("Tug")) {
-      return new TugDueTariff();
-    }
-
-    if (simpleName.contains("Pilotage")) {
-      return new PilotageDueTariff();
-    }
-
-    return null;
-  }
 }

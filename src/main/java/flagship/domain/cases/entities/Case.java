@@ -37,12 +37,11 @@ public class Case extends BaseEntity {
   @Enumerated(value = STRING)
   private CallPurpose callPurpose;
 
+  @OneToMany private Set<Warning> warnings;
+
   private Integer callCount;
-
   private Integer alongsideDaysExpected;
-
   private LocalDate estimatedDateOfArrival;
-
   private LocalDate estimatedDateOfDeparture;
 
   @Enumerated(value = STRING)

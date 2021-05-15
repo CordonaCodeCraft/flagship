@@ -13,7 +13,7 @@ import java.time.LocalDate;
 import java.util.Map;
 import java.util.Set;
 
-import static flagship.domain.PdaWarningsGenerator.PdaWarning;
+import static flagship.domain.PdaWarningsGenerator.WarningType;
 
 @Getter
 @Setter
@@ -24,7 +24,7 @@ public class TugDueTariff extends Tariff {
   private Map<TugServiceProvider, Map<TugArea, Set<PortName>>> portNamesInTugAreas;
   private Map<TugArea, Map<Range, Due>> tugDuesByArea;
   private Map<Range, BigDecimal> tugCountByGrossTonnage;
-  private Map<PdaWarning, BigDecimal> increaseCoefficientsByWarningType;
+  private Map<WarningType, BigDecimal> increaseCoefficientsByWarningType;
   private Set<LocalDate> holidayCalendar;
   private BigDecimal grossTonnageThreshold;
   private BigDecimal grossTonnageThresholdForTugCountReduce;

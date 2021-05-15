@@ -1,8 +1,0 @@
-{
-  "properties": [
-    {
-      "name": "flagship.commission",
-      "type": "java.lang.String",
-      "description": "Description for flagship.commission."
-  }
-] }

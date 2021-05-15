@@ -1,14 +1,16 @@
 package flagship.domain.cases.dto;
 
 import flagship.domain.cases.entities.ProformaDisbursementAccount;
+import flagship.domain.cases.entities.Warning;
 import flagship.domain.cases.entities.enums.CallPurpose;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Set;
 
-import static flagship.domain.PdaWarningsGenerator.PdaWarning;
+import static flagship.domain.PdaWarningsGenerator.WarningType;
 
 @Getter
 @Setter
@@ -20,12 +22,14 @@ public class PdaCase {
 
   private PdaShip ship;
   private PdaPort port;
-  private Set<PdaWarning> warnings;
+  private Set<WarningType> warningTypes;
+  private Set<Warning> warnings;
   private CallPurpose callPurpose;
   private Integer callCount;
   private Integer alongsideDaysExpected;
   private LocalDate estimatedDateOfArrival;
   private LocalDate estimatedDateOfDeparture;
   private Boolean arrivesFromBulgarianPort;
+  private BigDecimal clientDiscountCoefficient;
   private ProformaDisbursementAccount proformaDisbursementAccount;
 }

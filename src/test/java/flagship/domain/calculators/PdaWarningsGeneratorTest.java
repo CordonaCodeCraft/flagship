@@ -1,7 +1,7 @@
 package flagship.domain.calculators;
 
 import flagship.domain.PdaWarningsGenerator;
-import flagship.domain.PdaWarningsGenerator.PdaWarning;
+import flagship.domain.PdaWarningsGenerator.WarningType;
 import flagship.domain.TariffsFactory;
 import flagship.domain.cases.dto.PdaCase;
 import flagship.domain.tariffs.Tariff;
@@ -16,7 +16,7 @@ import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Map;
 
-import static flagship.domain.PdaWarningsGenerator.PdaWarning.*;
+import static flagship.domain.PdaWarningsGenerator.WarningType.*;
 import static flagship.domain.calculators.DueCalculator.CalculatorType;
 import static flagship.domain.calculators.DueCalculator.CalculatorType.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -62,7 +62,7 @@ class PdaWarningsGeneratorTest extends TariffsInitializer {
   @Test
   void testGeneratesEtaDetectedWarnings() {
 
-    testCase.getWarnings().addAll(EnumSet.of(ETA_IS_HOLIDAY, ETD_NOT_PROVIDED));
+    testCase.getWarningTypes().addAll(EnumSet.of(ETA_IS_HOLIDAY, ETD_NOT_PROVIDED));
 
     warningsGenerator = new PdaWarningsGenerator(testCase, tariffsFactory);
 
@@ -75,7 +75,7 @@ class PdaWarningsGeneratorTest extends TariffsInitializer {
   @Test
   void testGeneratesEtdDetectedWarnings() {
 
-    testCase.getWarnings().addAll(EnumSet.of(ETD_IS_HOLIDAY, ETA_NOT_PROVIDED));
+    testCase.getWarningTypes().addAll(EnumSet.of(ETD_IS_HOLIDAY, ETA_NOT_PROVIDED));
 
     warningsGenerator = new PdaWarningsGenerator(testCase, tariffsFactory);
 
@@ -88,7 +88,7 @@ class PdaWarningsGeneratorTest extends TariffsInitializer {
   @Test
   void testGeneratesEtaAndEtdDetectedWarnings() {
 
-    testCase.getWarnings().addAll(EnumSet.of(ETA_IS_HOLIDAY, ETD_IS_HOLIDAY));
+    testCase.getWarningTypes().addAll(EnumSet.of(ETA_IS_HOLIDAY, ETD_IS_HOLIDAY));
 
     warningsGenerator = new PdaWarningsGenerator(testCase, tariffsFactory);
 
@@ -107,7 +107,7 @@ class PdaWarningsGeneratorTest extends TariffsInitializer {
   @Test
   void testGeneratesEtaNotProvidedWarnings() {
 
-    testCase.getWarnings().addAll(EnumSet.of(ETA_NOT_PROVIDED, ETD_IS_HOLIDAY));
+    testCase.getWarningTypes().addAll(EnumSet.of(ETA_NOT_PROVIDED, ETD_IS_HOLIDAY));
 
     warningsGenerator = new PdaWarningsGenerator(testCase, tariffsFactory);
 
@@ -120,7 +120,7 @@ class PdaWarningsGeneratorTest extends TariffsInitializer {
   @Test
   void testGeneratesEtdNotProvidedWarnings() {
 
-    testCase.getWarnings().addAll(EnumSet.of(ETD_NOT_PROVIDED, ETA_IS_HOLIDAY));
+    testCase.getWarningTypes().addAll(EnumSet.of(ETD_NOT_PROVIDED, ETA_IS_HOLIDAY));
 
     warningsGenerator = new PdaWarningsGenerator(testCase, tariffsFactory);
 
@@ -133,7 +133,7 @@ class PdaWarningsGeneratorTest extends TariffsInitializer {
   @Test
   void testGeneratesEtaAndEtdNotProvidedWarnings() {
 
-    testCase.getWarnings().addAll(EnumSet.of(ETA_NOT_PROVIDED, ETD_NOT_PROVIDED));
+    testCase.getWarningTypes().addAll(EnumSet.of(ETA_NOT_PROVIDED, ETD_NOT_PROVIDED));
 
     warningsGenerator = new PdaWarningsGenerator(testCase, tariffsFactory);
 
@@ -150,10 +150,10 @@ class PdaWarningsGeneratorTest extends TariffsInitializer {
 
   @Test
   void testGenerateIntermediateHolidayWarnings() {
-    testCase.getWarnings().addAll(EnumSet.of(ETA_IS_HOLIDAY, ETD_IS_HOLIDAY));
+    testCase.getWarningTypes().addAll(EnumSet.of(ETA_IS_HOLIDAY, ETD_IS_HOLIDAY));
   }
 
-  private long getCountForWarning(final PdaWarning warning) {
+  private long getCountForWarning(final WarningType warning) {
     return warningsGenerator.generateWarnings().stream()
         .filter(w -> w.getWarningType() == warning)
         .count();

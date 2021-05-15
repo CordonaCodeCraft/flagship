@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static flagship.domain.PdaWarningsGenerator.DueType.*;
-import static flagship.domain.PdaWarningsGenerator.PdaWarning.*;
+import static flagship.domain.PdaWarningsGenerator.WarningType.*;
 import static flagship.domain.calculators.DueCalculator.CalculatorType.*;
 
 // todo: Confirm, that predefining UUID id is not a problem for Hibernate
@@ -58,35 +58,35 @@ public class PdaWarningsGenerator {
 
     final Set<Warning> warnings = new LinkedHashSet<>();
 
-    if (source.getWarnings().contains(ETA_IS_HOLIDAY)) {
+    if (source.getWarningTypes().contains(ETA_IS_HOLIDAY)) {
       warnings.addAll(getHolidayWarnings(eta, ETA_IS_HOLIDAY));
     }
-    if (source.getWarnings().contains(ETD_IS_HOLIDAY)) {
+    if (source.getWarningTypes().contains(ETD_IS_HOLIDAY)) {
       warnings.addAll(getHolidayWarnings(etd, ETD_IS_HOLIDAY));
     }
-    if (source.getWarnings().contains(ETA_NOT_PROVIDED)) {
+    if (source.getWarningTypes().contains(ETA_NOT_PROVIDED)) {
       warnings.addAll(getDateMissingWarnings(ETA_NOT_PROVIDED));
     }
-    if (source.getWarnings().contains(ETD_NOT_PROVIDED)) {
+    if (source.getWarningTypes().contains(ETD_NOT_PROVIDED)) {
       warnings.addAll(getDateMissingWarnings(ETD_NOT_PROVIDED));
     }
-    if (source.getWarnings().contains(ETA_IS_HOLIDAY)
-        && source.getWarnings().contains(ETD_IS_HOLIDAY)) {
+    if (source.getWarningTypes().contains(ETA_IS_HOLIDAY)
+        && source.getWarningTypes().contains(ETD_IS_HOLIDAY)) {
       warnings.addAll(getIntermediateHolidayWarningsForWharfDue(eta, etd));
     }
 
     return warnings;
   }
 
-  private Set<Warning> getHolidayWarnings(final LocalDate date, final PdaWarning warning) {
+  private Set<Warning> getHolidayWarnings(final LocalDate date, final WarningType warningType) {
     return Stream.of(PILOTAGE_DUE, TUG_DUE, MOORING_DUE, WHARF_DUE)
-        .map(due -> getNewWarning(date, warning, due, getFactor(due)))
+        .map(due -> getNewWarning(date, warningType, due, getFactor(due)))
         .collect(Collectors.toCollection(LinkedHashSet::new));
   }
 
-  private Set<Warning> getDateMissingWarnings(final PdaWarning warning) {
+  private Set<Warning> getDateMissingWarnings(final WarningType warningType) {
     return Stream.of(PILOTAGE_DUE, TUG_DUE, MOORING_DUE, WHARF_DUE)
-        .map(due -> getNewWarning(null, warning, due, BigDecimal.ZERO))
+        .map(due -> getNewWarning(null, warningType, due, BigDecimal.ZERO))
         .collect(Collectors.toCollection(LinkedHashSet::new));
   }
 
@@ -143,20 +143,20 @@ public class PdaWarningsGenerator {
 
   private Warning getNewWarning(
       final LocalDate date,
-      final PdaWarning warning,
+      final WarningType warningType,
       final DueType dueType,
       final BigDecimal factor) {
     return Warning.builder()
         .id(UUID.randomUUID())
         .dueType(dueType)
-        .warningType(warning)
+        .warningType(warningType)
         .warningDate(date)
         .warningFactor(factor)
         .dateCreated(Timestamp.valueOf(LocalDateTime.now()))
         .build();
   }
 
-  public enum PdaWarning {
+  public enum WarningType {
     HOLIDAY,
     ETA_IS_HOLIDAY,
     ETD_IS_HOLIDAY,
