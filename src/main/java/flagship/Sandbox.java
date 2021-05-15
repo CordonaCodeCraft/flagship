@@ -1,4 +1,4 @@
-package flagship.bootstrap;
+package flagship;
 
 import flagship.domain.cases.dto.PdaCase;
 import flagship.domain.cases.dto.PdaPort;
