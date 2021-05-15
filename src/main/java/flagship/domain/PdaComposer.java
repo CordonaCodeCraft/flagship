@@ -3,57 +3,47 @@ package flagship.domain;
 import flagship.domain.calculators.DueCalculator;
 import flagship.domain.cases.dto.PdaCase;
 import flagship.domain.cases.entities.ProformaDisbursementAccount;
-import flagship.domain.cases.entities.Warning;
 import flagship.domain.tariffs.Tariff;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.util.Arrays;
-import java.util.Set;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import static flagship.domain.calculators.DueCalculator.CalculatorType;
 import static flagship.domain.calculators.DueCalculator.CalculatorType.values;
 
+@Component
+@Getter
 @Setter
 @RequiredArgsConstructor
-@Component
+@PropertySource("classpath:flagship.yml")
 public class PdaComposer {
 
-  private final PdaCase source;
-  private final TariffsFactory tariffsFactory;
+  @Value("${flagship.commission-coefficient}")
+  private BigDecimal commissionCoefficient;
+
+  private PdaCase source;
+  private TariffsFactory tariffsFactory;
 
   public ProformaDisbursementAccount composePda() {
 
     final ProformaDisbursementAccount pda = new ProformaDisbursementAccount();
 
     initializeDues(pda);
-    initializeWarnings(pda);
-    initializeProfit(pda);
+    initializeClientDiscount(pda);
+    initializePayableTotal(pda);
+    initializeTotalAfterDiscount(pda);
+    initializeProfitExpected(pda);
 
     return pda;
-  }
-
-  private void initializeProfit(final ProformaDisbursementAccount pda) {
-
-    BigDecimal agencyDuesTotal =
-        Stream.of(
-                pda.getBankExpensesDue(),
-                pda.getCarsDue(),
-                pda.getCommunicationsDue(),
-                pda.getBankExpensesDue(),
-                pda.getOvertimeDue())
-            .reduce(BigDecimal.ZERO, BigDecimal::add);
-
-    System.out.println();
-
-//    pda.setProfitExpected(agencyDuesTotal.add(agencyDuesTotal.multiply(commission)));
   }
 
   private void initializeDues(final ProformaDisbursementAccount pda) {
@@ -74,7 +64,8 @@ public class PdaComposer {
       throws IllegalAccessException {
     final CalculatorType calculatorType = getCalculatorType(field);
     final Tariff tariff = tariffsFactory.getTariff(calculatorType);
-    final DueCalculator calculator = CalculatorFactory.getCalculator(calculatorType);
+    CalculatorFactory calculatorFactory = new CalculatorFactory();
+    final DueCalculator calculator = calculatorFactory.getCalculator(calculatorType);
     calculator.set(source, tariff);
     field.set(pda, calculator.calculate());
   }
@@ -86,9 +77,52 @@ public class PdaComposer {
         .get();
   }
 
-  private void initializeWarnings(final ProformaDisbursementAccount pda) {
-    PdaWarningsGenerator pdaWarningsGenerator = new PdaWarningsGenerator(source, tariffsFactory);
-    Set<Warning> warnings = pdaWarningsGenerator.generateWarnings();
-    pda.setWarnings(warnings);
+  private void initializeClientDiscount(final ProformaDisbursementAccount pda) {
+
+    if (Optional.ofNullable(source.getClientDiscountCoefficient()).isPresent()) {
+      pda.setClientDiscount(
+          getAgencyDuesTotal(pda).multiply(source.getClientDiscountCoefficient()));
+    } else {
+      pda.setClientDiscount(BigDecimal.ZERO);
+    }
+  }
+
+  private void initializePayableTotal(final ProformaDisbursementAccount pda) {
+
+    final BigDecimal stateAndServiceDuesTotal =
+        Stream.of(
+                pda.getTonnageDue(),
+                pda.getWharfDue(),
+                pda.getCanalDue(),
+                pda.getLightDue(),
+                pda.getMarpolDue(),
+                pda.getMooringDue(),
+                pda.getBoomContainmentDue(),
+                pda.getClearanceDue(),
+                pda.getSailingPermissionDue(),
+                pda.getPilotageDue(),
+                pda.getTugDue())
+            .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+    pda.setPayableTotal(stateAndServiceDuesTotal.add(getAgencyDuesTotal(pda)));
+  }
+
+  private void initializeTotalAfterDiscount(final ProformaDisbursementAccount pda) {
+    pda.setTotalAfterDiscount(pda.getPayableTotal().subtract(pda.getClientDiscount()));
+  }
+
+  private void initializeProfitExpected(final ProformaDisbursementAccount pda) {
+    pda.setProfitExpected(
+        getAgencyDuesTotal(pda).add(pda.getTugDue().multiply(commissionCoefficient)));
+  }
+
+  private BigDecimal getAgencyDuesTotal(final ProformaDisbursementAccount pda) {
+    return Stream.of(
+            pda.getBasicAgencyDue(),
+            pda.getCarsDue(),
+            pda.getCommunicationsDue(),
+            pda.getBankExpensesDue(),
+            pda.getOvertimeDue())
+        .reduce(BigDecimal.ZERO, BigDecimal::add);
   }
 }
