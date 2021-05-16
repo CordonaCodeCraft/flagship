@@ -5,6 +5,7 @@ import flagship.domain.cases.entities.enums.ShipType;
 import flagship.domain.tariffs.*;
 import flagship.domain.tariffs.mix.Due;
 import flagship.domain.tariffs.mix.Range;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -17,6 +18,7 @@ import static flagship.domain.tariffs.Tariff.MAX_GT;
 import static flagship.domain.tariffs.Tariff.MIN_GT;
 
 @Component
+@Slf4j
 public class StateDuesTariffsInitializer {
 
   public static void initializeTariffs(
@@ -33,10 +35,6 @@ public class StateDuesTariffsInitializer {
     initializeMarpolDueTariff(marpolDueTariff);
     initializeBoomContainmentTariff(boomContainmentTariff);
     initializeSailingPermissionTariff(sailingPermissionTariff);
-  }
-
-  private static void initializeSailingPermissionTariff(final SailingPermissionTariff sailingPermissionTariff) {
-    sailingPermissionTariff.setSailingPermissionDue(BigDecimal.valueOf(50.00));
   }
 
   private static void initializeTonnageDueTariff(final TonnageDueTariff tonnageDueTariff) {
@@ -89,6 +87,8 @@ public class StateDuesTariffsInitializer {
     tonnageDueTariff.setCallCountThreshold(4);
     tonnageDueTariff.setCallCountDiscountCoefficient(BigDecimal.valueOf(0.7));
     tonnageDueTariff.setDiscountCoefficientForPortOfArrival(BigDecimal.valueOf(0.1));
+
+    log.info("Tonnage due tariff initialized");
   }
 
   private static void initializeWharfDueTariff(final WharfDueTariff wharfDueTariff) {
@@ -111,6 +111,8 @@ public class StateDuesTariffsInitializer {
         Collections.unmodifiableSet(shipTypesNotEligibleForDiscount));
 
     wharfDueTariff.setDefaultWharfDue(new Due(0.10));
+
+    log.info("Wharf due tariff initialized");
   }
 
   private static void initializeCanalDueTariff(final CanalDueTariff canalDueTariff) {
@@ -151,6 +153,8 @@ public class StateDuesTariffsInitializer {
 
     canalDueTariff.setCallCountThreshold(3);
     canalDueTariff.setDefaultCallCountDiscountCoefficient(BigDecimal.valueOf(0.8));
+
+    log.info("Canal due tariff initialized");
   }
 
   private static void initializeLightDueTariff(final LightDueTariff lightDueTariff) {
@@ -179,6 +183,8 @@ public class StateDuesTariffsInitializer {
     lightDueTariff.setCallCountThreshold(4);
     lightDueTariff.setCallCountDiscountCoefficient(BigDecimal.valueOf(0.7));
     lightDueTariff.setLightDueMaximumValue(BigDecimal.valueOf(150.00));
+
+    log.info("Light due tariff initialized");
   }
 
   private static void initializeMarpolDueTariff(MarpolDueTariff marpolDueTariff) {
@@ -237,6 +243,8 @@ public class StateDuesTariffsInitializer {
     marpolDueTariff.setOdessosFixedMarpolDue(BigDecimal.valueOf(120.00));
     marpolDueTariff.setOdessosFreeGarbageDisposalQuantity(BigDecimal.valueOf(10.00));
     marpolDueTariff.setOdessosFreeSewageDisposalQuantity(BigDecimal.valueOf(1.00));
+
+    log.info("Marpol due tariff initialized");
   }
 
   private static void initializeBoomContainmentTariff(BoomContainmentTariff boomContainmentTariff) {
@@ -250,5 +258,13 @@ public class StateDuesTariffsInitializer {
 
     boomContainmentTariff.setBoomContainmentDuePerGrossTonnage(
         Collections.unmodifiableMap(boomContainmentDuePerGrossTonnage));
+
+    log.info("Boom containment due tariff initialized");
+  }
+
+  private static void initializeSailingPermissionTariff(final SailingPermissionTariff sailingPermissionTariff) {
+    sailingPermissionTariff.setSailingPermissionDue(BigDecimal.valueOf(50.00));
+
+    log.info("Sailing permission due tariff initialized");
   }
 }

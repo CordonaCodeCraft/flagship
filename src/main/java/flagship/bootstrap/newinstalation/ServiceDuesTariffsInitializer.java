@@ -9,6 +9,7 @@ import flagship.domain.tariffs.mix.Due;
 import flagship.domain.tariffs.mix.HolidayCalendar;
 import flagship.domain.tariffs.mix.PortName;
 import flagship.domain.tariffs.mix.Range;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -29,6 +30,7 @@ import static flagship.domain.tariffs.TugDueTariff.TugServiceProvider.VTC;
 import static java.time.Month.*;
 
 @Component
+@Slf4j
 public class ServiceDuesTariffsInitializer {
 
   public static void initializeTariffs(
@@ -40,6 +42,33 @@ public class ServiceDuesTariffsInitializer {
     initializePilotageDueTariff(pilotageDueTariff, holidayCalendar);
     initializeTugDueTariff(tugDueTariff, holidayCalendar);
     initializeMooringDueTariff(mooringDueTariff, holidayCalendar);
+  }
+
+  private static void initializeHolidayCalendar(HolidayCalendar holidayCalendar) {
+
+    int year = LocalDate.now().getYear();
+    LocalDate easter = LocalDate.of(LocalDate.now().getYear(), MAY, 2);
+
+    Set<LocalDate> officialHolidays = new TreeSet<>();
+
+    officialHolidays.add(easter);
+
+    officialHolidays.add(LocalDate.of(year, JANUARY, 1));
+    officialHolidays.add(LocalDate.of(year, MARCH, 3));
+    officialHolidays.add(LocalDate.of(year, APRIL, 30));
+    officialHolidays.add(LocalDate.of(year, MAY, 1));
+    officialHolidays.add(LocalDate.of(year, MAY, 6));
+    officialHolidays.add(LocalDate.of(year, MAY, 24));
+    officialHolidays.add(LocalDate.of(year, SEPTEMBER, 6));
+    officialHolidays.add(LocalDate.of(year, SEPTEMBER, 22));
+    officialHolidays.add(LocalDate.of(year, DECEMBER, 24));
+    officialHolidays.add(LocalDate.of(year, DECEMBER, 25));
+    officialHolidays.add(LocalDate.of(year, DECEMBER, 26));
+
+    Set<LocalDate> resolvedHolidays = HolidayCalendarResolver.resolve(officialHolidays);
+    holidayCalendar.setHolidayCalendar(resolvedHolidays);
+
+    log.info("Holiday calendar initialized");
   }
 
   private static void initializePilotageDueTariff(
@@ -175,32 +204,8 @@ public class ServiceDuesTariffsInitializer {
     pilotageDueTariff.setGrossTonnageThreshold(BigDecimal.valueOf(10000.00));
 
     pilotageDueTariff.setHolidayCalendar(holidayCalendar.getHolidayCalendar());
-  }
 
-  private static void initializeHolidayCalendar(HolidayCalendar holidayCalendar) {
-
-    int year = LocalDate.now().getYear();
-    LocalDate easter = LocalDate.of(LocalDate.now().getYear(), MAY, 2);
-
-    Set<LocalDate> officialHolidays = new TreeSet<>();
-
-    officialHolidays.add(easter);
-
-    officialHolidays.add(LocalDate.of(year, JANUARY, 1));
-    officialHolidays.add(LocalDate.of(year, MARCH, 3));
-    // todo: reserach why April of 30th is in the official holidays.
-    officialHolidays.add(LocalDate.of(year, APRIL, 30));
-    officialHolidays.add(LocalDate.of(year, MAY, 1));
-    officialHolidays.add(LocalDate.of(year, MAY, 6));
-    officialHolidays.add(LocalDate.of(year, MAY, 24));
-    officialHolidays.add(LocalDate.of(year, SEPTEMBER, 6));
-    officialHolidays.add(LocalDate.of(year, SEPTEMBER, 22));
-    officialHolidays.add(LocalDate.of(year, DECEMBER, 24));
-    officialHolidays.add(LocalDate.of(year, DECEMBER, 25));
-    officialHolidays.add(LocalDate.of(year, DECEMBER, 26));
-
-    Set<LocalDate> resolvedHolidays = HolidayCalendarResolver.resolve(officialHolidays);
-    holidayCalendar.setHolidayCalendar(resolvedHolidays);
+    log.info("Pilotage due tariff initialized");
   }
 
   private static void initializeTugDueTariff(
@@ -446,6 +451,8 @@ public class ServiceDuesTariffsInitializer {
     tugDueTariff.setHolidayCalendar(holidayCalendar.getHolidayCalendar());
     tugDueTariff.setGrossTonnageThreshold(BigDecimal.valueOf(10000.00));
     tugDueTariff.setGrossTonnageThresholdForTugCountReduce(BigDecimal.valueOf(18000.00));
+
+    log.info("Tug due tariff initialized");
   }
 
   private static void initializeMooringDueTariff(
@@ -531,5 +538,7 @@ public class ServiceDuesTariffsInitializer {
     mooringDueTariff.setVtcGrossTonnageThreshold(BigDecimal.valueOf(10000.00));
     mooringDueTariff.setPortfleetGrossTonnageThreshold(BigDecimal.valueOf(10000.00));
     mooringDueTariff.setOdessosGrossTonnageThreshold(BigDecimal.valueOf(5000.00));
+
+    log.info("Mooring due tariff initialized");
   }
 }

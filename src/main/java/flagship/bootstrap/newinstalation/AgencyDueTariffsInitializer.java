@@ -4,6 +4,7 @@ import flagship.domain.tariffs.AgencyDuesTariff;
 import flagship.domain.tariffs.mix.Due;
 import flagship.domain.tariffs.mix.PortName;
 import flagship.domain.tariffs.mix.Range;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -15,6 +16,7 @@ import java.util.Map;
 import static flagship.domain.tariffs.mix.PortName.*;
 
 @Component
+@Slf4j
 public class AgencyDueTariffsInitializer {
 
   public static void initializeTariffs(final AgencyDuesTariff basicAgencyDueTariff) {
@@ -86,5 +88,7 @@ public class AgencyDueTariffsInitializer {
     agencyDuesTariff.setCommunicationsAdditionalDue(BigDecimal.valueOf(10.00));
     agencyDuesTariff.setBankExpensesCoefficient(BigDecimal.valueOf(0.5));
     agencyDuesTariff.setOvertimeCoefficient(BigDecimal.valueOf(0.2));
+
+    log.info("Agency dues tariff initialized");
   }
 }

@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import flagship.domain.TariffsFactory;
 import flagship.domain.tariffs.*;
-import flagship.domain.tariffs.AgencyDuesTariff;
 import flagship.domain.tariffs.mix.HolidayCalendar;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -50,6 +49,9 @@ public class NewInstallationInitialization implements ApplicationRunner {
   public void run(final ApplicationArguments args) throws Exception {
 
     if (isNewInstallation) {
+
+      log.info("New installation detected. Initial tariffs initialization...");
+
       StateDuesTariffsInitializer.initializeTariffs(
           tonnageDueTariff,
           wharfDueTariff,
@@ -76,21 +78,31 @@ public class NewInstallationInitialization implements ApplicationRunner {
         .writerWithDefaultPrettyPrinter()
         .writeValue(Paths.get(TARIFFS_PATH + "tonnageDueTariff.json").toFile(), tonnageDueTariff);
 
+    log.info("Mooring due tariff json file created");
+
     objectMapper
         .writerWithDefaultPrettyPrinter()
         .writeValue(Paths.get(TARIFFS_PATH + "wharfDueTariff.json").toFile(), wharfDueTariff);
 
-    objectMapper
-        .writerWithDefaultPrettyPrinter()
-        .writeValue(Paths.get(TARIFFS_PATH + "lightDueTariff.json").toFile(), lightDueTariff);
+    log.info("Wharf due tariff json file created");
 
     objectMapper
         .writerWithDefaultPrettyPrinter()
         .writeValue(Paths.get(TARIFFS_PATH + "canalDueTariff.json").toFile(), canalDueTariff);
 
+    log.info("Canal due tariff json file created");
+
+    objectMapper
+        .writerWithDefaultPrettyPrinter()
+        .writeValue(Paths.get(TARIFFS_PATH + "lightDueTariff.json").toFile(), lightDueTariff);
+
+    log.info("Light due tariff json file created");
+
     objectMapper
         .writerWithDefaultPrettyPrinter()
         .writeValue(Paths.get(TARIFFS_PATH + "marpolDueTariff.json").toFile(), marpolDueTariff);
+
+    log.info("Marpol due tariff json file created");
 
     objectMapper
         .writerWithDefaultPrettyPrinter()
@@ -98,41 +110,52 @@ public class NewInstallationInitialization implements ApplicationRunner {
             Paths.get(TARIFFS_PATH + "boomContainmentDueTariff.json").toFile(),
             boomContainmentTariff);
 
+    log.info("Boom containment due tariff json file created");
+
     objectMapper
         .writerWithDefaultPrettyPrinter()
         .writeValue(
             Paths.get(TARIFFS_PATH + "sailingPermissionDueTariff.json").toFile(),
             sailingPermissionTariff);
+
+    log.info("Sailing permission due tariff json file created");
   }
 
   private void produceServiceDuesJsonFiles() throws IOException {
+
+    objectMapper
+        .writerWithDefaultPrettyPrinter()
+        .writeValue(Paths.get(TARIFFS_PATH + "holidayCalendar.json").toFile(), holidayCalendar);
+
+    log.info("Holiday calendar json file created");
 
     objectMapper
         .registerModule(new JavaTimeModule())
         .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
         .configure(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS, false)
         .writerWithDefaultPrettyPrinter()
-        .writeValue(
-            Paths.get(TARIFFS_PATH + "pilotageDueTariff.json").toFile(), pilotageDueTariff);
+        .writeValue(Paths.get(TARIFFS_PATH + "pilotageDueTariff.json").toFile(), pilotageDueTariff);
+
+    log.info("Pilotage due tariff json file created");
 
     objectMapper
         .writerWithDefaultPrettyPrinter()
         .writeValue(Paths.get(TARIFFS_PATH + "tugDueTariff.json").toFile(), tugDueTariff);
 
-    objectMapper
-        .writerWithDefaultPrettyPrinter()
-        .writeValue(
-            Paths.get(TARIFFS_PATH + "mooringDueTariff.json").toFile(), mooringDueTariff);
+    log.info("Tug due tariff json file created");
 
     objectMapper
         .writerWithDefaultPrettyPrinter()
-        .writeValue(Paths.get(TARIFFS_PATH + "holidayCalendar.json").toFile(), holidayCalendar);
+        .writeValue(Paths.get(TARIFFS_PATH + "mooringDueTariff.json").toFile(), mooringDueTariff);
+
+    log.info("Mooring due tariff json file created");
   }
 
   private void produceAgencyDuesJsonFile() throws IOException {
     objectMapper
         .writerWithDefaultPrettyPrinter()
-        .writeValue(
-            Paths.get(TARIFFS_PATH + "agencyDuesTariff.json").toFile(), agencyDuesTariff);
+        .writeValue(Paths.get(TARIFFS_PATH + "agencyDuesTariff.json").toFile(), agencyDuesTariff);
+
+    log.info("Agency dues tariff json file created");
   }
 }

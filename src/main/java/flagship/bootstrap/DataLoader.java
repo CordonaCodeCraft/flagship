@@ -16,11 +16,10 @@ import java.util.Map;
 import static flagship.domain.calculators.DueCalculator.CalculatorType;
 import static flagship.domain.calculators.DueCalculator.CalculatorType.*;
 
-
 @Component
+@Order(2)
 @Slf4j
 @RequiredArgsConstructor
-@Order(2)
 public class DataLoader implements ApplicationRunner {
 
   private final TonnageDueTariff tonnageDueTariff;
@@ -28,16 +27,16 @@ public class DataLoader implements ApplicationRunner {
   private final CanalDueTariff canalDueTariff;
   private final LightDueTariff lightDueTariff;
   private final MarpolDueTariff marpolDueTariff;
+  private final MooringDueTariff mooringDueTariff;
   private final BoomContainmentTariff boomContainmentTariff;
   private final SailingPermissionTariff sailingPermissionTariff;
   private final PilotageDueTariff pilotageDueTariff;
   private final TugDueTariff tugDueTariff;
-  private final MooringDueTariff mooringDueTariff;
   private final AgencyDuesTariff agencyDuesTariff;
   private final TariffsFactory tariffsFactory;
 
   @Override
-  public void run(ApplicationArguments args) throws Exception {
+  public void run(ApplicationArguments args) {
 
     Map<CalculatorType, Tariff> tariffs = new EnumMap<>(CalculatorType.class);
     tariffs.put(TONNAGE_DUE_CALCULATOR, tonnageDueTariff);
@@ -59,8 +58,7 @@ public class DataLoader implements ApplicationRunner {
 
     tariffsFactory.setTariffs(tariffs);
 
-
+    log.info("Tariffs factory initialized");
   }
-
-
 }
+
