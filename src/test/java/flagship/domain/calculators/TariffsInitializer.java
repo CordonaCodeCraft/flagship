@@ -5,10 +5,13 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import flagship.config.serialization.DueDeserializer;
 import flagship.config.serialization.RangeDeserializer;
-import flagship.domain.tariffs.*;
-import flagship.domain.tariffs.AgencyDuesTariff;
+import flagship.domain.tariffs.agencydues.AgencyDuesTariff;
 import flagship.domain.tariffs.mix.Due;
 import flagship.domain.tariffs.mix.Range;
+import flagship.domain.tariffs.servicedues.MooringDueTariff;
+import flagship.domain.tariffs.servicedues.PilotageDueTariff;
+import flagship.domain.tariffs.servicedues.TugDueTariff;
+import flagship.domain.tariffs.statedues.*;
 import org.junit.jupiter.api.BeforeAll;
 
 import java.io.File;

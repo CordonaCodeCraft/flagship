@@ -1,7 +1,7 @@
 package flagship.domain.resolvers;
 
-import flagship.domain.tariffs.MooringDueTariff.MooringServiceProvider;
 import flagship.domain.tariffs.mix.PortName;
+import flagship.domain.tariffs.servicedues.MooringDueTariff.MooringServiceProvider;
 
 public abstract class MooringServiceProviderResolver {
 

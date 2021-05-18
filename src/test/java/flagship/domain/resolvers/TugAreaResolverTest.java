@@ -3,7 +3,7 @@ package flagship.domain.resolvers;
 import flagship.domain.calculators.TariffsInitializer;
 import flagship.domain.cases.dto.PdaCase;
 import flagship.domain.cases.dto.PdaPort;
-import flagship.domain.tariffs.TugDueTariff;
+import flagship.domain.tariffs.servicedues.TugDueTariff;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -12,10 +12,10 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
-import static flagship.domain.tariffs.TugDueTariff.TugArea;
-import static flagship.domain.tariffs.TugDueTariff.TugArea.*;
-import static flagship.domain.tariffs.TugDueTariff.TugServiceProvider.PORTFLEET;
-import static flagship.domain.tariffs.TugDueTariff.TugServiceProvider.VTC;
+import static flagship.domain.tariffs.servicedues.TugDueTariff.TugArea;
+import static flagship.domain.tariffs.servicedues.TugDueTariff.TugArea.*;
+import static flagship.domain.tariffs.servicedues.TugDueTariff.TugServiceProvider.PORTFLEET;
+import static flagship.domain.tariffs.servicedues.TugDueTariff.TugServiceProvider.VTC;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DisplayName("Tug area resolver tests")

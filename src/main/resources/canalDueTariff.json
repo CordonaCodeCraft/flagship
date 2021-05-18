@@ -20,7 +20,7 @@
     "THIRD" : 0.2,
     "FOURTH" : 0.59
   },
-  "shipTypesNotEligibleForDiscount" : [ "MILITARY" ],
+  "shipTypesNotEligibleForDiscount" : [ "NAVY" ],
   "callCountThreshold" : 3,
   "defaultCallCountDiscountCoefficient" : 0.8
 }

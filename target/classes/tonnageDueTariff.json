@@ -1,33 +1,39 @@
 {
-  "tonnageDuesByPortArea" : {
-    "FIRST" : "0.55 - 0",
-    "SECOND" : "0.4 - 0",
-    "THIRD" : "0.55 - 0",
-    "FOURTH" : "0.55 - 0"
+  "tonnageDuesByPortArea": {
+    "FIRST": "0.55 - 0",
+    "SECOND": "0.4 - 0",
+    "THIRD": "0.55 - 0",
+    "FOURTH": "0.55 - 0"
   },
-  "tonnageDuesByShipType" : {
-    "RECREATIONAL" : "0.1 - 0",
-    "OIL_TANKER" : "0.5 - 0",
-    "MILITARY" : "0.25 - 0",
-    "SPECIAL" : "0.5 - 0"
+  "tonnageDuesByShipType": {
+    "RECREATIONAL": "0.1 - 0",
+    "OIL_TANKER": "0.5 - 0",
+    "NAVY": "0.25 - 0",
+    "WORK_SHIP": "0.5 - 0"
   },
-  "tonnageDuesByCallPurpose" : {
-    "SPECIAL_PURPOSE_PORT_VISIT" : "0.05 - 0"
+  "tonnageDuesByCallPurpose": {
+    "SPECIAL_PURPOSE_PORT_VISIT": "0.05 - 0"
   },
-  "discountCoefficientsByCallPurpose" : {
-    "RESUPPLY" : 0.65,
-    "RECRUITMENT" : 0.65,
-    "POSTAL" : 0.65,
-    "REPAIR" : 0.65
+  "discountCoefficientsByCallPurpose": {
+    "RESUPPLY": 0.65,
+    "RECRUITMENT": 0.65,
+    "POSTAL": 0.65,
+    "REPAIR": 0.65
   },
-  "discountCoefficientsByShipType" : {
-    "REEFER" : 0.6,
-    "CONTAINER" : 0.6,
-    "PASSENGER" : 0.4
+  "discountCoefficientsByShipType": {
+    "REEFER": 0.6,
+    "CONTAINER": 0.6,
+    "PASSENGER": 0.4
   },
-  "shipTypesNotEligibleForDiscount" : [ "RECREATIONAL", "MILITARY", "SPECIAL" ],
-  "callPurposesNotEligibleForDiscount" : [ "SPECIAL_PURPOSE_PORT_VISIT" ],
-  "callCountThreshold" : 4,
-  "callCountDiscountCoefficient" : 0.7,
-  "discountCoefficientForPortOfArrival" : 0.1
+  "shipTypesNotEligibleForDiscount": [
+    "RECREATIONAL",
+    "NAVY",
+    "WORK_SHIP"
+  ],
+  "callPurposesNotEligibleForDiscount": [
+    "SPECIAL_PURPOSE_PORT_VISIT"
+  ],
+  "callCountThreshold": 4,
+  "callCountDiscountCoefficient": 0.7,
+  "discountCoefficientForPortOfArrival": 0.1
 }

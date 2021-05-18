@@ -7,12 +7,12 @@
     "10001 - 650000" : "150.0 - 0"
   },
   "lightDuesPerTonByShipType" : {
-    "MILITARY" : "0.15 - 0"
+    "NAVY" : "0.15 - 0"
   },
   "discountCoefficientsByShipType" : {
     "PASSENGER" : 0.5
   },
-  "shipTypesNotEligibleForDiscount" : [ "MILITARY" ],
+  "shipTypesNotEligibleForDiscount" : [ "NAVY" ],
   "lightDueMaximumValue" : 150.0,
   "callCountThreshold" : 4,
   "callCountDiscountCoefficient" : 0.7

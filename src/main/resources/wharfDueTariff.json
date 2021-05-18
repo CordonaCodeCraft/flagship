@@ -5,9 +5,9 @@
     "POSTAL" : 0.5,
     "REPAIR" : 0.5
   },
-  "shipTypesNotEligibleForDiscount" : [ "MILITARY" ],
+  "shipTypesNotEligibleForDiscount" : [ "NAVY" ],
   "defaultWharfDue" : "0.1 - 0",
   "wharfDuesByShipType" : {
-    "MILITARY" : "0.5 - 0"
+    "NAVY" : "0.5 - 0"
   }
 }

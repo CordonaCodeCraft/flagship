@@ -9,8 +9,6 @@ import static java.time.DayOfWeek.SUNDAY;
 
 public abstract class HolidayCalendarResolver {
 
-  // todo: implement without nested while loop
-
   public static Set<LocalDate> resolve(final Set<LocalDate> holidays) {
 
     final Set<LocalDate> updatedHolidays = new TreeSet<>(holidays);

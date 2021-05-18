@@ -2,13 +2,10 @@ package flagship.domain.cases.entities;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.math.BigDecimal;
-import java.util.Set;
 
 @Getter
 @Setter

@@ -3,7 +3,7 @@ package flagship.domain.resolvers;
 import flagship.domain.calculators.TariffsInitializer;
 import flagship.domain.cases.dto.PdaCase;
 import flagship.domain.cases.dto.PdaPort;
-import flagship.domain.tariffs.PilotageDueTariff;
+import flagship.domain.tariffs.servicedues.PilotageDueTariff;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -12,7 +12,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
-import static flagship.domain.tariffs.PilotageDueTariff.PilotageArea.*;
+import static flagship.domain.tariffs.servicedues.PilotageDueTariff.PilotageArea.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DisplayName("Pilotage area resolver tests")

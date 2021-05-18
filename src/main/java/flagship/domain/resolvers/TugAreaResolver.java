@@ -1,11 +1,11 @@
 package flagship.domain.resolvers;
 
 import flagship.domain.cases.dto.PdaCase;
-import flagship.domain.tariffs.TugDueTariff;
+import flagship.domain.tariffs.servicedues.TugDueTariff;
 
 import java.util.Map;
 
-import static flagship.domain.tariffs.TugDueTariff.TugArea;
+import static flagship.domain.tariffs.servicedues.TugDueTariff.TugArea;
 
 public abstract class TugAreaResolver {
 

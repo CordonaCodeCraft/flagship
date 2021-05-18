@@ -1,15 +1,16 @@
 package flagship.domain;
 
 import flagship.domain.calculators.TariffsInitializer;
-import flagship.domain.calculators.agencyduescalculators.*;
-import flagship.domain.calculators.serviceduescalculators.MooringDueCalculator;
-import flagship.domain.calculators.serviceduescalculators.PilotageDueCalculator;
-import flagship.domain.calculators.serviceduescalculators.TugDueCalculator;
-import flagship.domain.calculators.stateduescalculators.*;
+import flagship.domain.calculators.agencydues.*;
+import flagship.domain.calculators.servicedues.MooringDueCalculator;
+import flagship.domain.calculators.servicedues.PilotageDueCalculator;
+import flagship.domain.calculators.servicedues.TugDueCalculator;
+import flagship.domain.calculators.statedues.*;
 import flagship.domain.cases.dto.PdaCase;
 import flagship.domain.cases.dto.PdaPort;
 import flagship.domain.cases.dto.PdaShip;
 import flagship.domain.cases.entities.ProformaDisbursementAccount;
+import flagship.domain.factories.TariffsFactory;
 import flagship.domain.tariffs.Tariff;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -28,21 +29,17 @@ import java.util.stream.Stream;
 
 import static flagship.domain.calculators.DueCalculator.CalculatorType;
 import static flagship.domain.calculators.DueCalculator.CalculatorType.*;
-import static flagship.domain.cases.entities.enums.ShipType.GENERAL;
-import static flagship.domain.tariffs.MooringDueTariff.MooringServiceProvider;
-import static flagship.domain.tariffs.PilotageDueTariff.PilotageArea.BOURGAS_FIRST;
+import static flagship.domain.cases.entities.enums.ShipType.BULK_CARRIER;
 import static flagship.domain.tariffs.PortArea.FIRST;
-import static flagship.domain.tariffs.TugDueTariff.TugArea;
-import static flagship.domain.tariffs.TugDueTariff.TugServiceProvider;
+import static flagship.domain.tariffs.servicedues.MooringDueTariff.MooringServiceProvider;
+import static flagship.domain.tariffs.servicedues.PilotageDueTariff.PilotageArea.BOURGAS_FIRST;
+import static flagship.domain.tariffs.servicedues.TugDueTariff.TugArea;
+import static flagship.domain.tariffs.servicedues.TugDueTariff.TugServiceProvider;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Pda composer tests")
 public class PdaComposerTest extends TariffsInitializer {
-
-  private static PdaCase testCase;
-  private static final TariffsFactory tariffsFactory = new TariffsFactory();
-  private static final PdaComposer pdaComposer = new PdaComposer();
 
   static final TonnageDueCalculator tonnageCalculator = new TonnageDueCalculator();
   static final WharfDueCalculator wharfCalculator = new WharfDueCalculator();
@@ -60,7 +57,9 @@ public class PdaComposerTest extends TariffsInitializer {
   static final CommunicationsDueCalculator commCalculator = new CommunicationsDueCalculator();
   static final BankExpensesDueCalculator bankExpensesCalculator = new BankExpensesDueCalculator();
   static final OvertimeDueCalculator overtimeCalculator = new OvertimeDueCalculator();
-
+  private static final TariffsFactory tariffsFactory = new TariffsFactory();
+  private static final PdaComposer pdaComposer = new PdaComposer();
+  private static PdaCase testCase;
   private static BigDecimal tonnageDue;
   private static BigDecimal wharfDue;
   private static BigDecimal canalDue;
@@ -78,7 +77,6 @@ public class PdaComposerTest extends TariffsInitializer {
   private static BigDecimal bankExpensesDue;
   private static BigDecimal overTimeDue;
 
-
   @BeforeAll
   static void beforeClass() {
 
@@ -87,7 +85,7 @@ public class PdaComposerTest extends TariffsInitializer {
             .grossTonnage(BigDecimal.valueOf(1650))
             .hasIncreasedManeuverability(true)
             .lengthOverall(BigDecimal.valueOf(160.00))
-            .type(GENERAL)
+            .type(BULK_CARRIER)
             .build();
 
     final PdaPort testPort =
@@ -211,7 +209,13 @@ public class PdaComposerTest extends TariffsInitializer {
     testCase.setClientDiscountCoefficient(BigDecimal.valueOf(0.5));
 
     final BigDecimal agencyDuesTotal =
-        Stream.of(basicAgencyDue, carsDue, clearanceDue, communicationsDue, bankExpensesDue, overTimeDue)
+        Stream.of(
+                basicAgencyDue,
+                carsDue,
+                clearanceDue,
+                communicationsDue,
+                bankExpensesDue,
+                overTimeDue)
             .reduce(BigDecimal.ZERO, BigDecimal::add);
 
     final BigDecimal expected = agencyDuesTotal.multiply(testCase.getClientDiscountCoefficient());
@@ -266,7 +270,13 @@ public class PdaComposerTest extends TariffsInitializer {
   void testSetsProfitExpected() {
 
     final BigDecimal agencyDuesTotal =
-        Stream.of(basicAgencyDue, carsDue, clearanceDue, communicationsDue, bankExpensesDue, overTimeDue)
+        Stream.of(
+                basicAgencyDue,
+                carsDue,
+                clearanceDue,
+                communicationsDue,
+                bankExpensesDue,
+                overTimeDue)
             .reduce(BigDecimal.ZERO, BigDecimal::add);
 
     final BigDecimal expected =

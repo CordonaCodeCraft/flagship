@@ -2,9 +2,10 @@ package flagship.domain;
 
 import flagship.domain.cases.dto.PdaCase;
 import flagship.domain.cases.entities.Warning;
-import flagship.domain.tariffs.MooringDueTariff;
-import flagship.domain.tariffs.PilotageDueTariff;
-import flagship.domain.tariffs.TugDueTariff;
+import flagship.domain.factories.TariffsFactory;
+import flagship.domain.tariffs.servicedues.MooringDueTariff;
+import flagship.domain.tariffs.servicedues.PilotageDueTariff;
+import flagship.domain.tariffs.servicedues.TugDueTariff;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
