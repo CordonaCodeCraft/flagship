@@ -1,9 +1,10 @@
 package flagship.bootstrap.newinstalation;
 
-import flagship.domain.tariffs.AgencyDuesTariff;
+import flagship.domain.tariffs.agencydues.AgencyDuesTariff;
 import flagship.domain.tariffs.mix.Due;
 import flagship.domain.tariffs.mix.PortName;
 import flagship.domain.tariffs.mix.Range;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -17,15 +18,15 @@ import static flagship.domain.tariffs.mix.PortName.*;
 
 @Component
 @Slf4j
-public class AgencyDueTariffsInitializer {
+@RequiredArgsConstructor
+public class AgencyDuesTariffInitializer {
 
-  public static void initializeTariffs(final AgencyDuesTariff basicAgencyDueTariff) {
-    initializeBasicAgencyDueTariff(basicAgencyDueTariff);
-  }
+  public static AgencyDuesTariff getTariff() {
 
-  private static void initializeBasicAgencyDueTariff(final AgencyDuesTariff agencyDuesTariff) {
+    final AgencyDuesTariff agencyDuesTariff = new AgencyDuesTariff();
 
-    Map<Range, Due> basicAgencyDuePerGT = new LinkedHashMap<>();
+    final Map<Range, Due> basicAgencyDuePerGT = new LinkedHashMap<>();
+
     basicAgencyDuePerGT.put(new Range(150, 1000), new Due(505.00));
     basicAgencyDuePerGT.put(new Range(1001, 2000), new Due(610.00));
     basicAgencyDuePerGT.put(new Range(2001, 3000), new Due(715.00));
@@ -38,22 +39,25 @@ public class AgencyDueTariffsInitializer {
     basicAgencyDuePerGT.put(new Range(9001, 10000), new Due(1690.00));
     basicAgencyDuePerGT.put(new Range(10001, 650000), new Due(1690.00, 75.00));
 
-    Map<Range, Map<Range, Due>> carsDueByGrossTonnageAndAlongsideDaysExpected =
+    final Map<Range, Map<Range, Due>> carsDueByGrossTonnageAndAlongsideDaysExpected =
         new LinkedHashMap<>();
 
-    Map<Range, Due> first = new LinkedHashMap<>();
+    final Map<Range, Due> first = new LinkedHashMap<>();
+
     first.put(new Range(1, 1), new Due(80.00));
     first.put(new Range(1, 5), new Due(120.00));
     first.put(new Range(6, 10), new Due(180.00));
     first.put(new Range(11, 20), new Due(250.00));
 
-    Map<Range, Due> second = new LinkedHashMap<>();
+    final Map<Range, Due> second = new LinkedHashMap<>();
+
     second.put(new Range(1, 1), new Due(110.00));
     second.put(new Range(1, 5), new Due(150.00));
     second.put(new Range(6, 10), new Due(200.00));
     second.put(new Range(11, 20), new Due(300.00));
 
-    Map<Range, Due> third = new LinkedHashMap<>();
+    final Map<Range, Due> third = new LinkedHashMap<>();
+
     third.put(new Range(1, 1), new Due(150.00));
     third.put(new Range(1, 5), new Due(230.00));
     third.put(new Range(6, 10), new Due(300.00));
@@ -63,7 +67,9 @@ public class AgencyDueTariffsInitializer {
     carsDueByGrossTonnageAndAlongsideDaysExpected.put(new Range(6000, 14999), second);
     carsDueByGrossTonnageAndAlongsideDaysExpected.put(new Range(15000, 650000), third);
 
-    Map<PortName, BigDecimal> carsDuesIncreaseCoefficientByPortName = new EnumMap<>(PortName.class);
+    final Map<PortName, BigDecimal> carsDuesIncreaseCoefficientByPortName =
+        new EnumMap<>(PortName.class);
+
     carsDuesIncreaseCoefficientByPortName.put(LESPORT, BigDecimal.valueOf(0.3));
     carsDuesIncreaseCoefficientByPortName.put(SRY_DOLPHIN, BigDecimal.valueOf(0.3));
     carsDuesIncreaseCoefficientByPortName.put(TEREM_FA, BigDecimal.valueOf(0.3));
@@ -90,5 +96,7 @@ public class AgencyDueTariffsInitializer {
     agencyDuesTariff.setOvertimeCoefficient(BigDecimal.valueOf(0.2));
 
     log.info("Agency dues tariff initialized");
+
+    return agencyDuesTariff;
   }
 }
