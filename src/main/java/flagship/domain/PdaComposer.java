@@ -124,7 +124,7 @@ public class PdaComposer {
             pda.getCommunicationsDue(),
             pda.getBankExpensesDue(),
             pda.getClearanceDue(),
-            pda.getOvertimeDue())
+            pda.getAgencyOvertimeDue())
         .reduce(BigDecimal.ZERO, BigDecimal::add);
   }
 }

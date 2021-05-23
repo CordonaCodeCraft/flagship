@@ -3,6 +3,7 @@ package flagship.domain;
 import flagship.domain.cases.dto.PdaCase;
 import flagship.domain.cases.entities.Warning;
 import flagship.domain.factories.TariffsFactory;
+import flagship.domain.renders.pda.PdaElementsFactory;
 import flagship.domain.tariffs.servicedues.MooringDueTariff;
 import flagship.domain.tariffs.servicedues.PilotageDueTariff;
 import flagship.domain.tariffs.servicedues.TugDueTariff;
@@ -19,7 +20,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static flagship.domain.PdaWarningsGenerator.DueType.*;
+import static flagship.domain.renders.pda.PdaElementsFactory.DueType.*;
 import static flagship.domain.PdaWarningsGenerator.WarningType.*;
 import static flagship.domain.calculators.DueCalculator.CalculatorType.*;
 
@@ -112,7 +113,7 @@ public class PdaWarningsGenerator {
     return warnings;
   }
 
-  private BigDecimal getFactor(final DueType due) {
+  private BigDecimal getFactor(final PdaElementsFactory.DueType due) {
 
     TugDueTariff tugDueTariff = (TugDueTariff) tariffsFactory.getTariff(TUG_DUE_CALCULATOR);
     MooringDueTariff mooringDueTariff =
@@ -145,7 +146,7 @@ public class PdaWarningsGenerator {
   private Warning getNewWarning(
       final LocalDate date,
       final WarningType warningType,
-      final DueType dueType,
+      final PdaElementsFactory.DueType dueType,
       final BigDecimal factor) {
     return Warning.builder()
         .id(UUID.randomUUID())
@@ -169,16 +170,4 @@ public class PdaWarningsGenerator {
     DANGEROUS_TUG_CARGO,
   }
 
-  public enum DueType {
-    TUG_DUE("Tug due"),
-    WHARF_DUE("Wharf due"),
-    MOORING_DUE("Mooring due"),
-    PILOTAGE_DUE("Pilotage due");
-
-    public final String type;
-
-    DueType(String name) {
-      this.type = name;
-    }
-  }
 }

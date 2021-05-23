@@ -197,7 +197,7 @@ public class PdaComposerTest extends TariffsInitializer {
     assertThat(carsDue).isEqualByComparingTo(pda.getCarsDue());
     assertThat(clearanceDue).isEqualByComparingTo(pda.getClearanceDue());
     assertThat(communicationsDue).isEqualByComparingTo(pda.getCommunicationsDue());
-    assertThat(overTimeDue).isEqualByComparingTo(pda.getOvertimeDue());
+    assertThat(overTimeDue).isEqualByComparingTo(pda.getAgencyOvertimeDue());
 
     assertions.assertAll();
   }

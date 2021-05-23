@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 import static flagship.domain.PdaWarningsGenerator.WarningType;
@@ -24,6 +25,7 @@ public class PdaCase {
   private PdaPort port;
   private Set<WarningType> warningTypes;
   private Set<Warning> warnings;
+  private List<String> cargoManifest;
   private CallPurpose callPurpose;
   private Integer callCount;
   private Integer alongsideDaysExpected;

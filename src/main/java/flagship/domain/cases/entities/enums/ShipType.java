@@ -1,5 +1,7 @@
 package flagship.domain.cases.entities.enums;
 
+import lombok.Getter;
+
 public enum ShipType {
 
   BULK_CARRIER("Bulk carrier"),

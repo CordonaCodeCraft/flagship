@@ -29,7 +29,7 @@ public interface DueCalculator {
     CARS_DUE_CALCULATOR("carsDue"),
     CLEARANCE_DUE_CALCULATOR("clearanceDue"),
     COMMUNICATIONS_DUE_CALCULATOR("communicationsDue"),
-    OVERTIME_DUE_CALCULATOR("overtimeDue");
+    OVERTIME_DUE_CALCULATOR("agencyOvertimeDue");
 
     private final String type;
 
