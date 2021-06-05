@@ -1,4 +1,4 @@
-package flagship.domain.renders.pda;
+package flagship.domain.renders.pda.elements;
 
 import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.layout.element.Cell;

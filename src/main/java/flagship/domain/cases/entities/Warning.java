@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
 
-import static flagship.domain.renders.pda.PdaElementsFactory.DueType;
+import static flagship.domain.renders.pda.elements.PdaElementsFactory.DueType;
 import static flagship.domain.PdaWarningsGenerator.WarningType;
 import static javax.persistence.EnumType.STRING;
 

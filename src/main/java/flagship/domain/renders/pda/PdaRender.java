@@ -3,6 +3,7 @@ package flagship.domain.renders.pda;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Table;
 import flagship.domain.cases.dto.PdaCase;
+import flagship.domain.renders.pda.elements.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
