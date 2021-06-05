@@ -110,7 +110,7 @@ public abstract class PdaElementsFactory {
     return new Paragraph().add(image).setTextAlignment(CENTER);
   }
 
-  protected static PdfFont getRegularFont()  {
+  protected static PdfFont getRegularFont() {
     try {
       return PdfFontFactory.createFont(
           FONT_REGULAR, PdfFontFactory.EmbeddingStrategy.PREFER_EMBEDDED);
@@ -148,7 +148,7 @@ public abstract class PdaElementsFactory {
     }
   }
 
-  protected static Text getArrowDownSymbol()  {
+  protected static Text getArrowDownSymbol() {
     try {
       return getText(ARROW_DOWN_SYMBOL, getCharFont(), 10)
           .setBold()

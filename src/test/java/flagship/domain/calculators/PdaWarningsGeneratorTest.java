@@ -182,9 +182,9 @@ class PdaWarningsGeneratorTest extends TariffsInitializer {
     warningsGenerator = new PdaWarningsGenerator(testCase, tariffsFactory);
 
     Set<Warning> warnings =
-            warningsGenerator.generateWarnings().stream()
-                    .filter(warning -> warning.getDueType() == WHARF_DUE)
-                    .collect(Collectors.toSet());
+        warningsGenerator.generateWarnings().stream()
+            .filter(warning -> warning.getDueType() == WHARF_DUE)
+            .collect(Collectors.toSet());
 
     assertThat(warnings.size()).isEqualTo(1);
   }

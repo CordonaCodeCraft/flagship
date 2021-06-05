@@ -31,6 +31,7 @@ public class BeansConfiguration {
 
   private static final String TARIFFS_PATH = "src/main/resources/";
   private final ObjectMapper objectMapper = configureMapper();
+
   @Value("${flagship.new-installation}")
   private boolean isNewInstallation;
 

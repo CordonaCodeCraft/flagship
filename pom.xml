@@ -88,10 +88,10 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-        <groupId>com.itextpdf</groupId>
-        <artifactId>layout</artifactId>
-        <version>7.1.15</version>
-        <scope>compile</scope>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>layout</artifactId>
+            <version>7.1.15</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.itextpdf</groupId>

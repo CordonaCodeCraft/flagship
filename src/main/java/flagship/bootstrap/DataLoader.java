@@ -46,6 +46,7 @@ public class DataLoader implements ApplicationRunner {
   private final TugDueTariff tugDueTariff;
   private final AgencyDuesTariff agencyDuesTariff;
   private final TariffsFactory tariffsFactory;
+
   @Value("${flagship.new-installation}")
   private boolean isNewInstallation;
 
