@@ -1,10 +1,13 @@
 package flagship.domain;
 
+import flagship.domain.calculators.TariffsInitializer;
 import flagship.domain.cases.dto.PdaCase;
 import flagship.domain.cases.dto.PdaPort;
 import flagship.domain.cases.dto.PdaShip;
 import flagship.domain.cases.entities.ProformaDisbursementAccount;
+import flagship.domain.factories.TariffsFactory;
 import flagship.domain.renders.pda.PdaRender;
+import flagship.domain.tariffs.Tariff;
 import flagship.domain.tariffs.servicedues.MooringDueTariff;
 import flagship.domain.tariffs.servicedues.TugDueTariff;
 import org.junit.jupiter.api.BeforeAll;
@@ -13,20 +16,43 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.HashSet;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 
+import static flagship.domain.calculators.DueCalculator.CalculatorType;
+import static flagship.domain.calculators.DueCalculator.CalculatorType.*;
 import static flagship.domain.cases.entities.enums.CallPurpose.LOADING;
 import static flagship.domain.cases.entities.enums.ShipType.BULK_CARRIER;
 import static flagship.domain.tariffs.PortArea.FIRST;
 import static flagship.domain.tariffs.servicedues.PilotageDueTariff.PilotageArea.BOURGAS_FIRST;
 
-class PdaRendererTest {
+class PdaRendererTest extends TariffsInitializer {
 
   private static PdaCase testCase;
+  private static final TariffsFactory tariffsFactory = new TariffsFactory();
 
   @BeforeAll
   static void beforeClass() {
+
+    Map<CalculatorType, Tariff> tariffs = new EnumMap<>(CalculatorType.class);
+    tariffs.put(TONNAGE_DUE_CALCULATOR, tonnageDueTariff);
+    tariffs.put(WHARF_DUE_CALCULATOR, wharfDueTariff);
+    tariffs.put(CANAL_DUE_CALCULATOR, canalDueTariff);
+    tariffs.put(LIGHT_DUE_CALCULATOR, lightDueTariff);
+    tariffs.put(MARPOL_DUE_CALCULATOR, marpolDueTariff);
+    tariffs.put(MOORING_DUE_CALCULATOR, mooringDueTariff);
+    tariffs.put(BOOM_CONTAINMENT_DUE_CALCULATOR, boomContainmentTariff);
+    tariffs.put(SAILING_PERMISSION_CALCULATOR, sailingPermissionTariff);
+    tariffs.put(PILOTAGE_DUE_CALCULATOR, pilotageDueTariff);
+    tariffs.put(TUG_DUE_CALCULATOR, tugDueTariff);
+    tariffs.put(BASIC_AGENCY_DUE_CALCULATOR, agencyDuesTariff);
+    tariffs.put(BANK_EXPENSES_DUE_CALCULATOR, agencyDuesTariff);
+    tariffs.put(CARS_DUE_CALCULATOR, agencyDuesTariff);
+    tariffs.put(CLEARANCE_DUE_CALCULATOR, agencyDuesTariff);
+    tariffs.put(COMMUNICATIONS_DUE_CALCULATOR, agencyDuesTariff);
+    tariffs.put(OVERTIME_DUE_CALCULATOR, agencyDuesTariff);
+    tariffsFactory.setTariffs(tariffs);
 
     final PdaShip testShip =
         PdaShip.builder()
@@ -74,13 +100,10 @@ class PdaRendererTest {
             .ship(testShip)
             .port(testPort)
             .arrivesFromBulgarianPort(true)
-            .estimatedDateOfArrival(LocalDate.now())
-            .estimatedDateOfDeparture(LocalDate.now().plusDays(5))
             .alongsideDaysExpected(5)
             .callPurpose(LOADING)
             .callCount(3)
-            .clientDiscountCoefficient(BigDecimal.ZERO)
-            .warningTypes(new HashSet<>())
+            .clientDiscountCoefficient(BigDecimal.valueOf(2.5))
             .cargoManifest(
                 List.of("Cocaine", "Guns", "Nuclear weapons", "Whores", "Illegal immigrants"))
             .proformaDisbursementAccount(pda)
@@ -89,6 +112,13 @@ class PdaRendererTest {
 
   @Test
   void name() throws IOException {
+
+    testCase.setEstimatedDateOfArrival(LocalDate.of(2021, 1, 3));
+    testCase.setEstimatedDateOfDeparture(LocalDate.of(2021, 1, 3));
+
+    PdaWarningsGenerator generator = new PdaWarningsGenerator(testCase, tariffsFactory);
+
+    testCase.setWarnings(generator.generateWarnings());
 
     PdaRender render = new PdaRender(testCase);
 
