@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
-import static flagship.domain.cases.entities.enums.ShipType.CONTAINER;
+import static flagship.domain.cases.entities.Ship.ShipType.CONTAINER;
 
 @NoArgsConstructor
 public class CanalDueCalculator extends StateDueCalculator {

@@ -4,7 +4,7 @@ import flagship.domain.calculators.TariffsInitializer;
 import flagship.domain.cases.dto.PdaCase;
 import flagship.domain.cases.dto.PdaPort;
 import flagship.domain.cases.dto.PdaShip;
-import flagship.domain.cases.entities.enums.ShipType;
+import flagship.domain.cases.entities.Ship;
 import flagship.domain.tariffs.PortArea;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -18,8 +18,8 @@ import java.math.BigDecimal;
 import java.util.Random;
 import java.util.stream.Stream;
 
-import static flagship.domain.cases.entities.enums.ShipType.BULK_CARRIER;
-import static flagship.domain.cases.entities.enums.ShipType.CONTAINER;
+import static flagship.domain.cases.entities.Ship.ShipType.BULK_CARRIER;
+import static flagship.domain.cases.entities.Ship.ShipType.CONTAINER;
 import static flagship.domain.tariffs.PortArea.FIRST;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -85,7 +85,7 @@ class CanalDueCalculatorTest extends TariffsInitializer {
   @DisplayName("Should return canal due with discount by ship type")
   @ParameterizedTest(name = "ship type: {arguments}")
   @MethodSource(value = "getShipTypesEligibleForDiscount")
-  void testReturnsCanalDueWithDiscountByShipType(final ShipType shipType) {
+  void testReturnsCanalDueWithDiscountByShipType(final Ship.ShipType shipType) {
 
     testCase.getShip().setType(shipType);
 
@@ -103,7 +103,7 @@ class CanalDueCalculatorTest extends TariffsInitializer {
   @DisplayName("Should return canal due with biggest discount")
   @ParameterizedTest(name = "ship type: {arguments}")
   @MethodSource(value = "getShipTypesEligibleForDiscount")
-  void testReturnsCanalDueWithBiggestDiscount(final ShipType shipType) {
+  void testReturnsCanalDueWithBiggestDiscount(final Ship.ShipType shipType) {
 
     testCase.getShip().setType(shipType);
     testCase.setCallCount(canalDueTariff.getCallCountThreshold());
@@ -174,7 +174,7 @@ class CanalDueCalculatorTest extends TariffsInitializer {
       "Should return canal due without discount when ship type is not eligible for discount")
   @ParameterizedTest(name = "ship type: {arguments}")
   @MethodSource(value = "getShipTypesNotEligibleForDiscount")
-  void testReturnsCanalDueWithoutDiscountWhenShipTypeIsNotEligibleForDiscount(ShipType shipType) {
+  void testReturnsCanalDueWithoutDiscountWhenShipTypeIsNotEligibleForDiscount(Ship.ShipType shipType) {
 
     testCase.getShip().setType(shipType);
     testCase.setCallCount(canalDueTariff.getCallCountThreshold());

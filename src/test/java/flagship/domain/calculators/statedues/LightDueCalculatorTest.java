@@ -3,7 +3,7 @@ package flagship.domain.calculators.statedues;
 import flagship.domain.calculators.BaseCalculatorTest;
 import flagship.domain.cases.dto.PdaCase;
 import flagship.domain.cases.dto.PdaShip;
-import flagship.domain.cases.entities.enums.ShipType;
+import flagship.domain.cases.entities.Ship;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
-import static flagship.domain.cases.entities.enums.ShipType.BULK_CARRIER;
+import static flagship.domain.cases.entities.Ship.ShipType.BULK_CARRIER;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DisplayName("Light due calculator tests")
@@ -49,8 +49,8 @@ public class LightDueCalculatorTest extends BaseCalculatorTest {
   @Test
   void testLightDueByGrossTonnage() {
 
-    final ShipType shipType =
-        Arrays.stream(ShipType.values())
+    final Ship.ShipType shipType =
+        Arrays.stream(Ship.ShipType.values())
             .filter(type -> !lightDueTariff.getLightDuesPerTonByShipType().containsKey(type))
             .findAny()
             .get();
@@ -68,7 +68,7 @@ public class LightDueCalculatorTest extends BaseCalculatorTest {
   @DisplayName("Should return light due by ship type")
   @ParameterizedTest(name = "ship type: {arguments}")
   @MethodSource(value = "getShipTypesAffectingLightDue")
-  void testLightDuePerShipType(ShipType shipType) {
+  void testLightDuePerShipType(Ship.ShipType shipType) {
 
     testCase.getShip().setType(shipType);
 
@@ -91,7 +91,7 @@ public class LightDueCalculatorTest extends BaseCalculatorTest {
   @DisplayName("Should return light due with discount by ship type")
   @ParameterizedTest(name = "ship type: {arguments}")
   @MethodSource(value = "getShipTypesEligibleForDiscount")
-  void testLightDueWithDiscountByShipType(ShipType shipType) {
+  void testLightDueWithDiscountByShipType(Ship.ShipType shipType) {
 
     testCase.getShip().setType(shipType);
 
@@ -127,7 +127,7 @@ public class LightDueCalculatorTest extends BaseCalculatorTest {
   @Test
   void testLightDueWithBiggestDiscount() {
 
-    ShipType shipType =
+    Ship.ShipType shipType =
         lightDueTariff.getDiscountCoefficientsByShipType().keySet().stream().findAny().get();
 
     testCase.getShip().setType(shipType);
@@ -152,7 +152,7 @@ public class LightDueCalculatorTest extends BaseCalculatorTest {
       "Should return light due without discount when ship type is not eligible for discount")
   @ParameterizedTest(name = "ship type : {arguments}")
   @MethodSource(value = "GetShipTypesNotEligibleForDiscount")
-  void testLightDueWithZeroDiscountWhenShipTypeIsNotEligibleForDiscount(ShipType shipType) {
+  void testLightDueWithZeroDiscountWhenShipTypeIsNotEligibleForDiscount(Ship.ShipType shipType) {
 
     testCase.getShip().setType(shipType);
     testCase.setCallCount(lightDueTariff.getCallCountThreshold());

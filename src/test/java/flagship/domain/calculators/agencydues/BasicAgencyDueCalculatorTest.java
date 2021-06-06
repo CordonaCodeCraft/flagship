@@ -3,7 +3,7 @@ package flagship.domain.calculators.agencydues;
 import flagship.domain.calculators.BaseCalculatorTest;
 import flagship.domain.cases.dto.PdaCase;
 import flagship.domain.cases.dto.PdaShip;
-import flagship.domain.cases.entities.enums.CallPurpose;
+import flagship.domain.cases.entities.Case;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,7 +12,7 @@ import org.junit.jupiter.params.provider.EnumSource;
 
 import java.math.BigDecimal;
 
-import static flagship.domain.cases.entities.enums.CallPurpose.LOADING;
+import static flagship.domain.cases.entities.Case.CallPurpose.LOADING;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DisplayName("Basic agency due calculator tests")
@@ -69,10 +69,10 @@ class BasicAgencyDueCalculatorTest extends BaseCalculatorTest {
   @DisplayName("Should return reduced due if call purpose is eligible for discount")
   @ParameterizedTest(name = "call purpose : {arguments}")
   @EnumSource(
-      value = CallPurpose.class,
+      value = Case.CallPurpose.class,
       names = {"LOADING", "UNLOADING", "LOADING_AND_UNLOADING"},
       mode = EnumSource.Mode.EXCLUDE)
-  void testReturnsReducedDueIfEligibleForDiscount(CallPurpose callPurpose) {
+  void testReturnsReducedDueIfEligibleForDiscount(Case.CallPurpose callPurpose) {
 
     testCase.setCallPurpose(callPurpose);
     testCase

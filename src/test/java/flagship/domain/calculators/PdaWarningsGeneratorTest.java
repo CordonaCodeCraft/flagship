@@ -4,7 +4,7 @@ import flagship.domain.PdaWarningsGenerator;
 import flagship.domain.PdaWarningsGenerator.WarningType;
 import flagship.domain.cases.dto.PdaCase;
 import flagship.domain.cases.entities.Warning;
-import flagship.domain.factories.TariffsFactory;
+import flagship.domain.tariffs.TariffsFactory;
 import flagship.domain.tariffs.Tariff;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

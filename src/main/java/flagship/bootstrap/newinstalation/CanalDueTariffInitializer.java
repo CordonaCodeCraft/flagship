@@ -1,6 +1,6 @@
 package flagship.bootstrap.newinstalation;
 
-import flagship.domain.cases.entities.enums.ShipType;
+import flagship.domain.cases.entities.Ship;
 import flagship.domain.tariffs.PortArea;
 import flagship.domain.tariffs.mix.Due;
 import flagship.domain.tariffs.statedues.CanalDueTariff;
@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.util.*;
 
-import static flagship.domain.cases.entities.enums.ShipType.NAVY;
-import static flagship.domain.cases.entities.enums.ShipType.PASSENGER;
+import static flagship.domain.cases.entities.Ship.ShipType.NAVY;
+import static flagship.domain.cases.entities.Ship.ShipType.PASSENGER;
 import static flagship.domain.tariffs.PortArea.*;
 
 @Component
@@ -31,7 +31,7 @@ public class CanalDueTariffInitializer {
     canalDuesByPortArea.put(FOURTH, new Due(0.07));
     canalDueTariff.setCanalDuesByPortArea(Collections.unmodifiableMap(canalDuesByPortArea));
 
-    final Map<ShipType, BigDecimal> discountCoefficientByShipType = new EnumMap<>(ShipType.class);
+    final Map<Ship.ShipType, BigDecimal> discountCoefficientByShipType = new EnumMap<>(Ship.ShipType.class);
 
     discountCoefficientByShipType.put(PASSENGER, BigDecimal.valueOf(0.5));
     canalDueTariff.setDiscountCoefficientByShipType(
@@ -57,7 +57,7 @@ public class CanalDueTariffInitializer {
     canalDueTariff.setDiscountCoefficientsByPortAreaPerCallCountForContainers(
         Collections.unmodifiableMap(discountCoefficientsByPortAreaPerCallCountForContainers));
 
-    final Set<ShipType> shipTypesNotEligibleForDiscount = EnumSet.of(NAVY);
+    final Set<Ship.ShipType> shipTypesNotEligibleForDiscount = EnumSet.of(NAVY);
     canalDueTariff.setShipTypesNotEligibleForDiscount(
         Collections.unmodifiableSet(shipTypesNotEligibleForDiscount));
 

@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 
-import static flagship.domain.cases.entities.enums.CallPurpose.LOADING;
+import static flagship.domain.cases.entities.Case.CallPurpose.LOADING;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DisplayName("Bank overtime due calculator tests")

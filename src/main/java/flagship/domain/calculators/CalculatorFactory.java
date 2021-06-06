@@ -1,4 +1,4 @@
-package flagship.domain.factories;
+package flagship.domain.calculators;
 
 import flagship.domain.calculators.DueCalculator;
 import flagship.domain.calculators.agencydues.*;

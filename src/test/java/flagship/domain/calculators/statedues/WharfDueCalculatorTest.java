@@ -3,8 +3,8 @@ package flagship.domain.calculators.statedues;
 import flagship.domain.calculators.TariffsInitializer;
 import flagship.domain.cases.dto.PdaCase;
 import flagship.domain.cases.dto.PdaShip;
-import flagship.domain.cases.entities.enums.CallPurpose;
-import flagship.domain.cases.entities.enums.ShipType;
+import flagship.domain.cases.entities.Case;
+import flagship.domain.cases.entities.Ship;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
-import static flagship.domain.cases.entities.enums.ShipType.BULK_CARRIER;
+import static flagship.domain.cases.entities.Ship.ShipType.BULK_CARRIER;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DisplayName("Wharf due calculator tests")
@@ -49,8 +49,8 @@ class WharfDueCalculatorTest extends TariffsInitializer {
   @Test
   void testReturnsDefaultWharfDue() {
 
-    final ShipType shipTypeWithDefaultWharfDue =
-        Arrays.stream(ShipType.values())
+    final Ship.ShipType shipTypeWithDefaultWharfDue =
+        Arrays.stream(Ship.ShipType.values())
             .filter(type -> !wharfDueTariff.getWharfDuesByShipType().containsKey(type))
             .findAny()
             .orElse(BULK_CARRIER);
@@ -68,7 +68,7 @@ class WharfDueCalculatorTest extends TariffsInitializer {
   @DisplayName("Should return wharf due by ship type")
   @ParameterizedTest(name = "ship type : {arguments}")
   @MethodSource(value = "getShipTypesAffectingWharfDue")
-  void testReturnsWharfDueByShipType(ShipType shipType) {
+  void testReturnsWharfDueByShipType(Ship.ShipType shipType) {
 
     testCase.getShip().setType(shipType);
 
@@ -83,7 +83,7 @@ class WharfDueCalculatorTest extends TariffsInitializer {
   @DisplayName("Should return Wharf due with discount by call purpose")
   @ParameterizedTest(name = "call purpose : {arguments}")
   @MethodSource(value = "getCallPurposesEligibleForDiscount")
-  void testReturnsWharfDueWithDiscountByCallPurpose(CallPurpose callPurpose) {
+  void testReturnsWharfDueWithDiscountByCallPurpose(Case.CallPurpose callPurpose) {
 
     testCase.setCallPurpose(callPurpose);
 
@@ -102,7 +102,7 @@ class WharfDueCalculatorTest extends TariffsInitializer {
       "Should return wharf due without discount when ship type is not eligible for discount")
   @ParameterizedTest(name = "ship type : {arguments}")
   @MethodSource(value = "getShipTypesNotEligibleForDiscount")
-  void testReturnsWharfDueWithZeroDiscountWhenShipTypeIsNotEligibleForDiscount(ShipType shipType) {
+  void testReturnsWharfDueWithZeroDiscountWhenShipTypeIsNotEligibleForDiscount(Ship.ShipType shipType) {
 
     testCase.getShip().setType(shipType);
 

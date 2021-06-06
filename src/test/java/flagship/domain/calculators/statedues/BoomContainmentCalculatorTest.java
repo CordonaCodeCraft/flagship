@@ -10,8 +10,8 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 
-import static flagship.domain.cases.entities.enums.ShipType.BULK_CARRIER;
-import static flagship.domain.cases.entities.enums.ShipType.OIL_TANKER;
+import static flagship.domain.cases.entities.Ship.ShipType.BULK_CARRIER;
+import static flagship.domain.cases.entities.Ship.ShipType.OIL_TANKER;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DisplayName("Boom containment due calculator tests")

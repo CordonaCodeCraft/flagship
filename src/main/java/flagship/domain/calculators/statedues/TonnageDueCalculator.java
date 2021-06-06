@@ -11,7 +11,7 @@ import java.time.YearMonth;
 import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
-import static flagship.domain.cases.entities.enums.ShipType.WORK_SHIP;
+import static flagship.domain.cases.entities.Ship.ShipType.WORK_SHIP;
 
 @NoArgsConstructor
 public class TonnageDueCalculator extends StateDueCalculator {

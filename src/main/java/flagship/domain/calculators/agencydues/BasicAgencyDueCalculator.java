@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
-import static flagship.domain.cases.entities.enums.CallPurpose.*;
+import static flagship.domain.cases.entities.Case.CallPurpose.*;
 
 @NoArgsConstructor
 public class BasicAgencyDueCalculator extends PrivateDueCalculator {

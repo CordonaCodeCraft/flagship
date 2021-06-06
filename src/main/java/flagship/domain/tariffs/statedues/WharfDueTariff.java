@@ -1,7 +1,7 @@
 package flagship.domain.tariffs.statedues;
 
-import flagship.domain.cases.entities.enums.CallPurpose;
-import flagship.domain.cases.entities.enums.ShipType;
+import flagship.domain.cases.entities.Case;
+import flagship.domain.cases.entities.Ship;
 import flagship.domain.tariffs.Tariff;
 import flagship.domain.tariffs.mix.Due;
 import lombok.Getter;
@@ -17,8 +17,8 @@ import java.util.Set;
 @NoArgsConstructor
 public class WharfDueTariff extends Tariff {
 
-  private Map<ShipType, Due> WharfDuesByShipType;
-  private Map<CallPurpose, BigDecimal> discountCoefficientsByCallPurpose;
-  private Set<ShipType> shipTypesNotEligibleForDiscount;
+  private Map<Ship.ShipType, Due> WharfDuesByShipType;
+  private Map<Case.CallPurpose, BigDecimal> discountCoefficientsByCallPurpose;
+  private Set<Ship.ShipType> shipTypesNotEligibleForDiscount;
   private Due defaultWharfDue;
 }

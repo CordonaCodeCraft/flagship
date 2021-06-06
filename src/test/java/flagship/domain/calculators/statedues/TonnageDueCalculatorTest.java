@@ -4,8 +4,8 @@ import flagship.domain.calculators.TariffsInitializer;
 import flagship.domain.cases.dto.PdaCase;
 import flagship.domain.cases.dto.PdaPort;
 import flagship.domain.cases.dto.PdaShip;
-import flagship.domain.cases.entities.enums.CallPurpose;
-import flagship.domain.cases.entities.enums.ShipType;
+import flagship.domain.cases.entities.Case;
+import flagship.domain.cases.entities.Ship;
 import flagship.domain.tariffs.PortArea;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -27,9 +27,9 @@ import java.util.stream.Stream;
 
 import static flagship.domain.calculators.BaseCalculatorTest.MAX_GT;
 import static flagship.domain.calculators.BaseCalculatorTest.MIN_GT;
-import static flagship.domain.cases.entities.enums.CallPurpose.LOADING;
-import static flagship.domain.cases.entities.enums.ShipType.BULK_CARRIER;
-import static flagship.domain.cases.entities.enums.ShipType.WORK_SHIP;
+import static flagship.domain.cases.entities.Case.CallPurpose.LOADING;
+import static flagship.domain.cases.entities.Ship.ShipType.BULK_CARRIER;
+import static flagship.domain.cases.entities.Ship.ShipType.WORK_SHIP;
 import static flagship.domain.tariffs.PortArea.FIRST;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -88,14 +88,14 @@ class TonnageDueCalculatorTest extends TariffsInitializer {
   @EnumSource(PortArea.class)
   void testReturnsTonnageDueByPortArea(final PortArea portArea) {
 
-    final ShipType shipType =
-        Arrays.stream(ShipType.values())
+    final Ship.ShipType shipType =
+        Arrays.stream(Ship.ShipType.values())
             .filter(type -> !tonnageDueTariff.getTonnageDuesByShipType().containsKey(type))
             .findAny()
             .orElse(BULK_CARRIER);
 
-    final CallPurpose callPurpose =
-        Arrays.stream(CallPurpose.values())
+    final Case.CallPurpose callPurpose =
+        Arrays.stream(Case.CallPurpose.values())
             .filter(purpose -> !tonnageDueTariff.getTonnageDuesByCallPurpose().containsKey(purpose))
             .findAny()
             .orElse(LOADING);
@@ -117,7 +117,7 @@ class TonnageDueCalculatorTest extends TariffsInitializer {
   @DisplayName("Should return tonnage due by ship type")
   @ParameterizedTest(name = "ship type : {arguments}")
   @MethodSource(value = "getShipTypesAffectingTonnageDue")
-  void testReturnsTonnageDueByShipType(final ShipType shipType) {
+  void testReturnsTonnageDueByShipType(final Ship.ShipType shipType) {
 
     testCase.getShip().setType(shipType);
 
@@ -161,7 +161,7 @@ class TonnageDueCalculatorTest extends TariffsInitializer {
   @DisplayName("Should return tonnage due by call purpose")
   @ParameterizedTest(name = "call purpose : {arguments}")
   @MethodSource(value = "getCallPurposesAffectingTonnageDue")
-  void testReturnsTonnageDueByCallPurpose(final CallPurpose callPurpose) {
+  void testReturnsTonnageDueByCallPurpose(final Case.CallPurpose callPurpose) {
 
     testCase.setCallPurpose(callPurpose);
 
@@ -212,7 +212,7 @@ class TonnageDueCalculatorTest extends TariffsInitializer {
   @DisplayName("Should return due with discount by call purpose")
   @ParameterizedTest(name = "call purpose : {arguments}")
   @MethodSource(value = "getCallPurposesEligibleForDiscount")
-  void testReturnsTonnageDueWithDiscountByCallPurpose(CallPurpose callPurpose) {
+  void testReturnsTonnageDueWithDiscountByCallPurpose(Case.CallPurpose callPurpose) {
 
     testCase.setCallPurpose(callPurpose);
 
@@ -230,7 +230,7 @@ class TonnageDueCalculatorTest extends TariffsInitializer {
   @DisplayName("Should return tonnage due with discount by ship type")
   @ParameterizedTest(name = "ship type : {arguments}")
   @MethodSource(value = "getShipTypesEligibleForDiscount")
-  void testReturnsTonnageDueWithDiscountByShipType(final ShipType shipType) {
+  void testReturnsTonnageDueWithDiscountByShipType(final Ship.ShipType shipType) {
 
     testCase.getShip().setType(shipType);
 
@@ -274,7 +274,7 @@ class TonnageDueCalculatorTest extends TariffsInitializer {
       "Should return tonnage due without discount when ship type is not eligible for discount")
   @ParameterizedTest(name = "ship type : {arguments}")
   @MethodSource(value = "getShipTypesNotEligibleForDiscount")
-  void testReturnsTonnageDueWithoutDiscountByShipType(final ShipType shipType) {
+  void testReturnsTonnageDueWithoutDiscountByShipType(final Ship.ShipType shipType) {
 
     testCase.getShip().setType(shipType);
     testCase.setCallPurpose(getCallPurposeEligibleForDiscount());
@@ -294,7 +294,7 @@ class TonnageDueCalculatorTest extends TariffsInitializer {
       "Should return tonnage due without discount when call purpose is not eligible for discount")
   @ParameterizedTest(name = "call purpose : {arguments}")
   @MethodSource(value = "getCallPurposesNotEligibleForDiscount")
-  void testReturnsTonnageDueWithoutDiscountByCallPurpose(final CallPurpose callPurpose) {
+  void testReturnsTonnageDueWithoutDiscountByCallPurpose(final Case.CallPurpose callPurpose) {
 
     testCase.getShip().setType(getShipTypeEligibleForDiscount());
     testCase.setCallPurpose(callPurpose);
@@ -310,11 +310,11 @@ class TonnageDueCalculatorTest extends TariffsInitializer {
     assertThat(result).isEqualByComparingTo(expected);
   }
 
-  private ShipType getShipTypeEligibleForDiscount() {
+  private Ship.ShipType getShipTypeEligibleForDiscount() {
     return tonnageDueTariff.getDiscountCoefficientsByShipType().keySet().stream().findAny().get();
   }
 
-  private CallPurpose getCallPurposeEligibleForDiscount() {
+  private Case.CallPurpose getCallPurposeEligibleForDiscount() {
     return tonnageDueTariff.getDiscountCoefficientsByCallPurpose().keySet().stream()
         .findAny()
         .get();

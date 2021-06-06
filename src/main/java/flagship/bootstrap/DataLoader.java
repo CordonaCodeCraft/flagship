@@ -1,7 +1,7 @@
 package flagship.bootstrap;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import flagship.domain.factories.TariffsFactory;
+import flagship.domain.tariffs.TariffsFactory;
 import flagship.domain.tariffs.Tariff;
 import flagship.domain.tariffs.agencydues.AgencyDuesTariff;
 import flagship.domain.tariffs.mix.HolidayCalendar;

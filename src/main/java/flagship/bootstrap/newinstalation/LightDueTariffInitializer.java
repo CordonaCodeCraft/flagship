@@ -1,6 +1,6 @@
 package flagship.bootstrap.newinstalation;
 
-import flagship.domain.cases.entities.enums.ShipType;
+import flagship.domain.cases.entities.Ship;
 import flagship.domain.tariffs.mix.Due;
 import flagship.domain.tariffs.mix.Range;
 import flagship.domain.tariffs.statedues.LightDueTariff;
@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.util.*;
 
-import static flagship.domain.cases.entities.enums.ShipType.NAVY;
-import static flagship.domain.cases.entities.enums.ShipType.PASSENGER;
+import static flagship.domain.cases.entities.Ship.ShipType.NAVY;
+import static flagship.domain.cases.entities.Ship.ShipType.PASSENGER;
 import static flagship.domain.tariffs.Tariff.MAX_GT;
 
 @Component
@@ -32,15 +32,15 @@ public class LightDueTariffInitializer {
     lightDuesByGrossTonnage.put(new Range(5001, 10000), new Due(110.00));
     lightDuesByGrossTonnage.put(new Range(10001, MAX_GT), new Due(150.00));
 
-    final Map<ShipType, Due> lightDuesByShipType = new EnumMap<>(ShipType.class);
+    final Map<Ship.ShipType, Due> lightDuesByShipType = new EnumMap<>(Ship.ShipType.class);
 
     lightDuesByShipType.put(NAVY, new Due(0.15));
 
-    final Map<ShipType, BigDecimal> discountCoefficientsByShipType = new EnumMap<>(ShipType.class);
+    final Map<Ship.ShipType, BigDecimal> discountCoefficientsByShipType = new EnumMap<>(Ship.ShipType.class);
 
     discountCoefficientsByShipType.put(PASSENGER, BigDecimal.valueOf(0.5));
 
-    final Set<ShipType> shipTypesNotEligibleForDiscount = EnumSet.of(NAVY);
+    final Set<Ship.ShipType> shipTypesNotEligibleForDiscount = EnumSet.of(NAVY);
 
     lightDueTariff.setShipTypesNotEligibleForDiscount(
         Collections.unmodifiableSet(shipTypesNotEligibleForDiscount));

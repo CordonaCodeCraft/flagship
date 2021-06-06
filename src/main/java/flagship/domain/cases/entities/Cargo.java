@@ -1,6 +1,6 @@
 package flagship.domain.cases.entities;
 
-import flagship.domain.cases.entities.enums.CargoType;
+import flagship.domain.cases.entities.base.BaseEntity;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -24,4 +24,10 @@ public class Cargo extends BaseEntity {
 
   @Enumerated(value = STRING)
   private CargoType type;
+
+    public enum CargoType {
+      REGULAR,
+      HAZARDOUS,
+      SPECIAL,
+    }
 }

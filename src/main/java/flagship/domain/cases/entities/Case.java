@@ -1,7 +1,6 @@
 package flagship.domain.cases.entities;
 
-import flagship.domain.cases.entities.enums.CallPurpose;
-import flagship.domain.cases.entities.enums.CaseState;
+import flagship.domain.cases.entities.base.BaseEntity;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -49,4 +48,23 @@ public class Case extends BaseEntity {
 
   @OneToOne(fetch = LAZY)
   private ProformaDisbursementAccount proformaDisbursementAccount;
+
+    public enum CaseState {}
+
+  public enum CallPurpose {
+    LOADING("Loading"),
+    UNLOADING("Unloading"),
+    LOADING_AND_UNLOADING("Loading and unloading"),
+    RESUPPLY("Supply"),
+    RECRUITMENT("Crew change"),
+    POSTAL("Postal"),
+    REPAIR("Repair"),
+    SPECIAL_PURPOSE_PORT_VISIT("Ship repair yard");
+
+    public final String type;
+
+    CallPurpose(String name) {
+      this.type = name;
+    }
+  }
 }

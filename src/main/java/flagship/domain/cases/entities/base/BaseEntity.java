@@ -1,4 +1,4 @@
-package flagship.domain.cases.entities;
+package flagship.domain.cases.entities.base;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

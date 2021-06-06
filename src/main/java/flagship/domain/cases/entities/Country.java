@@ -1,5 +1,6 @@
 package flagship.domain.cases.entities;
 
+import flagship.domain.cases.entities.base.BaseEntity;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 

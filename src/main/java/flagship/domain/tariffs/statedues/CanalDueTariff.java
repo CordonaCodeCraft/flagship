@@ -1,6 +1,6 @@
 package flagship.domain.tariffs.statedues;
 
-import flagship.domain.cases.entities.enums.ShipType;
+import flagship.domain.cases.entities.Ship;
 import flagship.domain.tariffs.PortArea;
 import flagship.domain.tariffs.Tariff;
 import flagship.domain.tariffs.mix.Due;
@@ -18,10 +18,10 @@ import java.util.Set;
 public class CanalDueTariff extends Tariff {
 
   private Map<PortArea, Due> canalDuesByPortArea;
-  private Map<ShipType, BigDecimal> discountCoefficientByShipType;
+  private Map<Ship.ShipType, BigDecimal> discountCoefficientByShipType;
   private Map<PortArea, BigDecimal> discountCoefficientsByPortAreaForContainers;
   private Map<PortArea, BigDecimal> discountCoefficientsByPortAreaPerCallCountForContainers;
-  private Set<ShipType> shipTypesNotEligibleForDiscount;
+  private Set<Ship.ShipType> shipTypesNotEligibleForDiscount;
   private Integer callCountThreshold;
   private BigDecimal defaultCallCountDiscountCoefficient;
 }

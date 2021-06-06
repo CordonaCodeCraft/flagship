@@ -1,4 +1,4 @@
-package flagship.domain.factories;
+package flagship.domain.tariffs;
 
 import flagship.domain.tariffs.Tariff;
 import lombok.Getter;

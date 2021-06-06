@@ -4,7 +4,7 @@ import flagship.domain.cases.dto.PdaCase;
 import flagship.domain.cases.dto.PdaPort;
 import flagship.domain.cases.dto.PdaShip;
 import flagship.domain.cases.entities.ProformaDisbursementAccount;
-import flagship.domain.factories.TariffsFactory;
+import flagship.domain.tariffs.TariffsFactory;
 import flagship.domain.tariffs.servicedues.MooringDueTariff;
 import flagship.domain.tariffs.servicedues.TugDueTariff;
 import org.junit.jupiter.api.Disabled;
@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashSet;
 
-import static flagship.domain.cases.entities.enums.ShipType.BULK_CARRIER;
+import static flagship.domain.cases.entities.Ship.ShipType.BULK_CARRIER;
 import static flagship.domain.tariffs.PortArea.FIRST;
 import static flagship.domain.tariffs.servicedues.PilotageDueTariff.PilotageArea.BOURGAS_FIRST;
 

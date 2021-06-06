@@ -1,8 +1,8 @@
 package flagship.domain.cases.dto;
 
+import flagship.domain.cases.entities.Case;
 import flagship.domain.cases.entities.ProformaDisbursementAccount;
 import flagship.domain.cases.entities.Warning;
-import flagship.domain.cases.entities.enums.CallPurpose;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
@@ -26,7 +26,7 @@ public class PdaCase {
   private Set<WarningType> warningTypes;
   private Set<Warning> warnings;
   private List<String> cargoManifest;
-  private CallPurpose callPurpose;
+  private Case.CallPurpose callPurpose;
   private Integer callCount;
   private Integer alongsideDaysExpected;
   private LocalDate estimatedDateOfArrival;

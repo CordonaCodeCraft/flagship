@@ -1,6 +1,6 @@
 package flagship.domain.cases.entities;
 
-import flagship.domain.cases.entities.enums.ShipType;
+import flagship.domain.cases.entities.base.BaseEntity;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -27,4 +27,21 @@ public class Ship extends BaseEntity {
   private String imoNumber;
   private Double lengthOverall;
   private Integer grossTonnage;
+
+    public enum ShipType {
+      BULK_CARRIER("Bulk carrier"),
+      REEFER("Reefer vessel"),
+      CONTAINER("Container vessel"),
+      PASSENGER("Passenger vessel"),
+      RECREATIONAL("Recreational vessel"),
+      OIL_TANKER("Oil tanker"),
+      NAVY("Navy vessel"),
+      WORK_SHIP("Work ship");
+
+      public final String type;
+
+      ShipType(String name) {
+        this.type = name;
+      }
+    }
 }

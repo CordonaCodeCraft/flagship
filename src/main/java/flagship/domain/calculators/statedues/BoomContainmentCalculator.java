@@ -7,7 +7,7 @@ import flagship.domain.tariffs.statedues.BoomContainmentTariff;
 
 import java.math.BigDecimal;
 
-import static flagship.domain.cases.entities.enums.ShipType.OIL_TANKER;
+import static flagship.domain.cases.entities.Ship.ShipType.OIL_TANKER;
 
 public class BoomContainmentCalculator extends PrivateDueCalculator {
 

@@ -1,6 +1,6 @@
 package flagship.domain.tariffs.statedues;
 
-import flagship.domain.cases.entities.enums.ShipType;
+import flagship.domain.cases.entities.Ship;
 import flagship.domain.tariffs.Tariff;
 import flagship.domain.tariffs.mix.Due;
 import flagship.domain.tariffs.mix.Range;
@@ -18,9 +18,9 @@ import java.util.Set;
 public class LightDueTariff extends Tariff {
 
   private Map<Range, Due> lightDuesByGrossTonnage;
-  private Map<ShipType, Due> lightDuesPerTonByShipType;
-  private Map<ShipType, BigDecimal> discountCoefficientsByShipType;
-  private Set<ShipType> shipTypesNotEligibleForDiscount;
+  private Map<Ship.ShipType, Due> lightDuesPerTonByShipType;
+  private Map<Ship.ShipType, BigDecimal> discountCoefficientsByShipType;
+  private Set<Ship.ShipType> shipTypesNotEligibleForDiscount;
   private BigDecimal lightDueMaximumValue;
   private Integer callCountThreshold;
   private BigDecimal callCountDiscountCoefficient;

@@ -10,7 +10,7 @@ import flagship.domain.cases.dto.PdaCase;
 import flagship.domain.cases.dto.PdaPort;
 import flagship.domain.cases.dto.PdaShip;
 import flagship.domain.cases.entities.ProformaDisbursementAccount;
-import flagship.domain.factories.TariffsFactory;
+import flagship.domain.tariffs.TariffsFactory;
 import flagship.domain.tariffs.Tariff;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -29,7 +29,7 @@ import java.util.stream.Stream;
 
 import static flagship.domain.calculators.DueCalculator.CalculatorType;
 import static flagship.domain.calculators.DueCalculator.CalculatorType.*;
-import static flagship.domain.cases.entities.enums.ShipType.BULK_CARRIER;
+import static flagship.domain.cases.entities.Ship.ShipType.BULK_CARRIER;
 import static flagship.domain.tariffs.PortArea.FIRST;
 import static flagship.domain.tariffs.servicedues.MooringDueTariff.MooringServiceProvider;
 import static flagship.domain.tariffs.servicedues.PilotageDueTariff.PilotageArea.BOURGAS_FIRST;
