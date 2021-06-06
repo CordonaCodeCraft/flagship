@@ -1,9 +1,9 @@
 package flagship.domain.resolvers;
 
-import flagship.domain.calculators.TariffsInitializer;
-import flagship.domain.cases.dto.PdaCase;
-import flagship.domain.cases.dto.PdaPort;
-import flagship.domain.tariffs.servicedues.TugDueTariff;
+import flagship.domain.calculation.calculators.TariffsInitializer;
+import flagship.domain.calculation.tariffs.service.TugDueTariff;
+import flagship.domain.pda.model.PdaCase;
+import flagship.domain.port.model.PdaPort;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -12,10 +12,10 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
-import static flagship.domain.tariffs.servicedues.TugDueTariff.TugArea;
-import static flagship.domain.tariffs.servicedues.TugDueTariff.TugArea.*;
-import static flagship.domain.tariffs.servicedues.TugDueTariff.TugServiceProvider.PORTFLEET;
-import static flagship.domain.tariffs.servicedues.TugDueTariff.TugServiceProvider.VTC;
+import static flagship.domain.calculation.tariffs.service.TugDueTariff.TugArea;
+import static flagship.domain.calculation.tariffs.service.TugDueTariff.TugArea.*;
+import static flagship.domain.calculation.tariffs.service.TugDueTariff.TugServiceProvider.PORTFLEET;
+import static flagship.domain.calculation.tariffs.service.TugDueTariff.TugServiceProvider.VTC;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DisplayName("Tug area resolver tests")
@@ -84,7 +84,7 @@ class TugAreaResolverTest extends TariffsInitializer {
     testCase.getPort().setTugServiceProvider(VTC);
     testCase.getPort().setName(portName);
 
-    TugArea result = TugAreaResolver.resolveTugArea(testCase, tugDueTariff);
+    TugArea result = TugDueTariff.TugAreaResolver.resolveTugArea(testCase, tugDueTariff);
 
     assertThat(result.name()).isEqualTo(VTC_FIRST.name());
   }
@@ -97,7 +97,7 @@ class TugAreaResolverTest extends TariffsInitializer {
     testCase.getPort().setTugServiceProvider(VTC);
     testCase.getPort().setName(portName);
 
-    TugArea result = TugAreaResolver.resolveTugArea(testCase, tugDueTariff);
+    TugArea result = TugDueTariff.TugAreaResolver.resolveTugArea(testCase, tugDueTariff);
 
     assertThat(result.name()).isEqualTo(VTC_SECOND.name());
   }
@@ -110,7 +110,7 @@ class TugAreaResolverTest extends TariffsInitializer {
     testCase.getPort().setTugServiceProvider(VTC);
     testCase.getPort().setName(portName);
 
-    TugArea result = TugAreaResolver.resolveTugArea(testCase, tugDueTariff);
+    TugArea result = TugDueTariff.TugAreaResolver.resolveTugArea(testCase, tugDueTariff);
 
     assertThat(result.name()).isEqualTo(VTC_THIRD.name());
   }
@@ -123,7 +123,7 @@ class TugAreaResolverTest extends TariffsInitializer {
     testCase.getPort().setTugServiceProvider(VTC);
     testCase.getPort().setName(portName);
 
-    TugArea result = TugAreaResolver.resolveTugArea(testCase, tugDueTariff);
+    TugArea result = TugDueTariff.TugAreaResolver.resolveTugArea(testCase, tugDueTariff);
 
     assertThat(result.name()).isEqualTo(VTC_FOURTH.name());
   }
@@ -136,7 +136,7 @@ class TugAreaResolverTest extends TariffsInitializer {
     testCase.getPort().setTugServiceProvider(VTC);
     testCase.getPort().setName(portName);
 
-    TugArea result = TugAreaResolver.resolveTugArea(testCase, tugDueTariff);
+    TugArea result = TugDueTariff.TugAreaResolver.resolveTugArea(testCase, tugDueTariff);
 
     assertThat(result.name()).isEqualTo(VTC_FIFTH.name());
   }
@@ -149,7 +149,7 @@ class TugAreaResolverTest extends TariffsInitializer {
     testCase.getPort().setTugServiceProvider(PORTFLEET);
     testCase.getPort().setName(portName);
 
-    TugArea result = TugAreaResolver.resolveTugArea(testCase, tugDueTariff);
+    TugArea result = TugDueTariff.TugAreaResolver.resolveTugArea(testCase, tugDueTariff);
 
     assertThat(result.name()).isEqualTo(PORTFLEET_FIRST.name());
   }
@@ -162,7 +162,7 @@ class TugAreaResolverTest extends TariffsInitializer {
     testCase.getPort().setTugServiceProvider(PORTFLEET);
     testCase.getPort().setName(portName);
 
-    TugArea result = TugAreaResolver.resolveTugArea(testCase, tugDueTariff);
+    TugArea result = TugDueTariff.TugAreaResolver.resolveTugArea(testCase, tugDueTariff);
 
     assertThat(result.name()).isEqualTo(PORTFLEET_SECOND.name());
   }
@@ -175,7 +175,7 @@ class TugAreaResolverTest extends TariffsInitializer {
     testCase.getPort().setTugServiceProvider(PORTFLEET);
     testCase.getPort().setName(portName);
 
-    TugArea result = TugAreaResolver.resolveTugArea(testCase, tugDueTariff);
+    TugArea result = TugDueTariff.TugAreaResolver.resolveTugArea(testCase, tugDueTariff);
 
     assertThat(result.name()).isEqualTo(PORTFLEET_THIRD.name());
   }
@@ -188,7 +188,7 @@ class TugAreaResolverTest extends TariffsInitializer {
     testCase.getPort().setTugServiceProvider(PORTFLEET);
     testCase.getPort().setName(portName);
 
-    TugArea result = TugAreaResolver.resolveTugArea(testCase, tugDueTariff);
+    TugArea result = TugDueTariff.TugAreaResolver.resolveTugArea(testCase, tugDueTariff);
 
     assertThat(result.name()).isEqualTo(PORTFLEET_FOURTH.name());
   }
@@ -201,7 +201,7 @@ class TugAreaResolverTest extends TariffsInitializer {
     testCase.getPort().setTugServiceProvider(PORTFLEET);
     testCase.getPort().setName(portName);
 
-    TugArea result = TugAreaResolver.resolveTugArea(testCase, tugDueTariff);
+    TugArea result = TugDueTariff.TugAreaResolver.resolveTugArea(testCase, tugDueTariff);
 
     assertThat(result.name()).isEqualTo(PORTFLEET_FIFTH.name());
   }

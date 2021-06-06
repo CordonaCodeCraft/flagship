@@ -1,5 +1,6 @@
 package flagship.domain.resolvers;
 
+import flagship.domain.calculation.tariffs.calendar.HolidayCalendarResolver;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

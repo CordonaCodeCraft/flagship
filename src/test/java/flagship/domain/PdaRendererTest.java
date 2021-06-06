@@ -1,15 +1,16 @@
 package flagship.domain;
 
-import flagship.domain.calculators.TariffsInitializer;
-import flagship.domain.cases.dto.PdaCase;
-import flagship.domain.cases.dto.PdaPort;
-import flagship.domain.cases.dto.PdaShip;
-import flagship.domain.cases.entities.ProformaDisbursementAccount;
-import flagship.domain.tariffs.TariffsFactory;
-import flagship.domain.renders.pda.PdaRender;
-import flagship.domain.tariffs.Tariff;
-import flagship.domain.tariffs.servicedues.MooringDueTariff;
-import flagship.domain.tariffs.servicedues.TugDueTariff;
+import flagship.domain.calculation.calculators.TariffsInitializer;
+import flagship.domain.calculation.tariffs.Tariff;
+import flagship.domain.calculation.tariffs.TariffsFactory;
+import flagship.domain.calculation.tariffs.service.MooringDueTariff;
+import flagship.domain.calculation.tariffs.service.TugDueTariff;
+import flagship.domain.pda.entity.ProformaDisbursementAccount;
+import flagship.domain.pda.model.PdaCase;
+import flagship.domain.pda.render.PdaRender;
+import flagship.domain.port.model.PdaPort;
+import flagship.domain.ship.model.PdaShip;
+import flagship.domain.warning.generator.WarningsGenerator;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -20,12 +21,12 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
-import static flagship.domain.calculators.DueCalculator.CalculatorType;
-import static flagship.domain.calculators.DueCalculator.CalculatorType.*;
-import static flagship.domain.cases.entities.Case.CallPurpose.LOADING;
-import static flagship.domain.cases.entities.Ship.ShipType.BULK_CARRIER;
-import static flagship.domain.tariffs.PortArea.FIRST;
-import static flagship.domain.tariffs.servicedues.PilotageDueTariff.PilotageArea.BOURGAS_FIRST;
+import static flagship.domain.calculation.calculators.DueCalculator.CalculatorType;
+import static flagship.domain.calculation.calculators.DueCalculator.CalculatorType.*;
+import static flagship.domain.calculation.tariffs.service.PilotageDueTariff.PilotageArea.BOURGAS_FIRST;
+import static flagship.domain.caze.entity.Case.CallPurpose.LOADING;
+import static flagship.domain.port.entity.Port.PortArea.FIRST;
+import static flagship.domain.ship.entity.Ship.ShipType.BULK_CARRIER;
 
 class PdaRendererTest extends TariffsInitializer {
 
@@ -116,7 +117,7 @@ class PdaRendererTest extends TariffsInitializer {
     testCase.setEstimatedDateOfArrival(LocalDate.of(2021, 1, 3));
     testCase.setEstimatedDateOfDeparture(LocalDate.of(2021, 1, 3));
 
-    PdaWarningsGenerator generator = new PdaWarningsGenerator(testCase, tariffsFactory);
+    WarningsGenerator generator = new WarningsGenerator(testCase, tariffsFactory);
 
     testCase.setWarnings(generator.generateWarnings());
 

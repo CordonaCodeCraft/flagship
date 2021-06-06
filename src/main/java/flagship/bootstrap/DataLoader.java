@@ -1,14 +1,14 @@
 package flagship.bootstrap;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import flagship.domain.tariffs.TariffsFactory;
-import flagship.domain.tariffs.Tariff;
-import flagship.domain.tariffs.agencydues.AgencyDuesTariff;
-import flagship.domain.tariffs.mix.HolidayCalendar;
-import flagship.domain.tariffs.servicedues.MooringDueTariff;
-import flagship.domain.tariffs.servicedues.PilotageDueTariff;
-import flagship.domain.tariffs.servicedues.TugDueTariff;
-import flagship.domain.tariffs.statedues.*;
+import flagship.domain.calculation.tariffs.Tariff;
+import flagship.domain.calculation.tariffs.TariffsFactory;
+import flagship.domain.calculation.tariffs.agency.AgencyDuesTariff;
+import flagship.domain.calculation.tariffs.calendar.HolidayCalendar;
+import flagship.domain.calculation.tariffs.service.MooringDueTariff;
+import flagship.domain.calculation.tariffs.service.PilotageDueTariff;
+import flagship.domain.calculation.tariffs.service.TugDueTariff;
+import flagship.domain.calculation.tariffs.state.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,8 +22,8 @@ import java.nio.file.Paths;
 import java.util.EnumMap;
 import java.util.Map;
 
-import static flagship.domain.calculators.DueCalculator.CalculatorType;
-import static flagship.domain.calculators.DueCalculator.CalculatorType.*;
+import static flagship.domain.calculation.calculators.DueCalculator.CalculatorType;
+import static flagship.domain.calculation.calculators.DueCalculator.CalculatorType.*;
 
 @Component
 @Slf4j
@@ -31,7 +31,7 @@ import static flagship.domain.calculators.DueCalculator.CalculatorType.*;
 @PropertySource("classpath:application.yml")
 public class DataLoader implements ApplicationRunner {
 
-  private static final String TARIFFS_PATH = "src/main/resources/";
+  private static final String TARIFFS_PATH = "src/main/resources/tariffs/";
   private final ObjectMapper objectMapper;
   private final HolidayCalendar holidayCalendar;
   private final TonnageDueTariff tonnageDueTariff;

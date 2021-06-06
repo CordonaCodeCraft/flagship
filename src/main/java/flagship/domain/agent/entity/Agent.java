@@ -1,0 +1,21 @@
+package flagship.domain.agent.entity;
+
+import flagship.domain.base.entity.BaseEntity;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+@SuperBuilder
+@Entity(name = "Agent")
+@Table(name = "agents")
+public class Agent extends BaseEntity {
+
+  private String name;
+}

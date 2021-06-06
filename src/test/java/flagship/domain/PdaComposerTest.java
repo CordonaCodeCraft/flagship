@@ -1,17 +1,18 @@
 package flagship.domain;
 
-import flagship.domain.calculators.TariffsInitializer;
-import flagship.domain.calculators.agencydues.*;
-import flagship.domain.calculators.servicedues.MooringDueCalculator;
-import flagship.domain.calculators.servicedues.PilotageDueCalculator;
-import flagship.domain.calculators.servicedues.TugDueCalculator;
-import flagship.domain.calculators.statedues.*;
-import flagship.domain.cases.dto.PdaCase;
-import flagship.domain.cases.dto.PdaPort;
-import flagship.domain.cases.dto.PdaShip;
-import flagship.domain.cases.entities.ProformaDisbursementAccount;
-import flagship.domain.tariffs.TariffsFactory;
-import flagship.domain.tariffs.Tariff;
+import flagship.domain.calculation.calculators.TariffsInitializer;
+import flagship.domain.calculation.calculators.agency.*;
+import flagship.domain.calculation.calculators.service.MooringDueCalculator;
+import flagship.domain.calculation.calculators.service.PilotageDueCalculator;
+import flagship.domain.calculation.calculators.service.TugDueCalculator;
+import flagship.domain.calculation.calculators.state.*;
+import flagship.domain.calculation.tariffs.Tariff;
+import flagship.domain.calculation.tariffs.TariffsFactory;
+import flagship.domain.pda.composer.PdaComposer;
+import flagship.domain.pda.entity.ProformaDisbursementAccount;
+import flagship.domain.pda.model.PdaCase;
+import flagship.domain.port.model.PdaPort;
+import flagship.domain.ship.model.PdaShip;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,14 +28,14 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static flagship.domain.calculators.DueCalculator.CalculatorType;
-import static flagship.domain.calculators.DueCalculator.CalculatorType.*;
-import static flagship.domain.cases.entities.Ship.ShipType.BULK_CARRIER;
-import static flagship.domain.tariffs.PortArea.FIRST;
-import static flagship.domain.tariffs.servicedues.MooringDueTariff.MooringServiceProvider;
-import static flagship.domain.tariffs.servicedues.PilotageDueTariff.PilotageArea.BOURGAS_FIRST;
-import static flagship.domain.tariffs.servicedues.TugDueTariff.TugArea;
-import static flagship.domain.tariffs.servicedues.TugDueTariff.TugServiceProvider;
+import static flagship.domain.calculation.calculators.DueCalculator.CalculatorType;
+import static flagship.domain.calculation.calculators.DueCalculator.CalculatorType.*;
+import static flagship.domain.calculation.tariffs.service.MooringDueTariff.MooringServiceProvider;
+import static flagship.domain.calculation.tariffs.service.PilotageDueTariff.PilotageArea.BOURGAS_FIRST;
+import static flagship.domain.calculation.tariffs.service.TugDueTariff.TugArea;
+import static flagship.domain.calculation.tariffs.service.TugDueTariff.TugServiceProvider;
+import static flagship.domain.port.entity.Port.PortArea.FIRST;
+import static flagship.domain.ship.entity.Ship.ShipType.BULK_CARRIER;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @ExtendWith(MockitoExtension.class)

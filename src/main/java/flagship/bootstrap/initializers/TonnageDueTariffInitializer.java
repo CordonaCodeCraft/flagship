@@ -1,0 +1,83 @@
+package flagship.bootstrap.initializers;
+
+import flagship.domain.calculation.tariffs.state.TonnageDueTariff;
+import flagship.domain.base.due.tuple.Due;
+import flagship.domain.caze.entity.Case;
+import flagship.domain.port.entity.Port;
+import flagship.domain.ship.entity.Ship;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+
+import java.math.BigDecimal;
+import java.util.*;
+
+import static flagship.domain.caze.entity.Case.CallPurpose.*;
+import static flagship.domain.port.entity.Port.PortArea.*;
+import static flagship.domain.ship.entity.Ship.ShipType.*;
+
+@Component
+@Slf4j
+@RequiredArgsConstructor
+public class TonnageDueTariffInitializer {
+
+  public static TonnageDueTariff getTariff() {
+
+    final TonnageDueTariff tonnageDueTariff = new TonnageDueTariff();
+
+    final Map<Port.PortArea, Due> tonnageDuesByPortArea = new EnumMap<>(Port.PortArea.class);
+    tonnageDuesByPortArea.put(FIRST, new Due(0.55));
+    tonnageDuesByPortArea.put(SECOND, new Due(0.40));
+    tonnageDuesByPortArea.put(THIRD, new Due(0.55));
+    tonnageDuesByPortArea.put(FOURTH, new Due(0.55));
+
+    final Map<Ship.ShipType, Due> tonnageDuesByShipType = new EnumMap<>(Ship.ShipType.class);
+    tonnageDuesByShipType.put(OIL_TANKER, new Due(0.50));
+    tonnageDuesByShipType.put(RECREATIONAL, new Due(0.10));
+    tonnageDuesByShipType.put(NAVY, new Due(0.25));
+    tonnageDuesByShipType.put(WORK_SHIP, new Due(0.50));
+
+    final Map<Case.CallPurpose, Due> tonnageDuesByCallPurpose =
+        new EnumMap<>(Case.CallPurpose.class);
+    tonnageDuesByCallPurpose.put(SPECIAL_PURPOSE_PORT_VISIT, new Due(0.05));
+
+    final Map<Case.CallPurpose, BigDecimal> discountCoefficientsByCallPurpose =
+        new EnumMap<>(Case.CallPurpose.class);
+    discountCoefficientsByCallPurpose.put(RESUPPLY, BigDecimal.valueOf(0.65));
+    discountCoefficientsByCallPurpose.put(RECRUITMENT, BigDecimal.valueOf(0.65));
+    discountCoefficientsByCallPurpose.put(POSTAL, BigDecimal.valueOf(0.65));
+    discountCoefficientsByCallPurpose.put(REPAIR, BigDecimal.valueOf(0.65));
+
+    final Map<Ship.ShipType, BigDecimal> discountCoefficientByShipType =
+        new EnumMap<>(Ship.ShipType.class);
+    discountCoefficientByShipType.put(REEFER, BigDecimal.valueOf(0.6));
+    discountCoefficientByShipType.put(CONTAINER, BigDecimal.valueOf(0.6));
+    discountCoefficientByShipType.put(PASSENGER, BigDecimal.valueOf(0.4));
+
+    final Set<Ship.ShipType> shipTypesNotEligibleForDiscount =
+        EnumSet.of(RECREATIONAL, NAVY, WORK_SHIP);
+
+    final Set<Case.CallPurpose> callPurposesNotEligibleForDiscount =
+        EnumSet.of(SPECIAL_PURPOSE_PORT_VISIT);
+
+    tonnageDueTariff.setTonnageDuesByPortArea(Collections.unmodifiableMap(tonnageDuesByPortArea));
+    tonnageDueTariff.setTonnageDuesByShipType(Collections.unmodifiableMap(tonnageDuesByShipType));
+    tonnageDueTariff.setTonnageDuesByCallPurpose(
+        Collections.unmodifiableMap(tonnageDuesByCallPurpose));
+    tonnageDueTariff.setDiscountCoefficientsByCallPurpose(
+        Collections.unmodifiableMap(discountCoefficientsByCallPurpose));
+    tonnageDueTariff.setDiscountCoefficientsByShipType(
+        Collections.unmodifiableMap(discountCoefficientByShipType));
+    tonnageDueTariff.setShipTypesNotEligibleForDiscount(
+        Collections.unmodifiableSet(shipTypesNotEligibleForDiscount));
+    tonnageDueTariff.setCallPurposesNotEligibleForDiscount(
+        Collections.unmodifiableSet(callPurposesNotEligibleForDiscount));
+    tonnageDueTariff.setCallCountThreshold(4);
+    tonnageDueTariff.setCallCountDiscountCoefficient(BigDecimal.valueOf(0.7));
+    tonnageDueTariff.setDiscountCoefficientForPortOfArrival(BigDecimal.valueOf(0.1));
+
+    log.info("Tonnage due tariff initialized");
+
+    return tonnageDueTariff;
+  }
+}

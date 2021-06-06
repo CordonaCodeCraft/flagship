@@ -4,17 +4,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import flagship.bootstrap.newinstalation.*;
-import flagship.config.serialization.DueDeserializer;
-import flagship.config.serialization.RangeDeserializer;
-import flagship.domain.tariffs.agencydues.AgencyDuesTariff;
-import flagship.domain.tariffs.mix.Due;
-import flagship.domain.tariffs.mix.HolidayCalendar;
-import flagship.domain.tariffs.mix.Range;
-import flagship.domain.tariffs.servicedues.MooringDueTariff;
-import flagship.domain.tariffs.servicedues.PilotageDueTariff;
-import flagship.domain.tariffs.servicedues.TugDueTariff;
-import flagship.domain.tariffs.statedues.*;
+import flagship.bootstrap.initializers.*;
+import flagship.domain.calculation.tariffs.agency.AgencyDuesTariff;
+import flagship.domain.calculation.tariffs.calendar.HolidayCalendar;
+import flagship.domain.calculation.tariffs.service.MooringDueTariff;
+import flagship.domain.calculation.tariffs.service.PilotageDueTariff;
+import flagship.domain.calculation.tariffs.service.TugDueTariff;
+import flagship.domain.calculation.tariffs.state.*;
+import flagship.domain.base.due.serialization.DueDeserializer;
+import flagship.domain.base.due.tuple.Due;
+import flagship.domain.base.range.serialization.RangeDeserializer;
+import flagship.domain.base.range.tuple.Range;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -51,7 +51,7 @@ public class BeansConfiguration {
     } else {
       holidayCalendar =
           objectMapper.readValue(
-              new File(TARIFFS_PATH + "holidayCalendar.json"), HolidayCalendar.class);
+              new File(TARIFFS_PATH + "tariffs/holidayCalendar.json"), HolidayCalendar.class);
       log.info("Holiday calendar initialized from database");
     }
     return holidayCalendar;
@@ -67,7 +67,7 @@ public class BeansConfiguration {
     } else {
       tonnageDueTariff =
           objectMapper.readValue(
-              new File(TARIFFS_PATH + "tonnageDueTariff.json"), TonnageDueTariff.class);
+              new File(TARIFFS_PATH + "tariffs/tonnageDueTariff.json"), TonnageDueTariff.class);
       log.info("Tonnage due tariff initialized from database");
     }
     return tonnageDueTariff;
@@ -83,7 +83,7 @@ public class BeansConfiguration {
     } else {
       wharfDueTariff =
           objectMapper.readValue(
-              new File(TARIFFS_PATH + "wharfDueTariff.json"), WharfDueTariff.class);
+              new File(TARIFFS_PATH + "tariffs/wharfDueTariff.json"), WharfDueTariff.class);
       log.info("Wharf due tariff initialized from database");
     }
     return wharfDueTariff;
@@ -99,7 +99,7 @@ public class BeansConfiguration {
     } else {
       canalDueTariff =
           objectMapper.readValue(
-              new File(TARIFFS_PATH + "canalDueTariff.json"), CanalDueTariff.class);
+              new File(TARIFFS_PATH + "tariffs/canalDueTariff.json"), CanalDueTariff.class);
       log.info("Canal due tariff initialized from database");
     }
     return canalDueTariff;
@@ -115,7 +115,7 @@ public class BeansConfiguration {
     } else {
       lightDueTariff =
           objectMapper.readValue(
-              new File(TARIFFS_PATH + "lightDueTariff.json"), LightDueTariff.class);
+              new File(TARIFFS_PATH + "tariffs/lightDueTariff.json"), LightDueTariff.class);
       log.info("Light due tariff initialized from database");
     }
     return lightDueTariff;
@@ -131,7 +131,7 @@ public class BeansConfiguration {
     } else {
       marpolDueTariff =
           objectMapper.readValue(
-              new File(TARIFFS_PATH + "marpolDueTariff.json"), MarpolDueTariff.class);
+              new File(TARIFFS_PATH + "tariffs/marpolDueTariff.json"), MarpolDueTariff.class);
       log.info("Marpol due tariff initialized from database");
     }
     return marpolDueTariff;
@@ -147,7 +147,7 @@ public class BeansConfiguration {
     } else {
       boomContainmentTariff =
           objectMapper.readValue(
-              new File(TARIFFS_PATH + "boomContainmentDueTariff.json"),
+              new File(TARIFFS_PATH + "tariffs/boomContainmentDueTariff.json"),
               BoomContainmentTariff.class);
       log.info("Boom containment due tariff initialized from database");
     }
@@ -164,7 +164,7 @@ public class BeansConfiguration {
     } else {
       sailingPermissionTariff =
           objectMapper.readValue(
-              new File(TARIFFS_PATH + "sailingPermissionDueTariff.json"),
+              new File(TARIFFS_PATH + "tariffs/sailingPermissionDueTariff.json"),
               SailingPermissionTariff.class);
       log.info("Sailing permission due tariff initialized from database");
     }
@@ -181,7 +181,7 @@ public class BeansConfiguration {
     } else {
       pilotageDueTariff =
           objectMapper.readValue(
-              new File(TARIFFS_PATH + "pilotageDueTariff.json"), PilotageDueTariff.class);
+              new File(TARIFFS_PATH + "tariffs/pilotageDueTariff.json"), PilotageDueTariff.class);
       log.info("Pilotage due tariff initialized from database");
     }
     return pilotageDueTariff;
@@ -196,7 +196,8 @@ public class BeansConfiguration {
       tugDueTariff = TugDueTariffInitializer.getTariff(holidayCalendar());
     } else {
       tugDueTariff =
-          objectMapper.readValue(new File(TARIFFS_PATH + "tugDueTariff.json"), TugDueTariff.class);
+          objectMapper.readValue(
+              new File(TARIFFS_PATH + "tariffs/tugDueTariff.json"), TugDueTariff.class);
       log.info("Tug due tariff initialized from database");
     }
     return tugDueTariff;
@@ -212,7 +213,7 @@ public class BeansConfiguration {
     } else {
       mooringDueTariff =
           objectMapper.readValue(
-              new File(TARIFFS_PATH + "mooringDueTariff.json"), MooringDueTariff.class);
+              new File(TARIFFS_PATH + "tariffs/mooringDueTariff.json"), MooringDueTariff.class);
       log.info("Mooring due tariff initialized from database");
     }
     return mooringDueTariff;
@@ -228,7 +229,7 @@ public class BeansConfiguration {
     } else {
       agencyDuesTariff =
           objectMapper.readValue(
-              new File(TARIFFS_PATH + "agencyDuesTariff.json"), AgencyDuesTariff.class);
+              new File(TARIFFS_PATH + "tariffs/agencyDuesTariff.json"), AgencyDuesTariff.class);
       log.info("Agency dues tariff initialized from database");
     }
     return agencyDuesTariff;
