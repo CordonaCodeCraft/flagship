@@ -30,9 +30,6 @@ public class ShipParticularsRender extends PdaElementsFactory {
 
     final Table shipParticularsTable = getInnerTable();
 
-    final Cell left = shipParticularsTable.getCell(0, 0);
-    final Cell right = shipParticularsTable.getCell(0, 1);
-
     final Text shipNameLabel = getText(SHIP_NAME, getBoldFont(), 10);
     final Text shipTypeLabel = getText(SHIP_TYPE, getBoldFont(), 10);
     final Text shipGtLabel = getText(SHIP_GT, getBoldFont(), 10);
@@ -48,15 +45,23 @@ public class ShipParticularsRender extends PdaElementsFactory {
     final Text shipGtValue = getText(shipGt + " gt", getRegularFont(), 10);
     final Text shipLoaValue = getText(shipLoa + " meters", getRegularFont(), 10);
 
-    left.add(getCellWithNoBorder().add(getParagraphWithTextAlignedLeft(shipNameLabel)));
-    left.add(getCellWithNoBorder().add(getParagraphWithTextAlignedLeft(shipTypeLabel)));
-    left.add(getCellWithNoBorder().add(getParagraphWithTextAlignedLeft(shipGtLabel)));
-    left.add(getCellWithNoBorder().add(getParagraphWithTextAlignedLeft(shipLoaLabel)));
+    shipParticularsTable
+        .startNewRow()
+        .addCell((getCellWithNoBorder().add(getParagraphWithTextAlignedLeft(shipNameLabel))))
+        .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedRight(shipNameValue)));
 
-    right.add(getCellWithNoBorder().add(getParagraphWithTextAlignedRight(shipNameValue)));
-    right.add(getCellWithNoBorder().add(getParagraphWithTextAlignedRight(shipTypeValue)));
-    right.add(getCellWithNoBorder().add(getParagraphWithTextAlignedRight(shipGtValue)));
-    right.add(getCellWithNoBorder().add(getParagraphWithTextAlignedRight(shipLoaValue)));
+    shipParticularsTable
+        .startNewRow()
+        .addCell((getCellWithNoBorder().add(getParagraphWithTextAlignedLeft(shipTypeLabel))))
+        .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedRight(shipTypeValue)));
+
+    shipParticularsTable
+        .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedLeft(shipGtLabel)))
+        .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedRight(shipGtValue)));
+
+    shipParticularsTable
+            .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedLeft(shipLoaLabel)))
+            .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedRight(shipLoaValue)));
 
     return shipParticularsTable;
   }

@@ -30,9 +30,6 @@ public class CompanyDetailsRender extends PdaElementsFactory {
 
     final Table companyDetailsTable = getInnerTable();
 
-    final Cell left = companyDetailsTable.getCell(0, 0);
-    final Cell right = companyDetailsTable.getCell(0, 1);
-
     final Text addressLabel = getText(ADDRESS, getBoldFont(), 10);
     final Text mobileLabel = getText(MOBILE, getBoldFont(), 10);
     final Text faxLabel = getText(FAX, getBoldFont(), 10);
@@ -45,17 +42,30 @@ public class CompanyDetailsRender extends PdaElementsFactory {
     final Text emailFirstValue = getText("patronInfo@patronlogistics.eu", getRegularFont(), 10);
     final Text emailSecondValue = getText("patronContact@patronlogistics.eu", getRegularFont(), 10);
 
-    left.add(getParagraphWithTextAlignedLeft(addressLabel));
-    left.add(getParagraphWithTextAlignedLeft(mobileLabel));
-    left.add(getParagraphWithTextAlignedLeft(faxLabel));
-    left.add(getParagraphWithTextAlignedLeft(emailLabel));
-    left.add(getParagraphWithTextAlignedLeft(emailLabel));
+    companyDetailsTable
+        .startNewRow()
+        .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedLeft(addressLabel)))
+        .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedRight(addressValue)));
 
-    right.add(getParagraphWithTextAlignedRight(addressValue));
-    right.add(getParagraphWithTextAlignedRight(mobileValue));
-    right.add(getParagraphWithTextAlignedRight(faxValue));
-    right.add(getParagraphWithTextAlignedRight(emailFirstValue));
-    right.add(getParagraphWithTextAlignedRight(emailSecondValue));
+    companyDetailsTable
+            .startNewRow()
+            .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedLeft(mobileLabel)))
+            .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedRight(mobileValue)));
+
+    companyDetailsTable
+            .startNewRow()
+            .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedLeft(faxLabel)))
+            .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedRight(faxValue)));
+
+    companyDetailsTable
+            .startNewRow()
+            .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedLeft(emailLabel)))
+            .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedRight(emailFirstValue)));
+
+    companyDetailsTable
+            .startNewRow()
+            .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedLeft(emailLabel)))
+            .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedRight(emailSecondValue)));
 
     return companyDetailsTable.setMarginLeft(15);
   }

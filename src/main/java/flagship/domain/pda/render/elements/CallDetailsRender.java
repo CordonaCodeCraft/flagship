@@ -19,6 +19,7 @@ public class CallDetailsRender extends PdaElementsFactory {
   private static final String PORT_OF_CALL = "Port of call";
 
   public static Cell renderCallDetails(final PdaCase source) throws IOException {
+
     final Text callDetails = getText(CALL_DETAILS, getBoldFont(), 12).setUnderline();
     final Text cargo = getText(CARGO, getBoldFont(), 12).setUnderline();
     final String cargoList = String.join(", ", source.getCargoManifest());
@@ -37,9 +38,6 @@ public class CallDetailsRender extends PdaElementsFactory {
 
     final Table callDetailsTable = getInnerTable();
 
-    final Cell left = callDetailsTable.getCell(0, 0);
-    final Cell right = callDetailsTable.getCell(0, 1);
-
     final Text callCountLabel = getText(CALL_COUNT, getBoldFont(), 10);
     final Text callPurposeLabel = getText(CALL_PURPOSE, getBoldFont(), 10);
     final Text alongsideDaysLabel = getText(ALONGSIDE_DAYS, getBoldFont(), 10);
@@ -55,15 +53,25 @@ public class CallDetailsRender extends PdaElementsFactory {
     final Text alongsideDaysText = getText(alongsideDaysValue + " days", getRegularFont(), 10);
     final Text portOfCallText = getText(portOfValue, getRegularFont(), 10);
 
-    left.add(getCellWithNoBorder().add(getParagraphWithTextAlignedLeft(callCountLabel)));
-    left.add(getCellWithNoBorder().add(getParagraphWithTextAlignedLeft(callPurposeLabel)));
-    left.add(getCellWithNoBorder().add(getParagraphWithTextAlignedLeft(alongsideDaysLabel)));
-    left.add(getCellWithNoBorder().add(getParagraphWithTextAlignedLeft(portOfCallLabel)));
+    callDetailsTable
+        .startNewRow()
+        .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedLeft(callCountLabel)))
+        .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedRight(callCountText)));
 
-    right.add(getCellWithNoBorder().add(getParagraphWithTextAlignedRight(callCountText)));
-    right.add(getCellWithNoBorder().add(getParagraphWithTextAlignedRight(callPurposeText)));
-    right.add(getCellWithNoBorder().add(getParagraphWithTextAlignedRight(alongsideDaysText)));
-    right.add(getCellWithNoBorder().add(getParagraphWithTextAlignedRight(portOfCallText)));
+    callDetailsTable
+            .startNewRow()
+            .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedLeft(callPurposeLabel)))
+            .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedRight(callPurposeText)));
+
+    callDetailsTable
+            .startNewRow()
+            .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedLeft(alongsideDaysLabel)))
+            .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedRight(alongsideDaysText)));
+
+    callDetailsTable
+            .startNewRow()
+            .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedLeft(portOfCallLabel)))
+            .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedRight(portOfCallText)));
 
     return callDetailsTable;
   }

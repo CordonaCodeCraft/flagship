@@ -115,7 +115,7 @@ class PdaRendererTest extends TariffsInitializer {
   void name() throws IOException {
 
     testCase.setEstimatedDateOfArrival(LocalDate.of(2021, 1, 3));
-    testCase.setEstimatedDateOfDeparture(LocalDate.of(2021, 1, 3));
+//    testCase.setEstimatedDateOfDeparture(LocalDate.of(2021, 1, 3));
 
     WarningsGenerator generator = new WarningsGenerator(testCase, tariffsFactory);
 

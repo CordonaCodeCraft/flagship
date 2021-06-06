@@ -1,5 +1,6 @@
 package flagship.domain.pda.render.elements;
 
+import com.itextpdf.kernel.colors.Color;
 import com.itextpdf.kernel.colors.DeviceRgb;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
@@ -179,6 +180,18 @@ public abstract class PdaElementsFactory {
       e.printStackTrace();
       return null;
     }
+  }
+
+  protected static Color getYellowLight() {
+    return new DeviceRgb(250, 243, 192);
+  }
+
+  protected static Color getYellowMid() {
+    return new DeviceRgb(245, 234, 146);
+  }
+
+  protected static Color getYellowDark() {
+    return new DeviceRgb(243, 226, 96);
   }
 
   public enum DueType {

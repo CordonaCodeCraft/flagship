@@ -1,5 +1,6 @@
 package flagship.domain.pda.render.elements;
 
+import com.itextpdf.kernel.colors.Color;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
@@ -37,7 +38,7 @@ public class FinancialsRender extends PdaElementsFactory {
     final Table financialsTable = getFinancialsTable(source);
 
     return getCellWithNoBorder()
-        .add(getParagraphWithTextAlignedRight(financials).setMarginTop(15))
+        .add(getParagraphWithTextAlignedRight(financials))
         .add(financialsTable);
   }
 
@@ -50,10 +51,11 @@ public class FinancialsRender extends PdaElementsFactory {
     final Text euroLabel = getText(PRICE, getBoldFont(), 12);
 
     financialsTable
-        .addCell(getCellWithBottomBorder(30).add(getParagraphWithTextCentered(numberLabel)))
-        .addCell(getCellWithBottomBorder(230).add(getParagraphWithTextCentered(itemLabel)))
-        .addCell(getCellWithBottomBorder(120).add(getParagraphWithTextAlignedRight(euroLabel)))
-        .addCell(getCellWithBottomBorder());
+        .startNewRow()
+        .addCell(getCellWithNoBorder(30).add(getParagraphWithTextCentered(numberLabel)))
+        .addCell(getCellWithNoBorder(230).add(getParagraphWithTextCentered(itemLabel)))
+        .addCell(getCellWithNoBorder(120).add(getParagraphWithTextAlignedRight(euroLabel)))
+        .addCell(getCellWithNoBorder());
 
     populateFinancialsTable(source, financialsTable);
 
@@ -130,14 +132,27 @@ public class FinancialsRender extends PdaElementsFactory {
     Text dueType = getText(getDueType(dueField), getRegularFont(), 10);
     Text dueValue = getText(dueString, getRegularFont(), 10);
 
-    StatusIconsAdvisor statusIconsAdvisor = new StatusIconsAdvisor(source, dueField);
+    StatusIconsGenerator statusIconsGenerator = new StatusIconsGenerator(source, dueField);
 
-    Paragraph statusIcons = statusIconsAdvisor.getStatusIcons();
+    Paragraph statusIcons = statusIconsGenerator.generateStatusIcons();
 
-    financials.addCell(getCellWithNoBorder(30).add(getParagraphWithTextCentered(dueCount)));
-    financials.addCell(getCellWithNoBorder(230).add(getParagraphWithTextAlignedLeft(dueType)));
-    financials.addCell(getCellWithNoBorder(120).add(getParagraphWithTextAlignedRight(dueValue)));
-    financials.addCell(getCellWithNoBorder(30).add(statusIcons));
+    Color rowColor = financials.getNumberOfRows() % 2 == 0 ? getYellowMid() : getYellowLight();
+
+    financials
+        .startNewRow()
+        .addCell(
+            getCellWithNoBorder(30)
+                .add(getParagraphWithTextCentered(dueCount))
+                .setBackgroundColor(rowColor))
+        .addCell(
+            getCellWithNoBorder(230)
+                .add(getParagraphWithTextAlignedLeft(dueType))
+                .setBackgroundColor(rowColor))
+        .addCell(
+            getCellWithNoBorder(120)
+                .add(getParagraphWithTextAlignedRight(dueValue))
+                .setBackgroundColor(rowColor))
+        .addCell(getCellWithNoBorder(30).add(statusIcons).setBackgroundColor(rowColor));
   }
 
   private static String getDueType(final Field dueField) {
@@ -155,16 +170,16 @@ public class FinancialsRender extends PdaElementsFactory {
   }
 
   private static Table getTable() {
-    return new Table(4).setBorder(NO_BORDER);
+    return new Table(4).setBorder(NO_BORDER).setBackgroundColor(getYellowDark());
   }
 
   @RequiredArgsConstructor
-  private static class StatusIconsAdvisor {
+  private static class StatusIconsGenerator {
 
     private final PdaCase source;
     private final Field dueField;
 
-    private Paragraph getStatusIcons() {
+    private Paragraph generateStatusIcons() {
 
       String due = dueField.getName();
 
@@ -203,32 +218,28 @@ public class FinancialsRender extends PdaElementsFactory {
 
       final Paragraph statusIcons = new Paragraph();
 
-      if (source.getWarnings().isEmpty()) {
-        statusIcons.add(getChekMarkSymbol());
-      } else {
-        if (due.equals("wharfDue")) {
-          if (warningEventIs(ETD_NOT_PROVIDED)) {
-            statusIcons.add(getQuestionMarkSymbol());
-          } else if (warningEventIs(HOLIDAY)) {
-            statusIcons.add(getArrowUpSymbol());
-          } else {
-            statusIcons.add(getChekMarkSymbol());
-          }
+      if (due.equals("wharfDue")) {
+        if (warningEventIs(ETD_NOT_PROVIDED)) {
+          statusIcons.add(getQuestionMarkSymbol());
+        } else if (warningEventIs(HOLIDAY)) {
+          statusIcons.add(getArrowUpSymbol());
         } else {
-          if (warningEventIs(ETA_IS_HOLIDAY)) {
-            statusIcons.add(getArrowUpSymbol());
-          } else if (warningEventIs(ETA_NOT_PROVIDED)) {
-            statusIcons.add(getQuestionMarkSymbol());
-          } else {
-            statusIcons.add(getChekMarkSymbol());
-          }
-          if (warningEventIs(ETD_IS_HOLIDAY)) {
-            statusIcons.add(getArrowUpSymbol());
-          } else if (warningEventIs(ETD_NOT_PROVIDED)) {
-            statusIcons.add(getQuestionMarkSymbol());
-          } else {
-            statusIcons.add(getChekMarkSymbol());
-          }
+          statusIcons.add(getChekMarkSymbol());
+        }
+      } else {
+        if (warningEventIs(ETA_IS_HOLIDAY)) {
+          statusIcons.add(getArrowUpSymbol());
+        } else if (warningEventIs(ETA_NOT_PROVIDED)) {
+          statusIcons.add(getQuestionMarkSymbol());
+        } else {
+          statusIcons.add(getChekMarkSymbol());
+        }
+        if (warningEventIs(ETD_IS_HOLIDAY)) {
+          statusIcons.add(getArrowUpSymbol());
+        } else if (warningEventIs(ETD_NOT_PROVIDED)) {
+          statusIcons.add(getQuestionMarkSymbol());
+        } else {
+          statusIcons.add(getChekMarkSymbol());
         }
       }
 
