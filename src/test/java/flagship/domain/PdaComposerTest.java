@@ -67,6 +67,8 @@ public class PdaComposerTest extends TariffsInitializer {
   private static BigDecimal lightDue;
   private static BigDecimal marpolDue;
   private static BigDecimal mooringDue;
+  private static BigDecimal freeGarbageDisposalQuantity;
+  private static BigDecimal freeSweageDisposalQuantity;
   private static BigDecimal boomContainmentDue;
   private static BigDecimal sailingPermissionDue;
   private static BigDecimal pilotageDue;
@@ -134,6 +136,8 @@ public class PdaComposerTest extends TariffsInitializer {
     canalDue = canalCalculator.calculate();
     lightDue = lightCalculator.calculate();
     marpolDue = marpolCalculator.calculate();
+    freeGarbageDisposalQuantity = marpolCalculator.getFreeGarbageDisposalQuantity();
+    freeSweageDisposalQuantity = marpolCalculator.getFreeSewageDisposalQuantity();
     mooringDue = mooringCalculator.calculate();
     boomContainmentDue = boomCalculator.calculate();
     sailingPermissionDue = sailingCalculator.calculate();
@@ -188,6 +192,8 @@ public class PdaComposerTest extends TariffsInitializer {
     assertThat(canalDue).isEqualByComparingTo(pda.getCanalDue());
     assertThat(lightDue).isEqualByComparingTo(pda.getLightDue());
     assertThat(marpolDue).isEqualByComparingTo(pda.getMarpolDue());
+    assertThat(freeGarbageDisposalQuantity).isEqualByComparingTo(pda.getFreeGarbageDisposalQuantity());
+    assertThat(freeSweageDisposalQuantity).isEqualByComparingTo(pda.getFreeSweageDisposalQuantity());
     assertThat(mooringDue).isEqualByComparingTo(pda.getMooringDue());
     assertThat(boomContainmentDue).isEqualByComparingTo(pda.getBoomContainmentDue());
     assertThat(sailingPermissionDue).isEqualByComparingTo(pda.getSailingPermissionDue());

@@ -8,7 +8,6 @@ import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
-import com.itextpdf.layout.borders.SolidBorder;
 import com.itextpdf.layout.element.*;
 import com.itextpdf.text.pdf.BaseFont;
 
@@ -68,29 +67,9 @@ public abstract class PdaElementsFactory {
     return new Cell(rowspan, colspan).setBorder(NO_BORDER);
   }
 
-  protected static Cell getCellWithRightBorder() {
-    return new Cell().setBorder(NO_BORDER).setBorderRight(new SolidBorder(1.0f));
+  protected static Paragraph getParagraphWithTextJustified(final Text text) {
+    return new Paragraph().add(text).setTextAlignment(JUSTIFIED);
   }
-
-  protected static Cell getCellWithRightBorder(int width) {
-    return new Cell().setBorder(NO_BORDER).setBorderRight(new SolidBorder(1.0f)).setWidth(width);
-  }
-
-  protected static Cell getCellWithBottomBorder(int rowspan, int colspan, int width) {
-    return new Cell(rowspan, colspan)
-        .setBorder(NO_BORDER)
-        .setBorderBottom(new SolidBorder(1.0f))
-        .setWidth(width);
-  }
-
-  protected static Cell getCellWithBottomBorder(int width) {
-    return new Cell().setBorder(NO_BORDER).setBorderBottom(new SolidBorder(1.0f)).setWidth(width);
-  }
-
-  protected static Cell getCellWithBottomBorder() {
-    return new Cell().setBorder(NO_BORDER).setBorderBottom(new SolidBorder(1.0f));
-  }
-
   protected static Paragraph getParagraphWithTextCentered(final Text text) {
     return new Paragraph().add(text).setTextAlignment(CENTER);
   }
@@ -103,39 +82,8 @@ public abstract class PdaElementsFactory {
     return new Paragraph().add(text).setTextAlignment(LEFT);
   }
 
-  protected static Paragraph getParagraphWithImageAlignedRight(final Image image) {
-    return new Paragraph().add(image).setTextAlignment(RIGHT);
-  }
-
   protected static Paragraph getParagraphWithImageCentered(final Image image) {
     return new Paragraph().add(image).setTextAlignment(CENTER);
-  }
-
-  protected static PdfFont getRegularFont() {
-    try {
-      return PdfFontFactory.createFont(
-          FONT_REGULAR, PdfFontFactory.EmbeddingStrategy.PREFER_EMBEDDED);
-    } catch (IOException e) {
-      e.printStackTrace();
-      return null;
-    }
-  }
-
-  protected PdfFont getItalicFont() throws IOException {
-    return PdfFontFactory.createFont(FONT_ITALIC, PdfFontFactory.EmbeddingStrategy.PREFER_EMBEDDED);
-  }
-
-  protected static PdfFont getBoldFont() throws IOException {
-    return PdfFontFactory.createFont(FONT_BOLD, PdfFontFactory.EmbeddingStrategy.PREFER_EMBEDDED);
-  }
-
-  protected static PdfFont getCharFont() throws IOException {
-    return PdfFontFactory.createFont(
-        FONT_CHARACTER, BaseFont.IDENTITY_H, PdfFontFactory.EmbeddingStrategy.PREFER_EMBEDDED);
-  }
-
-  protected static Text getText(final String text, final PdfFont font, final int fontSize) {
-    return new Text(text).setFont(font).setFontSize(fontSize);
   }
 
   protected static Text getQuestionMarkSymbol() {
@@ -182,16 +130,64 @@ public abstract class PdaElementsFactory {
     }
   }
 
-  protected static Color getYellowLight() {
+  protected static PdfFont getRegularFont() {
+    try {
+      return PdfFontFactory.createFont(
+          FONT_REGULAR, PdfFontFactory.EmbeddingStrategy.PREFER_EMBEDDED);
+    } catch (IOException e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  protected PdfFont getItalicFont() throws IOException {
+    return PdfFontFactory.createFont(FONT_ITALIC, PdfFontFactory.EmbeddingStrategy.PREFER_EMBEDDED);
+  }
+
+  protected static PdfFont getBoldFont() {
+    try {
+      return PdfFontFactory.createFont(FONT_BOLD, PdfFontFactory.EmbeddingStrategy.PREFER_EMBEDDED);
+    } catch (IOException e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  protected static PdfFont getCharFont() throws IOException {
+    return PdfFontFactory.createFont(
+        FONT_CHARACTER, BaseFont.IDENTITY_H, PdfFontFactory.EmbeddingStrategy.PREFER_EMBEDDED);
+  }
+
+  protected static Text getText(final String text, final PdfFont font, final int fontSize) {
+    return new Text(text).setFont(font).setFontSize(fontSize);
+  }
+
+  protected static Color getColorYellowLight() {
     return new DeviceRgb(250, 243, 192);
   }
 
-  protected static Color getYellowMid() {
+  protected static Color getColorYellowMid() {
     return new DeviceRgb(245, 234, 146);
   }
 
-  protected static Color getYellowDark() {
+  protected static Color getColorYellowDark() {
     return new DeviceRgb(243, 226, 96);
+  }
+
+  protected static Color getColorBrown() {
+    return new DeviceRgb(75, 53, 22);
+  }
+
+  protected static Color getColorBlue() {
+    return new DeviceRgb(187,234,255);
+  }
+
+  protected static Color getColorGreen() {
+    return new DeviceRgb(232,244,234);
+  }
+
+  protected static Color getColorRed() {
+    return new DeviceRgb(253,224,224);
   }
 
   public enum DueType {
@@ -199,7 +195,7 @@ public abstract class PdaElementsFactory {
     WHARF_DUE("Wharf due"),
     CANAL_DUE("Canal due"),
     LIGHT_DUE("Light due"),
-    MARPOL_DUE("Marpol due"),
+    MARPOL_DUE("MARPOL due"),
     BOOM_CONTAINMENT_DUE("Boom containment due"),
     SAILING_PERMISSION_DUE("Sailing permission"),
     PILOTAGE_DUE("Pilotage"),

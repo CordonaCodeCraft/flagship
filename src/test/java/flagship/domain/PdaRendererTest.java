@@ -80,6 +80,8 @@ class PdaRendererTest extends TariffsInitializer {
     pda.setCanalDue(BigDecimal.valueOf(800.00));
     pda.setLightDue(BigDecimal.valueOf(80.00));
     pda.setMarpolDue(BigDecimal.valueOf(29.89));
+    pda.setFreeGarbageDisposalQuantity(BigDecimal.valueOf(12.00));
+    pda.setFreeSweageDisposalQuantity(BigDecimal.valueOf(8.00));
     pda.setMooringDue(BigDecimal.valueOf(189.76));
     pda.setBoomContainmentDue(BigDecimal.valueOf(235.21));
     pda.setSailingPermissionDue(BigDecimal.valueOf(50.00));
@@ -91,7 +93,7 @@ class PdaRendererTest extends TariffsInitializer {
     pda.setCommunicationsDue(BigDecimal.valueOf(121.12));
     pda.setBankExpensesDue(BigDecimal.valueOf(125.21));
     pda.setAgencyOvertimeDue(BigDecimal.valueOf(67.23));
-    pda.setClientDiscount(BigDecimal.valueOf(800.00));
+    pda.setClientDiscount(BigDecimal.valueOf(0.00));
     pda.setPayableTotal(BigDecimal.valueOf(980789.23));
     pda.setTotalAfterDiscount(BigDecimal.valueOf(789023.87));
     pda.setProfitExpected(BigDecimal.valueOf(7890.23));
@@ -104,7 +106,7 @@ class PdaRendererTest extends TariffsInitializer {
             .alongsideDaysExpected(5)
             .callPurpose(LOADING)
             .callCount(3)
-            .clientDiscountCoefficient(BigDecimal.valueOf(2.5))
+            .clientDiscountCoefficient(BigDecimal.ZERO)
             .cargoManifest(
                 List.of("Cocaine", "Guns", "Nuclear weapons", "Whores", "Illegal immigrants"))
             .proformaDisbursementAccount(pda)
@@ -115,7 +117,7 @@ class PdaRendererTest extends TariffsInitializer {
   void name() throws IOException {
 
     testCase.setEstimatedDateOfArrival(LocalDate.of(2021, 1, 3));
-//    testCase.setEstimatedDateOfDeparture(LocalDate.of(2021, 1, 3));
+    testCase.setEstimatedDateOfDeparture(LocalDate.of(2021, 1, 3));
 
     WarningsGenerator generator = new WarningsGenerator(testCase, tariffsFactory);
 

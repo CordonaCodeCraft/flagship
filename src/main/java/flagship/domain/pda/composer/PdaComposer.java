@@ -2,8 +2,10 @@ package flagship.domain.pda.composer;
 
 import flagship.domain.calculation.calculators.CalculatorFactory;
 import flagship.domain.calculation.calculators.DueCalculator;
+import flagship.domain.calculation.calculators.state.MarpolDueCalculator;
 import flagship.domain.calculation.tariffs.Tariff;
 import flagship.domain.calculation.tariffs.TariffsFactory;
+import flagship.domain.calculation.tariffs.state.MarpolDueTariff;
 import flagship.domain.pda.entity.ProformaDisbursementAccount;
 import flagship.domain.pda.model.PdaCase;
 import lombok.Getter;
@@ -20,6 +22,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import static flagship.domain.calculation.calculators.DueCalculator.CalculatorType;
+import static flagship.domain.calculation.calculators.DueCalculator.CalculatorType.MARPOL_DUE_CALCULATOR;
 import static flagship.domain.calculation.calculators.DueCalculator.CalculatorType.values;
 
 @Component
@@ -44,6 +47,7 @@ public class PdaComposer {
     initializePayableTotal(pda);
     initializeTotalAfterDiscount(pda);
     initializeProfitExpected(pda);
+    initializeFreeDisposalsQuantity(pda);
 
     return pda;
   }
@@ -115,6 +119,13 @@ public class PdaComposer {
   private void initializeProfitExpected(final ProformaDisbursementAccount pda) {
     pda.setProfitExpected(
         getAgencyDuesTotal(pda).add(pda.getTugDue().multiply(commissionCoefficient)));
+  }
+
+  private void initializeFreeDisposalsQuantity(final ProformaDisbursementAccount pda) {
+    MarpolDueCalculator calculator = new MarpolDueCalculator();
+    calculator.set(source, tariffsFactory.getTariff(MARPOL_DUE_CALCULATOR));
+    pda.setFreeSweageDisposalQuantity(calculator.getFreeSewageDisposalQuantity());
+    pda.setFreeGarbageDisposalQuantity(calculator.getFreeGarbageDisposalQuantity());
   }
 
   private BigDecimal getAgencyDuesTotal(final ProformaDisbursementAccount pda) {

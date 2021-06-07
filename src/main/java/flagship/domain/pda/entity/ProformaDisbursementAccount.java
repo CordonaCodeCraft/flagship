@@ -23,6 +23,8 @@ public class ProformaDisbursementAccount extends BaseEntity {
   private BigDecimal canalDue;
   private BigDecimal lightDue;
   private BigDecimal marpolDue;
+  private BigDecimal freeGarbageDisposalQuantity;
+  private BigDecimal freeSweageDisposalQuantity;
   private BigDecimal boomContainmentDue;
   private BigDecimal sailingPermissionDue;
   private BigDecimal pilotageDue;

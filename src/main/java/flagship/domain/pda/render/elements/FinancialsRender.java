@@ -24,21 +24,21 @@ import static flagship.domain.warning.generator.WarningsGenerator.WarningType.*;
 @Slf4j
 public class FinancialsRender extends PdaElementsFactory {
 
-  private static final String FINANCIALS = "Financials";
-  private static final String COUNT = "No.";
-  private static final String ITEM = "Item";
-  private static final String PRICE = "Price";
-  private static final String TOTAL_PAYABLE = "Total payable in euro";
-  private static final String DISCOUNT = "Agency discount in euro";
-  private static final String TOTAL = "Total in euro";
+  private static final String FINANCIALS_TITLE = "Financials";
+  private static final String COUNT_LABEL = "No.";
+  private static final String ITEM_LABEL = "Item";
+  private static final String PRICE_LABEL = "Price";
+  private static final String TOTAL_PAYABLE_LABEL = "Total payable in euro";
+  private static final String DISCOUNT_LABEL = "Agency discount in euro";
+  private static final String TOTAL_LABEL = "Total in euro";
 
   public static Cell renderFinancials(PdaCase source) throws IOException {
 
-    final Text financials = getText(FINANCIALS, getBoldFont(), 15);
+    final Text financialsTitle = getText(FINANCIALS_TITLE, getBoldFont(), 12);
     final Table financialsTable = getFinancialsTable(source);
 
     return getCellWithNoBorder()
-        .add(getParagraphWithTextAlignedRight(financials))
+        .add(getParagraphWithTextAlignedRight(financialsTitle))
         .add(financialsTable);
   }
 
@@ -46,9 +46,9 @@ public class FinancialsRender extends PdaElementsFactory {
 
     final Table financialsTable = getTable();
 
-    final Text numberLabel = getText(COUNT, getBoldFont(), 12);
-    final Text itemLabel = getText(ITEM, getBoldFont(), 12);
-    final Text euroLabel = getText(PRICE, getBoldFont(), 12);
+    final Text numberLabel = getText(COUNT_LABEL, getBoldFont(), 11);
+    final Text itemLabel = getText(ITEM_LABEL, getBoldFont(), 11);
+    final Text euroLabel = getText(PRICE_LABEL, getBoldFont(), 11);
 
     financialsTable
         .startNewRow()
@@ -59,7 +59,7 @@ public class FinancialsRender extends PdaElementsFactory {
 
     populateFinancialsTable(source, financialsTable);
 
-    final Text totalPayableText = getText(TOTAL_PAYABLE, getRegularFont(), 10);
+    final Text totalPayableText = getText(TOTAL_PAYABLE_LABEL, getRegularFont(), 10);
     final Text totalPayableValue =
         getText(
             source.getProformaDisbursementAccount().getPayableTotal().toString(),
@@ -71,7 +71,7 @@ public class FinancialsRender extends PdaElementsFactory {
         .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedRight(totalPayableValue)))
         .addCell(getCellWithNoBorder());
 
-    final Text discountText = getText(DISCOUNT, getRegularFont(), 10);
+    final Text discountText = getText(DISCOUNT_LABEL, getRegularFont(), 10);
     final Text discountValue =
         getText(
             source.getProformaDisbursementAccount().getClientDiscount().toString(),
@@ -83,7 +83,7 @@ public class FinancialsRender extends PdaElementsFactory {
         .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedRight(discountValue)))
         .addCell(getCellWithNoBorder());
 
-    final Text totalText = getText(TOTAL, getRegularFont(), 10);
+    final Text totalText = getText(TOTAL_LABEL, getRegularFont(), 10);
     final Text totalValue =
         getText(
             source.getProformaDisbursementAccount().getTotalAfterDiscount().toString(),
@@ -136,7 +136,8 @@ public class FinancialsRender extends PdaElementsFactory {
 
     Paragraph statusIcons = statusIconsGenerator.generateStatusIcons();
 
-    Color rowColor = financials.getNumberOfRows() % 2 == 0 ? getYellowMid() : getYellowLight();
+    Color rowColor =
+        financials.getNumberOfRows() % 2 == 0 ? getColorYellowMid() : getColorYellowLight();
 
     financials
         .startNewRow()
@@ -170,7 +171,7 @@ public class FinancialsRender extends PdaElementsFactory {
   }
 
   private static Table getTable() {
-    return new Table(4).setBorder(NO_BORDER).setBackgroundColor(getYellowDark());
+    return new Table(4).setBorder(NO_BORDER).setBackgroundColor(getColorYellowDark());
   }
 
   @RequiredArgsConstructor

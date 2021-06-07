@@ -33,6 +33,7 @@ public class PdaRender extends PdaElementsFactory {
     masterTable.addCell(CallDetailsRender.renderCallDetails(source));
     masterTable.addCell(PaymentDetailsRender.renderPaymentDetails(source));
     masterTable.addCell(FinancialsRender.renderFinancials(source));
+    masterTable.addCell(InformationRender.renderInformation(source));
 
     pda.add(masterTable);
 

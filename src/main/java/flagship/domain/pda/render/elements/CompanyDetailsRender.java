@@ -11,18 +11,18 @@ import java.io.IOException;
 @Slf4j
 public class CompanyDetailsRender extends PdaElementsFactory {
 
-  private static final String COMPANY_DETAILS = "Company details";
-  private static final String ADDRESS = "Address";
-  private static final String MOBILE = "Mobile";
-  private static final String FAX = "Fax";
-  private static final String EMAIL = "Email";
+  private static final String COMPANY_DETAILS_TITLE = "Company details";
+  private static final String ADDRESS_LABEL = "Address";
+  private static final String MOBILE_LABEL = "Mobile";
+  private static final String FAX_LABEL = "Fax";
+  private static final String EMAIL_LABEL = "Email";
 
   public static Cell renderCompanyDetails(PdaCase source) throws IOException {
-    final Text companyDetails = getText(COMPANY_DETAILS, getBoldFont(), 12).setUnderline();
+    final Text companyDetailsTitle = getText(COMPANY_DETAILS_TITLE, getBoldFont(), 12);
     final Table companyDetailsTable = getCompanyDetailsTable(source);
     log.info("Rendered company details");
     return getCellWithNoBorder()
-        .add(getParagraphWithTextAlignedRight(companyDetails))
+        .add(getParagraphWithTextAlignedRight(companyDetailsTitle))
         .add(companyDetailsTable);
   }
 
@@ -30,10 +30,10 @@ public class CompanyDetailsRender extends PdaElementsFactory {
 
     final Table companyDetailsTable = getInnerTable();
 
-    final Text addressLabel = getText(ADDRESS, getBoldFont(), 10);
-    final Text mobileLabel = getText(MOBILE, getBoldFont(), 10);
-    final Text faxLabel = getText(FAX, getBoldFont(), 10);
-    final Text emailLabel = getText(EMAIL, getBoldFont(), 10);
+    final Text addressLabel = getText(ADDRESS_LABEL, getBoldFont(), 10);
+    final Text mobileLabel = getText(MOBILE_LABEL, getBoldFont(), 10);
+    final Text faxLabel = getText(FAX_LABEL, getBoldFont(), 10);
+    final Text emailLabel = getText(EMAIL_LABEL, getBoldFont(), 10);
 
     final Text addressValue =
         getText("Varna, 35 Patron Street, entr. 2, floor 3, app.5", getRegularFont(), 10);
@@ -48,24 +48,24 @@ public class CompanyDetailsRender extends PdaElementsFactory {
         .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedRight(addressValue)));
 
     companyDetailsTable
-            .startNewRow()
-            .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedLeft(mobileLabel)))
-            .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedRight(mobileValue)));
+        .startNewRow()
+        .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedLeft(mobileLabel)))
+        .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedRight(mobileValue)));
 
     companyDetailsTable
-            .startNewRow()
-            .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedLeft(faxLabel)))
-            .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedRight(faxValue)));
+        .startNewRow()
+        .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedLeft(faxLabel)))
+        .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedRight(faxValue)));
 
     companyDetailsTable
-            .startNewRow()
-            .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedLeft(emailLabel)))
-            .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedRight(emailFirstValue)));
+        .startNewRow()
+        .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedLeft(emailLabel)))
+        .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedRight(emailFirstValue)));
 
     companyDetailsTable
-            .startNewRow()
-            .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedLeft(emailLabel)))
-            .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedRight(emailSecondValue)));
+        .startNewRow()
+        .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedLeft(emailLabel)))
+        .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedRight(emailSecondValue)));
 
     return companyDetailsTable.setMarginLeft(15);
   }

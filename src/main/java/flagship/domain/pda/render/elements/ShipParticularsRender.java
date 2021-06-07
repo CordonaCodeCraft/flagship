@@ -11,18 +11,18 @@ import java.io.IOException;
 @Slf4j
 public class ShipParticularsRender extends PdaElementsFactory {
 
-  private static final String SHIP_PARTICULARS = "Ship particulars";
-  private static final String SHIP_NAME = "Name";
-  private static final String SHIP_TYPE = "Type";
-  private static final String SHIP_GT = "Gross tonnage";
-  private static final String SHIP_LOA = "Length overall";
+  private static final String SHIP_PARTICULARS_TITLE = "Ship particulars";
+  private static final String SHIP_NAME_LABEL = "Name";
+  private static final String SHIP_TYPE_LABEL = "Type";
+  private static final String SHIP_GT_LABEL = "Gross tonnage";
+  private static final String SHIP_LOA_LABEL = "Length overall";
 
   public static Cell renderShipParticulars(PdaCase source) throws IOException {
-    final Text shipParticulars = getText(SHIP_PARTICULARS, getBoldFont(), 12).setUnderline();
+    final Text shipParticularsTitle = getText(SHIP_PARTICULARS_TITLE, getBoldFont(), 12);
     final Table shipParticularsTable = getShipParticularsTable(source);
     log.info("Rendered ship particulars");
     return getCellWithNoBorder()
-        .add(getParagraphWithTextAlignedRight(shipParticulars))
+        .add(getParagraphWithTextAlignedRight(shipParticularsTitle))
         .add(shipParticularsTable);
   }
 
@@ -30,10 +30,10 @@ public class ShipParticularsRender extends PdaElementsFactory {
 
     final Table shipParticularsTable = getInnerTable();
 
-    final Text shipNameLabel = getText(SHIP_NAME, getBoldFont(), 10);
-    final Text shipTypeLabel = getText(SHIP_TYPE, getBoldFont(), 10);
-    final Text shipGtLabel = getText(SHIP_GT, getBoldFont(), 10);
-    final Text shipLoaLabel = getText(SHIP_LOA, getBoldFont(), 10);
+    final Text shipNameLabel = getText(SHIP_NAME_LABEL, getBoldFont(), 10);
+    final Text shipTypeLabel = getText(SHIP_TYPE_LABEL, getBoldFont(), 10);
+    final Text shipGtLabel = getText(SHIP_GT_LABEL, getBoldFont(), 10);
+    final Text shipLoaLabel = getText(SHIP_LOA_LABEL, getBoldFont(), 10);
 
     final String shipName = source.getShip().getName();
     final String shipType = source.getShip().getType().type;
@@ -60,8 +60,8 @@ public class ShipParticularsRender extends PdaElementsFactory {
         .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedRight(shipGtValue)));
 
     shipParticularsTable
-            .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedLeft(shipLoaLabel)))
-            .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedRight(shipLoaValue)));
+        .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedLeft(shipLoaLabel)))
+        .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedRight(shipLoaValue)));
 
     return shipParticularsTable;
   }

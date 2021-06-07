@@ -11,18 +11,18 @@ import java.io.IOException;
 @Slf4j
 public class PaymentDetailsRender extends PdaElementsFactory {
 
-  private static final String PAYMENT_DETAILS = "Payment details";
-  private static final String BENEFICIARY = "Beneficiary";
-  private static final String BANK_NAME = "Bank name";
-  private static final String SWIFT = "SWIFT (BIC) code";
-  private static final String IBAN = "IBAN (Euro)";
+  private static final String PAYMENT_DETAILS_TITLE = "Payment details";
+  private static final String BENEFICIARY_LABEL = "Beneficiary";
+  private static final String BANK_NAME_LABEL = "Bank name";
+  private static final String SWIFT_LABEL = "SWIFT (BIC) code";
+  private static final String IBAN_LABEL = "IBAN (Euro)";
 
   public static Cell renderPaymentDetails(PdaCase source) throws IOException {
-    final Text companyDetails = getText(PAYMENT_DETAILS, getBoldFont(), 12).setUnderline();
+    final Text companyDetailsTitle = getText(PAYMENT_DETAILS_TITLE, getBoldFont(), 12);
     final Table paymentDetail = getPaymentDetailsTable(source);
     log.info("Rendered payment details");
     return getCellWithNoBorder()
-        .add(getParagraphWithTextAlignedRight(companyDetails))
+        .add(getParagraphWithTextAlignedRight(companyDetailsTitle))
         .add(paymentDetail);
   }
 
@@ -30,10 +30,10 @@ public class PaymentDetailsRender extends PdaElementsFactory {
 
     final Table paymentDetailsTable = getInnerTable();
 
-    final Text beneficiaryLabel = getText(BENEFICIARY, getBoldFont(), 10);
-    final Text bankNameLabel = getText(BANK_NAME, getBoldFont(), 10);
-    final Text swiftLabel = getText(SWIFT, getBoldFont(), 10);
-    final Text ibanLabel = getText(IBAN, getBoldFont(), 10);
+    final Text beneficiaryLabel = getText(BENEFICIARY_LABEL, getBoldFont(), 10);
+    final Text bankNameLabel = getText(BANK_NAME_LABEL, getBoldFont(), 10);
+    final Text swiftLabel = getText(SWIFT_LABEL, getBoldFont(), 10);
+    final Text ibanLabel = getText(IBAN_LABEL, getBoldFont(), 10);
 
     final Text beneficiaryValue = getText("Patron Logistics Ltd", getRegularFont(), 10);
     final Text bankNameValue = getText("Patron Bank", getRegularFont(), 10);
@@ -41,24 +41,24 @@ public class PaymentDetailsRender extends PdaElementsFactory {
     final Text ibanValue = getText("BG99PAT999888777", getRegularFont(), 10);
 
     paymentDetailsTable
-            .startNewRow()
-            .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedLeft(beneficiaryLabel)))
-            .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedRight(beneficiaryValue)));
+        .startNewRow()
+        .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedLeft(beneficiaryLabel)))
+        .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedRight(beneficiaryValue)));
 
     paymentDetailsTable
-            .startNewRow()
-            .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedLeft(bankNameLabel)))
-            .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedRight(bankNameValue)));
+        .startNewRow()
+        .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedLeft(bankNameLabel)))
+        .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedRight(bankNameValue)));
 
     paymentDetailsTable
-            .startNewRow()
-            .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedLeft(swiftLabel)))
-            .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedRight(swiftValue)));
+        .startNewRow()
+        .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedLeft(swiftLabel)))
+        .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedRight(swiftValue)));
 
     paymentDetailsTable
-            .startNewRow()
-            .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedLeft(ibanLabel)))
-            .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedRight(ibanValue)));
+        .startNewRow()
+        .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedLeft(ibanLabel)))
+        .addCell(getCellWithNoBorder().add(getParagraphWithTextAlignedRight(ibanValue)));
 
     return paymentDetailsTable.setMarginLeft(15);
   }
