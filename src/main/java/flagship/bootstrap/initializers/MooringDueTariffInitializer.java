@@ -1,9 +1,9 @@
 package flagship.bootstrap.initializers;
 
-import flagship.domain.calculation.tariffs.calendar.HolidayCalendar;
-import flagship.domain.calculation.tariffs.service.MooringDueTariff;
 import flagship.domain.base.due.tuple.Due;
 import flagship.domain.base.range.tuple.Range;
+import flagship.domain.calculation.tariffs.calendar.HolidayCalendar;
+import flagship.domain.calculation.tariffs.service.MooringDueTariff;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -16,7 +16,7 @@ import java.util.Map;
 
 import static flagship.domain.calculation.tariffs.Tariff.MAX_GT;
 import static flagship.domain.calculation.tariffs.Tariff.MIN_GT;
-import static flagship.domain.calculation.tariffs.service.MooringDueTariff.MooringServiceProvider;
+import static flagship.domain.caze.model.createrequest.resolvers.MooringServiceProviderResolver.MooringServiceProvider;
 import static flagship.domain.warning.generator.WarningsGenerator.WarningType;
 import static flagship.domain.warning.generator.WarningsGenerator.WarningType.HOLIDAY;
 
@@ -27,7 +27,7 @@ public class MooringDueTariffInitializer {
 
   private static final MooringDueTariff mooringDueTariff = new MooringDueTariff();
 
-  public static MooringDueTariff getTariff(HolidayCalendar holidayCalendar) {
+  public static MooringDueTariff getTariff(final HolidayCalendar holidayCalendar) {
 
     final Map<MooringServiceProvider, Map<Range, Due>> mooringDuesByProvider =
         new EnumMap<>(MooringServiceProvider.class);

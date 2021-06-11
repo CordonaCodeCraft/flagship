@@ -1,11 +1,7 @@
 package flagship.domain.resolvers;
 
-import flagship.domain.calculation.calculators.TariffsInitializer;
-import flagship.domain.calculation.tariffs.service.PilotageDueTariff;
-import flagship.domain.caze.model.PdaCase;
-import flagship.domain.caze.model.resolver.PilotageAreaResolver;
-import flagship.domain.port.model.PdaPort;
-import org.junit.jupiter.api.BeforeEach;
+import flagship.domain.caze.model.createrequest.CreateCaseRequest;
+import flagship.domain.caze.model.createrequest.resolvers.PilotageAreaResolver;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -13,13 +9,50 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
-import static flagship.domain.calculation.tariffs.service.PilotageDueTariff.PilotageArea.*;
+import static flagship.domain.caze.model.createrequest.resolvers.PilotageAreaResolver.PilotageArea;
+import static flagship.domain.caze.model.createrequest.resolvers.PilotageAreaResolver.PilotageArea.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DisplayName("Pilotage area resolver tests")
-class PilotageAreaResolverTest extends TariffsInitializer {
+class PilotageAreaResolverTest {
 
-  private PdaCase testCase;
+  private final CreateCaseRequest testRequest = CreateCaseRequest.builder().build();
+
+  @DisplayName("Should resolve port name to Varna first pilotage area")
+  @ParameterizedTest(name = "port name : {arguments}")
+  @MethodSource(value = "getPortsInVarnaFirstPilotageArea")
+  void shouldResolvePilotageAreaToVarnaFirst(final String portName) {
+    testRequest.setPortName(portName);
+    final PilotageArea result = PilotageAreaResolver.resolvePilotageArea(testRequest);
+    assertThat(result.name()).isEqualTo(VARNA_FIRST.name());
+  }
+
+  @DisplayName("Should resolve port name to Varna second pilotage area")
+  @ParameterizedTest(name = "port name : {arguments}")
+  @MethodSource(value = "getPortsInVarnaSecondPilotageArea")
+  void shouldResolvePilotageAreaToVarnaSecond(final String portName) {
+    testRequest.setPortName(portName);
+    final PilotageArea result = PilotageAreaResolver.resolvePilotageArea(testRequest);
+    assertThat(result.name()).isEqualTo(VARNA_SECOND.name());
+  }
+
+  @DisplayName("Should resolve port name to Varna third pilotage area")
+  @ParameterizedTest(name = "port name : {arguments}")
+  @MethodSource(value = "getPortsInVarnaThirdPilotageArea")
+  void shouldResolvePilotageAreaToVarnaThird(final String portName) {
+    testRequest.setPortName(portName);
+    final PilotageArea result = PilotageAreaResolver.resolvePilotageArea(testRequest);
+    assertThat(result.name()).isEqualTo(VARNA_THIRD.name());
+  }
+
+  @DisplayName("Should resolve port name to Bourgas first pilotage area")
+  @ParameterizedTest(name = "port name : {arguments}")
+  @MethodSource(value = "getPortsInBourgasFirstPilotageArea")
+  void shouldResolvePilotageAreaToBourgasFirst(final String portName) {
+    testRequest.setPortName(portName);
+    final PilotageArea result = PilotageAreaResolver.resolvePilotageArea(testRequest);
+    assertThat(result.name()).isEqualTo(BOURGAS_FIRST.name());
+  }
 
   private static Stream<Arguments> getPortsInVarnaFirstPilotageArea() {
     return getStreamOfPortNamesForPilotageArea(VARNA_FIRST);
@@ -38,55 +71,9 @@ class PilotageAreaResolverTest extends TariffsInitializer {
   }
 
   private static Stream<Arguments> getStreamOfPortNamesForPilotageArea(
-      final PilotageDueTariff.PilotageArea pilotageArea) {
-    return pilotageDueTariff.getPortNamesInPilotageAreas().get(pilotageArea).stream()
-        .map(e -> e.name)
+      final PilotageArea pilotageArea) {
+    return PilotageAreaResolver.PORT_NAMES_IN_PILOTAGE_AREAS.get(pilotageArea).stream()
+        .map(port -> port.name)
         .map(Arguments::of);
-  }
-
-  @BeforeEach
-  void setUp() {
-    final PdaPort testPort = new PdaPort();
-    testCase = PdaCase.builder().port(testPort).build();
-  }
-
-  @DisplayName("Should resolve port name to Varna first pilotage area")
-  @ParameterizedTest(name = "port name : {arguments}")
-  @MethodSource(value = "getPortsInVarnaFirstPilotageArea")
-  void shouldResolvePilotageAreaToVarnaFirst(final String portName) {
-    testCase.getPort().setName(portName);
-    final PilotageDueTariff.PilotageArea result =
-        PilotageAreaResolver.resolvePilotageArea(testCase, pilotageDueTariff);
-    assertThat(result.name()).isEqualTo(VARNA_FIRST.name());
-  }
-
-  @DisplayName("Should resolve port name to Varna second pilotage area")
-  @ParameterizedTest(name = "port name : {arguments}")
-  @MethodSource(value = "getPortsInVarnaSecondPilotageArea")
-  void shouldResolvePilotageAreaToVarnaSecond(final String portName) {
-    testCase.getPort().setName(portName);
-    final PilotageDueTariff.PilotageArea result =
-        PilotageAreaResolver.resolvePilotageArea(testCase, pilotageDueTariff);
-    assertThat(result.name()).isEqualTo(VARNA_SECOND.name());
-  }
-
-  @DisplayName("Should resolve port name to Varna third pilotage area")
-  @ParameterizedTest(name = "port name : {arguments}")
-  @MethodSource(value = "getPortsInVarnaThirdPilotageArea")
-  void shouldResolvePilotageAreaToVarnaThird(final String portName) {
-    testCase.getPort().setName(portName);
-    final PilotageDueTariff.PilotageArea result =
-        PilotageAreaResolver.resolvePilotageArea(testCase, pilotageDueTariff);
-    assertThat(result.name()).isEqualTo(VARNA_THIRD.name());
-  }
-
-  @DisplayName("Should resolve port name to Bourgas first pilotage area")
-  @ParameterizedTest(name = "port name : {arguments}")
-  @MethodSource(value = "getPortsInBourgasFirstPilotageArea")
-  void shouldResolvePilotageAreaToBourgasFirst(final String portName) {
-    testCase.getPort().setName(portName);
-    final PilotageDueTariff.PilotageArea result =
-        PilotageAreaResolver.resolvePilotageArea(testCase, pilotageDueTariff);
-    assertThat(result.name()).isEqualTo(BOURGAS_FIRST.name());
   }
 }

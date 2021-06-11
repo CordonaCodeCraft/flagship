@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import java.util.Map;
 import java.util.Set;
 
-import static flagship.domain.port.entity.Port.PortName;
+import static flagship.domain.caze.model.createrequest.resolvers.TugAreaResolver.TugArea;
 import static flagship.domain.warning.generator.WarningsGenerator.WarningType;
 
 @Getter
@@ -20,29 +20,10 @@ import static flagship.domain.warning.generator.WarningsGenerator.WarningType;
 @NoArgsConstructor
 public class TugDueTariff extends Tariff {
 
-  private Map<TugServiceProvider, Map<TugArea, Set<PortName>>> portNamesInTugAreas;
   private Map<TugArea, Map<Range, Due>> tugDuesByArea;
   private Map<Range, BigDecimal> tugCountByGrossTonnage;
   private Map<WarningType, BigDecimal> increaseCoefficientsByWarningType;
   private Set<LocalDate> holidayCalendar;
   private BigDecimal grossTonnageThreshold;
   private BigDecimal grossTonnageThresholdForTugCountReduce;
-
-  public enum TugArea {
-    VTC_FIRST,
-    VTC_SECOND,
-    VTC_THIRD,
-    VTC_FOURTH,
-    VTC_FIFTH,
-    PORTFLEET_FIRST,
-    PORTFLEET_SECOND,
-    PORTFLEET_THIRD,
-    PORTFLEET_FOURTH,
-    PORTFLEET_FIFTH,
-  }
-
-  public enum TugServiceProvider {
-    VTC,
-    PORTFLEET,
-  }
 }

@@ -5,16 +5,16 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import flagship.bootstrap.initializers.*;
+import flagship.domain.base.due.serialization.DueDeserializer;
+import flagship.domain.base.due.tuple.Due;
+import flagship.domain.base.range.serialization.RangeDeserializer;
+import flagship.domain.base.range.tuple.Range;
 import flagship.domain.calculation.tariffs.agency.AgencyDuesTariff;
 import flagship.domain.calculation.tariffs.calendar.HolidayCalendar;
 import flagship.domain.calculation.tariffs.service.MooringDueTariff;
 import flagship.domain.calculation.tariffs.service.PilotageDueTariff;
 import flagship.domain.calculation.tariffs.service.TugDueTariff;
 import flagship.domain.calculation.tariffs.state.*;
-import flagship.domain.base.due.serialization.DueDeserializer;
-import flagship.domain.base.due.tuple.Due;
-import flagship.domain.base.range.serialization.RangeDeserializer;
-import flagship.domain.base.range.tuple.Range;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -46,7 +46,7 @@ public class BeansConfiguration {
     final HolidayCalendar holidayCalendar;
 
     if (isNewInstallation) {
-      HolidayCalendarInitializer holidayCalendarInitializer = new HolidayCalendarInitializer();
+      final HolidayCalendarInitializer holidayCalendarInitializer = new HolidayCalendarInitializer();
       holidayCalendar = holidayCalendarInitializer.initializeCalendar();
     } else {
       holidayCalendar =
@@ -206,7 +206,7 @@ public class BeansConfiguration {
   @Bean
   public MooringDueTariff mooringDueTariff() throws IOException {
 
-    MooringDueTariff mooringDueTariff;
+    final MooringDueTariff mooringDueTariff;
 
     if (isNewInstallation) {
       mooringDueTariff = MooringDueTariffInitializer.getTariff(holidayCalendar());

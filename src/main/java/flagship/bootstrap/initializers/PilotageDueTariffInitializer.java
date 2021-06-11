@@ -1,21 +1,23 @@
 package flagship.bootstrap.initializers;
 
-import flagship.domain.calculation.tariffs.calendar.HolidayCalendar;
-import flagship.domain.calculation.tariffs.service.PilotageDueTariff;
 import flagship.domain.base.due.tuple.Due;
 import flagship.domain.base.range.tuple.Range;
-import flagship.domain.port.entity.Port;
+import flagship.domain.calculation.tariffs.calendar.HolidayCalendar;
+import flagship.domain.calculation.tariffs.service.PilotageDueTariff;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import static flagship.domain.calculation.tariffs.Tariff.MAX_GT;
 import static flagship.domain.calculation.tariffs.Tariff.MIN_GT;
-import static flagship.domain.calculation.tariffs.service.PilotageDueTariff.PilotageArea;
-import static flagship.domain.calculation.tariffs.service.PilotageDueTariff.PilotageArea.*;
+import static flagship.domain.caze.model.createrequest.resolvers.PilotageAreaResolver.PilotageArea;
+import static flagship.domain.caze.model.createrequest.resolvers.PilotageAreaResolver.PilotageArea.*;
 import static flagship.domain.warning.generator.WarningsGenerator.WarningType;
 import static flagship.domain.warning.generator.WarningsGenerator.WarningType.*;
 
@@ -24,65 +26,9 @@ import static flagship.domain.warning.generator.WarningsGenerator.WarningType.*;
 @RequiredArgsConstructor
 public class PilotageDueTariffInitializer {
 
-  public static PilotageDueTariff getTariff(HolidayCalendar holidayCalendar) {
+  public static PilotageDueTariff getTariff(final HolidayCalendar holidayCalendar) {
 
     final PilotageDueTariff pilotageDueTariff = new PilotageDueTariff();
-
-    final Map<PilotageArea, Set<Port.PortName>> portNamesInPilotageAreas =
-        new EnumMap<>(PilotageArea.class);
-
-    final Set<Port.PortName> portNamesInFirstVarnaPilotageArea =
-        EnumSet.of(
-            Port.PortName.VARNA_EAST,
-            Port.PortName.PETROL,
-            Port.PortName.BULYARD,
-            Port.PortName.BULPORT_LOGISTIK,
-            Port.PortName.SRY,
-            Port.PortName.PCHMV);
-
-    final Set<Port.PortName> portNamesInSecondVarnaPilotageArea =
-        EnumSet.of(
-            Port.PortName.TEC_POWER_STATION,
-            Port.PortName.BALCHIK_PORT,
-            Port.PortName.LESPORT,
-            Port.PortName.TEREM_FA,
-            Port.PortName.SRY_DOLPHIN,
-            Port.PortName.TRANSSTROI_VARNA,
-            Port.PortName.ODESSOS_PBM,
-            Port.PortName.BUOY_9,
-            Port.PortName.ANCHORAGE);
-
-    final Set<Port.PortName> portNamesInThirdVarnaPilotageArea =
-        EnumSet.of(Port.PortName.VARNA_WEST, Port.PortName.FERRY_COMPLEX);
-
-    final Set<Port.PortName> portNamesInFirstBourgasPilotageArea =
-        EnumSet.of(
-            Port.PortName.BOURGAS_CENTER,
-            Port.PortName.BOURGAS_EAST_2,
-            Port.PortName.BMF_PORT_BOURGAS,
-            Port.PortName.BOURGAS_WEST_TERMINAL,
-            Port.PortName.SRY_PORT_BOURGAS,
-            Port.PortName.PORT_BULGARIA_WEST,
-            Port.PortName.BOURGAS_SHIPYARD,
-            Port.PortName.PORT_EUROPA,
-            Port.PortName.TRANSSTROI_BOURGAS,
-            Port.PortName.PORT_ROSENETZ,
-            Port.PortName.NESSEBAR,
-            Port.PortName.POMORIE,
-            Port.PortName.SOZOPOL,
-            Port.PortName.TZAREVO,
-            Port.PortName.SHIFTING_ANCHORAGE_AREA,
-            Port.PortName.DEVIATION,
-            Port.PortName.XX_A_K_M,
-            Port.PortName.XX_B_K_M);
-
-    portNamesInPilotageAreas.put(VARNA_FIRST, portNamesInFirstVarnaPilotageArea);
-    portNamesInPilotageAreas.put(VARNA_SECOND, portNamesInSecondVarnaPilotageArea);
-    portNamesInPilotageAreas.put(VARNA_THIRD, portNamesInThirdVarnaPilotageArea);
-    portNamesInPilotageAreas.put(BOURGAS_FIRST, portNamesInFirstBourgasPilotageArea);
-
-    pilotageDueTariff.setPortNamesInPilotageAreas(
-        Collections.unmodifiableMap(portNamesInPilotageAreas));
 
     final Map<PilotageArea, Map<Range, Due>> pilotageDuesByArea = new EnumMap<>(PilotageArea.class);
 

@@ -1,8 +1,8 @@
 package flagship.bootstrap.initializers;
 
-import flagship.domain.calculation.tariffs.state.BoomContainmentTariff;
 import flagship.domain.base.due.tuple.Due;
 import flagship.domain.base.range.tuple.Range;
+import flagship.domain.calculation.tariffs.state.BoomContainmentTariff;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

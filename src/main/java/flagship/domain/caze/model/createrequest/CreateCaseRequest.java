@@ -1,4 +1,4 @@
-package flagship.domain.caze.model;
+package flagship.domain.caze.model.createrequest;
 
 import lombok.Builder;
 import lombok.Data;
@@ -6,6 +6,8 @@ import lombok.Data;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+
+import static flagship.domain.caze.model.createrequest.resolvers.TugAreaResolver.TugServiceProvider;
 
 @Data
 @Builder
@@ -25,4 +27,5 @@ public class CreateCaseRequest {
   private LocalDate estimatedDateOfDeparture;
   private Integer alongsideDaysExpected;
   private BigDecimal clientDiscountCoefficient;
+  private TugServiceProvider tugServiceProvider;
 }

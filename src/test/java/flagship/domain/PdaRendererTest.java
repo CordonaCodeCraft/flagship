@@ -3,9 +3,9 @@ package flagship.domain;
 import flagship.domain.calculation.calculators.TariffsInitializer;
 import flagship.domain.calculation.tariffs.Tariff;
 import flagship.domain.calculation.tariffs.TariffsFactory;
-import flagship.domain.calculation.tariffs.service.MooringDueTariff;
-import flagship.domain.calculation.tariffs.service.TugDueTariff;
 import flagship.domain.caze.model.PdaCase;
+import flagship.domain.caze.model.createrequest.resolvers.MooringServiceProviderResolver;
+import flagship.domain.caze.model.createrequest.resolvers.TugAreaResolver;
 import flagship.domain.pda.entity.ProformaDisbursementAccount;
 import flagship.domain.pda.render.PdaRender;
 import flagship.domain.port.model.PdaPort;
@@ -23,9 +23,9 @@ import java.util.Map;
 
 import static flagship.domain.calculation.calculators.DueCalculator.CalculatorType;
 import static flagship.domain.calculation.calculators.DueCalculator.CalculatorType.*;
-import static flagship.domain.calculation.tariffs.service.PilotageDueTariff.PilotageArea.BOURGAS_FIRST;
 import static flagship.domain.caze.entity.Case.CallPurpose.LOADING;
-import static flagship.domain.port.entity.Port.PortArea.FIRST;
+import static flagship.domain.caze.model.createrequest.resolvers.PilotageAreaResolver.PilotageArea.BOURGAS_FIRST;
+import static flagship.domain.caze.model.createrequest.resolvers.PortAreaResolver.PortArea.FIRST;
 import static flagship.domain.ship.entity.Ship.ShipType.BULK_CARRIER;
 
 class PdaRendererTest extends TariffsInitializer {
@@ -68,10 +68,10 @@ class PdaRendererTest extends TariffsInitializer {
         PdaPort.builder()
             .name("Varna West")
             .portArea(FIRST)
-            .tugArea(TugDueTariff.TugArea.VTC_FIRST)
-            .mooringServiceProvider(MooringDueTariff.MooringServiceProvider.VTC)
+            .tugArea(TugAreaResolver.TugArea.VTC_FIRST)
+            .mooringServiceProvider(MooringServiceProviderResolver.MooringServiceProvider.VTC)
             .pilotageArea(BOURGAS_FIRST)
-            .tugServiceProvider(TugDueTariff.TugServiceProvider.VTC)
+            .tugServiceProvider(TugAreaResolver.TugServiceProvider.VTC)
             .build();
 
     final ProformaDisbursementAccount pda = new ProformaDisbursementAccount();

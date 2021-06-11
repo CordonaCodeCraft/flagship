@@ -1,8 +1,6 @@
-package flagship.domain.caze.model.resolver;
+package flagship.domain.caze.model.createrequest.resolvers;
 
 import java.util.List;
-
-import static flagship.domain.port.entity.Port.PortArea;
 
 public class PortAreaResolver {
 
@@ -11,5 +9,12 @@ public class PortAreaResolver {
 
   public static PortArea resolvePortArea(final String portName) {
     return portsInSecondPortArea.contains(portName) ? PortArea.SECOND : PortArea.FIRST;
+  }
+
+  public enum PortArea {
+    FIRST,
+    SECOND,
+    THIRD,
+    FOURTH
   }
 }

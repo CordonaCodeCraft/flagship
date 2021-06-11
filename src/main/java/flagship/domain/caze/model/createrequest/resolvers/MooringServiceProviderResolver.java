@@ -1,8 +1,6 @@
-package flagship.domain.caze.model.resolver;
+package flagship.domain.caze.model.createrequest.resolvers;
 
 import flagship.domain.port.entity.Port;
-
-import static flagship.domain.calculation.tariffs.service.MooringDueTariff.MooringServiceProvider;
 
 public class MooringServiceProviderResolver {
 
@@ -16,5 +14,14 @@ public class MooringServiceProviderResolver {
     } else {
       return MooringServiceProvider.VTC;
     }
+  }
+
+  public enum MooringServiceProvider {
+    VTC,
+    PORTFLEET,
+    LESPORT,
+    ODESSOS,
+    BALCHIK,
+    PCHMV,
   }
 }

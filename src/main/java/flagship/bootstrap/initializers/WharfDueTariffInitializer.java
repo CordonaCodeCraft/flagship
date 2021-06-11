@@ -1,7 +1,7 @@
 package flagship.bootstrap.initializers;
 
-import flagship.domain.calculation.tariffs.state.WharfDueTariff;
 import flagship.domain.base.due.tuple.Due;
+import flagship.domain.calculation.tariffs.state.WharfDueTariff;
 import flagship.domain.caze.entity.Case;
 import flagship.domain.ship.entity.Ship;
 import lombok.RequiredArgsConstructor;

@@ -30,11 +30,11 @@ import java.util.stream.Stream;
 
 import static flagship.domain.calculation.calculators.DueCalculator.CalculatorType;
 import static flagship.domain.calculation.calculators.DueCalculator.CalculatorType.*;
-import static flagship.domain.calculation.tariffs.service.MooringDueTariff.MooringServiceProvider;
-import static flagship.domain.calculation.tariffs.service.PilotageDueTariff.PilotageArea.BOURGAS_FIRST;
-import static flagship.domain.calculation.tariffs.service.TugDueTariff.TugArea;
-import static flagship.domain.calculation.tariffs.service.TugDueTariff.TugServiceProvider;
-import static flagship.domain.port.entity.Port.PortArea.FIRST;
+import static flagship.domain.caze.model.createrequest.resolvers.MooringServiceProviderResolver.MooringServiceProvider;
+import static flagship.domain.caze.model.createrequest.resolvers.PilotageAreaResolver.PilotageArea.BOURGAS_FIRST;
+import static flagship.domain.caze.model.createrequest.resolvers.PortAreaResolver.PortArea.FIRST;
+import static flagship.domain.caze.model.createrequest.resolvers.TugAreaResolver.TugArea;
+import static flagship.domain.caze.model.createrequest.resolvers.TugAreaResolver.TugServiceProvider;
 import static flagship.domain.ship.entity.Ship.ShipType.BULK_CARRIER;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 

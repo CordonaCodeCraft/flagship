@@ -1,9 +1,9 @@
 package flagship.bootstrap.initializers;
 
-import flagship.domain.calculation.tariffs.state.TonnageDueTariff;
 import flagship.domain.base.due.tuple.Due;
+import flagship.domain.calculation.tariffs.state.TonnageDueTariff;
 import flagship.domain.caze.entity.Case;
-import flagship.domain.port.entity.Port;
+import flagship.domain.caze.model.createrequest.resolvers.PortAreaResolver;
 import flagship.domain.ship.entity.Ship;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 import java.util.*;
 
 import static flagship.domain.caze.entity.Case.CallPurpose.*;
-import static flagship.domain.port.entity.Port.PortArea.*;
+import static flagship.domain.caze.model.createrequest.resolvers.PortAreaResolver.PortArea.*;
 import static flagship.domain.ship.entity.Ship.ShipType.*;
 
 @Component
@@ -25,7 +25,8 @@ public class TonnageDueTariffInitializer {
 
     final TonnageDueTariff tonnageDueTariff = new TonnageDueTariff();
 
-    final Map<Port.PortArea, Due> tonnageDuesByPortArea = new EnumMap<>(Port.PortArea.class);
+    final Map<PortAreaResolver.PortArea, Due> tonnageDuesByPortArea =
+        new EnumMap<>(PortAreaResolver.PortArea.class);
     tonnageDuesByPortArea.put(FIRST, new Due(0.55));
     tonnageDuesByPortArea.put(SECOND, new Due(0.40));
     tonnageDuesByPortArea.put(THIRD, new Due(0.55));

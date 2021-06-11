@@ -128,7 +128,8 @@ public class FinancialsRender extends PdaElementsFactory {
       e.printStackTrace();
     }
 
-    final Text dueCount = getText(String.valueOf(financials.getNumberOfRows()), getRegularFont(), 10);
+    final Text dueCount =
+        getText(String.valueOf(financials.getNumberOfRows()), getRegularFont(), 10);
     final Text dueType = getText(getDueType(dueField), getRegularFont(), 10);
     final Text dueValue = getText(dueString, getRegularFont(), 10);
 

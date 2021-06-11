@@ -5,10 +5,10 @@ import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.property.TextAlignment;
-import flagship.domain.calculation.tariffs.service.TugDueTariff;
 import flagship.domain.caze.entity.Case;
 import flagship.domain.caze.mapper.CaseMapper;
 import flagship.domain.caze.model.PdaCase;
+import flagship.domain.caze.model.createrequest.resolvers.TugAreaResolver;
 import flagship.domain.port.model.PdaPort;
 import flagship.domain.ship.model.PdaShip;
 import org.json.JSONException;
@@ -18,9 +18,9 @@ import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.time.LocalDate;
 
-import static flagship.domain.calculation.tariffs.service.PilotageDueTariff.PilotageArea.VARNA_FIRST;
 import static flagship.domain.caze.entity.Case.CallPurpose.LOADING;
-import static flagship.domain.port.entity.Port.PortArea.FIRST;
+import static flagship.domain.caze.model.createrequest.resolvers.PilotageAreaResolver.PilotageArea.VARNA_FIRST;
+import static flagship.domain.caze.model.createrequest.resolvers.PortAreaResolver.PortArea.FIRST;
 import static flagship.domain.ship.entity.Ship.ShipType.BULK_CARRIER;
 
 public class Sandbox {
@@ -87,7 +87,7 @@ public class Sandbox {
             .name("Varna")
             .portArea(FIRST)
             .pilotageArea(VARNA_FIRST)
-            .tugArea(TugDueTariff.TugArea.VTC_FIFTH)
+            .tugArea(TugAreaResolver.TugArea.VTC_FIFTH)
             .build();
 
     final PdaCase pdaCase =

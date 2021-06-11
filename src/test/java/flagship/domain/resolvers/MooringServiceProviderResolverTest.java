@@ -1,11 +1,11 @@
 package flagship.domain.resolvers;
 
-import flagship.domain.calculation.tariffs.service.MooringDueTariff.MooringServiceProvider;
-import flagship.domain.caze.model.resolver.MooringServiceProviderResolver;
+import flagship.domain.caze.model.createrequest.resolvers.MooringServiceProviderResolver;
+import flagship.domain.caze.model.createrequest.resolvers.MooringServiceProviderResolver.MooringServiceProvider;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static flagship.domain.calculation.tariffs.service.MooringDueTariff.MooringServiceProvider.*;
+import static flagship.domain.caze.model.createrequest.resolvers.MooringServiceProviderResolver.MooringServiceProvider.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 class MooringServiceProviderResolverTest {

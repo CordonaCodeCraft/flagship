@@ -16,8 +16,8 @@ import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Map;
 
-import static flagship.domain.calculation.tariffs.service.TugDueTariff.TugArea;
-import static flagship.domain.calculation.tariffs.service.TugDueTariff.TugArea.VTC_FIRST;
+import static flagship.domain.caze.model.createrequest.resolvers.TugAreaResolver.TugArea;
+import static flagship.domain.caze.model.createrequest.resolvers.TugAreaResolver.TugArea.VTC_FIRST;
 import static flagship.domain.warning.generator.WarningsGenerator.WarningType.DANGEROUS_TUG_CARGO;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 

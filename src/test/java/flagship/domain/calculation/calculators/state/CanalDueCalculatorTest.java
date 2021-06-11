@@ -2,7 +2,7 @@ package flagship.domain.calculation.calculators.state;
 
 import flagship.domain.calculation.calculators.TariffsInitializer;
 import flagship.domain.caze.model.PdaCase;
-import flagship.domain.port.entity.Port;
+import flagship.domain.caze.model.createrequest.resolvers.PortAreaResolver;
 import flagship.domain.port.model.PdaPort;
 import flagship.domain.ship.entity.Ship;
 import flagship.domain.ship.model.PdaShip;
@@ -18,7 +18,7 @@ import java.math.BigDecimal;
 import java.util.Random;
 import java.util.stream.Stream;
 
-import static flagship.domain.port.entity.Port.PortArea.FIRST;
+import static flagship.domain.caze.model.createrequest.resolvers.PortAreaResolver.PortArea.FIRST;
 import static flagship.domain.ship.entity.Ship.ShipType.BULK_CARRIER;
 import static flagship.domain.ship.entity.Ship.ShipType.CONTAINER;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -50,8 +50,8 @@ class CanalDueCalculatorTest extends TariffsInitializer {
 
   @DisplayName("Should return canal due by port area")
   @ParameterizedTest(name = "port area : {arguments}")
-  @EnumSource(Port.PortArea.class)
-  void testReturnsDefaultCanalDue(final Port.PortArea portArea) {
+  @EnumSource(PortAreaResolver.PortArea.class)
+  void testReturnsDefaultCanalDue(final PortAreaResolver.PortArea portArea) {
 
     testCase.getPort().setPortArea(portArea);
 
@@ -123,8 +123,9 @@ class CanalDueCalculatorTest extends TariffsInitializer {
 
   @DisplayName("Should return canal due for containers with discount by port area")
   @ParameterizedTest(name = "port area : {arguments}")
-  @EnumSource(Port.PortArea.class)
-  void testReturnsCanalDueForContainersWithDiscountByPortArea(final Port.PortArea portArea) {
+  @EnumSource(PortAreaResolver.PortArea.class)
+  void testReturnsCanalDueForContainersWithDiscountByPortArea(
+      final PortAreaResolver.PortArea portArea) {
 
     testCase.getPort().setPortArea(portArea);
     testCase.getShip().setType(CONTAINER);
@@ -142,8 +143,9 @@ class CanalDueCalculatorTest extends TariffsInitializer {
 
   @DisplayName("Should return canal due for containers with discount by port area and call count")
   @ParameterizedTest(name = "port area : {arguments}")
-  @EnumSource(Port.PortArea.class)
-  void testReturnsCanalDueForContainersWithDiscountByPortAreaAndCallCount(final Port.PortArea portArea) {
+  @EnumSource(PortAreaResolver.PortArea.class)
+  void testReturnsCanalDueForContainersWithDiscountByPortAreaAndCallCount(
+      final PortAreaResolver.PortArea portArea) {
 
     testCase.getPort().setPortArea(portArea);
     testCase.getShip().setType(CONTAINER);
@@ -175,7 +177,7 @@ class CanalDueCalculatorTest extends TariffsInitializer {
   @ParameterizedTest(name = "ship type: {arguments}")
   @MethodSource(value = "getShipTypesNotEligibleForDiscount")
   void testReturnsCanalDueWithoutDiscountWhenShipTypeIsNotEligibleForDiscount(
-          final Ship.ShipType shipType) {
+      final Ship.ShipType shipType) {
 
     testCase.getShip().setType(shipType);
     testCase.setCallCount(canalDueTariff.getCallCountThreshold());

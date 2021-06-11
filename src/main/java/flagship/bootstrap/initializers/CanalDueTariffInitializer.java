@@ -1,8 +1,8 @@
 package flagship.bootstrap.initializers;
 
-import flagship.domain.calculation.tariffs.state.CanalDueTariff;
 import flagship.domain.base.due.tuple.Due;
-import flagship.domain.port.entity.Port;
+import flagship.domain.calculation.tariffs.state.CanalDueTariff;
+import flagship.domain.caze.model.createrequest.resolvers.PortAreaResolver;
 import flagship.domain.ship.entity.Ship;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.util.*;
 
-import static flagship.domain.port.entity.Port.PortArea.*;
+import static flagship.domain.caze.model.createrequest.resolvers.PortAreaResolver.PortArea.*;
 import static flagship.domain.ship.entity.Ship.ShipType.NAVY;
 import static flagship.domain.ship.entity.Ship.ShipType.PASSENGER;
 
@@ -24,7 +24,8 @@ public class CanalDueTariffInitializer {
 
     final CanalDueTariff canalDueTariff = new CanalDueTariff();
 
-    final Map<Port.PortArea, Due> canalDuesByPortArea = new EnumMap<>(Port.PortArea.class);
+    final Map<PortAreaResolver.PortArea, Due> canalDuesByPortArea =
+        new EnumMap<>(PortAreaResolver.PortArea.class);
     canalDuesByPortArea.put(FIRST, new Due(0.04));
     canalDuesByPortArea.put(SECOND, new Due(0.13));
     canalDuesByPortArea.put(THIRD, new Due(0.04));
@@ -38,8 +39,8 @@ public class CanalDueTariffInitializer {
     canalDueTariff.setDiscountCoefficientByShipType(
         Collections.unmodifiableMap(discountCoefficientByShipType));
 
-    final Map<Port.PortArea, BigDecimal> discountCoefficientsByPortAreaForContainers =
-        new EnumMap<>(Port.PortArea.class);
+    final Map<PortAreaResolver.PortArea, BigDecimal> discountCoefficientsByPortAreaForContainers =
+        new EnumMap<>(PortAreaResolver.PortArea.class);
 
     discountCoefficientsByPortAreaForContainers.put(FIRST, BigDecimal.valueOf(0.25));
     discountCoefficientsByPortAreaForContainers.put(SECOND, BigDecimal.valueOf(0.74));
@@ -48,8 +49,9 @@ public class CanalDueTariffInitializer {
     canalDueTariff.setDiscountCoefficientsByPortAreaForContainers(
         Collections.unmodifiableMap(discountCoefficientsByPortAreaForContainers));
 
-    final Map<Port.PortArea, BigDecimal> discountCoefficientsByPortAreaPerCallCountForContainers =
-        new EnumMap<>(Port.PortArea.class);
+    final Map<PortAreaResolver.PortArea, BigDecimal>
+        discountCoefficientsByPortAreaPerCallCountForContainers =
+            new EnumMap<>(PortAreaResolver.PortArea.class);
 
     discountCoefficientsByPortAreaPerCallCountForContainers.put(FIRST, BigDecimal.valueOf(0.20));
     discountCoefficientsByPortAreaPerCallCountForContainers.put(SECOND, BigDecimal.valueOf(0.59));

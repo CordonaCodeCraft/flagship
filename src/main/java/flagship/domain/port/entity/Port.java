@@ -19,13 +19,6 @@ public class Port extends BaseEntity {
 
   private String name;
 
-  public enum PortArea {
-    FIRST,
-    SECOND,
-    THIRD,
-    FOURTH;
-  }
-
   public enum PortName {
     VARNA_EAST("Varna East"),
     PETROL("Petrol"),
@@ -72,7 +65,7 @@ public class Port extends BaseEntity {
 
     public final String name;
 
-    PortName(String name) {
+    PortName(final String name) {
       this.name = name;
     }
   }

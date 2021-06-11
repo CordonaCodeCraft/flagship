@@ -1,9 +1,9 @@
 package flagship.domain.calculation.tariffs.state;
 
-import flagship.domain.calculation.tariffs.Tariff;
 import flagship.domain.base.due.tuple.Due;
+import flagship.domain.calculation.tariffs.Tariff;
 import flagship.domain.caze.entity.Case;
-import flagship.domain.port.entity.Port;
+import flagship.domain.caze.model.createrequest.resolvers.PortAreaResolver;
 import flagship.domain.ship.entity.Ship;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +18,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class TonnageDueTariff extends Tariff {
 
-  private Map<Port.PortArea, Due> tonnageDuesByPortArea;
+  private Map<PortAreaResolver.PortArea, Due> tonnageDuesByPortArea;
   private Map<Ship.ShipType, Due> tonnageDuesByShipType;
   private Map<Case.CallPurpose, Due> tonnageDuesByCallPurpose;
   private Map<Case.CallPurpose, BigDecimal> discountCoefficientsByCallPurpose;

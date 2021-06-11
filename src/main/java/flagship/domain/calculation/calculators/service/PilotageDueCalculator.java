@@ -29,7 +29,8 @@ public class PilotageDueCalculator extends PrivateDueCalculator {
   @Override
   public BigDecimal calculate() {
 
-    final Map<Range, Due> dues = tariff.getPilotageDuesByArea().get(source.getPort().getPilotageArea());
+    final Map<Range, Due> dues =
+        tariff.getPilotageDuesByArea().get(source.getPort().getPilotageArea());
 
     BigDecimal pilotageDue = getBaseDue(dues);
 

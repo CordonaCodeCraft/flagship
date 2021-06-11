@@ -2,11 +2,11 @@ package flagship.domain.port.model;
 
 import lombok.*;
 
-import static flagship.domain.calculation.tariffs.service.MooringDueTariff.MooringServiceProvider;
-import static flagship.domain.calculation.tariffs.service.PilotageDueTariff.PilotageArea;
-import static flagship.domain.calculation.tariffs.service.TugDueTariff.TugArea;
-import static flagship.domain.calculation.tariffs.service.TugDueTariff.TugServiceProvider;
-import static flagship.domain.port.entity.Port.PortArea;
+import static flagship.domain.caze.model.createrequest.resolvers.MooringServiceProviderResolver.MooringServiceProvider;
+import static flagship.domain.caze.model.createrequest.resolvers.PilotageAreaResolver.PilotageArea;
+import static flagship.domain.caze.model.createrequest.resolvers.PortAreaResolver.PortArea;
+import static flagship.domain.caze.model.createrequest.resolvers.TugAreaResolver.TugArea;
+import static flagship.domain.caze.model.createrequest.resolvers.TugAreaResolver.TugServiceProvider;
 
 @Getter
 @Setter

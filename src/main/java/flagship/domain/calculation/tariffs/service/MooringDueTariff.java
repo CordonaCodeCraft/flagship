@@ -1,8 +1,9 @@
 package flagship.domain.calculation.tariffs.service;
 
-import flagship.domain.calculation.tariffs.Tariff;
 import flagship.domain.base.due.tuple.Due;
 import flagship.domain.base.range.tuple.Range;
+import flagship.domain.calculation.tariffs.Tariff;
+import flagship.domain.caze.model.createrequest.resolvers.MooringServiceProviderResolver;
 import flagship.domain.warning.generator.WarningsGenerator.WarningType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +19,8 @@ import java.util.Set;
 @NoArgsConstructor
 public class MooringDueTariff extends Tariff {
 
-  private Map<MooringServiceProvider, Map<Range, Due>> mooringDuesByProvider;
+  private Map<MooringServiceProviderResolver.MooringServiceProvider, Map<Range, Due>>
+      mooringDuesByProvider;
   private Map<WarningType, BigDecimal> increaseCoefficientsByWarningType;
   private Set<LocalDate> holidayCalendar;
   private BigDecimal lesportGrossTonnageThreshold;
@@ -27,13 +29,4 @@ public class MooringDueTariff extends Tariff {
   private BigDecimal pchvmGrossTonnageThreshold;
   private BigDecimal vtcGrossTonnageThreshold;
   private BigDecimal portfleetGrossTonnageThreshold;
-
-  public enum MooringServiceProvider {
-    VTC,
-    PORTFLEET,
-    LESPORT,
-    ODESSOS,
-    BALCHIK,
-    PCHMV,
-  }
 }

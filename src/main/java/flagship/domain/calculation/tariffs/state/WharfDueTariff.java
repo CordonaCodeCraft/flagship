@@ -1,7 +1,7 @@
 package flagship.domain.calculation.tariffs.state;
 
-import flagship.domain.calculation.tariffs.Tariff;
 import flagship.domain.base.due.tuple.Due;
+import flagship.domain.calculation.tariffs.Tariff;
 import flagship.domain.caze.entity.Case;
 import flagship.domain.ship.entity.Ship;
 import lombok.Getter;

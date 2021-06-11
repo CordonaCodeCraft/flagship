@@ -152,7 +152,8 @@ public class LightDueCalculatorTest extends BaseCalculatorTest {
       "Should return light due without discount when ship type is not eligible for discount")
   @ParameterizedTest(name = "ship type : {arguments}")
   @MethodSource(value = "GetShipTypesNotEligibleForDiscount")
-  void testLightDueWithZeroDiscountWhenShipTypeIsNotEligibleForDiscount(final Ship.ShipType shipType) {
+  void testLightDueWithZeroDiscountWhenShipTypeIsNotEligibleForDiscount(
+      final Ship.ShipType shipType) {
 
     testCase.getShip().setType(shipType);
     testCase.setCallCount(lightDueTariff.getCallCountThreshold());

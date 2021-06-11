@@ -103,7 +103,7 @@ class WharfDueCalculatorTest extends TariffsInitializer {
   @ParameterizedTest(name = "ship type : {arguments}")
   @MethodSource(value = "getShipTypesNotEligibleForDiscount")
   void testReturnsWharfDueWithZeroDiscountWhenShipTypeIsNotEligibleForDiscount(
-          final Ship.ShipType shipType) {
+      final Ship.ShipType shipType) {
 
     testCase.getShip().setType(shipType);
 

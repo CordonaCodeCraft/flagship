@@ -59,17 +59,18 @@ public abstract class PdaElementsFactory {
     return new Cell().setBorder(NO_BORDER);
   }
 
-  protected static Cell getCellWithNoBorder(int width) {
+  protected static Cell getCellWithNoBorder(final int width) {
     return new Cell().setWidth(width).setBorder(NO_BORDER);
   }
 
-  protected static Cell getCellWithNoBorder(int rowspan, int colspan) {
+  protected static Cell getCellWithNoBorder(final int rowspan, final int colspan) {
     return new Cell(rowspan, colspan).setBorder(NO_BORDER);
   }
 
   protected static Paragraph getParagraphWithTextJustified(final Text text) {
     return new Paragraph().add(text).setTextAlignment(JUSTIFIED);
   }
+
   protected static Paragraph getParagraphWithTextCentered(final Text text) {
     return new Paragraph().add(text).setTextAlignment(CENTER);
   }
@@ -91,7 +92,7 @@ public abstract class PdaElementsFactory {
       return getText(QUESTION_MARK_SYMBOL, getCharFont(), 10)
           .setBold()
           .setFontColor(new DeviceRgb(100, 40, 0));
-    } catch (IOException e) {
+    } catch (final IOException e) {
       e.printStackTrace();
       return null;
     }
@@ -102,7 +103,7 @@ public abstract class PdaElementsFactory {
       return getText(ARROW_DOWN_SYMBOL, getCharFont(), 10)
           .setBold()
           .setFontColor(new DeviceRgb(0, 105, 148));
-    } catch (IOException e) {
+    } catch (final IOException e) {
       e.printStackTrace();
       return null;
     }
@@ -113,7 +114,7 @@ public abstract class PdaElementsFactory {
       return getText(ARROW_UP_SYMBOL, getCharFont(), 10)
           .setBold()
           .setFontColor(new DeviceRgb(110, 10, 30));
-    } catch (IOException e) {
+    } catch (final IOException e) {
       e.printStackTrace();
       return null;
     }
@@ -124,7 +125,7 @@ public abstract class PdaElementsFactory {
       return getText(CHECKMARK_SYMBOL, getCharFont(), 10)
           .setBold()
           .setFontColor(new DeviceRgb(120, 190, 33));
-    } catch (IOException e) {
+    } catch (final IOException e) {
       e.printStackTrace();
       return null;
     }
@@ -134,7 +135,7 @@ public abstract class PdaElementsFactory {
     try {
       return PdfFontFactory.createFont(
           FONT_REGULAR, PdfFontFactory.EmbeddingStrategy.PREFER_EMBEDDED);
-    } catch (IOException e) {
+    } catch (final IOException e) {
       e.printStackTrace();
       return null;
     }
@@ -147,7 +148,7 @@ public abstract class PdaElementsFactory {
   protected static PdfFont getBoldFont() {
     try {
       return PdfFontFactory.createFont(FONT_BOLD, PdfFontFactory.EmbeddingStrategy.PREFER_EMBEDDED);
-    } catch (IOException e) {
+    } catch (final IOException e) {
       e.printStackTrace();
       return null;
     }
@@ -179,15 +180,15 @@ public abstract class PdaElementsFactory {
   }
 
   protected static Color getColorBlue() {
-    return new DeviceRgb(187,234,255);
+    return new DeviceRgb(187, 234, 255);
   }
 
   protected static Color getColorGreen() {
-    return new DeviceRgb(232,244,234);
+    return new DeviceRgb(232, 244, 234);
   }
 
   protected static Color getColorRed() {
-    return new DeviceRgb(253,224,224);
+    return new DeviceRgb(253, 224, 224);
   }
 
   public enum DueType {
@@ -210,8 +211,8 @@ public abstract class PdaElementsFactory {
 
     public final String type;
 
-    DueType(String name) {
-      this.type = name;
+    DueType(final String name) {
+        type = name;
     }
   }
 }
