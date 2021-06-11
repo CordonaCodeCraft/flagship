@@ -13,5 +13,5 @@ server:
   port: 8081
 flagship:
   easter-day-of-month: 2
-  new-installation: true
+  new-installation: false
   commission-coefficient: 0.3

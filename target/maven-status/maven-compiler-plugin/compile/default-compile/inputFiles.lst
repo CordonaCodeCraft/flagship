@@ -1,9 +1,12 @@
+D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\caze\mapper\CaseMapperService.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\caze\service\CaseService.java
+D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\caze\controller\CaseController.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\calculation\calculators\state\LightDueCalculator.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\bootstrap\initializers\CanalDueTariffInitializer.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\pda\render\elements\CompanyDetailsRender.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\bootstrap\initializers\MarpolDueTariffInitializer.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\warning\generator\WarningsGenerator.java
+D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\caze\model\request\resolvers\MooringServiceProviderResolver.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\port\service\impl\PortServiceImpl.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\ship\model\PdaShip.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\calculation\tariffs\state\SailingPermissionTariff.java
@@ -26,6 +29,7 @@ D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\calculation\calculators\state\BoomContainmentCalculator.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\bootstrap\initializers\AgencyDuesTariffInitializer.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\calculation\calculators\agency\CommunicationsDueCalculator.java
+D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\caze\model\request\resolvers\PilotageAreaResolver.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\agent\service\impl\AgentServiceImpl.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\calculation\tariffs\service\TugDueTariff.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\pda\service\PdaService.java
@@ -35,6 +39,7 @@ D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\bootstrap\DataLoader.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\calculation\tariffs\agency\AgencyDuesTariff.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\port\repository\PortRepository.java
+D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\caze\model\request\resolvers\TugAreaResolver.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\port\mapper\PortMapper.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\calculation\calculators\state\TonnageDueCalculator.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\base\due\serialization\DueSerializer.java
@@ -45,13 +50,14 @@ D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\calculation\tariffs\state\LightDueTariff.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\base\entity\BaseEntity.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\config\BeansConfiguration.java
+D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\caze\model\request\resolvers\PortAreaResolver.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\country\entity\Country.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\base\CrudService.java
+D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\caze\model\request\CreateCaseRequest.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\calculation\calculators\DueCalculator.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\calculation\tariffs\state\TonnageDueTariff.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\calculation\calculators\state\MarpolDueCalculator.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\calculation\tariffs\TariffsFactory.java
-D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\pda\model\PdaCase.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\ship\repository\ShipRepository.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\calculation\calculators\service\TugDueCalculator.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\agent\entity\Agent.java
@@ -75,6 +81,7 @@ D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\bootstrap\initializers\LightDueTariffInitializer.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\config\FlagshipConfiguration.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\caze\service\impl\CaseServiceImpl.java
+D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\caze\model\PdaCase.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\warning\entity\Warning.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\pda\render\elements\LogoRender.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\calculation\tariffs\service\PilotageDueTariff.java
@@ -90,7 +97,6 @@ D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\calculation\calculators\agency\OvertimeDueCalculator.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\bootstrap\initializers\PilotageDueTariffInitializer.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\calculation\tariffs\service\MooringDueTariff.java
-D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\calculation\tariffs\service\MooringServiceProviderResolver.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\port\entity\Port.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\calculation\tariffs\state\MarpolDueTariff.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\pda\render\elements\CallDetailsRender.java
@@ -102,6 +108,5 @@ D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\agent\service\AgentService.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\pda\render\elements\PdaElementsFactory.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\calculation\calculators\service\PilotageDueCalculator.java
-D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\calculation\tariffs\service\PilotageAreaResolver.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\calculation\calculators\state\CanalDueCalculator.java
 D:\Gdrive\CordonaCodeCraft\flagship\flagship-jfx\flagship\src\main\java\flagship\domain\calculation\calculators\agency\BasicAgencyDueCalculator.java

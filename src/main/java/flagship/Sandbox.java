@@ -30,7 +30,7 @@ public class Sandbox {
 
     final CreateCaseRequest request =
         CreateCaseRequest.builder()
-            .portName("Varna")
+            .portName("Varna West")
             .shipName("Falcon")
             .shipType("Bulk carrier")
             .shipLengthOverall(BigDecimal.valueOf(190.95))
@@ -48,6 +48,7 @@ public class Sandbox {
             .estimatedDateOfDeparture("2021-06-15")
             .alongsideDaysExpected(3)
             .clientDiscountCoefficient(BigDecimal.valueOf(0.2))
+            .agencyCommissionCoefficient(BigDecimal.valueOf(0.3))
             .tugServiceProvider(TugServiceProvider.VTC)
             .arrivesFromBulgarianPort(true)
             .build();
