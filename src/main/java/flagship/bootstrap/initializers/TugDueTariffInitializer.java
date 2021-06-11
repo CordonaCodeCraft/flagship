@@ -1,11 +1,10 @@
 package flagship.bootstrap.initializers;
 
+import flagship.domain.base.due.tuple.Due;
+import flagship.domain.base.range.tuple.Range;
 import flagship.domain.calculation.tariffs.calendar.HolidayCalendar;
 import flagship.domain.calculation.tariffs.service.TugDueTariff;
 import flagship.domain.calculation.tariffs.service.TugDueTariff.TugServiceProvider;
-import flagship.domain.base.due.tuple.Due;
-import flagship.domain.base.range.tuple.Range;
-import flagship.domain.port.entity.Port;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -19,6 +18,7 @@ import static flagship.domain.calculation.tariffs.service.TugDueTariff.TugArea;
 import static flagship.domain.calculation.tariffs.service.TugDueTariff.TugArea.*;
 import static flagship.domain.calculation.tariffs.service.TugDueTariff.TugServiceProvider.PORTFLEET;
 import static flagship.domain.calculation.tariffs.service.TugDueTariff.TugServiceProvider.VTC;
+import static flagship.domain.port.entity.Port.PortName;
 import static flagship.domain.port.entity.Port.PortName.*;
 import static flagship.domain.warning.generator.WarningsGenerator.WarningType;
 import static flagship.domain.warning.generator.WarningsGenerator.WarningType.HOLIDAY;
@@ -28,27 +28,27 @@ import static flagship.domain.warning.generator.WarningsGenerator.WarningType.HO
 @RequiredArgsConstructor
 public class TugDueTariffInitializer {
 
-  public static TugDueTariff getTariff(HolidayCalendar holidayCalendar) {
+  public static TugDueTariff getTariff(final HolidayCalendar holidayCalendar) {
 
     final TugDueTariff tugDueTariff = new TugDueTariff();
 
-    final Map<TugServiceProvider, Map<TugArea, Set<Port.PortName>>> portNamesInTugAreas =
+    final Map<TugServiceProvider, Map<TugArea, Set<PortName>>> portNamesInTugAreas =
         new EnumMap<>(TugServiceProvider.class);
 
-    final Map<TugArea, Set<Port.PortName>> portNamesInVtcTugAreas = new EnumMap<>(TugArea.class);
+    final Map<TugArea, Set<PortName>> portNamesInVtcTugAreas = new EnumMap<>(TugArea.class);
 
-    final Set<Port.PortName> portNamesInVtcFirstTugArea =
+    final Set<PortName> portNamesInVtcFirstTugArea =
         EnumSet.of(VARNA_EAST, PCHMV, ODESSOS_PBM, PETROL, LESPORT, TEC_POWER_STATION);
 
-    final Set<Port.PortName> portNamesInVtcSecondTugArea = EnumSet.of(VARNA_WEST, FERRY_COMPLEX);
+    final Set<PortName> portNamesInVtcSecondTugArea = EnumSet.of(VARNA_WEST, FERRY_COMPLEX);
 
-    final Set<Port.PortName> portNamesInVtcThirdTugArea =
+    final Set<PortName> portNamesInVtcThirdTugArea =
         EnumSet.of(BULYARD, SRY_ODESSOS, MTG_DOLPHIN, TEREM_FA);
 
-    final Set<Port.PortName> portNamesInVtcFourthTugArea =
+    final Set<PortName> portNamesInVtcFourthTugArea =
         EnumSet.of(SHIFTING_BULYARD, SHIFTING_SRY_ODESSOS, SHIFTING_MTG_DOLPHIN, SHIFTING_TEREM_FA);
 
-    final Set<Port.PortName> portNamesInVtcFifthTugArea = EnumSet.of(BALCHIK_PORT);
+    final Set<PortName> portNamesInVtcFifthTugArea = EnumSet.of(BALCHIK_PORT);
 
     portNamesInVtcTugAreas.put(VTC_FIRST, portNamesInVtcFirstTugArea);
     portNamesInVtcTugAreas.put(VTC_SECOND, portNamesInVtcSecondTugArea);
@@ -56,22 +56,20 @@ public class TugDueTariffInitializer {
     portNamesInVtcTugAreas.put(VTC_FOURTH, portNamesInVtcFourthTugArea);
     portNamesInVtcTugAreas.put(VTC_FIFTH, portNamesInVtcFifthTugArea);
 
-    final Map<TugArea, Set<Port.PortName>> portNamesInPortFleetTugAreas =
-        new EnumMap<>(TugArea.class);
+    final Map<TugArea, Set<PortName>> portNamesInPortFleetTugAreas = new EnumMap<>(TugArea.class);
 
-    final Set<Port.PortName> portNamesInPortfleetFirstTugArea =
+    final Set<PortName> portNamesInPortfleetFirstTugArea =
         EnumSet.of(VARNA_EAST, TEC_EZEROVO, PETROL, LESPORT, ODESSOS_PBM, PCHMV);
 
-    final Set<Port.PortName> portNamesInPortfleetSecondTugArea =
-        EnumSet.of(VARNA_WEST, FERRY_COMPLEX);
+    final Set<PortName> portNamesInPortfleetSecondTugArea = EnumSet.of(VARNA_WEST, FERRY_COMPLEX);
 
-    final Set<Port.PortName> portNamesInPortfleetThirdTugArea =
+    final Set<PortName> portNamesInPortfleetThirdTugArea =
         EnumSet.of(BULYARD, SRY_ODESSOS, MTG_DOLPHIN, TEREM_FA);
 
-    final Set<Port.PortName> portNamesInPortfleetFourthTugArea =
+    final Set<PortName> portNamesInPortfleetFourthTugArea =
         EnumSet.of(SHIFTING_BULYARD, SHIFTING_SRY_ODESSOS, SHIFTING_MTG_DOLPHIN, SHIFTING_TEREM_FA);
 
-    final Set<Port.PortName> portNamesInPortfleetFifthTugArea = EnumSet.of(BALCHIK_PORT);
+    final Set<PortName> portNamesInPortfleetFifthTugArea = EnumSet.of(BALCHIK_PORT);
 
     portNamesInPortFleetTugAreas.put(PORTFLEET_FIRST, portNamesInPortfleetFirstTugArea);
     portNamesInPortFleetTugAreas.put(PORTFLEET_SECOND, portNamesInPortfleetSecondTugArea);

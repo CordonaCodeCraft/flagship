@@ -1,9 +1,10 @@
 package flagship.domain.ship.model;
 
-import flagship.domain.ship.entity.Ship;
 import lombok.*;
 
 import java.math.BigDecimal;
+
+import static flagship.domain.ship.entity.Ship.ShipType;
 
 @Getter
 @Setter
@@ -13,7 +14,7 @@ import java.math.BigDecimal;
 public class PdaShip {
 
   private String name;
-  private Ship.ShipType type;
+  private ShipType type;
   private BigDecimal lengthOverall;
   private BigDecimal grossTonnage;
   private Boolean hasIncreasedManeuverability;

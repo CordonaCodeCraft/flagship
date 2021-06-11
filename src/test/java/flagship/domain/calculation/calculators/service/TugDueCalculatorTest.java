@@ -1,9 +1,9 @@
 package flagship.domain.calculation.calculators.service;
 
+import flagship.domain.base.range.tuple.Range;
 import flagship.domain.calculation.calculators.BaseCalculatorTest;
 import flagship.domain.calculation.tariffs.Tariff;
-import flagship.domain.base.range.tuple.Range;
-import flagship.domain.pda.model.PdaCase;
+import flagship.domain.caze.model.PdaCase;
 import flagship.domain.port.model.PdaPort;
 import flagship.domain.ship.model.PdaShip;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,12 +28,12 @@ class TugDueCalculatorTest extends BaseCalculatorTest {
 
   @BeforeEach
   void setUp() {
-    PdaShip testShip =
+    final PdaShip testShip =
         PdaShip.builder()
             .grossTonnage(BigDecimal.valueOf(MIN_GT))
             .hasIncreasedManeuverability(false)
             .build();
-    PdaPort testPort = PdaPort.builder().tugArea(VTC_FIRST).build();
+    final PdaPort testPort = PdaPort.builder().tugArea(VTC_FIRST).build();
     testCase =
         PdaCase.builder().ship(testShip).port(testPort).warningTypes(new HashSet<>()).build();
   }
@@ -41,7 +41,7 @@ class TugDueCalculatorTest extends BaseCalculatorTest {
   @DisplayName("Should return fixed tug due")
   @ParameterizedTest(name = "tug area : {arguments}")
   @EnumSource(TugArea.class)
-  void testReturnsTugDueCalculationWithinThreshold(TugArea tugArea) {
+  void testReturnsTugDueCalculationWithinThreshold(final TugArea tugArea) {
 
     testCase
         .getShip()
@@ -65,7 +65,7 @@ class TugDueCalculatorTest extends BaseCalculatorTest {
   @DisplayName("Should return increased tug due")
   @ParameterizedTest(name = "tug area : {arguments}")
   @EnumSource(TugArea.class)
-  void testReturnsCalculateIncreasedTugDue(TugArea tugArea) {
+  void testReturnsCalculateIncreasedTugDue(final TugArea tugArea) {
 
     testCase
         .getShip()

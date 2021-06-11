@@ -25,6 +25,11 @@
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot</artifactId>
+            <version>2.4.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
@@ -98,8 +103,6 @@
             <artifactId>itextpdf</artifactId>
             <version>5.5.10</version>
         </dependency>
-
-
     </dependencies>
     <build>
         <plugins>

@@ -2,7 +2,7 @@ package flagship.domain.calculation.calculators.state;
 
 import flagship.domain.calculation.calculators.TariffsInitializer;
 import flagship.domain.caze.entity.Case;
-import flagship.domain.pda.model.PdaCase;
+import flagship.domain.caze.model.PdaCase;
 import flagship.domain.ship.entity.Ship;
 import flagship.domain.ship.model.PdaShip;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,7 +40,7 @@ class WharfDueCalculatorTest extends TariffsInitializer {
 
   @BeforeEach
   void setUp() {
-    PdaShip testShip =
+    final PdaShip testShip =
         PdaShip.builder().lengthOverall(BigDecimal.valueOf(195.05)).type(BULK_CARRIER).build();
     testCase = PdaCase.builder().ship(testShip).alongsideDaysExpected(5).build();
   }
@@ -68,7 +68,7 @@ class WharfDueCalculatorTest extends TariffsInitializer {
   @DisplayName("Should return wharf due by ship type")
   @ParameterizedTest(name = "ship type : {arguments}")
   @MethodSource(value = "getShipTypesAffectingWharfDue")
-  void testReturnsWharfDueByShipType(Ship.ShipType shipType) {
+  void testReturnsWharfDueByShipType(final Ship.ShipType shipType) {
 
     testCase.getShip().setType(shipType);
 
@@ -83,7 +83,7 @@ class WharfDueCalculatorTest extends TariffsInitializer {
   @DisplayName("Should return Wharf due with discount by call purpose")
   @ParameterizedTest(name = "call purpose : {arguments}")
   @MethodSource(value = "getCallPurposesEligibleForDiscount")
-  void testReturnsWharfDueWithDiscountByCallPurpose(Case.CallPurpose callPurpose) {
+  void testReturnsWharfDueWithDiscountByCallPurpose(final Case.CallPurpose callPurpose) {
 
     testCase.setCallPurpose(callPurpose);
 
@@ -103,7 +103,7 @@ class WharfDueCalculatorTest extends TariffsInitializer {
   @ParameterizedTest(name = "ship type : {arguments}")
   @MethodSource(value = "getShipTypesNotEligibleForDiscount")
   void testReturnsWharfDueWithZeroDiscountWhenShipTypeIsNotEligibleForDiscount(
-      Ship.ShipType shipType) {
+          final Ship.ShipType shipType) {
 
     testCase.getShip().setType(shipType);
 
@@ -117,7 +117,7 @@ class WharfDueCalculatorTest extends TariffsInitializer {
     assertThat(result).isEqualByComparingTo(expected);
   }
 
-  private BigDecimal calculateDueAfterDiscount(BigDecimal discountCoefficient) {
+  private BigDecimal calculateDueAfterDiscount(final BigDecimal discountCoefficient) {
     final BigDecimal wharfDue = calculateWharfDue();
     final BigDecimal discount = wharfDue.multiply(discountCoefficient);
     return wharfDue.subtract(discount);

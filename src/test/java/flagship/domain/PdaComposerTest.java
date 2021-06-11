@@ -8,9 +8,9 @@ import flagship.domain.calculation.calculators.service.TugDueCalculator;
 import flagship.domain.calculation.calculators.state.*;
 import flagship.domain.calculation.tariffs.Tariff;
 import flagship.domain.calculation.tariffs.TariffsFactory;
+import flagship.domain.caze.model.PdaCase;
 import flagship.domain.pda.composer.PdaComposer;
 import flagship.domain.pda.entity.ProformaDisbursementAccount;
-import flagship.domain.pda.model.PdaCase;
 import flagship.domain.port.model.PdaPort;
 import flagship.domain.ship.model.PdaShip;
 import org.assertj.core.api.SoftAssertions;
@@ -185,15 +185,17 @@ public class PdaComposerTest extends TariffsInitializer {
 
     final ProformaDisbursementAccount pda = pdaComposer.composePda();
 
-    SoftAssertions assertions = new SoftAssertions();
+    final SoftAssertions assertions = new SoftAssertions();
 
     assertThat(tonnageDue).isEqualByComparingTo(pda.getTonnageDue());
     assertThat(wharfDue).isEqualByComparingTo(pda.getWharfDue());
     assertThat(canalDue).isEqualByComparingTo(pda.getCanalDue());
     assertThat(lightDue).isEqualByComparingTo(pda.getLightDue());
     assertThat(marpolDue).isEqualByComparingTo(pda.getMarpolDue());
-    assertThat(freeGarbageDisposalQuantity).isEqualByComparingTo(pda.getFreeGarbageDisposalQuantity());
-    assertThat(freeSweageDisposalQuantity).isEqualByComparingTo(pda.getFreeSweageDisposalQuantity());
+    assertThat(freeGarbageDisposalQuantity)
+        .isEqualByComparingTo(pda.getFreeGarbageDisposalQuantity());
+    assertThat(freeSweageDisposalQuantity)
+        .isEqualByComparingTo(pda.getFreeSweageDisposalQuantity());
     assertThat(mooringDue).isEqualByComparingTo(pda.getMooringDue());
     assertThat(boomContainmentDue).isEqualByComparingTo(pda.getBoomContainmentDue());
     assertThat(sailingPermissionDue).isEqualByComparingTo(pda.getSailingPermissionDue());

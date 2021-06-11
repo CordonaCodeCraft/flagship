@@ -1,7 +1,7 @@
 package flagship.domain.calculation.calculators.agency;
 
 import flagship.domain.calculation.calculators.BaseCalculatorTest;
-import flagship.domain.pda.model.PdaCase;
+import flagship.domain.caze.model.PdaCase;
 import flagship.domain.ship.model.PdaShip;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -18,7 +18,7 @@ class CommunicationsDueCalculatorTest extends BaseCalculatorTest {
 
   @BeforeEach
   void setUp() {
-    PdaShip testShip = PdaShip.builder().build();
+    final PdaShip testShip = PdaShip.builder().build();
     testCase = PdaCase.builder().ship(testShip).build();
   }
 

@@ -2,7 +2,7 @@ package flagship.domain.calculation.calculators;
 
 import flagship.domain.calculation.tariffs.Tariff;
 import flagship.domain.calculation.tariffs.TariffsFactory;
-import flagship.domain.pda.model.PdaCase;
+import flagship.domain.caze.model.PdaCase;
 import flagship.domain.warning.entity.Warning;
 import flagship.domain.warning.generator.WarningsGenerator;
 import flagship.domain.warning.generator.WarningsGenerator.WarningType;
@@ -29,7 +29,7 @@ class WarningsGeneratorTest extends TariffsInitializer {
 
   @BeforeEach
   void setUp() {
-    Map<CalculatorType, Tariff> tariffs = new EnumMap<>(CalculatorType.class);
+    final Map<CalculatorType, Tariff> tariffs = new EnumMap<>(CalculatorType.class);
     tariffs.put(TONNAGE_DUE_CALCULATOR, tonnageDueTariff);
     tariffs.put(WHARF_DUE_CALCULATOR, wharfDueTariff);
     tariffs.put(CANAL_DUE_CALCULATOR, canalDueTariff);
@@ -72,7 +72,7 @@ class WarningsGeneratorTest extends TariffsInitializer {
 
     warningsGenerator = new WarningsGenerator(testCase, tariffsFactory);
 
-    long warningsCount = getCountForWarning(ETD_IS_HOLIDAY);
+    final long warningsCount = getCountForWarning(ETD_IS_HOLIDAY);
 
     assertThat(warningsCount).isEqualTo(3);
   }
@@ -151,7 +151,7 @@ class WarningsGeneratorTest extends TariffsInitializer {
 
     warningsGenerator = new WarningsGenerator(testCase, tariffsFactory);
 
-    Set<Warning> warnings =
+    final Set<Warning> warnings =
         warningsGenerator.generateWarnings().stream()
             .filter(warning -> warning.getDueType() == WHARF_DUE)
             .collect(Collectors.toSet());
@@ -167,7 +167,7 @@ class WarningsGeneratorTest extends TariffsInitializer {
 
     warningsGenerator = new WarningsGenerator(testCase, tariffsFactory);
 
-    Set<Warning> warnings =
+    final Set<Warning> warnings =
         warningsGenerator.generateWarnings().stream()
             .filter(warning -> warning.getDueType() == WHARF_DUE)
             .collect(Collectors.toSet());
@@ -181,7 +181,7 @@ class WarningsGeneratorTest extends TariffsInitializer {
 
     warningsGenerator = new WarningsGenerator(testCase, tariffsFactory);
 
-    Set<Warning> warnings =
+    final Set<Warning> warnings =
         warningsGenerator.generateWarnings().stream()
             .filter(warning -> warning.getDueType() == WHARF_DUE)
             .collect(Collectors.toSet());

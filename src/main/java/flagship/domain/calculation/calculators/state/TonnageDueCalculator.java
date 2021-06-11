@@ -3,7 +3,7 @@ package flagship.domain.calculation.calculators.state;
 import flagship.domain.calculation.calculators.StateDueCalculator;
 import flagship.domain.calculation.tariffs.Tariff;
 import flagship.domain.calculation.tariffs.state.TonnageDueTariff;
-import flagship.domain.pda.model.PdaCase;
+import flagship.domain.caze.model.PdaCase;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
@@ -33,7 +33,7 @@ public class TonnageDueCalculator extends StateDueCalculator {
   @Override
   protected BigDecimal getBaseDue() {
 
-    BigDecimal baseDue = source.getShip().getGrossTonnage().multiply(getTonnageDuePerTon());
+    final BigDecimal baseDue = source.getShip().getGrossTonnage().multiply(getTonnageDuePerTon());
 
     if (source.getShip().getType() == WORK_SHIP) {
       return calculateBaseDueForSpecialShip(baseDue);

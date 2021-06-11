@@ -2,7 +2,7 @@ package flagship.domain.calculation.calculators.service;
 
 import flagship.domain.calculation.calculators.BaseCalculatorTest;
 import flagship.domain.calculation.tariffs.service.MooringDueTariff.MooringServiceProvider;
-import flagship.domain.pda.model.PdaCase;
+import flagship.domain.caze.model.PdaCase;
 import flagship.domain.port.model.PdaPort;
 import flagship.domain.ship.model.PdaShip;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,8 +23,8 @@ class MooringDueCalculatorTest extends BaseCalculatorTest {
 
   @BeforeEach
   void setUp() {
-    PdaShip testShip = PdaShip.builder().grossTonnage(BigDecimal.valueOf(MIN_GT)).build();
-    PdaPort testPort = PdaPort.builder().mooringServiceProvider(VTC).build();
+    final PdaShip testShip = PdaShip.builder().grossTonnage(BigDecimal.valueOf(MIN_GT)).build();
+    final PdaPort testPort = PdaPort.builder().mooringServiceProvider(VTC).build();
     testCase = PdaCase.builder().ship(testShip).port(testPort).build();
   }
 
@@ -33,7 +33,7 @@ class MooringDueCalculatorTest extends BaseCalculatorTest {
   @EnumSource(
       value = MooringServiceProvider.class,
       names = {"VTC", "PORTFLEET", "PCHMV"})
-  void testReturnsFixedMooringDueForVtcAndPortFleet(MooringServiceProvider provider) {
+  void testReturnsFixedMooringDueForVtcAndPortFleet(final MooringServiceProvider provider) {
 
     testCase.getPort().setMooringServiceProvider(provider);
     testCase
@@ -58,7 +58,7 @@ class MooringDueCalculatorTest extends BaseCalculatorTest {
   @EnumSource(
       value = MooringServiceProvider.class,
       names = {"VTC", "PORTFLEET", "PCHMV"})
-  void testReturnsIncreasedMooringDueForVtcAndPortFleet(MooringServiceProvider provider) {
+  void testReturnsIncreasedMooringDueForVtcAndPortFleet(final MooringServiceProvider provider) {
 
     testCase.getPort().setMooringServiceProvider(provider);
     testCase

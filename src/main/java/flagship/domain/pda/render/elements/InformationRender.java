@@ -3,7 +3,7 @@ package flagship.domain.pda.render.elements;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Text;
-import flagship.domain.pda.model.PdaCase;
+import flagship.domain.caze.model.PdaCase;
 import flagship.domain.warning.entity.Warning;
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,7 +23,7 @@ public class InformationRender extends PdaElementsFactory {
   private static final String ETA_WARNINGS_TITLE = "ETA warnings";
   private static final String ETD_WARNINGS_TITLE = "ETD warnings";
 
-  public static Cell renderInformation(PdaCase source) {
+  public static Cell renderInformation(final PdaCase source) {
 
     final Text informationTitle = getText(INFORMATION_TITLE, getBoldFont(), 12);
     final Text etaWarningsTitle = getText(ETA_WARNINGS_TITLE, getBoldFont(), 11);
@@ -154,7 +154,7 @@ public class InformationRender extends PdaElementsFactory {
 
     final DecimalFormat df = new DecimalFormat("#,###.00");
 
-    StringBuilder builder = new StringBuilder();
+    final StringBuilder builder = new StringBuilder();
     builder.append("1. Without additional shifting or any other Owners expenses");
     builder.append(System.lineSeparator());
     builder.append("2. Garbage handling fee is compulsory and includes removal of foll garbage:");

@@ -2,7 +2,7 @@ package flagship.domain.calculation.calculators.state;
 
 import flagship.domain.calculation.calculators.TariffsInitializer;
 import flagship.domain.caze.entity.Case;
-import flagship.domain.pda.model.PdaCase;
+import flagship.domain.caze.model.PdaCase;
 import flagship.domain.port.entity.Port;
 import flagship.domain.port.model.PdaPort;
 import flagship.domain.ship.entity.Ship;
@@ -68,9 +68,9 @@ class TonnageDueCalculatorTest extends TariffsInitializer {
 
   @BeforeEach
   void setUp() {
-    BigDecimal randomGrossTonnage = getRandomGrossTonnage(MIN_GT, MAX_GT);
-    PdaPort testPort = PdaPort.builder().portArea(FIRST).build();
-    PdaShip testShip =
+    final BigDecimal randomGrossTonnage = getRandomGrossTonnage(MIN_GT, MAX_GT);
+    final PdaPort testPort = PdaPort.builder().portArea(FIRST).build();
+    final PdaShip testShip =
         PdaShip.builder().grossTonnage(randomGrossTonnage).type(BULK_CARRIER).build();
     testCase =
         PdaCase.builder()
@@ -212,7 +212,7 @@ class TonnageDueCalculatorTest extends TariffsInitializer {
   @DisplayName("Should return due with discount by call purpose")
   @ParameterizedTest(name = "call purpose : {arguments}")
   @MethodSource(value = "getCallPurposesEligibleForDiscount")
-  void testReturnsTonnageDueWithDiscountByCallPurpose(Case.CallPurpose callPurpose) {
+  void testReturnsTonnageDueWithDiscountByCallPurpose(final Case.CallPurpose callPurpose) {
 
     testCase.setCallPurpose(callPurpose);
 
@@ -322,7 +322,7 @@ class TonnageDueCalculatorTest extends TariffsInitializer {
 
   BigDecimal calculateDueAfterDiscount(final BigDecimal discountCoefficient) {
 
-    BigDecimal duePerGrossTon;
+    final BigDecimal duePerGrossTon;
 
     final boolean dueIsDependentOnShipType =
         tonnageDueTariff.getTonnageDuesByShipType().containsKey(testCase.getShip().getType());
@@ -343,7 +343,7 @@ class TonnageDueCalculatorTest extends TariffsInitializer {
               .getBase();
     }
 
-    BigDecimal dueTotal = grossTonnage.multiply(duePerGrossTon);
+    final BigDecimal dueTotal = grossTonnage.multiply(duePerGrossTon);
 
     return dueTotal.subtract(dueTotal.multiply(discountCoefficient));
   }

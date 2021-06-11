@@ -2,7 +2,7 @@ package flagship.domain.calculation.calculators;
 
 import flagship.domain.base.due.tuple.Due;
 import flagship.domain.base.range.tuple.Range;
-import flagship.domain.pda.model.PdaCase;
+import flagship.domain.caze.model.PdaCase;
 
 import java.math.BigDecimal;
 import java.util.Map;

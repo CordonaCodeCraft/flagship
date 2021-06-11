@@ -1,12 +1,15 @@
-package flagship.domain.calculation.tariffs.service;
+package flagship.domain.caze.model.resolver;
 
-import flagship.domain.pda.model.PdaCase;
+import flagship.domain.calculation.tariffs.service.PilotageDueTariff;
+import flagship.domain.caze.model.PdaCase;
 
 import java.util.Map;
 
+import static flagship.domain.calculation.tariffs.service.PilotageDueTariff.PilotageArea;
+
 public class PilotageAreaResolver {
 
-  public static PilotageDueTariff.PilotageArea resolvePilotageArea(
+  public static PilotageArea resolvePilotageArea(
       final PdaCase source, final PilotageDueTariff tariff) {
     return tariff.getPortNamesInPilotageAreas().entrySet().stream()
         .filter(

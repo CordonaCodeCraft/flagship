@@ -1,11 +1,11 @@
 package flagship.domain.calculation.calculators.service;
 
+import flagship.domain.base.due.tuple.Due;
+import flagship.domain.base.range.tuple.Range;
 import flagship.domain.calculation.calculators.PrivateDueCalculator;
 import flagship.domain.calculation.tariffs.Tariff;
 import flagship.domain.calculation.tariffs.service.TugDueTariff;
-import flagship.domain.base.due.tuple.Due;
-import flagship.domain.base.range.tuple.Range;
-import flagship.domain.pda.model.PdaCase;
+import flagship.domain.caze.model.PdaCase;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
@@ -26,7 +26,7 @@ public class TugDueCalculator extends PrivateDueCalculator {
   @Override
   public BigDecimal calculate() {
 
-    Map<Range, Due> dues = tariff.getTugDuesByArea().get(source.getPort().getTugArea());
+    final Map<Range, Due> dues = tariff.getTugDuesByArea().get(source.getPort().getTugArea());
 
     BigDecimal tugDue = getBaseDue(dues);
 
@@ -57,7 +57,7 @@ public class TugDueCalculator extends PrivateDueCalculator {
     }
   }
 
-  private boolean gtInRange(Map.Entry<Range, BigDecimal> entry) {
+  private boolean gtInRange(final Map.Entry<Range, BigDecimal> entry) {
     return source.getShip().getGrossTonnage().intValue() >= entry.getKey().getMin()
         && source.getShip().getGrossTonnage().intValue() <= entry.getKey().getMax();
   }

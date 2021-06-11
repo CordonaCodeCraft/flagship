@@ -1,7 +1,7 @@
 package flagship.domain.resolvers;
 
 import flagship.domain.calculation.tariffs.service.MooringDueTariff.MooringServiceProvider;
-import flagship.domain.calculation.tariffs.service.MooringServiceProviderResolver;
+import flagship.domain.caze.model.resolver.MooringServiceProviderResolver;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -13,8 +13,8 @@ class MooringServiceProviderResolverTest {
   @DisplayName("Should resolve mooring service provider to Lesport")
   @Test
   void testResolveMooringServiceProviderToLesport() {
-    String portName = "Lesport";
-    MooringServiceProvider result =
+    final String portName = "Lesport";
+    final MooringServiceProvider result =
         MooringServiceProviderResolver.resolveMooringServiceProvider(portName);
     assertThat(result.name()).isEqualTo(LESPORT.name());
   }
@@ -22,8 +22,8 @@ class MooringServiceProviderResolverTest {
   @DisplayName("Should resolve mooring service provider to Odessos")
   @Test
   void testResolveMooringServiceProviderToOdessos() {
-    String portName = "Odessos PBM";
-    MooringServiceProvider result =
+    final String portName = "Odessos PBM";
+    final MooringServiceProvider result =
         MooringServiceProviderResolver.resolveMooringServiceProvider(portName);
     assertThat(result.name()).isEqualTo(ODESSOS.name());
   }
@@ -31,8 +31,8 @@ class MooringServiceProviderResolverTest {
   @DisplayName("Should resolve mooring service provider to Balchik")
   @Test
   void testResolveMooringServiceProviderToBalchik() {
-    String portName = "Balchik port";
-    MooringServiceProvider result =
+    final String portName = "Balchik port";
+    final MooringServiceProvider result =
         MooringServiceProviderResolver.resolveMooringServiceProvider(portName);
     assertThat(result.name()).isEqualTo(BALCHIK.name());
   }
@@ -40,8 +40,8 @@ class MooringServiceProviderResolverTest {
   @DisplayName("Should resolve to default mooring service provider")
   @Test
   void testResolveMooringServiceProviderToDefault() {
-    String portName = "Varna West";
-    MooringServiceProvider result =
+    final String portName = "Varna West";
+    final MooringServiceProvider result =
         MooringServiceProviderResolver.resolveMooringServiceProvider(portName);
     assertThat(result.name()).isEqualTo(VTC.name());
   }

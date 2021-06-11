@@ -1,9 +1,9 @@
 package flagship.domain.calculation.calculators.state;
 
-import flagship.domain.calculation.calculators.BaseCalculatorTest;
 import flagship.domain.base.due.tuple.Due;
 import flagship.domain.base.range.tuple.Range;
-import flagship.domain.pda.model.PdaCase;
+import flagship.domain.calculation.calculators.BaseCalculatorTest;
+import flagship.domain.caze.model.PdaCase;
 import flagship.domain.port.model.PdaPort;
 import flagship.domain.ship.model.PdaShip;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,8 +25,8 @@ class MarpolDueCalculatorTest extends BaseCalculatorTest {
 
   @BeforeEach
   void setUp() {
-    PdaPort testPort = PdaPort.builder().name(VARNA_WEST.name).build();
-    PdaShip testShip = PdaShip.builder().grossTonnage(BigDecimal.valueOf(MIN_GT)).build();
+    final PdaPort testPort = PdaPort.builder().name(VARNA_WEST.name).build();
+    final PdaShip testShip = PdaShip.builder().grossTonnage(BigDecimal.valueOf(MIN_GT)).build();
     testCase = PdaCase.builder().port(testPort).ship(testShip).build();
   }
 
@@ -54,7 +54,7 @@ class MarpolDueCalculatorTest extends BaseCalculatorTest {
   @Test
   void testReturnsOdessosFixedMarpolDue() {
 
-    PdaPort port = PdaPort.builder().name(ODESSOS_PBM.name).build();
+    final PdaPort port = PdaPort.builder().name(ODESSOS_PBM.name).build();
     testCase.setPort(port);
 
     calculator.set(testCase, marpolDueTariff);

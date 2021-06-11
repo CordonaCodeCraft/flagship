@@ -1,7 +1,7 @@
 package flagship.domain.calculation.calculators.state;
 
 import flagship.domain.calculation.calculators.BaseCalculatorTest;
-import flagship.domain.pda.model.PdaCase;
+import flagship.domain.caze.model.PdaCase;
 import flagship.domain.port.model.PdaPort;
 import flagship.domain.ship.model.PdaShip;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,8 +21,8 @@ class BoomContainmentCalculatorTest extends BaseCalculatorTest {
 
   @BeforeEach
   void setUp() {
-    PdaPort testPort = PdaPort.builder().build();
-    PdaShip testShip =
+    final PdaPort testPort = PdaPort.builder().build();
+    final PdaShip testShip =
         PdaShip.builder().type(OIL_TANKER).grossTonnage(BigDecimal.valueOf(MIN_GT)).build();
     testCase = PdaCase.builder().port(testPort).ship(testShip).build();
   }

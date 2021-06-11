@@ -1,7 +1,7 @@
 package flagship.domain.calculation.calculators.agency;
 
 import flagship.domain.calculation.calculators.BaseCalculatorTest;
-import flagship.domain.pda.model.PdaCase;
+import flagship.domain.caze.model.PdaCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

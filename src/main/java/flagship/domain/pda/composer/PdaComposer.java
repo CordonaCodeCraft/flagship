@@ -5,9 +5,8 @@ import flagship.domain.calculation.calculators.DueCalculator;
 import flagship.domain.calculation.calculators.state.MarpolDueCalculator;
 import flagship.domain.calculation.tariffs.Tariff;
 import flagship.domain.calculation.tariffs.TariffsFactory;
-import flagship.domain.calculation.tariffs.state.MarpolDueTariff;
+import flagship.domain.caze.model.PdaCase;
 import flagship.domain.pda.entity.ProformaDisbursementAccount;
-import flagship.domain.pda.model.PdaCase;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -60,7 +59,7 @@ public class PdaComposer {
               try {
                 field.setAccessible(true);
                 initializeField(pda, field);
-              } catch (IllegalAccessException e) {
+              } catch (final IllegalAccessException e) {
                 e.printStackTrace();
               }
             });
@@ -70,7 +69,7 @@ public class PdaComposer {
       throws IllegalAccessException {
     final CalculatorType calculatorType = getCalculatorType(field);
     final Tariff tariff = tariffsFactory.getTariff(calculatorType);
-    CalculatorFactory calculatorFactory = new CalculatorFactory();
+    final CalculatorFactory calculatorFactory = new CalculatorFactory();
     final DueCalculator calculator = calculatorFactory.getCalculator(calculatorType);
     calculator.set(source, tariff);
     field.set(pda, calculator.calculate());
@@ -122,7 +121,7 @@ public class PdaComposer {
   }
 
   private void initializeFreeDisposalsQuantity(final ProformaDisbursementAccount pda) {
-    MarpolDueCalculator calculator = new MarpolDueCalculator();
+    final MarpolDueCalculator calculator = new MarpolDueCalculator();
     calculator.set(source, tariffsFactory.getTariff(MARPOL_DUE_CALCULATOR));
     pda.setFreeSweageDisposalQuantity(calculator.getFreeSewageDisposalQuantity());
     pda.setFreeGarbageDisposalQuantity(calculator.getFreeGarbageDisposalQuantity());

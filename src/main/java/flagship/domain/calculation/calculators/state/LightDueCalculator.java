@@ -3,7 +3,7 @@ package flagship.domain.calculation.calculators.state;
 import flagship.domain.calculation.calculators.PrivateDueCalculator;
 import flagship.domain.calculation.tariffs.Tariff;
 import flagship.domain.calculation.tariffs.state.LightDueTariff;
-import flagship.domain.pda.model.PdaCase;
+import flagship.domain.caze.model.PdaCase;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;

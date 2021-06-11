@@ -1,6 +1,5 @@
-package flagship.domain.pda.model;
+package flagship.domain.caze.model;
 
-import flagship.domain.caze.entity.Case;
 import flagship.domain.pda.entity.ProformaDisbursementAccount;
 import flagship.domain.port.model.PdaPort;
 import flagship.domain.ship.model.PdaShip;
@@ -13,6 +12,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
+import static flagship.domain.caze.entity.Case.CallPurpose;
 import static flagship.domain.warning.generator.WarningsGenerator.WarningType;
 
 @Getter
@@ -28,7 +28,7 @@ public class PdaCase {
   private Set<WarningType> warningTypes;
   private Set<Warning> warnings;
   private List<String> cargoManifest;
-  private Case.CallPurpose callPurpose;
+  private CallPurpose callPurpose;
   private Integer callCount;
   private Integer alongsideDaysExpected;
   private LocalDate estimatedDateOfArrival;

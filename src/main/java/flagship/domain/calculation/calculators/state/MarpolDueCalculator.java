@@ -1,11 +1,11 @@
 package flagship.domain.calculation.calculators.state;
 
+import flagship.domain.base.due.tuple.Due;
+import flagship.domain.base.range.tuple.Range;
 import flagship.domain.calculation.calculators.PrivateDueCalculator;
 import flagship.domain.calculation.tariffs.Tariff;
 import flagship.domain.calculation.tariffs.state.MarpolDueTariff;
-import flagship.domain.base.due.tuple.Due;
-import flagship.domain.base.range.tuple.Range;
-import flagship.domain.pda.model.PdaCase;
+import flagship.domain.caze.model.PdaCase;
 import flagship.domain.port.entity.Port;
 
 import java.math.BigDecimal;

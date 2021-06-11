@@ -4,7 +4,7 @@ import flagship.domain.calculation.calculators.PrivateDueCalculator;
 import flagship.domain.calculation.tariffs.Tariff;
 import flagship.domain.calculation.tariffs.service.MooringDueTariff;
 import flagship.domain.calculation.tariffs.service.MooringDueTariff.MooringServiceProvider;
-import flagship.domain.pda.model.PdaCase;
+import flagship.domain.caze.model.PdaCase;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
@@ -25,7 +25,7 @@ public class MooringDueCalculator extends PrivateDueCalculator {
   @Override
   public BigDecimal calculate() {
 
-    BigDecimal mooringDue;
+    final BigDecimal mooringDue;
 
     switch (source.getPort().getMooringServiceProvider()) {
       case VTC:

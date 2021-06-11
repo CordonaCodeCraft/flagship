@@ -2,7 +2,7 @@ package flagship.domain.calculation.calculators.agency;
 
 import flagship.domain.calculation.calculators.BaseCalculatorTest;
 import flagship.domain.caze.entity.Case;
-import flagship.domain.pda.model.PdaCase;
+import flagship.domain.caze.model.PdaCase;
 import flagship.domain.ship.model.PdaShip;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -72,7 +72,7 @@ class BasicAgencyDueCalculatorTest extends BaseCalculatorTest {
       value = Case.CallPurpose.class,
       names = {"LOADING", "UNLOADING", "LOADING_AND_UNLOADING"},
       mode = EnumSource.Mode.EXCLUDE)
-  void testReturnsReducedDueIfEligibleForDiscount(Case.CallPurpose callPurpose) {
+  void testReturnsReducedDueIfEligibleForDiscount(final Case.CallPurpose callPurpose) {
 
     testCase.setCallPurpose(callPurpose);
     testCase

@@ -1,9 +1,9 @@
 package flagship.domain.calculation.calculators.agency;
 
-import flagship.domain.calculation.calculators.BaseCalculatorTest;
 import flagship.domain.base.due.tuple.Due;
 import flagship.domain.base.range.tuple.Range;
-import flagship.domain.pda.model.PdaCase;
+import flagship.domain.calculation.calculators.BaseCalculatorTest;
+import flagship.domain.caze.model.PdaCase;
 import flagship.domain.port.entity.Port;
 import flagship.domain.port.model.PdaPort;
 import flagship.domain.ship.model.PdaShip;
@@ -33,8 +33,8 @@ class CarsDueCalculatorTest extends BaseCalculatorTest {
 
   @BeforeEach
   void setUp() {
-    PdaShip testShip = PdaShip.builder().grossTonnage(BigDecimal.valueOf(MIN_GT)).build();
-    PdaPort testPort = PdaPort.builder().name(Port.PortName.SHIFTING_SRY_ODESSOS.name).build();
+    final PdaShip testShip = PdaShip.builder().grossTonnage(BigDecimal.valueOf(MIN_GT)).build();
+    final PdaPort testPort = PdaPort.builder().name(Port.PortName.SHIFTING_SRY_ODESSOS.name).build();
     testCase =
         PdaCase.builder()
             .alongsideDaysExpected(getRandomNumber())
@@ -101,7 +101,7 @@ class CarsDueCalculatorTest extends BaseCalculatorTest {
   }
 
   private Integer getRandomNumber() {
-    Random random = new Random();
+    final Random random = new Random();
     return random.ints(1, 21).findFirst().getAsInt();
   }
 }

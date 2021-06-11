@@ -1,7 +1,7 @@
 package flagship.domain.caze.mapper;
 
 import flagship.domain.caze.entity.Case;
-import flagship.domain.pda.model.PdaCase;
+import flagship.domain.caze.model.PdaCase;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

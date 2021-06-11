@@ -4,7 +4,7 @@ import flagship.domain.calculation.tariffs.TariffsFactory;
 import flagship.domain.calculation.tariffs.service.MooringDueTariff;
 import flagship.domain.calculation.tariffs.service.PilotageDueTariff;
 import flagship.domain.calculation.tariffs.service.TugDueTariff;
-import flagship.domain.pda.model.PdaCase;
+import flagship.domain.caze.model.PdaCase;
 import flagship.domain.warning.entity.Warning;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -42,8 +42,8 @@ public class WarningsGenerator {
 
   public Set<Warning> generateWarnings() {
 
-    Optional<LocalDate> eta = Optional.ofNullable(source.getEstimatedDateOfArrival());
-    Optional<LocalDate> etd = Optional.ofNullable(source.getEstimatedDateOfDeparture());
+    final Optional<LocalDate> eta = Optional.ofNullable(source.getEstimatedDateOfArrival());
+    final Optional<LocalDate> etd = Optional.ofNullable(source.getEstimatedDateOfDeparture());
 
     final Set<Warning> warnings = new LinkedHashSet<>();
 
@@ -83,7 +83,7 @@ public class WarningsGenerator {
 
   private Set<Warning> getHolidayWarningsForWharfDue(final Optional<LocalDate> etd) {
 
-    PilotageDueTariff pilotageDueTariff =
+    final PilotageDueTariff pilotageDueTariff =
         (PilotageDueTariff) tariffsFactory.getTariff(PILOTAGE_DUE_CALCULATOR);
 
     final Set<LocalDate> holidays = pilotageDueTariff.getHolidayCalendar();
@@ -121,15 +121,15 @@ public class WarningsGenerator {
 
   private BigDecimal getFactor(final DueType due) {
 
-    TugDueTariff tugDueTariff = (TugDueTariff) tariffsFactory.getTariff(TUG_DUE_CALCULATOR);
+    final TugDueTariff tugDueTariff = (TugDueTariff) tariffsFactory.getTariff(TUG_DUE_CALCULATOR);
 
-    MooringDueTariff mooringDueTariff =
+    final MooringDueTariff mooringDueTariff =
         (MooringDueTariff) tariffsFactory.getTariff(MOORING_DUE_CALCULATOR);
 
-    PilotageDueTariff pilotageDueTariff =
+    final PilotageDueTariff pilotageDueTariff =
         (PilotageDueTariff) tariffsFactory.getTariff(PILOTAGE_DUE_CALCULATOR);
 
-    BigDecimal factor;
+    final BigDecimal factor;
 
     switch (due) {
       case TUG_DUE:
@@ -168,21 +168,28 @@ public class WarningsGenerator {
 
   private boolean isHoliday(final Optional<LocalDate> date) {
 
-    PilotageDueTariff pilotageDueTariff =
+    final PilotageDueTariff pilotageDueTariff =
         (PilotageDueTariff) tariffsFactory.getTariff(PILOTAGE_DUE_CALCULATOR);
 
     return date.filter(d -> pilotageDueTariff.getHolidayCalendar().contains(d)).isPresent();
   }
 
   public enum WarningType {
-    HOLIDAY,
-    ETA_IS_HOLIDAY,
-    ETD_IS_HOLIDAY,
-    ETA_NOT_PROVIDED,
-    ETD_NOT_PROVIDED,
-    SPECIAL_PILOT,
-    HAZARDOUS_PILOTAGE_CARGO,
-    SPECIAL_PILOTAGE_CARGO,
-    DANGEROUS_TUG_CARGO,
+    HOLIDAY("Date is holiday"),
+    ETA_IS_HOLIDAY("ETA is holiday"),
+    ETD_IS_HOLIDAY("ETD is holiday"),
+    ETA_NOT_PROVIDED("ETA is not provided"),
+    ETD_NOT_PROVIDED("ETD is not provided"),
+    SPECIAL_PILOT("Ship requires special pilot"),
+    HAZARDOUS_PILOTAGE_CARGO("Ship transports hazardous cargo"),
+    SPECIAL_PILOTAGE_CARGO("Ship transports special cargo"),
+    DANGEROUS_TUG_CARGO("Ship transports dangerous cargo"),
+    ;
+
+    public final String type;
+
+    WarningType(final String name) {
+      type = name;
+    }
   }
 }

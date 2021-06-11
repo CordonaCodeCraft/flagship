@@ -1,10 +1,8 @@
 package flagship.domain.calculation.tariffs.service;
 
-import flagship.domain.calculation.tariffs.Tariff;
 import flagship.domain.base.due.tuple.Due;
 import flagship.domain.base.range.tuple.Range;
-import flagship.domain.pda.model.PdaCase;
-import flagship.domain.port.entity.Port;
+import flagship.domain.calculation.tariffs.Tariff;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,6 +12,7 @@ import java.time.LocalDate;
 import java.util.Map;
 import java.util.Set;
 
+import static flagship.domain.port.entity.Port.PortName;
 import static flagship.domain.warning.generator.WarningsGenerator.WarningType;
 
 @Getter
@@ -21,7 +20,7 @@ import static flagship.domain.warning.generator.WarningsGenerator.WarningType;
 @NoArgsConstructor
 public class TugDueTariff extends Tariff {
 
-  private Map<TugServiceProvider, Map<TugArea, Set<Port.PortName>>> portNamesInTugAreas;
+  private Map<TugServiceProvider, Map<TugArea, Set<PortName>>> portNamesInTugAreas;
   private Map<TugArea, Map<Range, Due>> tugDuesByArea;
   private Map<Range, BigDecimal> tugCountByGrossTonnage;
   private Map<WarningType, BigDecimal> increaseCoefficientsByWarningType;
@@ -45,23 +44,5 @@ public class TugDueTariff extends Tariff {
   public enum TugServiceProvider {
     VTC,
     PORTFLEET,
-  }
-
-  public static class TugAreaResolver {
-
-    public static TugArea resolveTugArea(final PdaCase source, final TugDueTariff tariff) {
-      return tariff
-          .getPortNamesInTugAreas()
-          .get(source.getPort().getTugServiceProvider())
-          .entrySet()
-          .stream()
-          .filter(
-              entry ->
-                  entry.getValue().stream()
-                      .anyMatch(v -> v.name.equals(source.getPort().getName())))
-          .map(Map.Entry::getKey)
-          .findFirst()
-          .get();
-    }
   }
 }

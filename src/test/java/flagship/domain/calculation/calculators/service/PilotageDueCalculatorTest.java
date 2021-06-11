@@ -2,7 +2,7 @@ package flagship.domain.calculation.calculators.service;
 
 import flagship.domain.calculation.calculators.BaseCalculatorTest;
 import flagship.domain.calculation.tariffs.Tariff;
-import flagship.domain.pda.model.PdaCase;
+import flagship.domain.caze.model.PdaCase;
 import flagship.domain.port.model.PdaPort;
 import flagship.domain.ship.model.PdaShip;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,8 +26,8 @@ public class PilotageDueCalculatorTest extends BaseCalculatorTest {
 
   @BeforeEach
   void setUp() {
-    PdaPort testPort = PdaPort.builder().pilotageArea(VARNA_FIRST).build();
-    PdaShip testShip = PdaShip.builder().grossTonnage(BigDecimal.valueOf(MIN_GT)).build();
+    final PdaPort testPort = PdaPort.builder().pilotageArea(VARNA_FIRST).build();
+    final PdaShip testShip = PdaShip.builder().grossTonnage(BigDecimal.valueOf(MIN_GT)).build();
     testCase =
         PdaCase.builder().port(testPort).ship(testShip).warningTypes(new HashSet<>()).build();
   }
@@ -35,7 +35,7 @@ public class PilotageDueCalculatorTest extends BaseCalculatorTest {
   @DisplayName("Should return fixed pilotage due by pilotage area")
   @ParameterizedTest(name = "pilotage area: {arguments}")
   @EnumSource(PilotageArea.class)
-  void testReturnsPilotageDueCalculationWithinThreshold(PilotageArea pilotageArea) {
+  void testReturnsPilotageDueCalculationWithinThreshold(final PilotageArea pilotageArea) {
 
     testCase
         .getShip()
@@ -57,7 +57,7 @@ public class PilotageDueCalculatorTest extends BaseCalculatorTest {
   @DisplayName("Should return increased pilotage due")
   @ParameterizedTest(name = "pilotage area: {arguments}")
   @EnumSource(PilotageArea.class)
-  void testReturnsCalculateIncreasedPilotageDue(PilotageArea pilotageArea) {
+  void testReturnsCalculateIncreasedPilotageDue(final PilotageArea pilotageArea) {
 
     testCase
         .getShip()

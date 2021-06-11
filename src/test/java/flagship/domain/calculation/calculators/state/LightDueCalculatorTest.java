@@ -1,7 +1,7 @@
 package flagship.domain.calculation.calculators.state;
 
 import flagship.domain.calculation.calculators.BaseCalculatorTest;
-import flagship.domain.pda.model.PdaCase;
+import flagship.domain.caze.model.PdaCase;
 import flagship.domain.ship.entity.Ship;
 import flagship.domain.ship.model.PdaShip;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,7 +37,7 @@ public class LightDueCalculatorTest extends BaseCalculatorTest {
 
   @BeforeEach
   void setUp() {
-    PdaShip testShip =
+    final PdaShip testShip =
         PdaShip.builder()
             .grossTonnage(getRandomGrossTonnage(MIN_GT, MAX_GT))
             .type(BULK_CARRIER)
@@ -68,7 +68,7 @@ public class LightDueCalculatorTest extends BaseCalculatorTest {
   @DisplayName("Should return light due by ship type")
   @ParameterizedTest(name = "ship type: {arguments}")
   @MethodSource(value = "getShipTypesAffectingLightDue")
-  void testLightDuePerShipType(Ship.ShipType shipType) {
+  void testLightDuePerShipType(final Ship.ShipType shipType) {
 
     testCase.getShip().setType(shipType);
 
@@ -91,7 +91,7 @@ public class LightDueCalculatorTest extends BaseCalculatorTest {
   @DisplayName("Should return light due with discount by ship type")
   @ParameterizedTest(name = "ship type: {arguments}")
   @MethodSource(value = "getShipTypesEligibleForDiscount")
-  void testLightDueWithDiscountByShipType(Ship.ShipType shipType) {
+  void testLightDueWithDiscountByShipType(final Ship.ShipType shipType) {
 
     testCase.getShip().setType(shipType);
 
@@ -127,7 +127,7 @@ public class LightDueCalculatorTest extends BaseCalculatorTest {
   @Test
   void testLightDueWithBiggestDiscount() {
 
-    Ship.ShipType shipType =
+    final Ship.ShipType shipType =
         lightDueTariff.getDiscountCoefficientsByShipType().keySet().stream().findAny().get();
 
     testCase.getShip().setType(shipType);
@@ -152,7 +152,7 @@ public class LightDueCalculatorTest extends BaseCalculatorTest {
       "Should return light due without discount when ship type is not eligible for discount")
   @ParameterizedTest(name = "ship type : {arguments}")
   @MethodSource(value = "GetShipTypesNotEligibleForDiscount")
-  void testLightDueWithZeroDiscountWhenShipTypeIsNotEligibleForDiscount(Ship.ShipType shipType) {
+  void testLightDueWithZeroDiscountWhenShipTypeIsNotEligibleForDiscount(final Ship.ShipType shipType) {
 
     testCase.getShip().setType(shipType);
     testCase.setCallCount(lightDueTariff.getCallCountThreshold());

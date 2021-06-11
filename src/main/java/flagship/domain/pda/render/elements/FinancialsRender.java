@@ -5,7 +5,7 @@ import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.element.Text;
-import flagship.domain.pda.model.PdaCase;
+import flagship.domain.caze.model.PdaCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -32,7 +32,7 @@ public class FinancialsRender extends PdaElementsFactory {
   private static final String DISCOUNT_LABEL = "Agency discount in euro";
   private static final String TOTAL_LABEL = "Total in euro";
 
-  public static Cell renderFinancials(PdaCase source) throws IOException {
+  public static Cell renderFinancials(final PdaCase source) throws IOException {
 
     final Text financialsTitle = getText(FINANCIALS_TITLE, getBoldFont(), 12);
     final Table financialsTable = getFinancialsTable(source);
@@ -109,7 +109,7 @@ public class FinancialsRender extends PdaElementsFactory {
     BigDecimal value = BigDecimal.ZERO;
     try {
       value = (BigDecimal) dueField.get(source.getProformaDisbursementAccount());
-    } catch (IllegalAccessException e) {
+    } catch (final IllegalAccessException e) {
       e.printStackTrace();
     }
     return dueField.getName().contains("Due") && value.doubleValue() > 0;
@@ -124,19 +124,19 @@ public class FinancialsRender extends PdaElementsFactory {
 
     try {
       dueString = df.format(dueField.get(source.getProformaDisbursementAccount()));
-    } catch (IllegalAccessException e) {
+    } catch (final IllegalAccessException e) {
       e.printStackTrace();
     }
 
-    Text dueCount = getText(String.valueOf(financials.getNumberOfRows()), getRegularFont(), 10);
-    Text dueType = getText(getDueType(dueField), getRegularFont(), 10);
-    Text dueValue = getText(dueString, getRegularFont(), 10);
+    final Text dueCount = getText(String.valueOf(financials.getNumberOfRows()), getRegularFont(), 10);
+    final Text dueType = getText(getDueType(dueField), getRegularFont(), 10);
+    final Text dueValue = getText(dueString, getRegularFont(), 10);
 
-    StatusIconsGenerator statusIconsGenerator = new StatusIconsGenerator(source, dueField);
+    final StatusIconsGenerator statusIconsGenerator = new StatusIconsGenerator(source, dueField);
 
-    Paragraph statusIcons = statusIconsGenerator.generateStatusIcons();
+    final Paragraph statusIcons = statusIconsGenerator.generateStatusIcons();
 
-    Color rowColor =
+    final Color rowColor =
         financials.getNumberOfRows() % 2 == 0 ? getColorYellowMid() : getColorYellowLight();
 
     financials
@@ -182,9 +182,9 @@ public class FinancialsRender extends PdaElementsFactory {
 
     private Paragraph generateStatusIcons() {
 
-      String due = dueField.getName();
+      final String due = dueField.getName();
 
-      List<String> agencyDues =
+      final List<String> agencyDues =
           List.of(
               "basicAgencyDue",
               "carsDue",
@@ -193,7 +193,7 @@ public class FinancialsRender extends PdaElementsFactory {
               "bankExpensesDue",
               "agencyOvertimeDue");
 
-      List<String> duesModifiedByWarnings =
+      final List<String> duesModifiedByWarnings =
           List.of("wharfDue", "pilotageDue", "tugDue", "mooringDue");
 
       if (agencyDues.contains(due)) {
@@ -215,7 +215,7 @@ public class FinancialsRender extends PdaElementsFactory {
 
     private Paragraph getDueDependentOnWarningsStatusIcons() {
 
-      String due = dueField.getName();
+      final String due = dueField.getName();
 
       final Paragraph statusIcons = new Paragraph();
 

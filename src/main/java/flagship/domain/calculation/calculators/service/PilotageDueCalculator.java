@@ -1,11 +1,11 @@
 package flagship.domain.calculation.calculators.service;
 
+import flagship.domain.base.due.tuple.Due;
+import flagship.domain.base.range.tuple.Range;
 import flagship.domain.calculation.calculators.PrivateDueCalculator;
 import flagship.domain.calculation.tariffs.Tariff;
 import flagship.domain.calculation.tariffs.service.PilotageDueTariff;
-import flagship.domain.base.due.tuple.Due;
-import flagship.domain.base.range.tuple.Range;
-import flagship.domain.pda.model.PdaCase;
+import flagship.domain.caze.model.PdaCase;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
@@ -20,6 +20,7 @@ public class PilotageDueCalculator extends PrivateDueCalculator {
 
   private PilotageDueTariff tariff;
 
+  @Override
   public void set(final PdaCase source, final Tariff tariff) {
     super.source = source;
     this.tariff = (PilotageDueTariff) tariff;
@@ -28,7 +29,7 @@ public class PilotageDueCalculator extends PrivateDueCalculator {
   @Override
   public BigDecimal calculate() {
 
-    Map<Range, Due> dues = tariff.getPilotageDuesByArea().get(source.getPort().getPilotageArea());
+    final Map<Range, Due> dues = tariff.getPilotageDuesByArea().get(source.getPort().getPilotageArea());
 
     BigDecimal pilotageDue = getBaseDue(dues);
 
@@ -60,7 +61,7 @@ public class PilotageDueCalculator extends PrivateDueCalculator {
 
   private BigDecimal getIncreaseCoefficient() {
 
-    List<BigDecimal> increaseCoefficients = new ArrayList<>();
+    final List<BigDecimal> increaseCoefficients = new ArrayList<>();
 
     final BigDecimal increaseCoefficientForHazardousCargo =
         source.getWarningTypes().contains(HAZARDOUS_PILOTAGE_CARGO)

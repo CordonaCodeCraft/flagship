@@ -8,7 +8,7 @@ import com.itextpdf.layout.property.TextAlignment;
 import flagship.domain.calculation.tariffs.service.TugDueTariff;
 import flagship.domain.caze.entity.Case;
 import flagship.domain.caze.mapper.CaseMapper;
-import flagship.domain.pda.model.PdaCase;
+import flagship.domain.caze.model.PdaCase;
 import flagship.domain.port.model.PdaPort;
 import flagship.domain.ship.model.PdaShip;
 import org.json.JSONException;
@@ -28,15 +28,15 @@ public class Sandbox {
   public static final String LOGO = "D:/Gdrive/Inbox/neftoil.png";
   public static final String DEST = "D:/Gdrive/Inbox/test.pdf";
 
-  public static void main(String[] args) throws JSONException, IOException {
+  public static void main(final String[] args) throws JSONException, IOException {
 
-    PdfWriter writer = new PdfWriter(DEST);
-    PdfDocument pdf = new PdfDocument(writer);
+    final PdfWriter writer = new PdfWriter(DEST);
+    final PdfDocument pdf = new PdfDocument(writer);
 
-    String code = "\u2714";
+    final String code = "\u2714";
     System.out.println(code);
 
-    Document document = new Document(pdf);
+    final Document document = new Document(pdf);
     document.setMargins(5, 5, 5, 5);
 
     composeHead(document);
@@ -56,13 +56,13 @@ public class Sandbox {
   }
 
   private static void composeShipData(final Document document) {
-    Paragraph paragraph1 = new Paragraph();
+    final Paragraph paragraph1 = new Paragraph();
     paragraph1
         .add("Ship's name: Millennium's Falcon")
         .setTextAlignment(TextAlignment.LEFT)
         .setPaddingLeft(130);
 
-    Paragraph paragraph2 = new Paragraph();
+    final Paragraph paragraph2 = new Paragraph();
     paragraph2
         .add("Ship's type: Star destroyer raper")
         .setTextAlignment(TextAlignment.LEFT)
@@ -73,7 +73,7 @@ public class Sandbox {
   }
 
   private static void dtoConversions() {
-    PdaShip ship =
+    final PdaShip ship =
         PdaShip.builder()
             .name("Aura")
             .type(BULK_CARRIER)
@@ -82,7 +82,7 @@ public class Sandbox {
             .hasIncreasedManeuverability(true)
             .build();
 
-    PdaPort port =
+    final PdaPort port =
         PdaPort.builder()
             .name("Varna")
             .portArea(FIRST)
@@ -90,7 +90,7 @@ public class Sandbox {
             .tugArea(TugDueTariff.TugArea.VTC_FIFTH)
             .build();
 
-    PdaCase pdaCase =
+    final PdaCase pdaCase =
         PdaCase.builder()
             .ship(ship)
             .port(port)
@@ -101,7 +101,7 @@ public class Sandbox {
             .estimatedDateOfDeparture(LocalDate.of(2021, 6, 15))
             .build();
 
-    Case newCase = CaseMapper.INSTANCE.pdaCaseToCase(pdaCase);
+    final Case newCase = CaseMapper.INSTANCE.pdaCaseToCase(pdaCase);
 
     System.out.println();
   }

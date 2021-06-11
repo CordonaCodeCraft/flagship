@@ -3,7 +3,7 @@ package flagship.domain.pda.render.elements;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.element.Text;
-import flagship.domain.pda.model.PdaCase;
+import flagship.domain.caze.model.PdaCase;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -17,7 +17,7 @@ public class CompanyDetailsRender extends PdaElementsFactory {
   private static final String FAX_LABEL = "Fax";
   private static final String EMAIL_LABEL = "Email";
 
-  public static Cell renderCompanyDetails(PdaCase source) throws IOException {
+  public static Cell renderCompanyDetails(final PdaCase source) throws IOException {
     final Text companyDetailsTitle = getText(COMPANY_DETAILS_TITLE, getBoldFont(), 12);
     final Table companyDetailsTable = getCompanyDetailsTable(source);
     log.info("Rendered company details");

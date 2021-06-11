@@ -3,9 +3,9 @@ package flagship.domain;
 import flagship.domain.calculation.tariffs.TariffsFactory;
 import flagship.domain.calculation.tariffs.service.MooringDueTariff;
 import flagship.domain.calculation.tariffs.service.TugDueTariff;
+import flagship.domain.caze.model.PdaCase;
 import flagship.domain.pda.composer.PdaComposer;
 import flagship.domain.pda.entity.ProformaDisbursementAccount;
-import flagship.domain.pda.model.PdaCase;
 import flagship.domain.port.model.PdaPort;
 import flagship.domain.ship.model.PdaShip;
 import org.junit.jupiter.api.Disabled;
@@ -64,7 +64,7 @@ public class IT {
     pdaComposer.setTariffsFactory(tariffsFactory);
     pdaComposer.setSource(testCase);
 
-    ProformaDisbursementAccount proformaDisbursementAccount = pdaComposer.composePda();
+    final ProformaDisbursementAccount proformaDisbursementAccount = pdaComposer.composePda();
 
     System.out.println();
   }

@@ -5,8 +5,8 @@ import flagship.domain.calculation.tariffs.Tariff;
 import flagship.domain.calculation.tariffs.TariffsFactory;
 import flagship.domain.calculation.tariffs.service.MooringDueTariff;
 import flagship.domain.calculation.tariffs.service.TugDueTariff;
+import flagship.domain.caze.model.PdaCase;
 import flagship.domain.pda.entity.ProformaDisbursementAccount;
-import flagship.domain.pda.model.PdaCase;
 import flagship.domain.pda.render.PdaRender;
 import flagship.domain.port.model.PdaPort;
 import flagship.domain.ship.model.PdaShip;
@@ -36,7 +36,7 @@ class PdaRendererTest extends TariffsInitializer {
   @BeforeAll
   static void beforeClass() {
 
-    Map<CalculatorType, Tariff> tariffs = new EnumMap<>(CalculatorType.class);
+    final Map<CalculatorType, Tariff> tariffs = new EnumMap<>(CalculatorType.class);
     tariffs.put(TONNAGE_DUE_CALCULATOR, tonnageDueTariff);
     tariffs.put(WHARF_DUE_CALCULATOR, wharfDueTariff);
     tariffs.put(CANAL_DUE_CALCULATOR, canalDueTariff);
@@ -119,11 +119,11 @@ class PdaRendererTest extends TariffsInitializer {
     testCase.setEstimatedDateOfArrival(LocalDate.of(2021, 1, 3));
     testCase.setEstimatedDateOfDeparture(LocalDate.of(2021, 1, 3));
 
-    WarningsGenerator generator = new WarningsGenerator(testCase, tariffsFactory);
+    final WarningsGenerator generator = new WarningsGenerator(testCase, tariffsFactory);
 
     testCase.setWarnings(generator.generateWarnings());
 
-    PdaRender render = new PdaRender(testCase);
+    final PdaRender render = new PdaRender(testCase);
 
     render.renderPdaDocument();
   }

@@ -3,7 +3,7 @@ package flagship.domain.pda.render.elements;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.element.Text;
-import flagship.domain.pda.model.PdaCase;
+import flagship.domain.caze.model.PdaCase;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -17,7 +17,7 @@ public class ShipParticularsRender extends PdaElementsFactory {
   private static final String SHIP_GT_LABEL = "Gross tonnage";
   private static final String SHIP_LOA_LABEL = "Length overall";
 
-  public static Cell renderShipParticulars(PdaCase source) throws IOException {
+  public static Cell renderShipParticulars(final PdaCase source) throws IOException {
     final Text shipParticularsTitle = getText(SHIP_PARTICULARS_TITLE, getBoldFont(), 12);
     final Table shipParticularsTable = getShipParticularsTable(source);
     log.info("Rendered ship particulars");

@@ -2,7 +2,8 @@ package flagship.domain.resolvers;
 
 import flagship.domain.calculation.calculators.TariffsInitializer;
 import flagship.domain.calculation.tariffs.service.TugDueTariff;
-import flagship.domain.pda.model.PdaCase;
+import flagship.domain.caze.model.PdaCase;
+import flagship.domain.caze.model.resolver.TugAreaResolver;
 import flagship.domain.port.model.PdaPort;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -64,7 +65,7 @@ class TugAreaResolverTest extends TariffsInitializer {
   }
 
   private static Stream<Arguments> getStreamOfPortNames(
-      TugDueTariff.TugServiceProvider vtc, TugArea vtcFirst) {
+      final TugDueTariff.TugServiceProvider vtc, final TugArea vtcFirst) {
     return tugDueTariff.getPortNamesInTugAreas().get(vtc).get(vtcFirst).stream()
         .map(e -> e.name)
         .map(Arguments::of);
@@ -72,19 +73,19 @@ class TugAreaResolverTest extends TariffsInitializer {
 
   @BeforeEach
   void setUp() {
-    PdaPort testPort = new PdaPort();
+    final PdaPort testPort = new PdaPort();
     testCase = PdaCase.builder().port(testPort).build();
   }
 
   @DisplayName("Should resolve port name to VTC first tug area")
   @ParameterizedTest(name = "port name : {arguments}")
   @MethodSource(value = "getPortsInVtcFirstTugArea")
-  void shouldResolveTugAreaToVtcFirst(String portName) {
+  void shouldResolveTugAreaToVtcFirst(final String portName) {
 
     testCase.getPort().setTugServiceProvider(VTC);
     testCase.getPort().setName(portName);
 
-    TugArea result = TugDueTariff.TugAreaResolver.resolveTugArea(testCase, tugDueTariff);
+    final TugArea result = TugAreaResolver.resolveTugArea(testCase, tugDueTariff);
 
     assertThat(result.name()).isEqualTo(VTC_FIRST.name());
   }
@@ -92,12 +93,12 @@ class TugAreaResolverTest extends TariffsInitializer {
   @DisplayName("Should resolve port name to VTC second tug area")
   @ParameterizedTest(name = "port name : {arguments}")
   @MethodSource(value = "getPortsInVtcSecondTugArea")
-  void shouldResolveTugAreaToVtcSecond(String portName) {
+  void shouldResolveTugAreaToVtcSecond(final String portName) {
 
     testCase.getPort().setTugServiceProvider(VTC);
     testCase.getPort().setName(portName);
 
-    TugArea result = TugDueTariff.TugAreaResolver.resolveTugArea(testCase, tugDueTariff);
+    final TugArea result = TugAreaResolver.resolveTugArea(testCase, tugDueTariff);
 
     assertThat(result.name()).isEqualTo(VTC_SECOND.name());
   }
@@ -105,12 +106,12 @@ class TugAreaResolverTest extends TariffsInitializer {
   @DisplayName("Should resolve port name to VTC third tug area")
   @ParameterizedTest(name = "port name : {arguments}")
   @MethodSource(value = "getPortsInVtcThirdTugArea")
-  void shouldResolveTugAreaToVtcThird(String portName) {
+  void shouldResolveTugAreaToVtcThird(final String portName) {
 
     testCase.getPort().setTugServiceProvider(VTC);
     testCase.getPort().setName(portName);
 
-    TugArea result = TugDueTariff.TugAreaResolver.resolveTugArea(testCase, tugDueTariff);
+    final TugArea result = TugAreaResolver.resolveTugArea(testCase, tugDueTariff);
 
     assertThat(result.name()).isEqualTo(VTC_THIRD.name());
   }
@@ -118,12 +119,12 @@ class TugAreaResolverTest extends TariffsInitializer {
   @DisplayName("Should resolve port name to VTC fourth tug area")
   @ParameterizedTest(name = "port name : {arguments}")
   @MethodSource(value = "getPortsInVtcFourthTugArea")
-  void shouldResolveTugAreaToVtcFourth(String portName) {
+  void shouldResolveTugAreaToVtcFourth(final String portName) {
 
     testCase.getPort().setTugServiceProvider(VTC);
     testCase.getPort().setName(portName);
 
-    TugArea result = TugDueTariff.TugAreaResolver.resolveTugArea(testCase, tugDueTariff);
+    final TugArea result = TugAreaResolver.resolveTugArea(testCase, tugDueTariff);
 
     assertThat(result.name()).isEqualTo(VTC_FOURTH.name());
   }
@@ -131,12 +132,12 @@ class TugAreaResolverTest extends TariffsInitializer {
   @DisplayName("Should resolve port name to VTC fifth tug area")
   @ParameterizedTest(name = "port name : {arguments}")
   @MethodSource(value = "getPortsInVtcFifthTugArea")
-  void shouldResolveTugAreaToVtcFifth(String portName) {
+  void shouldResolveTugAreaToVtcFifth(final String portName) {
 
     testCase.getPort().setTugServiceProvider(VTC);
     testCase.getPort().setName(portName);
 
-    TugArea result = TugDueTariff.TugAreaResolver.resolveTugArea(testCase, tugDueTariff);
+    final TugArea result = TugAreaResolver.resolveTugArea(testCase, tugDueTariff);
 
     assertThat(result.name()).isEqualTo(VTC_FIFTH.name());
   }
@@ -144,12 +145,12 @@ class TugAreaResolverTest extends TariffsInitializer {
   @DisplayName("Should resolve port name to Portfleet first tug area")
   @ParameterizedTest(name = "port name : {arguments}")
   @MethodSource(value = "getPortsInPortfleetFirstTugArea")
-  void shouldResolveTugAreaToPortfleetFirst(String portName) {
+  void shouldResolveTugAreaToPortfleetFirst(final String portName) {
 
     testCase.getPort().setTugServiceProvider(PORTFLEET);
     testCase.getPort().setName(portName);
 
-    TugArea result = TugDueTariff.TugAreaResolver.resolveTugArea(testCase, tugDueTariff);
+    final TugArea result = TugAreaResolver.resolveTugArea(testCase, tugDueTariff);
 
     assertThat(result.name()).isEqualTo(PORTFLEET_FIRST.name());
   }
@@ -157,12 +158,12 @@ class TugAreaResolverTest extends TariffsInitializer {
   @DisplayName("Should resolve port name to Portfleet second tug area")
   @ParameterizedTest(name = "port name : {arguments}")
   @MethodSource(value = "getPortsInPortfleetSecondTugArea")
-  void shouldResolveTugAreaToPortfleetSecond(String portName) {
+  void shouldResolveTugAreaToPortfleetSecond(final String portName) {
 
     testCase.getPort().setTugServiceProvider(PORTFLEET);
     testCase.getPort().setName(portName);
 
-    TugArea result = TugDueTariff.TugAreaResolver.resolveTugArea(testCase, tugDueTariff);
+    final TugArea result = TugAreaResolver.resolveTugArea(testCase, tugDueTariff);
 
     assertThat(result.name()).isEqualTo(PORTFLEET_SECOND.name());
   }
@@ -170,12 +171,12 @@ class TugAreaResolverTest extends TariffsInitializer {
   @DisplayName("Should resolve port name to Portfleet third tug area")
   @ParameterizedTest(name = "port name : {arguments}")
   @MethodSource(value = "getPortsInPortfleetThirdTugArea")
-  void shouldResolveTugAreaToPortfleetThird(String portName) {
+  void shouldResolveTugAreaToPortfleetThird(final String portName) {
 
     testCase.getPort().setTugServiceProvider(PORTFLEET);
     testCase.getPort().setName(portName);
 
-    TugArea result = TugDueTariff.TugAreaResolver.resolveTugArea(testCase, tugDueTariff);
+    final TugArea result = TugAreaResolver.resolveTugArea(testCase, tugDueTariff);
 
     assertThat(result.name()).isEqualTo(PORTFLEET_THIRD.name());
   }
@@ -183,12 +184,12 @@ class TugAreaResolverTest extends TariffsInitializer {
   @DisplayName("Should resolve port name to Portfleet fourth tug area")
   @ParameterizedTest(name = "port name : {arguments}")
   @MethodSource(value = "getPortsInPortfleetFourthTugArea")
-  void shouldResolveTugAreaToPortfleetFourth(String portName) {
+  void shouldResolveTugAreaToPortfleetFourth(final String portName) {
 
     testCase.getPort().setTugServiceProvider(PORTFLEET);
     testCase.getPort().setName(portName);
 
-    TugArea result = TugDueTariff.TugAreaResolver.resolveTugArea(testCase, tugDueTariff);
+    final TugArea result = TugAreaResolver.resolveTugArea(testCase, tugDueTariff);
 
     assertThat(result.name()).isEqualTo(PORTFLEET_FOURTH.name());
   }
@@ -196,12 +197,12 @@ class TugAreaResolverTest extends TariffsInitializer {
   @DisplayName("Should resolve port name to Portfleet fifth tug area")
   @ParameterizedTest(name = "port name : {arguments}")
   @MethodSource(value = "getPortsInPortfleetFifthTugArea")
-  void shouldResolveTugAreaToPortfleetFifth(String portName) {
+  void shouldResolveTugAreaToPortfleetFifth(final String portName) {
 
     testCase.getPort().setTugServiceProvider(PORTFLEET);
     testCase.getPort().setName(portName);
 
-    TugArea result = TugDueTariff.TugAreaResolver.resolveTugArea(testCase, tugDueTariff);
+    final TugArea result = TugAreaResolver.resolveTugArea(testCase, tugDueTariff);
 
     assertThat(result.name()).isEqualTo(PORTFLEET_FIFTH.name());
   }

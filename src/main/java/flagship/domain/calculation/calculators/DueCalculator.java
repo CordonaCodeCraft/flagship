@@ -1,7 +1,7 @@
 package flagship.domain.calculation.calculators;
 
 import flagship.domain.calculation.tariffs.Tariff;
-import flagship.domain.pda.model.PdaCase;
+import flagship.domain.caze.model.PdaCase;
 import lombok.Getter;
 
 import java.math.BigDecimal;
@@ -33,7 +33,7 @@ public interface DueCalculator {
 
     private final String type;
 
-    CalculatorType(String type) {
+    CalculatorType(final String type) {
       this.type = type;
     }
   }

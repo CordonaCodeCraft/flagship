@@ -3,7 +3,7 @@ package flagship.domain.pda.render.elements;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.element.Text;
-import flagship.domain.pda.model.PdaCase;
+import flagship.domain.caze.model.PdaCase;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;

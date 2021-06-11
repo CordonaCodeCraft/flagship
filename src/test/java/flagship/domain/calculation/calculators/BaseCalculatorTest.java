@@ -2,7 +2,7 @@ package flagship.domain.calculation.calculators;
 
 import flagship.domain.base.due.tuple.Due;
 import flagship.domain.base.range.tuple.Range;
-import flagship.domain.pda.model.PdaCase;
+import flagship.domain.caze.model.PdaCase;
 import org.junit.jupiter.api.Tag;
 
 import java.math.BigDecimal;
@@ -24,7 +24,7 @@ public abstract class BaseCalculatorTest extends TariffsInitializer {
         .get();
   }
 
-  protected <E> BigDecimal getDueByValue(E value, final Map<E, Due> map) {
+  protected <E> BigDecimal getDueByValue(final E value, final Map<E, Due> map) {
     return map.entrySet().stream()
         .filter(entry -> entry.getKey() == value)
         .map(e -> e.getValue().getBase())

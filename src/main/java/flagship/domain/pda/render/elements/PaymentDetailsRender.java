@@ -3,7 +3,7 @@ package flagship.domain.pda.render.elements;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.element.Text;
-import flagship.domain.pda.model.PdaCase;
+import flagship.domain.caze.model.PdaCase;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -17,7 +17,7 @@ public class PaymentDetailsRender extends PdaElementsFactory {
   private static final String SWIFT_LABEL = "SWIFT (BIC) code";
   private static final String IBAN_LABEL = "IBAN (Euro)";
 
-  public static Cell renderPaymentDetails(PdaCase source) throws IOException {
+  public static Cell renderPaymentDetails(final PdaCase source) throws IOException {
     final Text companyDetailsTitle = getText(PAYMENT_DETAILS_TITLE, getBoldFont(), 12);
     final Table paymentDetail = getPaymentDetailsTable(source);
     log.info("Rendered payment details");

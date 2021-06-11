@@ -2,7 +2,7 @@ package flagship.domain.pda.render;
 
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Table;
-import flagship.domain.pda.model.PdaCase;
+import flagship.domain.caze.model.PdaCase;
 import flagship.domain.pda.render.elements.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
