@@ -3,7 +3,6 @@ package flagship.domain.calculation.tariffs.service;
 import flagship.domain.base.due.tuple.Due;
 import flagship.domain.base.range.tuple.Range;
 import flagship.domain.calculation.tariffs.Tariff;
-import flagship.domain.caze.model.createrequest.resolvers.MooringServiceProviderResolver;
 import flagship.domain.warning.generator.WarningsGenerator.WarningType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,13 +13,14 @@ import java.time.LocalDate;
 import java.util.Map;
 import java.util.Set;
 
+import static flagship.domain.caze.model.createrequest.resolvers.MooringServiceProviderResolver.MooringServiceProvider;
+
 @Getter
 @Setter
 @NoArgsConstructor
 public class MooringDueTariff extends Tariff {
 
-  private Map<MooringServiceProviderResolver.MooringServiceProvider, Map<Range, Due>>
-      mooringDuesByProvider;
+  private Map<MooringServiceProvider, Map<Range, Due>> mooringDuesByProvider;
   private Map<WarningType, BigDecimal> increaseCoefficientsByWarningType;
   private Set<LocalDate> holidayCalendar;
   private BigDecimal lesportGrossTonnageThreshold;

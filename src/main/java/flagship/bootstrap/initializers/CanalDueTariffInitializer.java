@@ -2,8 +2,6 @@ package flagship.bootstrap.initializers;
 
 import flagship.domain.base.due.tuple.Due;
 import flagship.domain.calculation.tariffs.state.CanalDueTariff;
-import flagship.domain.caze.model.createrequest.resolvers.PortAreaResolver;
-import flagship.domain.ship.entity.Ship;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -11,7 +9,9 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.util.*;
 
+import static flagship.domain.caze.model.createrequest.resolvers.PortAreaResolver.PortArea;
 import static flagship.domain.caze.model.createrequest.resolvers.PortAreaResolver.PortArea.*;
+import static flagship.domain.ship.entity.Ship.ShipType;
 import static flagship.domain.ship.entity.Ship.ShipType.NAVY;
 import static flagship.domain.ship.entity.Ship.ShipType.PASSENGER;
 
@@ -24,23 +24,21 @@ public class CanalDueTariffInitializer {
 
     final CanalDueTariff canalDueTariff = new CanalDueTariff();
 
-    final Map<PortAreaResolver.PortArea, Due> canalDuesByPortArea =
-        new EnumMap<>(PortAreaResolver.PortArea.class);
+    final Map<PortArea, Due> canalDuesByPortArea = new EnumMap<>(PortArea.class);
     canalDuesByPortArea.put(FIRST, new Due(0.04));
     canalDuesByPortArea.put(SECOND, new Due(0.13));
     canalDuesByPortArea.put(THIRD, new Due(0.04));
     canalDuesByPortArea.put(FOURTH, new Due(0.07));
     canalDueTariff.setCanalDuesByPortArea(Collections.unmodifiableMap(canalDuesByPortArea));
 
-    final Map<Ship.ShipType, BigDecimal> discountCoefficientByShipType =
-        new EnumMap<>(Ship.ShipType.class);
+    final Map<ShipType, BigDecimal> discountCoefficientByShipType = new EnumMap<>(ShipType.class);
 
     discountCoefficientByShipType.put(PASSENGER, BigDecimal.valueOf(0.5));
     canalDueTariff.setDiscountCoefficientByShipType(
         Collections.unmodifiableMap(discountCoefficientByShipType));
 
-    final Map<PortAreaResolver.PortArea, BigDecimal> discountCoefficientsByPortAreaForContainers =
-        new EnumMap<>(PortAreaResolver.PortArea.class);
+    final Map<PortArea, BigDecimal> discountCoefficientsByPortAreaForContainers =
+        new EnumMap<>(PortArea.class);
 
     discountCoefficientsByPortAreaForContainers.put(FIRST, BigDecimal.valueOf(0.25));
     discountCoefficientsByPortAreaForContainers.put(SECOND, BigDecimal.valueOf(0.74));
@@ -49,9 +47,8 @@ public class CanalDueTariffInitializer {
     canalDueTariff.setDiscountCoefficientsByPortAreaForContainers(
         Collections.unmodifiableMap(discountCoefficientsByPortAreaForContainers));
 
-    final Map<PortAreaResolver.PortArea, BigDecimal>
-        discountCoefficientsByPortAreaPerCallCountForContainers =
-            new EnumMap<>(PortAreaResolver.PortArea.class);
+    final Map<PortArea, BigDecimal> discountCoefficientsByPortAreaPerCallCountForContainers =
+        new EnumMap<>(PortArea.class);
 
     discountCoefficientsByPortAreaPerCallCountForContainers.put(FIRST, BigDecimal.valueOf(0.20));
     discountCoefficientsByPortAreaPerCallCountForContainers.put(SECOND, BigDecimal.valueOf(0.59));
@@ -60,7 +57,7 @@ public class CanalDueTariffInitializer {
     canalDueTariff.setDiscountCoefficientsByPortAreaPerCallCountForContainers(
         Collections.unmodifiableMap(discountCoefficientsByPortAreaPerCallCountForContainers));
 
-    final Set<Ship.ShipType> shipTypesNotEligibleForDiscount = EnumSet.of(NAVY);
+    final Set<ShipType> shipTypesNotEligibleForDiscount = EnumSet.of(NAVY);
     canalDueTariff.setShipTypesNotEligibleForDiscount(
         Collections.unmodifiableSet(shipTypesNotEligibleForDiscount));
 

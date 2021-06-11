@@ -3,13 +3,14 @@ package flagship.domain.calculation.tariffs.agency;
 import flagship.domain.base.due.tuple.Due;
 import flagship.domain.base.range.tuple.Range;
 import flagship.domain.calculation.tariffs.Tariff;
-import flagship.domain.port.entity.Port;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.Map;
+
+import static flagship.domain.port.entity.Port.PortName;
 
 @Getter
 @Setter
@@ -20,7 +21,7 @@ public class AgencyDuesTariff extends Tariff {
   BigDecimal basicAgencyDueGrossTonnageThreshold;
   private Map<Range, Due> basicAgencyDuePerGrossTonnage;
   private Map<Range, Map<Range, Due>> carsDueByGrossTonnageAndAlongsideDaysExpected;
-  private Map<Port.PortName, BigDecimal> carsDuesIncreaseCoefficientByPortName;
+  private Map<PortName, BigDecimal> carsDuesIncreaseCoefficientByPortName;
   private BigDecimal clearanceIn;
   private BigDecimal clearanceOut;
   private BigDecimal baseCommunicationsDue;

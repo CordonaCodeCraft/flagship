@@ -40,32 +40,6 @@ class TonnageDueCalculatorTest extends TariffsInitializer {
   private PdaCase testCase;
   private BigDecimal grossTonnage;
 
-  private static Stream<Arguments> getShipTypesAffectingTonnageDue() {
-    return tonnageDueTariff.getTonnageDuesByShipType().keySet().stream().map(Arguments::of);
-  }
-
-  private static Stream<Arguments> getCallPurposesAffectingTonnageDue() {
-    return tonnageDueTariff.getTonnageDuesByCallPurpose().keySet().stream().map(Arguments::of);
-  }
-
-  private static Stream<Arguments> getCallPurposesEligibleForDiscount() {
-    return tonnageDueTariff.getDiscountCoefficientsByCallPurpose().keySet().stream()
-        .map(Arguments::of);
-  }
-
-  private static Stream<Arguments> getShipTypesEligibleForDiscount() {
-    return tonnageDueTariff.getDiscountCoefficientsByShipType().keySet().stream()
-        .map(Arguments::of);
-  }
-
-  private static Stream<Arguments> getShipTypesNotEligibleForDiscount() {
-    return tonnageDueTariff.getShipTypesNotEligibleForDiscount().stream().map(Arguments::of);
-  }
-
-  private static Stream<Arguments> getCallPurposesNotEligibleForDiscount() {
-    return tonnageDueTariff.getCallPurposesNotEligibleForDiscount().stream().map(Arguments::of);
-  }
-
   @BeforeEach
   void setUp() {
     final BigDecimal randomGrossTonnage = getRandomGrossTonnage(MIN_GT, MAX_GT);
@@ -351,5 +325,31 @@ class TonnageDueCalculatorTest extends TariffsInitializer {
   protected BigDecimal getRandomGrossTonnage(final int min, final int max) {
     final Random random = new Random();
     return BigDecimal.valueOf(random.ints(min, max).findFirst().getAsInt());
+  }
+
+  private static Stream<Arguments> getShipTypesAffectingTonnageDue() {
+    return tonnageDueTariff.getTonnageDuesByShipType().keySet().stream().map(Arguments::of);
+  }
+
+  private static Stream<Arguments> getCallPurposesAffectingTonnageDue() {
+    return tonnageDueTariff.getTonnageDuesByCallPurpose().keySet().stream().map(Arguments::of);
+  }
+
+  private static Stream<Arguments> getCallPurposesEligibleForDiscount() {
+    return tonnageDueTariff.getDiscountCoefficientsByCallPurpose().keySet().stream()
+        .map(Arguments::of);
+  }
+
+  private static Stream<Arguments> getShipTypesEligibleForDiscount() {
+    return tonnageDueTariff.getDiscountCoefficientsByShipType().keySet().stream()
+        .map(Arguments::of);
+  }
+
+  private static Stream<Arguments> getShipTypesNotEligibleForDiscount() {
+    return tonnageDueTariff.getShipTypesNotEligibleForDiscount().stream().map(Arguments::of);
+  }
+
+  private static Stream<Arguments> getCallPurposesNotEligibleForDiscount() {
+    return tonnageDueTariff.getCallPurposesNotEligibleForDiscount().stream().map(Arguments::of);
   }
 }
