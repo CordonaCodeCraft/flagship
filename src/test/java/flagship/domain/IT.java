@@ -2,8 +2,8 @@ package flagship.domain;
 
 import flagship.domain.calculation.tariffs.TariffsFactory;
 import flagship.domain.caze.model.PdaCase;
-import flagship.domain.caze.model.createrequest.resolvers.MooringServiceProviderResolver;
-import flagship.domain.caze.model.createrequest.resolvers.TugAreaResolver;
+import flagship.domain.caze.model.request.resolvers.MooringServiceProviderResolver;
+import flagship.domain.caze.model.request.resolvers.TugAreaResolver;
 import flagship.domain.pda.composer.PdaComposer;
 import flagship.domain.pda.entity.ProformaDisbursementAccount;
 import flagship.domain.port.model.PdaPort;
@@ -17,8 +17,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashSet;
 
-import static flagship.domain.caze.model.createrequest.resolvers.PilotageAreaResolver.PilotageArea.BOURGAS_FIRST;
-import static flagship.domain.caze.model.createrequest.resolvers.PortAreaResolver.PortArea.FIRST;
+import static flagship.domain.caze.model.request.resolvers.PilotageAreaResolver.PilotageArea.BOURGAS_FIRST;
+import static flagship.domain.caze.model.request.resolvers.PortAreaResolver.PortArea.FIRST;
 import static flagship.domain.ship.entity.Ship.ShipType.BULK_CARRIER;
 
 @Disabled

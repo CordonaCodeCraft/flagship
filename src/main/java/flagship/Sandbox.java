@@ -1,26 +1,24 @@
 package flagship;
 
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.layout.Document;
-import com.itextpdf.layout.element.Paragraph;
-import com.itextpdf.layout.property.TextAlignment;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import flagship.domain.caze.entity.Case;
 import flagship.domain.caze.mapper.CaseMapper;
 import flagship.domain.caze.model.PdaCase;
-import flagship.domain.caze.model.createrequest.resolvers.TugAreaResolver;
+import flagship.domain.caze.model.request.CreateCaseRequest;
 import flagship.domain.port.model.PdaPort;
 import flagship.domain.ship.model.PdaShip;
 import org.json.JSONException;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.net.MalformedURLException;
 import java.time.LocalDate;
+import java.util.List;
 
 import static flagship.domain.caze.entity.Case.CallPurpose.LOADING;
-import static flagship.domain.caze.model.createrequest.resolvers.PilotageAreaResolver.PilotageArea.VARNA_FIRST;
-import static flagship.domain.caze.model.createrequest.resolvers.PortAreaResolver.PortArea.FIRST;
+import static flagship.domain.caze.model.request.resolvers.PilotageAreaResolver.PilotageArea.VARNA_FIRST;
+import static flagship.domain.caze.model.request.resolvers.PortAreaResolver.PortArea.FIRST;
+import static flagship.domain.caze.model.request.resolvers.TugAreaResolver.TugArea;
+import static flagship.domain.caze.model.request.resolvers.TugAreaResolver.TugServiceProvider;
 import static flagship.domain.ship.entity.Ship.ShipType.BULK_CARRIER;
 
 public class Sandbox {
@@ -30,46 +28,36 @@ public class Sandbox {
 
   public static void main(final String[] args) throws JSONException, IOException {
 
-    final PdfWriter writer = new PdfWriter(DEST);
-    final PdfDocument pdf = new PdfDocument(writer);
+    final CreateCaseRequest request =
+        CreateCaseRequest.builder()
+            .portName("Varna")
+            .shipName("Falcon")
+            .shipType("Bulk carrier")
+            .shipLengthOverall(BigDecimal.valueOf(190.95))
+            .shipGrossTonnage(BigDecimal.valueOf(2500.00))
+            .shipHasIncreasedManeuverability(true)
+            .warningTypes(
+                List.of(
+                    "Ship requires special pilot",
+                    "Ship transports special cargo",
+                    "Ship transports dangerous cargo"))
+            .cargoManifest(List.of("Steel rods", "Gold", "Diamonds"))
+            .callPurpose("Loading")
+            .callCount(3)
+            .estimatedDateOfArrival("2021-06-12")
+            .estimatedDateOfDeparture("2021-06-15")
+            .alongsideDaysExpected(3)
+            .clientDiscountCoefficient(BigDecimal.valueOf(0.2))
+            .tugServiceProvider(TugServiceProvider.VTC)
+            .arrivesFromBulgarianPort(true)
+            .build();
 
-    final String code = "\u2714";
-    System.out.println(code);
+    final ObjectMapper mapper = new ObjectMapper();
+    final String s = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(request);
 
-    final Document document = new Document(pdf);
-    document.setMargins(5, 5, 5, 5);
-
-    composeHead(document);
-    composeShipData(document);
-
-    document.close();
+    System.out.println(s);
 
     //        dtoConversions();
-  }
-
-  private static void composeHead(final Document document) throws MalformedURLException {
-
-    //    firstCell.setBorder(Border.NO_BORDER);
-
-    //    secondCell.setBorder(Border.NO_BORDER);
-
-  }
-
-  private static void composeShipData(final Document document) {
-    final Paragraph paragraph1 = new Paragraph();
-    paragraph1
-        .add("Ship's name: Millennium's Falcon")
-        .setTextAlignment(TextAlignment.LEFT)
-        .setPaddingLeft(130);
-
-    final Paragraph paragraph2 = new Paragraph();
-    paragraph2
-        .add("Ship's type: Star destroyer raper")
-        .setTextAlignment(TextAlignment.LEFT)
-        .setPaddingLeft(135);
-
-    document.add(paragraph1);
-    document.add(paragraph2);
   }
 
   private static void dtoConversions() {
@@ -87,7 +75,7 @@ public class Sandbox {
             .name("Varna")
             .portArea(FIRST)
             .pilotageArea(VARNA_FIRST)
-            .tugArea(TugAreaResolver.TugArea.VTC_FIFTH)
+            .tugArea(TugArea.VTC_FIFTH)
             .build();
 
     final PdaCase pdaCase =

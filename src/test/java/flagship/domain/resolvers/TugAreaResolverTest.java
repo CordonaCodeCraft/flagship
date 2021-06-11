@@ -1,6 +1,6 @@
 package flagship.domain.resolvers;
 
-import flagship.domain.caze.model.createrequest.CreateCaseRequest;
+import flagship.domain.caze.model.request.CreateCaseRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -8,10 +8,10 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
-import static flagship.domain.caze.model.createrequest.resolvers.TugAreaResolver.*;
-import static flagship.domain.caze.model.createrequest.resolvers.TugAreaResolver.TugArea.*;
-import static flagship.domain.caze.model.createrequest.resolvers.TugAreaResolver.TugServiceProvider.PORTFLEET;
-import static flagship.domain.caze.model.createrequest.resolvers.TugAreaResolver.TugServiceProvider.VTC;
+import static flagship.domain.caze.model.request.resolvers.TugAreaResolver.*;
+import static flagship.domain.caze.model.request.resolvers.TugAreaResolver.TugArea.*;
+import static flagship.domain.caze.model.request.resolvers.TugAreaResolver.TugServiceProvider.PORTFLEET;
+import static flagship.domain.caze.model.request.resolvers.TugAreaResolver.TugServiceProvider.VTC;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DisplayName("Tug area resolver tests")

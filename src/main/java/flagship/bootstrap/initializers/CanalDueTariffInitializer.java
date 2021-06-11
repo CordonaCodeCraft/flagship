@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.util.*;
 
-import static flagship.domain.caze.model.createrequest.resolvers.PortAreaResolver.PortArea;
-import static flagship.domain.caze.model.createrequest.resolvers.PortAreaResolver.PortArea.*;
+import static flagship.domain.caze.model.request.resolvers.PortAreaResolver.PortArea;
+import static flagship.domain.caze.model.request.resolvers.PortAreaResolver.PortArea.*;
 import static flagship.domain.ship.entity.Ship.ShipType;
 import static flagship.domain.ship.entity.Ship.ShipType.NAVY;
 import static flagship.domain.ship.entity.Ship.ShipType.PASSENGER;

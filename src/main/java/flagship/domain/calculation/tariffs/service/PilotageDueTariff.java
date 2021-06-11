@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import java.util.Map;
 import java.util.Set;
 
-import static flagship.domain.caze.model.createrequest.resolvers.PilotageAreaResolver.PilotageArea;
+import static flagship.domain.caze.model.request.resolvers.PilotageAreaResolver.PilotageArea;
 import static flagship.domain.warning.generator.WarningsGenerator.WarningType;
 
 @Getter

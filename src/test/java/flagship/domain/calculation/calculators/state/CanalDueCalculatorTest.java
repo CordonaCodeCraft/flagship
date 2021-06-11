@@ -2,7 +2,7 @@ package flagship.domain.calculation.calculators.state;
 
 import flagship.domain.calculation.calculators.TariffsInitializer;
 import flagship.domain.caze.model.PdaCase;
-import flagship.domain.caze.model.createrequest.resolvers.PortAreaResolver;
+import flagship.domain.caze.model.request.resolvers.PortAreaResolver;
 import flagship.domain.port.model.PdaPort;
 import flagship.domain.ship.entity.Ship;
 import flagship.domain.ship.model.PdaShip;
@@ -18,7 +18,7 @@ import java.math.BigDecimal;
 import java.util.Random;
 import java.util.stream.Stream;
 
-import static flagship.domain.caze.model.createrequest.resolvers.PortAreaResolver.PortArea.FIRST;
+import static flagship.domain.caze.model.request.resolvers.PortAreaResolver.PortArea.FIRST;
 import static flagship.domain.ship.entity.Ship.ShipType.BULK_CARRIER;
 import static flagship.domain.ship.entity.Ship.ShipType.CONTAINER;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;

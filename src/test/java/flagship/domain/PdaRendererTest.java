@@ -4,8 +4,8 @@ import flagship.domain.calculation.calculators.TariffsInitializer;
 import flagship.domain.calculation.tariffs.Tariff;
 import flagship.domain.calculation.tariffs.TariffsFactory;
 import flagship.domain.caze.model.PdaCase;
-import flagship.domain.caze.model.createrequest.resolvers.MooringServiceProviderResolver;
-import flagship.domain.caze.model.createrequest.resolvers.TugAreaResolver;
+import flagship.domain.caze.model.request.resolvers.MooringServiceProviderResolver;
+import flagship.domain.caze.model.request.resolvers.TugAreaResolver;
 import flagship.domain.pda.entity.ProformaDisbursementAccount;
 import flagship.domain.pda.render.PdaRender;
 import flagship.domain.port.model.PdaPort;
@@ -24,8 +24,8 @@ import java.util.Map;
 import static flagship.domain.calculation.calculators.DueCalculator.CalculatorType;
 import static flagship.domain.calculation.calculators.DueCalculator.CalculatorType.*;
 import static flagship.domain.caze.entity.Case.CallPurpose.LOADING;
-import static flagship.domain.caze.model.createrequest.resolvers.PilotageAreaResolver.PilotageArea.BOURGAS_FIRST;
-import static flagship.domain.caze.model.createrequest.resolvers.PortAreaResolver.PortArea.FIRST;
+import static flagship.domain.caze.model.request.resolvers.PilotageAreaResolver.PilotageArea.BOURGAS_FIRST;
+import static flagship.domain.caze.model.request.resolvers.PortAreaResolver.PortArea.FIRST;
 import static flagship.domain.ship.entity.Ship.ShipType.BULK_CARRIER;
 
 class PdaRendererTest extends TariffsInitializer {

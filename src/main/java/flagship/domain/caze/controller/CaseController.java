@@ -1,0 +1,29 @@
+package flagship.domain.caze.controller;
+
+import flagship.domain.caze.mapper.CaseMapper;
+import flagship.domain.caze.model.PdaCase;
+import flagship.domain.caze.model.request.CreateCaseRequest;
+import flagship.domain.caze.service.CaseService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping(CaseController.PATH)
+@RequiredArgsConstructor
+public class CaseController {
+
+  public static final String PATH = "api/v1/cases/";
+  private final CaseService caseService;
+
+  @PostMapping("create")
+  @ResponseStatus(HttpStatus.CREATED)
+  public PdaCase createCase(@RequestBody final CreateCaseRequest input) {
+
+    final PdaCase pdaCase = CaseMapper.INSTANCE.createCaseRequestToPdaCase(input);
+
+    System.out.println();
+
+    return null;
+  }
+}

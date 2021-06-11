@@ -1,15 +1,15 @@
-package flagship.domain.caze.model.createrequest.resolvers;
+package flagship.domain.caze.model.request.resolvers;
 
-import flagship.domain.caze.model.createrequest.CreateCaseRequest;
+import flagship.domain.caze.model.request.CreateCaseRequest;
 
 import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.Map;
 import java.util.Set;
 
-import static flagship.domain.caze.model.createrequest.resolvers.TugAreaResolver.TugArea.*;
-import static flagship.domain.caze.model.createrequest.resolvers.TugAreaResolver.TugServiceProvider.PORTFLEET;
-import static flagship.domain.caze.model.createrequest.resolvers.TugAreaResolver.TugServiceProvider.VTC;
+import static flagship.domain.caze.model.request.resolvers.TugAreaResolver.TugArea.*;
+import static flagship.domain.caze.model.request.resolvers.TugAreaResolver.TugServiceProvider.PORTFLEET;
+import static flagship.domain.caze.model.request.resolvers.TugAreaResolver.TugServiceProvider.VTC;
 import static flagship.domain.port.entity.Port.PortName;
 import static flagship.domain.port.entity.Port.PortName.*;
 

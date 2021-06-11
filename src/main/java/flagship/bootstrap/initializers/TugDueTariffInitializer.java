@@ -16,8 +16,8 @@ import java.util.Map;
 
 import static flagship.domain.calculation.tariffs.Tariff.MAX_GT;
 import static flagship.domain.calculation.tariffs.Tariff.MIN_GT;
-import static flagship.domain.caze.model.createrequest.resolvers.TugAreaResolver.TugArea;
-import static flagship.domain.caze.model.createrequest.resolvers.TugAreaResolver.TugArea.*;
+import static flagship.domain.caze.model.request.resolvers.TugAreaResolver.TugArea;
+import static flagship.domain.caze.model.request.resolvers.TugAreaResolver.TugArea.*;
 import static flagship.domain.warning.generator.WarningsGenerator.WarningType;
 import static flagship.domain.warning.generator.WarningsGenerator.WarningType.HOLIDAY;
 

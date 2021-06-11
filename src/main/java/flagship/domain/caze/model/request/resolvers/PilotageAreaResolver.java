@@ -1,13 +1,11 @@
-package flagship.domain.caze.model.createrequest.resolvers;
-
-import flagship.domain.caze.model.createrequest.CreateCaseRequest;
+package flagship.domain.caze.model.request.resolvers;
 
 import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.Map;
 import java.util.Set;
 
-import static flagship.domain.caze.model.createrequest.resolvers.PilotageAreaResolver.PilotageArea.*;
+import static flagship.domain.caze.model.request.resolvers.PilotageAreaResolver.PilotageArea.*;
 import static flagship.domain.port.entity.Port.PortName;
 
 public class PilotageAreaResolver {
@@ -15,10 +13,9 @@ public class PilotageAreaResolver {
   public static final Map<PilotageArea, Set<PortName>> PORT_NAMES_IN_PILOTAGE_AREAS =
       initializeResolver();
 
-  public static PilotageArea resolvePilotageArea(final CreateCaseRequest source) {
+  public static PilotageArea resolvePilotageArea(final String portName) {
     return PORT_NAMES_IN_PILOTAGE_AREAS.entrySet().stream()
-        .filter(
-            entry -> entry.getValue().stream().anyMatch(v -> v.name.equals(source.getPortName())))
+        .filter(entry -> entry.getValue().stream().anyMatch(port -> port.name.equals(portName)))
         .map(Map.Entry::getKey)
         .findFirst()
         .get();

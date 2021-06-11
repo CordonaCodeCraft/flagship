@@ -2,7 +2,7 @@ package flagship.domain.calculation.calculators.service;
 
 import flagship.domain.calculation.calculators.BaseCalculatorTest;
 import flagship.domain.caze.model.PdaCase;
-import flagship.domain.caze.model.createrequest.resolvers.MooringServiceProviderResolver.MooringServiceProvider;
+import flagship.domain.caze.model.request.resolvers.MooringServiceProviderResolver.MooringServiceProvider;
 import flagship.domain.port.model.PdaPort;
 import flagship.domain.ship.model.PdaShip;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,7 +13,7 @@ import org.junit.jupiter.params.provider.EnumSource;
 
 import java.math.BigDecimal;
 
-import static flagship.domain.caze.model.createrequest.resolvers.MooringServiceProviderResolver.MooringServiceProvider.*;
+import static flagship.domain.caze.model.request.resolvers.MooringServiceProviderResolver.MooringServiceProvider.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DisplayName("Mooring due calculator tests")

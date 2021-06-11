@@ -16,7 +16,7 @@ import java.util.Map;
 
 import static flagship.domain.calculation.tariffs.Tariff.MAX_GT;
 import static flagship.domain.calculation.tariffs.Tariff.MIN_GT;
-import static flagship.domain.caze.model.createrequest.resolvers.MooringServiceProviderResolver.MooringServiceProvider;
+import static flagship.domain.caze.model.request.resolvers.MooringServiceProviderResolver.MooringServiceProvider;
 import static flagship.domain.warning.generator.WarningsGenerator.WarningType;
 import static flagship.domain.warning.generator.WarningsGenerator.WarningType.HOLIDAY;
 

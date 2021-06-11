@@ -1,31 +1,35 @@
-package flagship.domain.caze.model.createrequest;
+package flagship.domain.caze.model.request;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.List;
 
-import static flagship.domain.caze.model.createrequest.resolvers.TugAreaResolver.TugServiceProvider;
+import static flagship.domain.caze.model.request.resolvers.TugAreaResolver.TugServiceProvider;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class CreateCaseRequest {
 
-  private String portName;
   private String shipName;
   private String shipType;
   private BigDecimal shipLengthOverall;
   private BigDecimal shipGrossTonnage;
   private Boolean shipHasIncreasedManeuverability;
+  private String portName;
   private List<String> warningTypes;
   private List<String> cargoManifest;
   private String callPurpose;
   private Integer callCount;
-  private LocalDate estimatedDateOfArrival;
-  private LocalDate estimatedDateOfDeparture;
   private Integer alongsideDaysExpected;
+  private String estimatedDateOfArrival;
+  private String estimatedDateOfDeparture;
+  private Boolean arrivesFromBulgarianPort;
   private BigDecimal clientDiscountCoefficient;
   private TugServiceProvider tugServiceProvider;
 }

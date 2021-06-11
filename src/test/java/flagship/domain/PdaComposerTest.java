@@ -30,11 +30,11 @@ import java.util.stream.Stream;
 
 import static flagship.domain.calculation.calculators.DueCalculator.CalculatorType;
 import static flagship.domain.calculation.calculators.DueCalculator.CalculatorType.*;
-import static flagship.domain.caze.model.createrequest.resolvers.MooringServiceProviderResolver.MooringServiceProvider;
-import static flagship.domain.caze.model.createrequest.resolvers.PilotageAreaResolver.PilotageArea.BOURGAS_FIRST;
-import static flagship.domain.caze.model.createrequest.resolvers.PortAreaResolver.PortArea.FIRST;
-import static flagship.domain.caze.model.createrequest.resolvers.TugAreaResolver.TugArea;
-import static flagship.domain.caze.model.createrequest.resolvers.TugAreaResolver.TugServiceProvider;
+import static flagship.domain.caze.model.request.resolvers.MooringServiceProviderResolver.MooringServiceProvider;
+import static flagship.domain.caze.model.request.resolvers.PilotageAreaResolver.PilotageArea.BOURGAS_FIRST;
+import static flagship.domain.caze.model.request.resolvers.PortAreaResolver.PortArea.FIRST;
+import static flagship.domain.caze.model.request.resolvers.TugAreaResolver.TugArea;
+import static flagship.domain.caze.model.request.resolvers.TugAreaResolver.TugServiceProvider;
 import static flagship.domain.ship.entity.Ship.ShipType.BULK_CARRIER;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
