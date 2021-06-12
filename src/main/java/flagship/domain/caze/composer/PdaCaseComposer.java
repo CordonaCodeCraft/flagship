@@ -13,7 +13,9 @@ import flagship.domain.warning.generator.WarningsGenerator;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -25,6 +27,8 @@ import static flagship.domain.warning.generator.WarningsGenerator.WarningType;
 public class PdaCaseComposer {
 
   private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+  private static final String ETA_NOT_PROVIDED = "ETA not provided";
+  private static final String ETD_NOT_PROVIDED = "ETD not provided";
 
   public static PdaCase composeFrom(
       final CreateCaseRequest source, final TariffsFactory tariffsFactory) {
@@ -37,7 +41,7 @@ public class PdaCaseComposer {
             .cargoManifest(source.getCargoManifest())
             .callPurpose(getCallPurpose(source))
             .callCount(source.getCallCount())
-            .alongsideDaysExpected(source.getAlongsideDaysExpected())
+            .alongsideDaysExpected(getAlongsideDaysExpected(source))
             .estimatedDateOfArrival(getEta(source))
             .estimatedDateOfDeparture(getEtd(source))
             .arrivesFromBulgarianPort(source.getArrivesFromBulgarianPort())
@@ -91,8 +95,31 @@ public class PdaCaseComposer {
         .orElse(null);
   }
 
+  private static Integer getAlongsideDaysExpected(final CreateCaseRequest source) {
+    if (alongsideDaysCanBeCalculated(source)) {
+      return calculateAlongsideDays(source);
+    } else {
+      return Optional.ofNullable(source.getAlongsideDaysExpected()).isPresent()
+          ? source.getAlongsideDaysExpected()
+          : 0;
+    }
+  }
+
+  private static boolean alongsideDaysCanBeCalculated(final CreateCaseRequest source) {
+    return !source.getEstimatedDateOfArrival().equals(ETA_NOT_PROVIDED)
+        && !source.getEstimatedDateOfDeparture().equals(ETD_NOT_PROVIDED);
+  }
+
+  private static Integer calculateAlongsideDays(final CreateCaseRequest source) {
+
+    final LocalDate eta = LocalDate.parse(source.getEstimatedDateOfArrival(), formatter);
+    final LocalDate etd = LocalDate.parse(source.getEstimatedDateOfDeparture(), formatter);
+
+    return Math.toIntExact(ChronoUnit.DAYS.between(eta, etd));
+  }
+
   private static LocalDate getEta(final CreateCaseRequest source) {
-    if (source.getEstimatedDateOfArrival().equals("ETA not provided")) {
+    if (source.getEstimatedDateOfArrival().equals(ETA_NOT_PROVIDED)) {
       return null;
     } else {
       return LocalDate.parse(source.getEstimatedDateOfArrival(), formatter);
@@ -100,7 +127,7 @@ public class PdaCaseComposer {
   }
 
   private static LocalDate getEtd(final CreateCaseRequest source) {
-    if (source.getEstimatedDateOfDeparture().equals("ETD not provided")) {
+    if (source.getEstimatedDateOfDeparture().equals(ETD_NOT_PROVIDED)) {
       return null;
     } else {
       return LocalDate.parse(source.getEstimatedDateOfDeparture(), formatter);
