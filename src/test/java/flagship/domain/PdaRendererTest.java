@@ -12,6 +12,7 @@ import flagship.domain.port.model.PdaPort;
 import flagship.domain.ship.model.PdaShip;
 import flagship.domain.warning.generator.WarningsGenerator;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -28,6 +29,7 @@ import static flagship.domain.caze.model.createrequest.resolvers.PilotageAreaRes
 import static flagship.domain.caze.model.createrequest.resolvers.PortAreaResolver.PortArea.FIRST;
 import static flagship.domain.ship.entity.Ship.ShipType.BULK_CARRIER;
 
+@Disabled(value = "Temporary disabled for the front end devs")
 class PdaRendererTest extends TariffsInitializer {
 
   private static PdaCase testCase;
