@@ -31,7 +31,6 @@ public class CreateCaseRequest {
   private String estimatedDateOfDeparture;
   private Boolean arrivesFromBulgarianPort;
   private BigDecimal clientDiscountCoefficient;
-  private BigDecimal agencyCommissionCoefficient;
-
   private TugServiceProvider tugServiceProvider;
+  private BigDecimal agencyCommissionCoefficient;
 }

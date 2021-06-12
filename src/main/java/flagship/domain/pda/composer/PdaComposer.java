@@ -10,8 +10,6 @@ import flagship.domain.pda.entity.ProformaDisbursementAccount;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
@@ -28,10 +26,8 @@ import static flagship.domain.calculation.calculators.DueCalculator.CalculatorTy
 @Getter
 @Setter
 @RequiredArgsConstructor
-@PropertySource("classpath:application.yml")
 public class PdaComposer {
 
-  @Value("${flagship.commission-coefficient}")
   private BigDecimal commissionCoefficient;
 
   private PdaCase source;

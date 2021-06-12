@@ -15,4 +15,4 @@ flagship:
   tariffs-json-path: src/main/resources/tariffs/
   easter-day-of-month: 2
   new-installation: true
-  commission-coefficient: 0.3
+  agency-commission-coefficient: 0.3

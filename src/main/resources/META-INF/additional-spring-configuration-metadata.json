@@ -6,11 +6,6 @@
       "description": "Description for flagship.new-installation."
     },
     {
-      "name": "flagship.commission-coefficient",
-      "type": "java.lang.String",
-      "description": "Description for flagship.commission-coefficient."
-    },
-    {
       "name": "flagship.test",
       "type": "java.lang.String",
       "description": "Description for flagship.test."
@@ -24,6 +19,11 @@
       "name": "flagship.tariffs-json-path",
       "type": "java.lang.String",
       "description": "Description for flagship.tariffs-json-path."
+    },
+    {
+      "name": "flagship.agency-commission-coefficient",
+      "type": "java.lang.String",
+      "description": "Description for flagship.agency-commission-coefficient."
     }
   ]
 }

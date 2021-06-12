@@ -74,7 +74,6 @@ public class PdaCaseComposer {
   }
 
   private static PdaPort composePort(final CreateCaseRequest source) {
-
     final String portName = source.getPortName();
 
     return PdaPort.builder()
@@ -111,7 +110,6 @@ public class PdaCaseComposer {
   }
 
   private static Integer calculateAlongsideDays(final CreateCaseRequest source) {
-
     final LocalDate eta = LocalDate.parse(source.getEstimatedDateOfArrival(), formatter);
     final LocalDate etd = LocalDate.parse(source.getEstimatedDateOfDeparture(), formatter);
 
