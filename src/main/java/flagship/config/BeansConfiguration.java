@@ -25,8 +25,8 @@ import org.springframework.context.annotation.PropertySource;
 import java.io.File;
 import java.io.IOException;
 
-@Configuration
 @Slf4j
+@Configuration
 @PropertySource("classpath:application.yml")
 public class BeansConfiguration {
 
@@ -37,6 +37,9 @@ public class BeansConfiguration {
 
   @Value("${flagship.tariffs-json-path}")
   private String tariffsPath;
+
+  @Value("${flagship.easter-day-of-month}")
+  private int easterDay;
 
   @Bean
   public ObjectMapper objectMapper() {
@@ -51,7 +54,7 @@ public class BeansConfiguration {
     if (isNewInstallation) {
       final HolidayCalendarInitializer holidayCalendarInitializer =
           new HolidayCalendarInitializer();
-      holidayCalendar = holidayCalendarInitializer.initializeCalendar();
+      holidayCalendar = holidayCalendarInitializer.initializeCalendar(easterDay);
     } else {
       holidayCalendar =
           objectMapper.readValue(

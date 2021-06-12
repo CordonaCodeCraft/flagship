@@ -56,7 +56,6 @@ public class DataLoader implements ApplicationRunner {
   public void run(final ApplicationArguments args) throws IOException {
 
     if (isNewInstallation) {
-
       produceHolidayCalendarJsonFile();
 
       produceStateDuesJsonFiles();
@@ -74,7 +73,6 @@ public class DataLoader implements ApplicationRunner {
   }
 
   private void produceStateDuesJsonFiles() throws IOException {
-
     createJsonFrom(tonnageDueTariff, "tonnageDueTariff.json");
 
     createJsonFrom(wharfDueTariff, "wharfDueTariff.json");
@@ -91,7 +89,6 @@ public class DataLoader implements ApplicationRunner {
   }
 
   private void produceServiceDuesJsonFiles() throws IOException {
-
     createJsonFrom(pilotageDueTariff, "pilotageDueTariff.json");
 
     createJsonFrom(tugDueTariff, "tugDueTariff.json");
@@ -104,7 +101,6 @@ public class DataLoader implements ApplicationRunner {
   }
 
   private void initializeTariffsFactory() {
-
     final Map<CalculatorType, Tariff> tariffs = new EnumMap<>(CalculatorType.class);
 
     tariffs.put(TONNAGE_DUE_CALCULATOR, tonnageDueTariff);
@@ -130,7 +126,6 @@ public class DataLoader implements ApplicationRunner {
   }
 
   private <T> void createJsonFrom(final T source, final String asJson) throws IOException {
-
     objectMapper
         .writerWithDefaultPrettyPrinter()
         .writeValue(Paths.get(tariffsPath + asJson).toFile(), source);

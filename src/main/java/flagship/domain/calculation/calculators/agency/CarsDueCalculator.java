@@ -57,7 +57,7 @@ public class CarsDueCalculator implements DueCalculator {
         .filter(this::daysAreInRange)
         .map(e -> e.getValue().getBase())
         .findFirst()
-        .get();
+        .orElse(BigDecimal.ZERO);
   }
 
   private boolean daysAreInRange(final Map.Entry<Range, Due> entry) {
