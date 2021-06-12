@@ -1,5 +1,4 @@
 flagship\domain\caze\entity\Case$1.class
-flagship\domain\caze\model\request\resolvers\TugAreaResolver.class
 flagship\domain\calculation\calculators\service\MooringDueCalculator.class
 flagship\domain\agent\repository\AgentRepository.class
 flagship\domain\agent\service\AgentService.class
@@ -24,13 +23,10 @@ flagship\domain\calculation\calculators\state\LightDueCalculator.class
 flagship\bootstrap\initializers\SailingPermissionDueTariffInitializer.class
 flagship\domain\calculation\tariffs\state\BoomContainmentTariff.class
 flagship\domain\caze\entity\Case$CaseState.class
-flagship\domain\caze\model\request\resolvers\MooringServiceProviderResolver.class
-flagship\domain\base\range\serialization\RangeSerializer.class
 flagship\domain\calculation\calculators\agency\BankExpensesDueCalculator.class
 flagship\domain\calculation\calculators\DueCalculator$CalculatorType.class
 flagship\domain\agent\entity\Agent$AgentBuilderImpl.class
 flagship\domain\port\entity\Port$PortBuilderImpl.class
-flagship\domain\base\range\serialization\RangeDeserializer.class
 flagship\domain\port\entity\Port.class
 flagship\domain\ship\mapper\ShipMapperImpl.class
 flagship\domain\ship\model\PdaShip.class
@@ -40,12 +36,10 @@ flagship\domain\caze\mapper\CaseMapperImpl.class
 flagship\bootstrap\initializers\AgencyDuesTariffInitializer.class
 flagship\domain\ship\entity\Ship$ShipType.class
 flagship\domain\calculation\calculators\state\MarpolDueCalculator.class
-flagship\domain\base\range\tuple\Range.class
 flagship\domain\ship\entity\Ship.class
 flagship\domain\pda\service\impl\PdaServiceImpl.class
 flagship\domain\pda\entity\ProformaDisbursementAccount$1.class
 flagship\domain\port\entity\Port$1.class
-flagship\domain\caze\model\request\resolvers\PilotageAreaResolver.class
 flagship\domain\country\entity\Country.class
 flagship\bootstrap\initializers\TonnageDueTariffInitializer.class
 flagship\domain\calculation\calculators\state\BoomContainmentCalculator.class
@@ -54,7 +48,6 @@ flagship\domain\ship\entity\Ship$ShipBuilder.class
 flagship\domain\calculation\tariffs\state\SailingPermissionTariff.class
 flagship\domain\calculation\tariffs\state\WharfDueTariff.class
 flagship\domain\calculation\calculators\service\TugDueCalculator.class
-flagship\domain\caze\mapper\CaseMapperService.class
 flagship\bootstrap\initializers\BoomContainmentTariffInitializer.class
 flagship\domain\caze\model\PdaCase.class
 flagship\domain\calculation\calculators\service\MooringDueCalculator$1.class
@@ -64,9 +57,7 @@ flagship\domain\pda\render\elements\CompanyDetailsRender.class
 flagship\bootstrap\initializers\HolidayCalendarInitializer.class
 flagship\domain\calculation\tariffs\service\PilotageDueTariff.class
 flagship\domain\calculation\calculators\service\MooringDueCalculator$PortfleetMooringDueCalculator.class
-flagship\domain\caze\model\request\resolvers\TugAreaResolver$TugArea.class
 flagship\domain\calculation\calculators\state\MarpolDueCalculator$1.class
-flagship\domain\base\due\serialization\DueDeserializer.class
 flagship\domain\calculation\tariffs\state\LightDueTariff.class
 flagship\domain\pda\entity\ProformaDisbursementAccount$ProformaDisbursementAccountBuilder.class
 flagship\Sandbox.class
@@ -75,7 +66,6 @@ flagship\domain\calculation\calculators\state\SailingPermissionCalculator.class
 flagship\domain\pda\entity\ProformaDisbursementAccount.class
 flagship\config\FlagshipPropertiesBinding.class
 flagship\domain\cargo\entity\Cargo$1.class
-flagship\domain\caze\model\request\resolvers\PortAreaResolver.class
 flagship\domain\port\entity\Port$PortName.class
 flagship\bootstrap\initializers\WharfDueTariffInitializer.class
 flagship\domain\ship\repository\ShipRepository.class
@@ -87,7 +77,6 @@ flagship\domain\agent\entity\Agent.class
 flagship\domain\ship\service\ShipService.class
 flagship\domain\base\CrudService.class
 flagship\domain\calculation\calculators\service\MooringDueCalculator$VtcMooringDueCalculator.class
-flagship\domain\caze\model\request\resolvers\MooringServiceProviderResolver$MooringServiceProvider.class
 flagship\domain\calculation\tariffs\TariffsFactory.class
 flagship\domain\ship\entity\Ship$ShipBuilderImpl.class
 flagship\domain\country\entity\Country$CountryBuilder.class
@@ -102,9 +91,7 @@ flagship\domain\calculation\calculators\DueCalculator.class
 flagship\domain\calculation\calculators\service\MooringDueCalculator$BalchikMooringDueCalculator.class
 flagship\domain\calculation\calculators\CalculatorFactory.class
 flagship\domain\pda\render\elements\FinancialsRender$StatusIconsGenerator.class
-flagship\domain\base\due\serialization\DueSerializer.class
 flagship\domain\caze\entity\Case$CallPurpose.class
-flagship\domain\caze\model\request\resolvers\TugAreaResolver$TugServiceProvider.class
 flagship\domain\warning\entity\Warning$WarningBuilderImpl.class
 flagship\domain\country\entity\Country$1.class
 flagship\domain\warning\generator\WarningsGenerator.class
@@ -142,8 +129,6 @@ flagship\domain\warning\entity\Warning.class
 flagship\domain\calculation\calculators\service\MooringDueCalculator$LesportMooringDueCalculator.class
 flagship\domain\cargo\entity\Cargo.class
 flagship\domain\calculation\calculators\service\MooringDueCalculator$OdessosMooringDueCalculator.class
-flagship\domain\caze\model\request\resolvers\PilotageAreaResolver$PilotageArea.class
-flagship\domain\caze\model\request\resolvers\PortAreaResolver$PortArea.class
 flagship\domain\calculation\tariffs\agency\AgencyDuesTariff.class
 flagship\config\BeansConfiguration.class
 flagship\domain\port\entity\Port$PortBuilder.class
@@ -154,12 +139,8 @@ flagship\domain\calculation\tariffs\service\MooringDueTariff.class
 flagship\domain\agent\entity\Agent$AgentBuilder.class
 flagship\domain\country\entity\Country$CountryBuilderImpl.class
 flagship\domain\country\service\CountryService.class
-flagship\domain\base\due\tuple\Due$DueBuilder.class
 flagship\domain\pda\render\elements\InformationRender.class
 flagship\domain\pda\render\elements\TitleRender.class
-flagship\domain\caze\model\request\CreateCaseRequest.class
-flagship\domain\caze\model\request\CreateCaseRequest$CreateCaseRequestBuilder.class
-flagship\domain\base\due\tuple\Due.class
 flagship\domain\warning\entity\Warning$WarningBuilder.class
 flagship\domain\cargo\entity\Cargo$CargoType.class
 flagship\domain\pda\render\elements\PdaElementsFactory$DueType.class
