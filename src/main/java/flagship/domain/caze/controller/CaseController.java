@@ -3,7 +3,7 @@ package flagship.domain.caze.controller;
 import flagship.domain.calculation.tariffs.TariffsFactory;
 import flagship.domain.caze.composer.PdaCaseComposer;
 import flagship.domain.caze.model.PdaCase;
-import flagship.domain.caze.model.request.CreateCaseRequest;
+import flagship.domain.caze.model.createrequest.CreateCaseRequest;
 import flagship.domain.caze.service.CaseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

@@ -1,7 +1,7 @@
 package flagship.domain.resolvers;
 
-import flagship.domain.caze.model.request.CreateCaseRequest;
-import flagship.domain.caze.model.request.resolvers.PilotageAreaResolver;
+import flagship.domain.caze.model.createrequest.CreateCaseRequest;
+import flagship.domain.caze.model.createrequest.resolvers.PilotageAreaResolver;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -9,8 +9,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
-import static flagship.domain.caze.model.request.resolvers.PilotageAreaResolver.PilotageArea;
-import static flagship.domain.caze.model.request.resolvers.PilotageAreaResolver.PilotageArea.*;
+import static flagship.domain.caze.model.createrequest.resolvers.PilotageAreaResolver.PilotageArea;
+import static flagship.domain.caze.model.createrequest.resolvers.PilotageAreaResolver.PilotageArea.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DisplayName("Pilotage area resolver tests")

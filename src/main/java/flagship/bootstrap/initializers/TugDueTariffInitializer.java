@@ -4,31 +4,24 @@ import flagship.domain.calculation.tariffs.calendar.HolidayCalendar;
 import flagship.domain.calculation.tariffs.service.TugDueTariff;
 import flagship.domain.tuples.due.Due;
 import flagship.domain.tuples.range.Range;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.util.Collections;
 import java.util.EnumMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static flagship.domain.calculation.tariffs.Tariff.MAX_GT;
 import static flagship.domain.calculation.tariffs.Tariff.MIN_GT;
-import static flagship.domain.caze.model.request.resolvers.TugAreaResolver.TugArea;
-import static flagship.domain.caze.model.request.resolvers.TugAreaResolver.TugArea.*;
+import static flagship.domain.caze.model.createrequest.resolvers.TugAreaResolver.TugArea;
+import static flagship.domain.caze.model.createrequest.resolvers.TugAreaResolver.TugArea.*;
 import static flagship.domain.warning.generator.WarningsGenerator.WarningType;
 import static flagship.domain.warning.generator.WarningsGenerator.WarningType.HOLIDAY;
 
-@Component
 @Slf4j
-@RequiredArgsConstructor
-public class TugDueTariffInitializer {
+public class TugDueTariffInitializer extends Initializer {
 
   public static TugDueTariff getTariff(final HolidayCalendar holidayCalendar) {
-
-    final TugDueTariff tugDueTariff = new TugDueTariff();
 
     final Map<TugArea, Map<Range, Due>> tugDuesByArea = new EnumMap<>(TugArea.class);
 
@@ -201,15 +194,22 @@ public class TugDueTariffInitializer {
 
     final Map<WarningType, BigDecimal> increaseCoefficientsByWarningType =
         new EnumMap<>(WarningType.class);
+
     increaseCoefficientsByWarningType.put(HOLIDAY, BigDecimal.valueOf(1.0));
 
-    tugDueTariff.setTugDuesByArea(Collections.unmodifiableMap(tugDuesByArea));
-    tugDueTariff.setTugCountByGrossTonnage(Collections.unmodifiableMap(tugCountByGrossTonnage));
+    final TugDueTariff tugDueTariff = new TugDueTariff();
+
+    tugDueTariff.setTugDuesByArea(withImmutableMap(tugDuesByArea));
+
+    tugDueTariff.setTugCountByGrossTonnage(withImmutableMap(tugCountByGrossTonnage));
+
     tugDueTariff.setIncreaseCoefficientsByWarningType(
-        Collections.unmodifiableMap(increaseCoefficientsByWarningType));
+        withImmutableMap(increaseCoefficientsByWarningType));
 
     tugDueTariff.setHolidayCalendar(holidayCalendar.getHolidayCalendar());
+
     tugDueTariff.setGrossTonnageThreshold(BigDecimal.valueOf(10000.00));
+
     tugDueTariff.setGrossTonnageThresholdForTugCountReduce(BigDecimal.valueOf(18000.00));
 
     log.info("Tug due tariff initialized");

@@ -4,26 +4,19 @@ import flagship.domain.calculation.tariffs.agency.AgencyDuesTariff;
 import flagship.domain.port.entity.Port;
 import flagship.domain.tuples.due.Due;
 import flagship.domain.tuples.range.Range;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.util.Collections;
 import java.util.EnumMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static flagship.domain.port.entity.Port.PortName.*;
 
-@Component
 @Slf4j
-@RequiredArgsConstructor
-public class AgencyDuesTariffInitializer {
+public class AgencyDuesTariffInitializer extends Initializer {
 
   public static AgencyDuesTariff getTariff() {
-
-    final AgencyDuesTariff agencyDuesTariff = new AgencyDuesTariff();
 
     final Map<Range, Due> basicAgencyDuePerGT = new LinkedHashMap<>();
 
@@ -79,20 +72,32 @@ public class AgencyDuesTariffInitializer {
     carsDuesIncreaseCoefficientByPortName.put(PORT_ROSENETZ, BigDecimal.valueOf(0.5));
     carsDuesIncreaseCoefficientByPortName.put(BALCHIK_PORT, BigDecimal.valueOf(1));
 
-    agencyDuesTariff.setBasicAgencyDuePerGrossTonnage(
-        Collections.unmodifiableMap(basicAgencyDuePerGT));
+    final AgencyDuesTariff agencyDuesTariff = new AgencyDuesTariff();
+
+    agencyDuesTariff.setBasicAgencyDuePerGrossTonnage(withImmutableMap(basicAgencyDuePerGT));
+
     agencyDuesTariff.setCarsDueByGrossTonnageAndAlongsideDaysExpected(
-        Collections.unmodifiableMap(carsDueByGrossTonnageAndAlongsideDaysExpected));
+        withImmutableMap(carsDueByGrossTonnageAndAlongsideDaysExpected));
+
     agencyDuesTariff.setCarsDuesIncreaseCoefficientByPortName(
-        Collections.unmodifiableMap(carsDuesIncreaseCoefficientByPortName));
+        withImmutableMap(carsDuesIncreaseCoefficientByPortName));
+
     agencyDuesTariff.setBasicAgencyDueDiscountCoefficientByCallPurpose(BigDecimal.valueOf(0.5));
+
     agencyDuesTariff.setBasicAgencyDueGrossTonnageThreshold(BigDecimal.valueOf(10000.00));
+
     agencyDuesTariff.setClearanceIn(BigDecimal.valueOf(60.00));
+
     agencyDuesTariff.setClearanceOut(BigDecimal.valueOf(60.00));
+
     agencyDuesTariff.setBaseCommunicationsDue(BigDecimal.valueOf(100.00));
+
     agencyDuesTariff.setCommunicationsDueGrossTonnageThreshold(BigDecimal.valueOf(1000.00));
+
     agencyDuesTariff.setCommunicationsAdditionalDue(BigDecimal.valueOf(10.00));
+
     agencyDuesTariff.setBankExpensesCoefficient(BigDecimal.valueOf(0.5));
+
     agencyDuesTariff.setOvertimeCoefficient(BigDecimal.valueOf(0.2));
 
     log.info("Agency dues tariff initialized");

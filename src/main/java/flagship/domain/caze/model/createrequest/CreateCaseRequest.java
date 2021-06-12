@@ -1,4 +1,4 @@
-package flagship.domain.caze.model.request;
+package flagship.domain.caze.model.createrequest;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.util.List;
 
-import static flagship.domain.caze.model.request.resolvers.TugAreaResolver.TugServiceProvider;
+import static flagship.domain.caze.model.createrequest.resolvers.TugAreaResolver.TugServiceProvider;
 
 @Data
 @Builder

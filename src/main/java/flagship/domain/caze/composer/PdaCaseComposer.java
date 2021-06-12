@@ -2,10 +2,10 @@ package flagship.domain.caze.composer;
 
 import flagship.domain.calculation.tariffs.TariffsFactory;
 import flagship.domain.caze.model.PdaCase;
-import flagship.domain.caze.model.request.CreateCaseRequest;
-import flagship.domain.caze.model.request.resolvers.MooringServiceProviderResolver;
-import flagship.domain.caze.model.request.resolvers.PilotageAreaResolver;
-import flagship.domain.caze.model.request.resolvers.PortAreaResolver;
+import flagship.domain.caze.model.createrequest.CreateCaseRequest;
+import flagship.domain.caze.model.createrequest.resolvers.MooringServiceProviderResolver;
+import flagship.domain.caze.model.createrequest.resolvers.PilotageAreaResolver;
+import flagship.domain.caze.model.createrequest.resolvers.PortAreaResolver;
 import flagship.domain.pda.composer.PdaComposer;
 import flagship.domain.port.model.PdaPort;
 import flagship.domain.ship.model.PdaShip;
@@ -18,7 +18,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static flagship.domain.caze.entity.Case.CallPurpose;
-import static flagship.domain.caze.model.request.resolvers.TugAreaResolver.resolveTugArea;
+import static flagship.domain.caze.model.createrequest.resolvers.TugAreaResolver.resolveTugArea;
 import static flagship.domain.ship.entity.Ship.ShipType;
 import static flagship.domain.warning.generator.WarningsGenerator.WarningType;
 

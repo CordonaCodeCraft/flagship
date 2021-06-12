@@ -3,25 +3,18 @@ package flagship.bootstrap.initializers;
 import flagship.domain.calculation.tariffs.state.BoomContainmentTariff;
 import flagship.domain.tuples.due.Due;
 import flagship.domain.tuples.range.Range;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static flagship.domain.calculation.tariffs.Tariff.MAX_GT;
 import static flagship.domain.calculation.tariffs.Tariff.MIN_GT;
 
-@Component
 @Slf4j
-@RequiredArgsConstructor
-public class BoomContainmentTariffInitializer {
+public class BoomContainmentTariffInitializer extends Initializer {
 
   public static BoomContainmentTariff getTariff() {
-
-    final BoomContainmentTariff boomContainmentTariff = new BoomContainmentTariff();
 
     final Map<Range, Due> boomContainmentDuePerGrossTonnage = new LinkedHashMap<>();
 
@@ -31,8 +24,10 @@ public class BoomContainmentTariffInitializer {
     boomContainmentDuePerGrossTonnage.put(new Range(10001, 20000), new Due(1800.00));
     boomContainmentDuePerGrossTonnage.put(new Range(20001, MAX_GT), new Due(2500.00));
 
+    final BoomContainmentTariff boomContainmentTariff = new BoomContainmentTariff();
+
     boomContainmentTariff.setBoomContainmentDuePerGrossTonnage(
-        Collections.unmodifiableMap(boomContainmentDuePerGrossTonnage));
+        withImmutableMap(boomContainmentDuePerGrossTonnage));
 
     log.info("Boom containment due tariff initialized");
 

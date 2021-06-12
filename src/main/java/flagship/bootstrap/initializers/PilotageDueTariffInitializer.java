@@ -4,9 +4,7 @@ import flagship.domain.calculation.tariffs.calendar.HolidayCalendar;
 import flagship.domain.calculation.tariffs.service.PilotageDueTariff;
 import flagship.domain.tuples.due.Due;
 import flagship.domain.tuples.range.Range;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.Collections;
@@ -16,19 +14,15 @@ import java.util.Map;
 
 import static flagship.domain.calculation.tariffs.Tariff.MAX_GT;
 import static flagship.domain.calculation.tariffs.Tariff.MIN_GT;
-import static flagship.domain.caze.model.request.resolvers.PilotageAreaResolver.PilotageArea;
-import static flagship.domain.caze.model.request.resolvers.PilotageAreaResolver.PilotageArea.*;
+import static flagship.domain.caze.model.createrequest.resolvers.PilotageAreaResolver.PilotageArea;
+import static flagship.domain.caze.model.createrequest.resolvers.PilotageAreaResolver.PilotageArea.*;
 import static flagship.domain.warning.generator.WarningsGenerator.WarningType;
 import static flagship.domain.warning.generator.WarningsGenerator.WarningType.*;
 
-@Component
 @Slf4j
-@RequiredArgsConstructor
-public class PilotageDueTariffInitializer {
+public class PilotageDueTariffInitializer extends Initializer {
 
   public static PilotageDueTariff getTariff(final HolidayCalendar holidayCalendar) {
-
-    final PilotageDueTariff pilotageDueTariff = new PilotageDueTariff();
 
     final Map<PilotageArea, Map<Range, Due>> pilotageDuesByArea = new EnumMap<>(PilotageArea.class);
 
@@ -94,8 +88,6 @@ public class PilotageDueTariffInitializer {
     pilotageDuesByArea.put(VARNA_THIRD, varnaThirdAreaPilotageDues);
     pilotageDuesByArea.put(BOURGAS_FIRST, bourgasFirstAreaPilotageDues);
 
-    pilotageDueTariff.setPilotageDuesByArea(Collections.unmodifiableMap(pilotageDuesByArea));
-
     final Map<WarningType, BigDecimal> increaseCoefficientsByWarningType =
         new EnumMap<>(WarningType.class);
 
@@ -103,6 +95,10 @@ public class PilotageDueTariffInitializer {
     increaseCoefficientsByWarningType.put(SPECIAL_PILOT, BigDecimal.valueOf(0.5));
     increaseCoefficientsByWarningType.put(HAZARDOUS_PILOTAGE_CARGO, BigDecimal.valueOf(0.2));
     increaseCoefficientsByWarningType.put(SPECIAL_PILOTAGE_CARGO, BigDecimal.valueOf(1.0));
+
+    final PilotageDueTariff pilotageDueTariff = new PilotageDueTariff();
+
+    pilotageDueTariff.setPilotageDuesByArea(withImmutableMap(pilotageDuesByArea));
 
     pilotageDueTariff.setIncreaseCoefficientsByWarningType(
         Collections.unmodifiableMap(increaseCoefficientsByWarningType));

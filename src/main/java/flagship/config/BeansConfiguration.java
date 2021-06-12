@@ -139,8 +139,10 @@ public class BeansConfiguration {
   }
 
   public ObjectMapper configureMapper() {
+
     final ObjectMapper objectMapper = new ObjectMapper();
     final SimpleModule simpleModule = new SimpleModule();
+
     simpleModule.addKeyDeserializer(Range.class, new RangeDeserializer());
     simpleModule.addDeserializer(Due.class, new DueDeserializer());
     objectMapper.registerModule(simpleModule);

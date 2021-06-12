@@ -14,8 +14,8 @@ import org.junit.jupiter.params.provider.EnumSource;
 import java.math.BigDecimal;
 import java.util.HashSet;
 
-import static flagship.domain.caze.model.request.resolvers.PilotageAreaResolver.PilotageArea;
-import static flagship.domain.caze.model.request.resolvers.PilotageAreaResolver.PilotageArea.VARNA_FIRST;
+import static flagship.domain.caze.model.createrequest.resolvers.PilotageAreaResolver.PilotageArea;
+import static flagship.domain.caze.model.createrequest.resolvers.PilotageAreaResolver.PilotageArea.VARNA_FIRST;
 import static flagship.domain.warning.generator.WarningsGenerator.WarningType.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 

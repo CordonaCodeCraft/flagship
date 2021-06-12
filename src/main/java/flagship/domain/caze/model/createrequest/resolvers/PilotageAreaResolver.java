@@ -1,11 +1,11 @@
-package flagship.domain.caze.model.request.resolvers;
+package flagship.domain.caze.model.createrequest.resolvers;
 
 import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.Map;
 import java.util.Set;
 
-import static flagship.domain.caze.model.request.resolvers.PilotageAreaResolver.PilotageArea.*;
+import static flagship.domain.caze.model.createrequest.resolvers.PilotageAreaResolver.PilotageArea.*;
 import static flagship.domain.port.entity.Port.PortName;
 
 public class PilotageAreaResolver {

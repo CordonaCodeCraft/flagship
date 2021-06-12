@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import java.util.Map;
 import java.util.Set;
 
-import static flagship.domain.caze.model.request.resolvers.PortAreaResolver.PortArea;
+import static flagship.domain.caze.model.createrequest.resolvers.PortAreaResolver.PortArea;
 import static flagship.domain.ship.entity.Ship.ShipType;
 
 @Getter

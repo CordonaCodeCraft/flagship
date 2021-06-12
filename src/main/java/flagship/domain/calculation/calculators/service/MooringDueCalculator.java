@@ -4,12 +4,12 @@ import flagship.domain.calculation.calculators.PrivateDueCalculator;
 import flagship.domain.calculation.tariffs.Tariff;
 import flagship.domain.calculation.tariffs.service.MooringDueTariff;
 import flagship.domain.caze.model.PdaCase;
-import flagship.domain.caze.model.request.resolvers.MooringServiceProviderResolver.MooringServiceProvider;
+import flagship.domain.caze.model.createrequest.resolvers.MooringServiceProviderResolver.MooringServiceProvider;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
-import static flagship.domain.caze.model.request.resolvers.MooringServiceProviderResolver.MooringServiceProvider.*;
+import static flagship.domain.caze.model.createrequest.resolvers.MooringServiceProviderResolver.MooringServiceProvider.*;
 
 @NoArgsConstructor
 public class MooringDueCalculator extends PrivateDueCalculator {

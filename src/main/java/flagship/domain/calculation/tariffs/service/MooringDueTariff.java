@@ -13,7 +13,7 @@ import java.time.LocalDate;
 import java.util.Map;
 import java.util.Set;
 
-import static flagship.domain.caze.model.request.resolvers.MooringServiceProviderResolver.MooringServiceProvider;
+import static flagship.domain.caze.model.createrequest.resolvers.MooringServiceProviderResolver.MooringServiceProvider;
 
 @Getter
 @Setter

@@ -55,12 +55,14 @@ public class DataLoader implements ApplicationRunner {
   @Override
   public void run(final ApplicationArguments args) throws IOException {
 
-    System.out.println();
-
     if (isNewInstallation) {
+
       produceHolidayCalendarJsonFile();
+
       produceStateDuesJsonFiles();
+
       produceServiceDuesJsonFiles();
+
       produceAgencyDuesJsonFile();
     }
 
@@ -72,18 +74,28 @@ public class DataLoader implements ApplicationRunner {
   }
 
   private void produceStateDuesJsonFiles() throws IOException {
+
     createJsonFrom(tonnageDueTariff, "tonnageDueTariff.json");
+
     createJsonFrom(wharfDueTariff, "wharfDueTariff.json");
+
     createJsonFrom(canalDueTariff, "canalDueTariff.json");
+
     createJsonFrom(lightDueTariff, "lightDueTariff.json");
+
     createJsonFrom(marpolDueTariff, "marpolDueTariff.json");
+
     createJsonFrom(boomContainmentTariff, "boomContainmentDueTariff.json");
+
     createJsonFrom(sailingPermissionTariff, "sailingPermissionDueTariff.json");
   }
 
   private void produceServiceDuesJsonFiles() throws IOException {
+
     createJsonFrom(pilotageDueTariff, "pilotageDueTariff.json");
+
     createJsonFrom(tugDueTariff, "tugDueTariff.json");
+
     createJsonFrom(mooringDueTariff, "mooringDueTariff.json");
   }
 

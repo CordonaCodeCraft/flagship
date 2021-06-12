@@ -1,4 +1,4 @@
-package flagship.domain.caze.model.request.resolvers;
+package flagship.domain.caze.model.createrequest.resolvers;
 
 import java.util.List;
 

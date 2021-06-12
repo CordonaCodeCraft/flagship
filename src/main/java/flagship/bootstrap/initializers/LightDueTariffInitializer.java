@@ -3,9 +3,7 @@ package flagship.bootstrap.initializers;
 import flagship.domain.calculation.tariffs.state.LightDueTariff;
 import flagship.domain.tuples.due.Due;
 import flagship.domain.tuples.range.Range;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -15,14 +13,10 @@ import static flagship.domain.ship.entity.Ship.ShipType;
 import static flagship.domain.ship.entity.Ship.ShipType.NAVY;
 import static flagship.domain.ship.entity.Ship.ShipType.PASSENGER;
 
-@Component
 @Slf4j
-@RequiredArgsConstructor
-public class LightDueTariffInitializer {
+public class LightDueTariffInitializer extends Initializer {
 
   public static LightDueTariff getTariff() {
-
-    final LightDueTariff lightDueTariff = new LightDueTariff();
 
     final Map<Range, Due> lightDuesByGrossTonnage = new LinkedHashMap<>();
 
@@ -42,15 +36,22 @@ public class LightDueTariffInitializer {
 
     final Set<ShipType> shipTypesNotEligibleForDiscount = EnumSet.of(NAVY);
 
-    lightDueTariff.setShipTypesNotEligibleForDiscount(
-        Collections.unmodifiableSet(shipTypesNotEligibleForDiscount));
+    final LightDueTariff lightDueTariff = new LightDueTariff();
 
-    lightDueTariff.setLightDuesByGrossTonnage(Collections.unmodifiableMap(lightDuesByGrossTonnage));
-    lightDueTariff.setLightDuesPerTonByShipType(Collections.unmodifiableMap(lightDuesByShipType));
+    lightDueTariff.setLightDuesByGrossTonnage(withImmutableMap(lightDuesByGrossTonnage));
+
+    lightDueTariff.setLightDuesPerTonByShipType(withImmutableMap(lightDuesByShipType));
+
     lightDueTariff.setDiscountCoefficientsByShipType(
-        Collections.unmodifiableMap(discountCoefficientsByShipType));
+        withImmutableMap(discountCoefficientsByShipType));
+
+    lightDueTariff.setShipTypesNotEligibleForDiscount(
+        withImmutableSet(shipTypesNotEligibleForDiscount));
+
     lightDueTariff.setCallCountThreshold(4);
+
     lightDueTariff.setCallCountDiscountCoefficient(BigDecimal.valueOf(0.7));
+
     lightDueTariff.setLightDueMaximumValue(BigDecimal.valueOf(150.00));
 
     log.info("Light due tariff initialized");

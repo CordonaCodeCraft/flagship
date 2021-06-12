@@ -3,26 +3,19 @@ package flagship.bootstrap.initializers;
 import flagship.domain.calculation.tariffs.state.MarpolDueTariff;
 import flagship.domain.tuples.due.Due;
 import flagship.domain.tuples.range.Range;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static flagship.domain.calculation.tariffs.Tariff.MAX_GT;
 import static flagship.domain.calculation.tariffs.Tariff.MIN_GT;
 
-@Component
 @Slf4j
-@RequiredArgsConstructor
-public class MarpolDueTariffInitializer {
+public class MarpolDueTariffInitializer extends Initializer {
 
   public static MarpolDueTariff getTariff() {
-
-    final MarpolDueTariff marpolDueTariff = new MarpolDueTariff();
 
     final Map<Range, Due> freeSewageDisposalQuantitiesPerGT = new LinkedHashMap<>();
 
@@ -69,15 +62,20 @@ public class MarpolDueTariffInitializer {
     marpolDuePerGrossTonnage.put(
         new Range(50001, MAX_GT), new Due[] {new Due(900.00), new Due(50.00), new Due(550.00)});
 
+    final MarpolDueTariff marpolDueTariff = new MarpolDueTariff();
+
     marpolDueTariff.setFreeSewageDisposalQuantitiesPerGrossTonnage(
-        Collections.unmodifiableMap(freeSewageDisposalQuantitiesPerGT));
+        withImmutableMap(freeSewageDisposalQuantitiesPerGT));
+
     marpolDueTariff.setFreeGarbageDisposalQuantitiesPerGrossTonnage(
-        Collections.unmodifiableMap(freeGarbageDisposalQuantitiesPerGT));
-    marpolDueTariff.setMarpolDuePerGrossTonnage(
-        Collections.unmodifiableMap(marpolDuePerGrossTonnage));
+        withImmutableMap(freeGarbageDisposalQuantitiesPerGT));
+
+    marpolDueTariff.setMarpolDuePerGrossTonnage(withImmutableMap(marpolDuePerGrossTonnage));
 
     marpolDueTariff.setOdessosFixedMarpolDue(BigDecimal.valueOf(120.00));
+
     marpolDueTariff.setOdessosFreeGarbageDisposalQuantity(BigDecimal.valueOf(10.00));
+
     marpolDueTariff.setOdessosFreeSewageDisposalQuantity(BigDecimal.valueOf(1.00));
 
     log.info("Marpol due tariff initialized");

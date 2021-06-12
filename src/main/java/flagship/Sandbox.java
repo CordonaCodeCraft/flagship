@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import flagship.domain.caze.entity.Case;
 import flagship.domain.caze.mapper.CaseMapper;
 import flagship.domain.caze.model.PdaCase;
-import flagship.domain.caze.model.request.CreateCaseRequest;
+import flagship.domain.caze.model.createrequest.CreateCaseRequest;
 import flagship.domain.port.model.PdaPort;
 import flagship.domain.ship.model.PdaShip;
 import org.json.JSONException;
@@ -15,10 +15,10 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static flagship.domain.caze.entity.Case.CallPurpose.LOADING;
-import static flagship.domain.caze.model.request.resolvers.PilotageAreaResolver.PilotageArea.VARNA_FIRST;
-import static flagship.domain.caze.model.request.resolvers.PortAreaResolver.PortArea.FIRST;
-import static flagship.domain.caze.model.request.resolvers.TugAreaResolver.TugArea;
-import static flagship.domain.caze.model.request.resolvers.TugAreaResolver.TugServiceProvider;
+import static flagship.domain.caze.model.createrequest.resolvers.PilotageAreaResolver.PilotageArea.VARNA_FIRST;
+import static flagship.domain.caze.model.createrequest.resolvers.PortAreaResolver.PortArea.FIRST;
+import static flagship.domain.caze.model.createrequest.resolvers.TugAreaResolver.TugArea;
+import static flagship.domain.caze.model.createrequest.resolvers.TugAreaResolver.TugServiceProvider;
 import static flagship.domain.ship.entity.Ship.ShipType.BULK_CARRIER;
 
 public class Sandbox {

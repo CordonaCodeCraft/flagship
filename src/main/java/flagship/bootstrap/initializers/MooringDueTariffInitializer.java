@@ -4,28 +4,21 @@ import flagship.domain.calculation.tariffs.calendar.HolidayCalendar;
 import flagship.domain.calculation.tariffs.service.MooringDueTariff;
 import flagship.domain.tuples.due.Due;
 import flagship.domain.tuples.range.Range;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.util.Collections;
 import java.util.EnumMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static flagship.domain.calculation.tariffs.Tariff.MAX_GT;
 import static flagship.domain.calculation.tariffs.Tariff.MIN_GT;
-import static flagship.domain.caze.model.request.resolvers.MooringServiceProviderResolver.MooringServiceProvider;
+import static flagship.domain.caze.model.createrequest.resolvers.MooringServiceProviderResolver.MooringServiceProvider;
 import static flagship.domain.warning.generator.WarningsGenerator.WarningType;
 import static flagship.domain.warning.generator.WarningsGenerator.WarningType.HOLIDAY;
 
-@Component
 @Slf4j
-@RequiredArgsConstructor
-public class MooringDueTariffInitializer {
-
-  private static final MooringDueTariff mooringDueTariff = new MooringDueTariff();
+public class MooringDueTariffInitializer extends Initializer {
 
   public static MooringDueTariff getTariff(final HolidayCalendar holidayCalendar) {
 
@@ -107,15 +100,25 @@ public class MooringDueTariffInitializer {
 
     increaseCoefficientsByWarningType.put(HOLIDAY, BigDecimal.valueOf(1.0));
 
-    mooringDueTariff.setMooringDuesByProvider(Collections.unmodifiableMap(mooringDuesByProvider));
+    final MooringDueTariff mooringDueTariff = new MooringDueTariff();
+
+    mooringDueTariff.setMooringDuesByProvider(withImmutableMap(mooringDuesByProvider));
+
     mooringDueTariff.setHolidayCalendar(holidayCalendar.getHolidayCalendar());
+
     mooringDueTariff.setIncreaseCoefficientsByWarningType(
-        Collections.unmodifiableMap(increaseCoefficientsByWarningType));
+        withImmutableMap(increaseCoefficientsByWarningType));
+
     mooringDueTariff.setLesportGrossTonnageThreshold(BigDecimal.valueOf(10000.00));
+
     mooringDueTariff.setBalchikGrossTonnageThreshold(BigDecimal.valueOf(10000.00));
+
     mooringDueTariff.setPchvmGrossTonnageThreshold(BigDecimal.valueOf(10000.00));
+
     mooringDueTariff.setVtcGrossTonnageThreshold(BigDecimal.valueOf(10000.00));
+
     mooringDueTariff.setPortfleetGrossTonnageThreshold(BigDecimal.valueOf(10000.00));
+
     mooringDueTariff.setOdessosGrossTonnageThreshold(BigDecimal.valueOf(5000.00));
 
     log.info("Mooring due tariff initialized");

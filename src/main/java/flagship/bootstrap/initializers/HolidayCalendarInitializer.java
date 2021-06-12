@@ -2,7 +2,7 @@ package flagship.bootstrap.initializers;
 
 import flagship.domain.calculation.tariffs.calendar.HolidayCalendar;
 import flagship.domain.calculation.tariffs.calendar.HolidayCalendarResolver;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -16,18 +16,17 @@ import static java.time.Month.*;
 
 @PropertySource("classpath:application.yml")
 @Component
+@NoArgsConstructor
 @Slf4j
-@RequiredArgsConstructor
-public class HolidayCalendarInitializer {
+public class HolidayCalendarInitializer extends Initializer {
 
-  private final HolidayCalendar holidayCalendar = new HolidayCalendar();
   // todo: find why does not detect externalized value
   @Value("${flagship.easter-day-of-month}")
   private int easterDayOfMonth;
 
   public HolidayCalendar initializeCalendar() {
 
-    int year = LocalDate.now().getYear();
+    final int year = LocalDate.now().getYear();
 
     final LocalDate easter = LocalDate.of(LocalDate.now().getYear(), MAY, 2);
 
@@ -47,8 +46,9 @@ public class HolidayCalendarInitializer {
     officialHolidays.add(LocalDate.of(year, DECEMBER, 25));
     officialHolidays.add(LocalDate.of(year, DECEMBER, 26));
 
-    final Set<LocalDate> resolvedHolidays = HolidayCalendarResolver.resolve(officialHolidays);
-    holidayCalendar.setHolidayCalendar(resolvedHolidays);
+    final HolidayCalendar holidayCalendar = new HolidayCalendar();
+
+    holidayCalendar.setHolidayCalendar(HolidayCalendarResolver.resolve(officialHolidays));
 
     log.info("Holiday calendar initialized");
 
