@@ -1,10 +1,10 @@
-package flagship.domain.base.due.serialization;
+package flagship.domain.tuples.due.serialization;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import flagship.domain.base.due.tuple.Due;
+import flagship.domain.tuples.due.Due;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -17,7 +17,7 @@ public class DueSerializer extends JsonSerializer<Due> {
   public void serialize(
       final Due value, final JsonGenerator gen, final SerializerProvider serializers)
       throws IOException {
-    StringWriter writer = new StringWriter();
+    final StringWriter writer = new StringWriter();
     mapper.writeValue(writer, value);
     gen.writeFieldName(writer.toString());
   }

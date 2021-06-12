@@ -26,7 +26,7 @@ public class PdaCaseComposer {
 
   private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-  public static PdaCase composePdaCase(
+  public static PdaCase composeFrom(
       final CreateCaseRequest source, final TariffsFactory tariffsFactory) {
 
     final PdaCase pdaCase =
@@ -49,6 +49,7 @@ public class PdaCaseComposer {
     pdaCase.setWarnings(warningsGenerator.generateWarnings());
 
     final PdaComposer pdaComposer = new PdaComposer();
+
     pdaComposer.setSource(pdaCase);
     pdaComposer.setTariffsFactory(tariffsFactory);
     pdaComposer.setCommissionCoefficient(source.getAgencyCommissionCoefficient());

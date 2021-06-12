@@ -1,4 +1,4 @@
-package flagship.domain.base.range.tuple;
+package flagship.domain.tuples.range;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.*;

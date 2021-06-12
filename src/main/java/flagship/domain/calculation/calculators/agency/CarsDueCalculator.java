@@ -1,12 +1,12 @@
 package flagship.domain.calculation.calculators.agency;
 
-import flagship.domain.base.due.tuple.Due;
-import flagship.domain.base.range.tuple.Range;
 import flagship.domain.calculation.calculators.DueCalculator;
 import flagship.domain.calculation.tariffs.Tariff;
 import flagship.domain.calculation.tariffs.agency.AgencyDuesTariff;
 import flagship.domain.caze.model.PdaCase;
 import flagship.domain.port.entity.Port;
+import flagship.domain.tuples.due.Due;
+import flagship.domain.tuples.range.Range;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;

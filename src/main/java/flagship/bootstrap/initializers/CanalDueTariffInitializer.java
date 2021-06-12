@@ -1,7 +1,7 @@
 package flagship.bootstrap.initializers;
 
-import flagship.domain.base.due.tuple.Due;
 import flagship.domain.calculation.tariffs.state.CanalDueTariff;
+import flagship.domain.tuples.due.Due;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

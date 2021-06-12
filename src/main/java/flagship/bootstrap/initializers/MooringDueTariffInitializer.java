@@ -1,9 +1,9 @@
 package flagship.bootstrap.initializers;
 
-import flagship.domain.base.due.tuple.Due;
-import flagship.domain.base.range.tuple.Range;
 import flagship.domain.calculation.tariffs.calendar.HolidayCalendar;
 import flagship.domain.calculation.tariffs.service.MooringDueTariff;
+import flagship.domain.tuples.due.Due;
+import flagship.domain.tuples.range.Range;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

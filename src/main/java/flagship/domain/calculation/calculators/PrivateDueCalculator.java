@@ -1,8 +1,8 @@
 package flagship.domain.calculation.calculators;
 
-import flagship.domain.base.due.tuple.Due;
-import flagship.domain.base.range.tuple.Range;
 import flagship.domain.caze.model.PdaCase;
+import flagship.domain.tuples.due.Due;
+import flagship.domain.tuples.range.Range;
 
 import java.math.BigDecimal;
 import java.util.Map;

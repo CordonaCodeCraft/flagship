@@ -1,4 +1,4 @@
-package flagship.domain.base.due.tuple;
+package flagship.domain.tuples.due;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.*;
@@ -19,17 +19,17 @@ public class Due implements Serializable {
   private BigDecimal base;
   private BigDecimal addition;
 
-  public Due(BigDecimal base) {
+  public Due(final BigDecimal base) {
     this.base = base;
-    this.addition = BigDecimal.ZERO;
+    addition = BigDecimal.ZERO;
   }
 
-  public Due(double base) {
+  public Due(final double base) {
     this.base = BigDecimal.valueOf(base);
-    this.addition = BigDecimal.ZERO;
+    addition = BigDecimal.ZERO;
   }
 
-  public Due(double base, double addition) {
+  public Due(final double base, final double addition) {
     this.base = BigDecimal.valueOf(base);
     this.addition = BigDecimal.valueOf(addition);
   }

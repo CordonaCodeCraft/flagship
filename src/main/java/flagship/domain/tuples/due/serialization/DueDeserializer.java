@@ -1,10 +1,10 @@
-package flagship.domain.base.due.serialization;
+package flagship.domain.tuples.due.serialization;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import flagship.domain.base.due.tuple.Due;
+import flagship.domain.tuples.due.Due;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -15,7 +15,7 @@ public class DueDeserializer extends StdDeserializer<Due> {
     this(null);
   }
 
-  public DueDeserializer(Class<?> vc) {
+  public DueDeserializer(final Class<?> vc) {
     super(vc);
   }
 
@@ -23,17 +23,17 @@ public class DueDeserializer extends StdDeserializer<Due> {
   public Due deserialize(final JsonParser jp, final DeserializationContext ctxt)
       throws IOException {
 
-    JsonNode node = jp.getCodec().readTree(jp);
+    final JsonNode node = jp.getCodec().readTree(jp);
 
-    String[] pairs = node.asText().split("-");
+    final String[] pairs = node.asText().split("-");
 
-    String left = pairs[0].trim();
-    String right = pairs[1].trim();
+    final String left = pairs[0].trim();
+    final String right = pairs[1].trim();
 
-    BigDecimal base =
+    final BigDecimal base =
         left.equals("0") ? BigDecimal.ZERO : BigDecimal.valueOf(Double.parseDouble(left));
 
-    BigDecimal add =
+    final BigDecimal add =
         right.equals("0") ? BigDecimal.ZERO : BigDecimal.valueOf(Double.parseDouble(right));
 
     return new Due(base, add);

@@ -22,7 +22,7 @@ public class CaseController {
   @ResponseStatus(HttpStatus.CREATED)
   public PdaCase createCase(@RequestBody final CreateCaseRequest input) {
 
-    final PdaCase pdaCase = PdaCaseComposer.composePdaCase(input, tariffsFactory);
+    final PdaCase pdaCase = PdaCaseComposer.composeFrom(input, tariffsFactory);
 
     System.out.println();
 

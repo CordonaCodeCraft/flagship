@@ -19,6 +19,11 @@
       "name": "flagship.easter-day-of-month",
       "type": "java.lang.String",
       "description": "Description for flagship.easter-date-of-month."
+    },
+    {
+      "name": "flagship.tariffs-json-path",
+      "type": "java.lang.String",
+      "description": "Description for flagship.tariffs-json-path."
     }
   ]
 }

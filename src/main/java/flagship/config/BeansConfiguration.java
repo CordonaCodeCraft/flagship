@@ -5,16 +5,17 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import flagship.bootstrap.initializers.*;
-import flagship.domain.base.due.serialization.DueDeserializer;
-import flagship.domain.base.due.tuple.Due;
-import flagship.domain.base.range.serialization.RangeDeserializer;
-import flagship.domain.base.range.tuple.Range;
+import flagship.domain.calculation.tariffs.Tariff;
 import flagship.domain.calculation.tariffs.agency.AgencyDuesTariff;
 import flagship.domain.calculation.tariffs.calendar.HolidayCalendar;
 import flagship.domain.calculation.tariffs.service.MooringDueTariff;
 import flagship.domain.calculation.tariffs.service.PilotageDueTariff;
 import flagship.domain.calculation.tariffs.service.TugDueTariff;
 import flagship.domain.calculation.tariffs.state.*;
+import flagship.domain.tuples.due.Due;
+import flagship.domain.tuples.due.serialization.DueDeserializer;
+import flagship.domain.tuples.range.Range;
+import flagship.domain.tuples.range.serialization.RangeDeserializer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -29,11 +30,13 @@ import java.io.IOException;
 @PropertySource("classpath:application.yml")
 public class BeansConfiguration {
 
-  private static final String TARIFFS_PATH = "src/main/resources/";
   private final ObjectMapper objectMapper = configureMapper();
 
   @Value("${flagship.new-installation}")
   private boolean isNewInstallation;
+
+  @Value("${flagship.tariffs-json-path}")
+  private String tariffsPath;
 
   @Bean
   public ObjectMapper objectMapper() {
@@ -46,12 +49,13 @@ public class BeansConfiguration {
     final HolidayCalendar holidayCalendar;
 
     if (isNewInstallation) {
-      final HolidayCalendarInitializer holidayCalendarInitializer = new HolidayCalendarInitializer();
+      final HolidayCalendarInitializer holidayCalendarInitializer =
+          new HolidayCalendarInitializer();
       holidayCalendar = holidayCalendarInitializer.initializeCalendar();
     } else {
       holidayCalendar =
           objectMapper.readValue(
-              new File(TARIFFS_PATH + "tariffs/holidayCalendar.json"), HolidayCalendar.class);
+              new File(tariffsPath + "holidayCalendar.json"), HolidayCalendar.class);
       log.info("Holiday calendar initialized from database");
     }
     return holidayCalendar;
@@ -59,180 +63,79 @@ public class BeansConfiguration {
 
   @Bean
   public TonnageDueTariff tonnageDueTariff() throws IOException {
-
-    final TonnageDueTariff tonnageDueTariff;
-
-    if (isNewInstallation) {
-      tonnageDueTariff = TonnageDueTariffInitializer.getTariff();
-    } else {
-      tonnageDueTariff =
-          objectMapper.readValue(
-              new File(TARIFFS_PATH + "tariffs/tonnageDueTariff.json"), TonnageDueTariff.class);
-      log.info("Tonnage due tariff initialized from database");
-    }
-    return tonnageDueTariff;
+    return isNewInstallation
+        ? TonnageDueTariffInitializer.getTariff()
+        : deserialize(TonnageDueTariff.class, "tonnageDueTariff.json");
   }
 
   @Bean
   public WharfDueTariff wharfDueTariff() throws IOException {
-
-    final WharfDueTariff wharfDueTariff;
-
-    if (isNewInstallation) {
-      wharfDueTariff = WharfDueTariffInitializer.getTariff();
-    } else {
-      wharfDueTariff =
-          objectMapper.readValue(
-              new File(TARIFFS_PATH + "tariffs/wharfDueTariff.json"), WharfDueTariff.class);
-      log.info("Wharf due tariff initialized from database");
-    }
-    return wharfDueTariff;
+    return isNewInstallation
+        ? WharfDueTariffInitializer.getTariff()
+        : deserialize(WharfDueTariff.class, "wharfDueTariff.json");
   }
 
   @Bean
   public CanalDueTariff canalDueTariff() throws IOException {
-
-    final CanalDueTariff canalDueTariff;
-
-    if (isNewInstallation) {
-      canalDueTariff = CanalDueTariffInitializer.getTariff();
-    } else {
-      canalDueTariff =
-          objectMapper.readValue(
-              new File(TARIFFS_PATH + "tariffs/canalDueTariff.json"), CanalDueTariff.class);
-      log.info("Canal due tariff initialized from database");
-    }
-    return canalDueTariff;
+    return isNewInstallation
+        ? CanalDueTariffInitializer.getTariff()
+        : deserialize(CanalDueTariff.class, "canalDueTariff.json");
   }
 
   @Bean
   public LightDueTariff lightDueTariff() throws IOException {
-
-    final LightDueTariff lightDueTariff;
-
-    if (isNewInstallation) {
-      lightDueTariff = LightDueTariffInitializer.getTariff();
-    } else {
-      lightDueTariff =
-          objectMapper.readValue(
-              new File(TARIFFS_PATH + "tariffs/lightDueTariff.json"), LightDueTariff.class);
-      log.info("Light due tariff initialized from database");
-    }
-    return lightDueTariff;
+    return isNewInstallation
+        ? LightDueTariffInitializer.getTariff()
+        : deserialize(LightDueTariff.class, "lightDueTariff.json");
   }
 
   @Bean
   public MarpolDueTariff marpolDueTariff() throws IOException {
-
-    final MarpolDueTariff marpolDueTariff;
-
-    if (isNewInstallation) {
-      marpolDueTariff = MarpolDueTariffInitializer.getTariff();
-    } else {
-      marpolDueTariff =
-          objectMapper.readValue(
-              new File(TARIFFS_PATH + "tariffs/marpolDueTariff.json"), MarpolDueTariff.class);
-      log.info("Marpol due tariff initialized from database");
-    }
-    return marpolDueTariff;
+    return isNewInstallation
+        ? MarpolDueTariffInitializer.getTariff()
+        : deserialize(MarpolDueTariff.class, "marpolDueTariff.json");
   }
 
   @Bean
   public BoomContainmentTariff boomContainmentTariff() throws IOException {
-
-    final BoomContainmentTariff boomContainmentTariff;
-
-    if (isNewInstallation) {
-      boomContainmentTariff = BoomContainmentTariffInitializer.getTariff();
-    } else {
-      boomContainmentTariff =
-          objectMapper.readValue(
-              new File(TARIFFS_PATH + "tariffs/boomContainmentDueTariff.json"),
-              BoomContainmentTariff.class);
-      log.info("Boom containment due tariff initialized from database");
-    }
-    return boomContainmentTariff;
+    return isNewInstallation
+        ? BoomContainmentTariffInitializer.getTariff()
+        : deserialize(BoomContainmentTariff.class, "boomContainmentDueTariff.json");
   }
 
   @Bean
   public SailingPermissionTariff sailingPermissionTariff() throws IOException {
-
-    final SailingPermissionTariff sailingPermissionTariff;
-
-    if (isNewInstallation) {
-      sailingPermissionTariff = SailingPermissionDueTariffInitializer.getTariff();
-    } else {
-      sailingPermissionTariff =
-          objectMapper.readValue(
-              new File(TARIFFS_PATH + "tariffs/sailingPermissionDueTariff.json"),
-              SailingPermissionTariff.class);
-      log.info("Sailing permission due tariff initialized from database");
-    }
-    return sailingPermissionTariff;
+    return isNewInstallation
+        ? SailingPermissionDueTariffInitializer.getTariff()
+        : deserialize(SailingPermissionTariff.class, "sailingPermissionDueTariff.json");
   }
 
   @Bean
   public PilotageDueTariff pilotageDueTariff() throws IOException {
-
-    final PilotageDueTariff pilotageDueTariff;
-
-    if (isNewInstallation) {
-      pilotageDueTariff = PilotageDueTariffInitializer.getTariff(holidayCalendar());
-    } else {
-      pilotageDueTariff =
-          objectMapper.readValue(
-              new File(TARIFFS_PATH + "tariffs/pilotageDueTariff.json"), PilotageDueTariff.class);
-      log.info("Pilotage due tariff initialized from database");
-    }
-    return pilotageDueTariff;
+    return isNewInstallation
+        ? PilotageDueTariffInitializer.getTariff(holidayCalendar())
+        : deserialize(PilotageDueTariff.class, "pilotageDueTariff.json");
   }
 
   @Bean
   public TugDueTariff tugDueTariff() throws IOException {
-
-    final TugDueTariff tugDueTariff;
-
-    if (isNewInstallation) {
-      tugDueTariff = TugDueTariffInitializer.getTariff(holidayCalendar());
-    } else {
-      tugDueTariff =
-          objectMapper.readValue(
-              new File(TARIFFS_PATH + "tariffs/tugDueTariff.json"), TugDueTariff.class);
-      log.info("Tug due tariff initialized from database");
-    }
-    return tugDueTariff;
+    return isNewInstallation
+        ? TugDueTariffInitializer.getTariff(holidayCalendar())
+        : deserialize(TugDueTariff.class, "tugDueTariff.json");
   }
 
   @Bean
   public MooringDueTariff mooringDueTariff() throws IOException {
-
-    final MooringDueTariff mooringDueTariff;
-
-    if (isNewInstallation) {
-      mooringDueTariff = MooringDueTariffInitializer.getTariff(holidayCalendar());
-    } else {
-      mooringDueTariff =
-          objectMapper.readValue(
-              new File(TARIFFS_PATH + "tariffs/mooringDueTariff.json"), MooringDueTariff.class);
-      log.info("Mooring due tariff initialized from database");
-    }
-    return mooringDueTariff;
+    return isNewInstallation
+        ? MooringDueTariffInitializer.getTariff(holidayCalendar())
+        : deserialize(MooringDueTariff.class, "mooringDueTariff.json");
   }
 
   @Bean
   public AgencyDuesTariff agencyDuesTariff() throws IOException {
-
-    final AgencyDuesTariff agencyDuesTariff;
-
-    if (isNewInstallation) {
-      agencyDuesTariff = AgencyDuesTariffInitializer.getTariff();
-    } else {
-      agencyDuesTariff =
-          objectMapper.readValue(
-              new File(TARIFFS_PATH + "tariffs/agencyDuesTariff.json"), AgencyDuesTariff.class);
-      log.info("Agency dues tariff initialized from database");
-    }
-    return agencyDuesTariff;
+    return isNewInstallation
+        ? AgencyDuesTariffInitializer.getTariff()
+        : deserialize(AgencyDuesTariff.class, "agencyDuesTariff.json");
   }
 
   public ObjectMapper configureMapper() {
@@ -247,5 +150,15 @@ public class BeansConfiguration {
     objectMapper.writerWithDefaultPrettyPrinter();
 
     return objectMapper;
+  }
+
+  private <T extends Tariff> T deserialize(final Class<T> target, final String from)
+      throws IOException {
+
+    final T product = target.cast(objectMapper.readValue(new File(tariffsPath + from), target));
+
+    log.info(String.format("%s initialized from JSON", target.getSimpleName()));
+
+    return product;
   }
 }

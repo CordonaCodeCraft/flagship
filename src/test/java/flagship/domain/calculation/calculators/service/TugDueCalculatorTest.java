@@ -1,11 +1,11 @@
 package flagship.domain.calculation.calculators.service;
 
-import flagship.domain.base.range.tuple.Range;
 import flagship.domain.calculation.calculators.BaseCalculatorTest;
 import flagship.domain.calculation.tariffs.Tariff;
 import flagship.domain.caze.model.PdaCase;
 import flagship.domain.port.model.PdaPort;
 import flagship.domain.ship.model.PdaShip;
+import flagship.domain.tuples.range.Range;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
