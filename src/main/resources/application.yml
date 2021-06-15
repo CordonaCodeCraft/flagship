@@ -10,9 +10,9 @@ spring:
     console:
       enabled: true
 server:
-  port: 8081
+  port: 8080
 flagship:
   tariffs-json-path: src/main/resources/tariffs/
   easter-day-of-month: 2
-  new-installation: true
+  new-installation: false
   agency-commission-coefficient: 0.3

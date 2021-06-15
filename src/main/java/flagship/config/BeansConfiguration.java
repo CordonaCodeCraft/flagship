@@ -49,96 +49,110 @@ public class BeansConfiguration {
   @Bean
   HolidayCalendar holidayCalendar() throws IOException {
 
-    final HolidayCalendar holidayCalendar;
+    final HolidayCalendarInitializer holidayCalendarInitializer = new HolidayCalendarInitializer();
+    return holidayCalendarInitializer.initializeCalendar(easterDay);
 
-    if (isNewInstallation) {
-      final HolidayCalendarInitializer holidayCalendarInitializer =
-          new HolidayCalendarInitializer();
-      holidayCalendar = holidayCalendarInitializer.initializeCalendar(easterDay);
-    } else {
-      holidayCalendar =
-          objectMapper.readValue(
-              new File(tariffsPath + "holidayCalendar.json"), HolidayCalendar.class);
-      log.info("Holiday calendar initialized from database");
-    }
-    return holidayCalendar;
+    //    final HolidayCalendar holidayCalendar;
+    //
+    //    if (isNewInstallation) {
+    //      final HolidayCalendarInitializer holidayCalendarInitializer =
+    //          new HolidayCalendarInitializer();
+    //      holidayCalendar = holidayCalendarInitializer.initializeCalendar(easterDay);
+    //    } else {
+    //      holidayCalendar =
+    //          objectMapper.readValue(
+    //              new File(tariffsPath + "holidayCalendar.json"), HolidayCalendar.class);
+    //      log.info("Holiday calendar initialized from database");
+    //    }
+    //    return holidayCalendar;
   }
 
   @Bean
   public TonnageDueTariff tonnageDueTariff() throws IOException {
-    return isNewInstallation
-        ? TonnageDueTariffInitializer.getTariff()
-        : deserialize(TonnageDueTariff.class, "tonnageDueTariff.json");
+    return TonnageDueTariffInitializer.getTariff();
+    //    return isNewInstallation
+    //        ? TonnageDueTariffInitializer.getTariff()
+    //        : deserialize(TonnageDueTariff.class, "tonnageDueTariff.json");
   }
 
   @Bean
   public WharfDueTariff wharfDueTariff() throws IOException {
-    return isNewInstallation
-        ? WharfDueTariffInitializer.getTariff()
-        : deserialize(WharfDueTariff.class, "wharfDueTariff.json");
+    return WharfDueTariffInitializer.getTariff();
+    //    return isNewInstallation
+    //        ? WharfDueTariffInitializer.getTariff()
+    //        : deserialize(WharfDueTariff.class, "wharfDueTariff.json");
   }
 
   @Bean
   public CanalDueTariff canalDueTariff() throws IOException {
-    return isNewInstallation
-        ? CanalDueTariffInitializer.getTariff()
-        : deserialize(CanalDueTariff.class, "canalDueTariff.json");
+    return CanalDueTariffInitializer.getTariff();
+    //    return isNewInstallation
+    //        ? CanalDueTariffInitializer.getTariff()
+    //        : deserialize(CanalDueTariff.class, "canalDueTariff.json");
   }
 
   @Bean
   public LightDueTariff lightDueTariff() throws IOException {
-    return isNewInstallation
-        ? LightDueTariffInitializer.getTariff()
-        : deserialize(LightDueTariff.class, "lightDueTariff.json");
+    return LightDueTariffInitializer.getTariff();
+    //    return isNewInstallation
+    //        ? LightDueTariffInitializer.getTariff()
+    //        : deserialize(LightDueTariff.class, "lightDueTariff.json");
   }
 
   @Bean
   public MarpolDueTariff marpolDueTariff() throws IOException {
-    return isNewInstallation
-        ? MarpolDueTariffInitializer.getTariff()
-        : deserialize(MarpolDueTariff.class, "marpolDueTariff.json");
+    return MarpolDueTariffInitializer.getTariff();
+    //    return isNewInstallation
+    //        ? MarpolDueTariffInitializer.getTariff()
+    //        : deserialize(MarpolDueTariff.class, "marpolDueTariff.json");
   }
 
   @Bean
   public BoomContainmentTariff boomContainmentTariff() throws IOException {
-    return isNewInstallation
-        ? BoomContainmentTariffInitializer.getTariff()
-        : deserialize(BoomContainmentTariff.class, "boomContainmentDueTariff.json");
+    return BoomContainmentTariffInitializer.getTariff();
+    //    return isNewInstallation
+    //        ? BoomContainmentTariffInitializer.getTariff()
+    //        : deserialize(BoomContainmentTariff.class, "boomContainmentDueTariff.json");
   }
 
   @Bean
   public SailingPermissionTariff sailingPermissionTariff() throws IOException {
-    return isNewInstallation
-        ? SailingPermissionDueTariffInitializer.getTariff()
-        : deserialize(SailingPermissionTariff.class, "sailingPermissionDueTariff.json");
+    return SailingPermissionDueTariffInitializer.getTariff();
+    //    return isNewInstallation
+    //        ? SailingPermissionDueTariffInitializer.getTariff()
+    //        : deserialize(SailingPermissionTariff.class, "sailingPermissionDueTariff.json");
   }
 
   @Bean
   public PilotageDueTariff pilotageDueTariff() throws IOException {
-    return isNewInstallation
-        ? PilotageDueTariffInitializer.getTariff(holidayCalendar())
-        : deserialize(PilotageDueTariff.class, "pilotageDueTariff.json");
+    return PilotageDueTariffInitializer.getTariff(holidayCalendar());
+    //    return isNewInstallation
+    //        ? PilotageDueTariffInitializer.getTariff(holidayCalendar())
+    //        : deserialize(PilotageDueTariff.class, "pilotageDueTariff.json");
   }
 
   @Bean
   public TugDueTariff tugDueTariff() throws IOException {
-    return isNewInstallation
-        ? TugDueTariffInitializer.getTariff(holidayCalendar())
-        : deserialize(TugDueTariff.class, "tugDueTariff.json");
+    return TugDueTariffInitializer.getTariff(holidayCalendar());
+    //    return isNewInstallation
+    //        ? TugDueTariffInitializer.getTariff(holidayCalendar())
+    //        : deserialize(TugDueTariff.class, "tugDueTariff.json");
   }
 
   @Bean
   public MooringDueTariff mooringDueTariff() throws IOException {
-    return isNewInstallation
-        ? MooringDueTariffInitializer.getTariff(holidayCalendar())
-        : deserialize(MooringDueTariff.class, "mooringDueTariff.json");
+    return MooringDueTariffInitializer.getTariff(holidayCalendar());
+    //    return isNewInstallation
+    //        ? MooringDueTariffInitializer.getTariff(holidayCalendar())
+    //        : deserialize(MooringDueTariff.class, "mooringDueTariff.json");
   }
 
   @Bean
   public AgencyDuesTariff agencyDuesTariff() throws IOException {
-    return isNewInstallation
-        ? AgencyDuesTariffInitializer.getTariff()
-        : deserialize(AgencyDuesTariff.class, "agencyDuesTariff.json");
+    return AgencyDuesTariffInitializer.getTariff();
+    //    return isNewInstallation
+    //        ? AgencyDuesTariffInitializer.getTariff()
+    //        : deserialize(AgencyDuesTariff.class, "agencyDuesTariff.json");
   }
 
   public ObjectMapper configureMapper() {

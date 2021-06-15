@@ -18,7 +18,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -55,50 +54,50 @@ public class DataLoader implements ApplicationRunner {
   @Override
   public void run(final ApplicationArguments args) throws IOException {
 
-    if (isNewInstallation) {
-      produceHolidayCalendarJsonFile();
-
-      produceStateDuesJsonFiles();
-
-      produceServiceDuesJsonFiles();
-
-      produceAgencyDuesJsonFile();
-    }
+    //    if (isNewInstallation) {
+    //      produceHolidayCalendarJsonFile();
+    //
+    //      produceStateDuesJsonFiles();
+    //
+    //      produceServiceDuesJsonFiles();
+    //
+    //      produceAgencyDuesJsonFile();
+    //    }
 
     initializeTariffsFactory();
   }
 
-  private void produceHolidayCalendarJsonFile() throws IOException {
-    createJsonFrom(holidayCalendar, "holidayCalendar.json");
-  }
-
-  private void produceStateDuesJsonFiles() throws IOException {
-    createJsonFrom(tonnageDueTariff, "tonnageDueTariff.json");
-
-    createJsonFrom(wharfDueTariff, "wharfDueTariff.json");
-
-    createJsonFrom(canalDueTariff, "canalDueTariff.json");
-
-    createJsonFrom(lightDueTariff, "lightDueTariff.json");
-
-    createJsonFrom(marpolDueTariff, "marpolDueTariff.json");
-
-    createJsonFrom(boomContainmentTariff, "boomContainmentDueTariff.json");
-
-    createJsonFrom(sailingPermissionTariff, "sailingPermissionDueTariff.json");
-  }
-
-  private void produceServiceDuesJsonFiles() throws IOException {
-    createJsonFrom(pilotageDueTariff, "pilotageDueTariff.json");
-
-    createJsonFrom(tugDueTariff, "tugDueTariff.json");
-
-    createJsonFrom(mooringDueTariff, "mooringDueTariff.json");
-  }
-
-  private void produceAgencyDuesJsonFile() throws IOException {
-    createJsonFrom(agencyDuesTariff, "agencyDuesTariff.json");
-  }
+  //  private void produceHolidayCalendarJsonFile() throws IOException {
+  //    createJsonFrom(holidayCalendar, "holidayCalendar.json");
+  //  }
+  //
+  //  private void produceStateDuesJsonFiles() throws IOException {
+  //    createJsonFrom(tonnageDueTariff, "tonnageDueTariff.json");
+  //
+  //    createJsonFrom(wharfDueTariff, "wharfDueTariff.json");
+  //
+  //    createJsonFrom(canalDueTariff, "canalDueTariff.json");
+  //
+  //    createJsonFrom(lightDueTariff, "lightDueTariff.json");
+  //
+  //    createJsonFrom(marpolDueTariff, "marpolDueTariff.json");
+  //
+  //    createJsonFrom(boomContainmentTariff, "boomContainmentDueTariff.json");
+  //
+  //    createJsonFrom(sailingPermissionTariff, "sailingPermissionDueTariff.json");
+  //  }
+  //
+  //  private void produceServiceDuesJsonFiles() throws IOException {
+  //    createJsonFrom(pilotageDueTariff, "pilotageDueTariff.json");
+  //
+  //    createJsonFrom(tugDueTariff, "tugDueTariff.json");
+  //
+  //    createJsonFrom(mooringDueTariff, "mooringDueTariff.json");
+  //  }
+  //
+  //  private void produceAgencyDuesJsonFile() throws IOException {
+  //    createJsonFrom(agencyDuesTariff, "agencyDuesTariff.json");
+  //  }
 
   private void initializeTariffsFactory() {
     final Map<CalculatorType, Tariff> tariffs = new EnumMap<>(CalculatorType.class);
@@ -125,11 +124,15 @@ public class DataLoader implements ApplicationRunner {
     log.info(String.format("%s initialized", TariffsFactory.class.getSimpleName()));
   }
 
-  private <T> void createJsonFrom(final T source, final String asJson) throws IOException {
-    objectMapper
-        .writerWithDefaultPrettyPrinter()
-        .writeValue(Paths.get(tariffsPath + asJson).toFile(), source);
-
-    log.info(String.format("%s created", asJson));
-  }
+  //    private <T> void createJsonFrom(final T source, final String asJson) {
+  //
+  //      try {
+  //        objectMapper
+  //            .writerWithDefaultPrettyPrinter()
+  //            .writeValue(Paths.get(tariffsPath + asJson).toFile(), source);
+  //        log.info(String.format("%s created", asJson));
+  //      } catch (final IOException e) {
+  //        e.printStackTrace();
+  //      }
+  //    }
 }
